@@ -295,7 +295,7 @@ function sendAdbSenderChangeAnnouncementV1() {
 
     const queueSheet = database.getSheetByName('Outbound Messages');
     let queue = adbRowsByHeader_(queueSheet);
-    const required = ['Message ID','Queued At','Profile ID','Email','Template ID','Status','Subject','Customize URL','Sent At / Gmail ID','Notes'];
+    const required = ['Message ID','Created At','Profile ID','Email','Template ID','Status','Subject','Customize URL','Sent At / Gmail ID','Notes'];
     required.forEach(function(header) {
       if (queue.headers.indexOf(header) < 0) throw new Error('Outbound Messages is missing header: ' + header);
     });
@@ -309,7 +309,7 @@ function sendAdbSenderChangeAnnouncementV1() {
       if (existingIds.has(messageId)) return;
       const output = queue.headers.map(function() { return ''; });
       output[queue.headers.indexOf('Message ID')] = messageId;
-      output[queue.headers.indexOf('Queued At')] = queuedAt;
+      output[queue.headers.indexOf('Created At')] = queuedAt;
       output[queue.headers.indexOf('Profile ID')] = profileId;
       output[queue.headers.indexOf('Email')] = String(row.Email).trim();
       output[queue.headers.indexOf('Template ID')] = 'SENDER_CHANGE_V1';

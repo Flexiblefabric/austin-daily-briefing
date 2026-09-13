@@ -15,7 +15,9 @@ const ADB_RESEND = Object.freeze({
   PRODUCTION_DATABASE_ID: '1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0',
   PRODUCTION_INTAKE_ID: '1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho',
   CUSTOMIZE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform',
-  MANAGE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform'
+  MANAGE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform',
+  SITE_URL: 'https://austindailybriefing.com/',
+  SENDER_CHANGE_APPROVAL_PROPERTY: 'ADB_SENDER_CHANGE_APPROVAL'
 });
 
 /**
@@ -234,6 +236,155 @@ function pauseAdbResendWelcomeV1() {
   const report = {mode: 'CONTROLLED', trigger: 'NONE', transport: 'Resend'};
   Logger.log(JSON.stringify(report));
   return report;
+}
+
+/**
+ * Sends the one-time sender/domain announcement after the website cutover.
+ *
+ * Manual only: no trigger is created. Before running, activate the single
+ * production SENDER_CHANGE_V1 template and set ADB_SENDER_CHANGE_APPROVAL to
+ * APPROVED. The function resolves Active subscribers at run time, creates one
+ * deterministic queue row per profile, and changes approval to COMPLETE only
+ * when no announcement row remains Queued or Failed.
+ */
+function sendAdbSenderChangeAnnouncementV1() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    const props = PropertiesService.getScriptProperties();
+    if (props.getProperty(ADB_RESEND.SENDER_CHANGE_APPROVAL_PROPERTY) !== 'APPROVED') {
+      throw new Error('Sender-change announcement requires ADB_SENDER_CHANGE_APPROVAL=APPROVED.');
+    }
+
+    const database = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_DATABASE_ID);
+    const intake = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_INTAKE_ID);
+    adbValidateWelcomeDeliveryGates_(database, intake);
+
+    const siteResponse = UrlFetchApp.fetch(ADB_RESEND.SITE_URL, {
+      followRedirects: true,
+      muteHttpExceptions: true
+    });
+    if (siteResponse.getResponseCode() < 200 || siteResponse.getResponseCode() >= 300 ||
+        siteResponse.getContentText().indexOf('briefing@austindailybriefing.com') < 0) {
+      throw new Error('Custom-domain website is not ready for the announcement.');
+    }
+
+    const templates = adbRowsByHeader_(database.getSheetByName('Message Templates'));
+    const matches = templates.rows.filter(function(row) {
+      return row['Template ID'] === 'SENDER_CHANGE_V1' &&
+        String(row.Active).toUpperCase() === 'TRUE' &&
+        row.Environment === 'PRODUCTION';
+    });
+    if (matches.length !== 1) {
+      throw new Error('Expected exactly one active production SENDER_CHANGE_V1 template.');
+    }
+
+    const subscribers = adbRowsByHeader_(database.getSheetByName('Subscribers'));
+    const active = subscribers.rows.filter(function(row) { return row.Status === 'Active'; });
+    if (!active.length) throw new Error('No Active subscribers found.');
+
+    const seenEmails = {};
+    active.forEach(function(row) {
+      const email = String(row.Email || '').trim().toLowerCase();
+      const profileId = String(row['Profile ID'] || '').trim();
+      if (!email || !profileId) throw new Error('Active subscriber is missing email or Profile ID.');
+      if (seenEmails[email]) throw new Error('Duplicate Active subscriber email: ' + email);
+      seenEmails[email] = true;
+    });
+
+    const queueSheet = database.getSheetByName('Outbound Messages');
+    let queue = adbRowsByHeader_(queueSheet);
+    const required = ['Message ID','Queued At','Profile ID','Email','Template ID','Status','Subject','Customize URL','Sent At / Gmail ID','Notes'];
+    required.forEach(function(header) {
+      if (queue.headers.indexOf(header) < 0) throw new Error('Outbound Messages is missing header: ' + header);
+    });
+    const existingIds = new Set(queue.rows.map(function(row) { return String(row['Message ID'] || ''); }));
+    const queuedAt = Utilities.formatDate(new Date(), 'America/Chicago', 'yyyy-MM-dd HH:mm:ss z');
+    let created = 0;
+
+    active.forEach(function(row) {
+      const profileId = String(row['Profile ID']).trim();
+      const messageId = 'SENDER-CHANGE-V1:' + profileId;
+      if (existingIds.has(messageId)) return;
+      const output = queue.headers.map(function() { return ''; });
+      output[queue.headers.indexOf('Message ID')] = messageId;
+      output[queue.headers.indexOf('Queued At')] = queuedAt;
+      output[queue.headers.indexOf('Profile ID')] = profileId;
+      output[queue.headers.indexOf('Email')] = String(row.Email).trim();
+      output[queue.headers.indexOf('Template ID')] = 'SENDER_CHANGE_V1';
+      output[queue.headers.indexOf('Status')] = 'Queued';
+      output[queue.headers.indexOf('Subject')] = String(matches[0].Subject);
+      output[queue.headers.indexOf('Customize URL')] = ADB_RESEND.CUSTOMIZE_URL;
+      output[queue.headers.indexOf('Notes')] = 'Approval-gated custom-domain launch announcement.';
+      queueSheet.appendRow(output);
+      existingIds.add(messageId);
+      created++;
+    });
+
+    queue = adbRowsByHeader_(queueSheet);
+    const sentColumn = queue.headers.indexOf('Sent At / Gmail ID') + 1;
+    const statusColumn = queue.headers.indexOf('Status') + 1;
+    const notesColumn = queue.headers.indexOf('Notes') + 1;
+    const activeByEmail = {};
+    active.forEach(function(row) { activeByEmail[String(row.Email).trim().toLowerCase()] = row; });
+    let sent = 0;
+    let skipped = 0;
+
+    queue.rows.forEach(function(row, index) {
+      if (row.Status !== 'Queued' || row['Template ID'] !== 'SENDER_CHANGE_V1') return;
+      const sheetRow = index + 2;
+      const email = String(row.Email || '').trim().toLowerCase();
+      const match = activeByEmail[email];
+      if (!match || String(match['Profile ID']) !== String(row['Profile ID'])) {
+        skipped++;
+        return;
+      }
+      const result = adbSendEmailViaResend_({
+        to: email,
+        subject: String(row.Subject || matches[0].Subject),
+        text: adbSenderChangePlainText_(),
+        html: adbSenderChangeHtml_(),
+        idempotencyKey: String(row['Message ID']),
+        tags: {message_type: 'sender_change', environment: 'production'}
+      });
+      queueSheet.getRange(sheetRow, statusColumn).setValue('Sent');
+      queueSheet.getRange(sheetRow, sentColumn).setValue(new Date().toISOString() + ' | Resend ID ' + result.id);
+      queueSheet.getRange(sheetRow, notesColumn).setValue('Resend accepted; Active eligibility rechecked immediately before delivery.');
+      sent++;
+    });
+
+    const finalQueue = adbRowsByHeader_(queueSheet).rows.filter(function(row) {
+      return row['Template ID'] === 'SENDER_CHANGE_V1' &&
+        (row.Status === 'Queued' || row.Status === 'Failed');
+    });
+    if (!finalQueue.length) props.setProperty(ADB_RESEND.SENDER_CHANGE_APPROVAL_PROPERTY, 'COMPLETE');
+
+    const report = {created: created, sent: sent, skipped: skipped, remaining: finalQueue.length, transport: 'Resend'};
+    Logger.log(JSON.stringify(report));
+    return report;
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function adbSenderChangePlainText_() {
+  return 'Austin Daily Briefing has a new home.\n\n' +
+    'Our official website is now ' + ADB_RESEND.SITE_URL + '\n\n' +
+    'Future Austin Daily Briefing messages will come from briefing@austindailybriefing.com, and you can reply directly to that address. No action is required; your subscription and preferences are unchanged.\n\n' +
+    'Customize my briefing: ' + ADB_RESEND.CUSTOMIZE_URL + '\n\n' +
+    'Manage subscription: ' + ADB_RESEND.MANAGE_URL;
+}
+
+function adbSenderChangeHtml_() {
+  return '<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;line-height:1.55;color:#202124">' +
+    '<p style="font-size:12px;font-weight:700;letter-spacing:.08em;color:#ce1829">AUSTIN DAILY BRIEFING</p>' +
+    '<h1 style="font-size:28px;margin:0 0 16px">We have a new home.</h1>' +
+    '<p>Our official website is now <a href="' + ADB_RESEND.SITE_URL + '">austindailybriefing.com</a>.</p>' +
+    '<p>Future Austin Daily Briefing messages will come from <strong>briefing@austindailybriefing.com</strong>, and you can reply directly to that address.</p>' +
+    '<p><strong>No action is required.</strong> Your subscription and preferences are unchanged.</p>' +
+    '<p><a href="' + ADB_RESEND.SITE_URL + '" style="display:inline-block;padding:12px 16px;background:#ce1829;color:#fff;text-decoration:none">Visit Austin Daily Briefing</a></p>' +
+    '<p style="font-size:14px"><a href="' + ADB_RESEND.CUSTOMIZE_URL + '">Customize my briefing</a> · <a href="' + ADB_RESEND.MANAGE_URL + '">Manage subscription</a></p>' +
+    '<p style="font-size:13px;color:#5f6368">You can reply directly to this email.</p></div>';
 }
 
 function adbRemoveWelcomeTriggers_() {

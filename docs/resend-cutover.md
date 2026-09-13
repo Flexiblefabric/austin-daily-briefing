@@ -39,6 +39,21 @@ record for the allowlisted Active subscriber and snapshot that row. After the ru
 confirm one send, one provider ID, no duplicate row, and zero delivery to all
 other subscribers. Rerun once and confirm zero additional sends.
 
+## Welcome promotion
+
+After queue delivery and the zero-send replay test both pass, run
+`promoteAdbResendWelcomeV1`. It verifies the exact controlled QA record, changes
+the Script Property to `LIVE`, removes any duplicate dispatcher triggers, and
+creates one hourly trigger for `dispatchQueuedWelcomeMessagesViaResendV1`.
+
+The rollback is `pauseAdbResendWelcomeV1`. It deletes the welcome trigger and
+returns the transport to `CONTROLLED`. It does not change subscriber records or
+erase queue history.
+
+Keep the existing six-hour subscriber processor separate. Before resuming it,
+remove its Gmail welcome-dispatch instructions so it only processes intake and
+queues `WELCOME_V1`; Apps Script owns welcome delivery after promotion.
+
 ## Queue cutover contract
 
 After the controlled test passes, each live sender calls `adbSendEmailViaResend_` with:

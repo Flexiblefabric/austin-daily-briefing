@@ -12,6 +12,10 @@ const ADB_RESEND = Object.freeze({
   TEST_RECIPIENT_PROPERTY: 'ADB_RESEND_TEST_RECIPIENT',
   WELCOME_MODE_PROPERTY: 'ADB_RESEND_WELCOME_MODE',
   WELCOME_ALLOWLIST_PROPERTY: 'ADB_RESEND_WELCOME_ALLOWLIST',
+  DAILY_MODE_PROPERTY: 'ADB_RESEND_DAILY_MODE',
+  DAILY_ALLOWLIST_PROPERTY: 'ADB_RESEND_DAILY_ALLOWLIST',
+  DAILY_TEMPLATE_ID: 'DAILY_BRIEFING_V1',
+  DAILY_MAX_BODY_CHARS: 45000,
   PRODUCTION_DATABASE_ID: '1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0',
   PRODUCTION_INTAKE_ID: '1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho',
   CUSTOMIZE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform',
@@ -394,6 +398,265 @@ function adbRemoveWelcomeTriggers_() {
       ScriptApp.deleteTrigger(trigger);
     }
   });
+}
+
+/**
+ * Dispatches complete, validated DAILY_BRIEFING_V1 queue rows through Resend.
+ *
+ * The morning editorial automation owns content generation. This function owns
+ * the final eligibility check, provider handoff, queue status, and matching
+ * Briefing History delivery status. It defaults to CONTROLLED and creates no
+ * trigger until promoteAdbResendDailyV1 is run after controlled QA.
+ */
+function dispatchQueuedDailyBriefingsViaResendV1() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    const props = PropertiesService.getScriptProperties();
+    const mode = String(props.getProperty(ADB_RESEND.DAILY_MODE_PROPERTY) || 'CONTROLLED').toUpperCase();
+    if (['CONTROLLED', 'LIVE'].indexOf(mode) < 0) throw new Error('Unsupported ADB_RESEND_DAILY_MODE: ' + mode);
+    const allowlist = new Set(String(props.getProperty(ADB_RESEND.DAILY_ALLOWLIST_PROPERTY) || '')
+      .split(',').map(function(value) { return value.trim().toLowerCase(); }).filter(Boolean));
+    if (mode === 'CONTROLLED' && !allowlist.size) {
+      throw new Error('CONTROLLED mode requires ADB_RESEND_DAILY_ALLOWLIST.');
+    }
+
+    const database = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_DATABASE_ID);
+    const intake = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_INTAKE_ID);
+    adbValidateDailyDeliveryGates_(database, intake);
+
+    const templates = adbRowsByHeader_(database.getSheetByName('Message Templates'));
+    const dailyTemplates = templates.rows.filter(function(row) {
+      return row['Template ID'] === ADB_RESEND.DAILY_TEMPLATE_ID &&
+        String(row.Active).toUpperCase() === 'TRUE' && row.Environment === 'PRODUCTION';
+    });
+    if (dailyTemplates.length !== 1) {
+      throw new Error('Expected exactly one active production ' + ADB_RESEND.DAILY_TEMPLATE_ID + ' template.');
+    }
+
+    const subscribers = adbRowsWithSheetRows_(database.getSheetByName('Subscribers'));
+    const activeByEmail = {};
+    const activeByProfile = {};
+    subscribers.rows.forEach(function(entry) {
+      const row = entry.values;
+      if (String(row.Status || '').trim().toUpperCase() !== 'ACTIVE') return;
+      const email = String(row.Email || '').trim().toLowerCase();
+      const profileId = String(row['Profile ID'] || '').trim();
+      if (!email || !profileId) return;
+      (activeByEmail[email] = activeByEmail[email] || []).push(row);
+      (activeByProfile[profileId] = activeByProfile[profileId] || []).push(row);
+    });
+
+    const queueSheet = database.getSheetByName('Outbound Messages');
+    const queue = adbRowsWithSheetRows_(queueSheet);
+    const requiredQueue = ['Message ID','Profile ID','Email','Template ID','Status','Subject',
+      'Sent At / Gmail ID','Notes','Plain Text','HTML','Run ID'];
+    requiredQueue.forEach(function(header) {
+      if (queue.headers.indexOf(header) < 0) throw new Error('Outbound Messages is missing header: ' + header);
+    });
+
+    const historySheet = database.getSheetByName('Briefing History');
+    const history = adbRowsWithSheetRows_(historySheet);
+    const requiredHistory = ['Run ID','Profile ID','Notes','Delivery Status','Provider Message ID'];
+    requiredHistory.forEach(function(header) {
+      if (history.headers.indexOf(header) < 0) throw new Error('Briefing History is missing header: ' + header);
+    });
+
+    const queueColumns = adbHeaderColumns_(queue.headers);
+    const historyColumns = adbHeaderColumns_(history.headers);
+    let sent = 0;
+    let skipped = 0;
+
+    queue.rows.forEach(function(entry) {
+      const row = entry.values;
+      if (String(row.Status || '').trim() !== 'Queued' || row['Template ID'] !== ADB_RESEND.DAILY_TEMPLATE_ID) return;
+
+      const messageId = String(row['Message ID'] || '').trim();
+      const profileId = String(row['Profile ID'] || '').trim();
+      const email = String(row.Email || '').trim().toLowerCase();
+      const subject = String(row.Subject || '').trim();
+      const textBody = String(row['Plain Text'] || '');
+      const htmlBody = String(row.HTML || '');
+      const runId = String(row['Run ID'] || '').trim();
+
+      if (!messageId || !/^DAILY-(?:RESEND-QA|LIVE):/.test(messageId)) {
+        throw new Error('Invalid daily Message ID at row ' + entry.sheetRow + '.');
+      }
+      if (!profileId || !email || !subject || !textBody.trim() || !htmlBody.trim() || !runId) {
+        throw new Error('Incomplete daily payload at row ' + entry.sheetRow + '.');
+      }
+      if (textBody.length > ADB_RESEND.DAILY_MAX_BODY_CHARS || htmlBody.length > ADB_RESEND.DAILY_MAX_BODY_CHARS) {
+        throw new Error('Daily payload exceeds the safe Sheets cell limit at row ' + entry.sheetRow + '.');
+      }
+      if (String(row['Sent At / Gmail ID'] || '').trim()) {
+        throw new Error('Queued daily row already has a provider ID at row ' + entry.sheetRow + '.');
+      }
+      if (mode === 'CONTROLLED' && !allowlist.has(email)) { skipped++; return; }
+
+      const emailMatches = activeByEmail[email] || [];
+      const profileMatches = activeByProfile[profileId] || [];
+      if (emailMatches.length !== 1 || profileMatches.length !== 1 ||
+          String(emailMatches[0]['Profile ID'] || '').trim() !== profileId ||
+          String(profileMatches[0].Email || '').trim().toLowerCase() !== email) {
+        skipped++;
+        return;
+      }
+
+      const historyMatches = history.rows.filter(function(historyEntry) {
+        return String(historyEntry.values['Run ID'] || '').trim() === runId &&
+          String(historyEntry.values['Profile ID'] || '').trim() === profileId;
+      });
+      if (!historyMatches.length) {
+        throw new Error('No Briefing History rows match Run ID ' + runId + ' and Profile ID ' + profileId + '.');
+      }
+      if (historyMatches.some(function(historyEntry) {
+        return String(historyEntry.values['Delivery Status'] || '').trim().toUpperCase() !== 'PENDING' ||
+          String(historyEntry.values['Provider Message ID'] || '').trim();
+      })) {
+        throw new Error('Briefing History is not in a clean Pending state for Run ID ' + runId + '.');
+      }
+
+      try {
+        const result = adbSendEmailViaResend_({
+          to: email,
+          subject: subject,
+          text: textBody,
+          html: htmlBody,
+          idempotencyKey: messageId,
+          tags: {message_type: 'daily_briefing', environment: 'production', profile_id: profileId}
+        });
+      } catch (error) {
+        queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Failed');
+        queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
+          .setValue('Resend failure: ' + String(error.message || error).slice(0, 500));
+        historyMatches.forEach(function(historyEntry) {
+          historySheet.getRange(historyEntry.sheetRow, historyColumns['Delivery Status']).setValue('Failed');
+        });
+        throw error;
+      }
+
+      // Record Sent before enriching history. If a later history write fails,
+      // the queue remains Sent and the provider handoff cannot be retried.
+      const acceptedAt = new Date().toISOString();
+      queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Sent');
+      queueSheet.getRange(entry.sheetRow, queueColumns['Sent At / Gmail ID'])
+        .setValue(acceptedAt + ' | Resend ID ' + result.id);
+      queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
+        .setValue('Resend accepted; subscriber eligibility rechecked immediately before delivery.');
+
+      historyMatches.forEach(function(historyEntry) {
+        historySheet.getRange(historyEntry.sheetRow, historyColumns['Delivery Status']).setValue('Sent');
+        historySheet.getRange(historyEntry.sheetRow, historyColumns['Provider Message ID']).setValue(result.id);
+        const priorNotes = String(historyEntry.values.Notes || '').trim();
+        historySheet.getRange(historyEntry.sheetRow, historyColumns.Notes)
+          .setValue((priorNotes ? priorNotes + ' | ' : '') + 'Resend accepted ' + acceptedAt + '.');
+      });
+      sent++;
+    });
+
+    const report = {mode: mode, sent: sent, skipped: skipped, transport: 'Resend'};
+    Logger.log(JSON.stringify(report));
+    return report;
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** Promotes daily delivery only after an exact controlled P001 QA send. */
+function promoteAdbResendDailyV1() {
+  const props = PropertiesService.getScriptProperties();
+  const currentMode = String(props.getProperty(ADB_RESEND.DAILY_MODE_PROPERTY) || 'CONTROLLED').toUpperCase();
+  if (currentMode !== 'CONTROLLED') throw new Error('Promotion requires CONTROLLED mode. Current mode: ' + currentMode);
+
+  const database = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_DATABASE_ID);
+  const queue = adbRowsWithSheetRows_(database.getSheetByName('Outbound Messages'));
+  const candidates = queue.rows.filter(function(entry) {
+    const row = entry.values;
+    return String(row['Message ID'] || '').indexOf('DAILY-RESEND-QA:P001:') === 0 && row.Status === 'Sent';
+  });
+  if (candidates.length !== 1) throw new Error('Expected exactly one Sent controlled P001 daily QA row.');
+  const qa = candidates[0].values;
+  const providerMatch = String(qa['Sent At / Gmail ID'] || '').match(/Resend ID ([0-9a-f-]{36})/i);
+  if (!providerMatch) throw new Error('Controlled daily QA provider evidence is missing.');
+
+  const history = adbRowsWithSheetRows_(database.getSheetByName('Briefing History'));
+  const matchingHistory = history.rows.filter(function(entry) {
+    return String(entry.values['Run ID'] || '').trim() === String(qa['Run ID'] || '').trim() &&
+      String(entry.values['Profile ID'] || '').trim() === 'P001';
+  });
+  if (!matchingHistory.length || matchingHistory.some(function(entry) {
+    return entry.values['Delivery Status'] !== 'Sent' || entry.values['Provider Message ID'] !== providerMatch[1];
+  })) {
+    throw new Error('Controlled daily QA history evidence is missing or inconsistent.');
+  }
+
+  adbRemoveDailyTriggers_();
+  props.setProperty(ADB_RESEND.DAILY_MODE_PROPERTY, 'LIVE');
+  ScriptApp.newTrigger('dispatchQueuedDailyBriefingsViaResendV1')
+    .timeBased()
+    .everyHours(1)
+    .create();
+
+  const report = {mode: 'LIVE', trigger: 'HOURLY', transport: 'Resend', rollback: 'pauseAdbResendDailyV1'};
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
+/** Stops scheduled daily delivery and returns the dispatcher to CONTROLLED. */
+function pauseAdbResendDailyV1() {
+  adbRemoveDailyTriggers_();
+  PropertiesService.getScriptProperties().setProperty(ADB_RESEND.DAILY_MODE_PROPERTY, 'CONTROLLED');
+  const report = {mode: 'CONTROLLED', trigger: 'NONE', transport: 'Resend'};
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
+function adbRemoveDailyTriggers_() {
+  ScriptApp.getProjectTriggers().forEach(function(trigger) {
+    if (trigger.getHandlerFunction() === 'dispatchQueuedDailyBriefingsViaResendV1') {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+}
+
+function adbValidateDailyDeliveryGates_(database, intake) {
+  const env = adbKeyValueSheet_(database.getSheetByName('Environment'));
+  const cfg = adbKeyValueSheet_(intake.getSheetByName('Integration Config'));
+  if (env.Environment !== 'PRODUCTION') throw new Error('Production environment mismatch.');
+  if (env['Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Production database identity mismatch.');
+  if (env['Schema Baseline'] !== 'GOOGLE-23-1') throw new Error('Production schema mismatch.');
+  if (env['Intake Mode'] !== 'GOOGLE ONLY') throw new Error('Production intake mode mismatch.');
+  if (env['Allow External Delivery'] !== 'TRUE') throw new Error('Production external delivery is not enabled.');
+  if (cfg.Environment !== 'PRODUCTION') throw new Error('Production intake identity mismatch.');
+  if (cfg['Operational Production Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Configured database identity mismatch.');
+  if (cfg['Processor Mode'] !== 'GOOGLE ONLY') throw new Error('Processor mode mismatch.');
+  if (cfg['Delivery Mode'] !== 'ENABLED') throw new Error('Production delivery gate is not enabled.');
+}
+
+function adbRowsWithSheetRows_(sheet) {
+  if (!sheet) throw new Error('Required sheet is missing.');
+  const values = sheet.getDataRange().getDisplayValues();
+  const headers = values[0].map(String);
+  return {
+    headers: headers,
+    rows: values.slice(1).map(function(row, index) {
+      return {
+        sheetRow: index + 2,
+        raw: row,
+        values: headers.reduce(function(output, header, columnIndex) {
+          output[header] = row[columnIndex];
+          return output;
+        }, {})
+      };
+    }).filter(function(entry) { return entry.raw.some(Boolean); })
+  };
+}
+
+function adbHeaderColumns_(headers) {
+  return headers.reduce(function(output, header, index) {
+    output[header] = index + 1;
+    return output;
+  }, {});
 }
 
 function adbValidateWelcomeDeliveryGates_(database, intake) {

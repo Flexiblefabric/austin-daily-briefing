@@ -197,6 +197,53 @@ function dispatchQueuedWelcomeMessagesViaResendV1() {
   }
 }
 
+/**
+ * Promotes only the welcome-message transport after controlled queue QA.
+ * Creates one hourly Apps Script trigger; it does not alter subscriber intake.
+ */
+function promoteAdbResendWelcomeV1() {
+  const props = PropertiesService.getScriptProperties();
+  const currentMode = String(props.getProperty(ADB_RESEND.WELCOME_MODE_PROPERTY) || 'CONTROLLED').toUpperCase();
+  if (currentMode !== 'CONTROLLED') throw new Error('Promotion requires CONTROLLED mode. Current mode: ' + currentMode);
+
+  const database = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_DATABASE_ID);
+  const queue = adbRowsByHeader_(database.getSheetByName('Outbound Messages'));
+  const qa = queue.rows.filter(function(row) {
+    return row['Message ID'] === 'WELCOME-RESEND-QA:P001:20260913T1001CT';
+  });
+  if (qa.length !== 1 || qa[0].Status !== 'Sent' || !/Resend ID [0-9a-f-]{36}/i.test(String(qa[0]['Sent At / Gmail ID'] || ''))) {
+    throw new Error('Controlled Resend welcome QA evidence is missing or invalid.');
+  }
+
+  adbRemoveWelcomeTriggers_();
+  props.setProperty(ADB_RESEND.WELCOME_MODE_PROPERTY, 'LIVE');
+  ScriptApp.newTrigger('dispatchQueuedWelcomeMessagesViaResendV1')
+    .timeBased()
+    .everyHours(1)
+    .create();
+
+  const report = {mode: 'LIVE', trigger: 'HOURLY', transport: 'Resend', rollback: 'pauseAdbResendWelcomeV1'};
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
+/** Stops scheduled welcome delivery and returns the dispatcher to CONTROLLED. */
+function pauseAdbResendWelcomeV1() {
+  adbRemoveWelcomeTriggers_();
+  PropertiesService.getScriptProperties().setProperty(ADB_RESEND.WELCOME_MODE_PROPERTY, 'CONTROLLED');
+  const report = {mode: 'CONTROLLED', trigger: 'NONE', transport: 'Resend'};
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
+function adbRemoveWelcomeTriggers_() {
+  ScriptApp.getProjectTriggers().forEach(function(trigger) {
+    if (trigger.getHandlerFunction() === 'dispatchQueuedWelcomeMessagesViaResendV1') {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+}
+
 function adbValidateWelcomeDeliveryGates_(database, intake) {
   const env = adbKeyValueSheet_(database.getSheetByName('Environment'));
   const cfg = adbKeyValueSheet_(intake.getSheetByName('Integration Config'));

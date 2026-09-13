@@ -2,6 +2,34 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-09-13 — Documentation registry and automation v1 complete
+
+**Type:** Production subsystem  
+**Components:** authoritative registry, generated documentation, CI validation, immutable snapshots  
+**Registry impact:** Yes
+
+Austin Daily Briefing completed the first production-ready version of its internal documentation control system.
+
+### Changes
+
+- `PROJECT_STATE.json` is the authoritative technical registry for current project state.
+- `scripts/docs_sync.py` now provides `status`, `audit`, `preview`, `update`, and `snapshot` commands.
+- `update` generates `docs/PROJECT_STATUS.md`, `docs/ARCHITECTURE.md`, and `docs/OPERATIONS.md` from the registry.
+- GitHub Actions validates registry structure, generated-document consistency, referenced paths, runtime-property safety, and snapshot integrity.
+- Successful changes to the authoritative registry on `main` automatically regenerate and commit the generated internal documentation.
+- `docs/snapshots/` stores immutable point-in-time registry captures for material production changes.
+- CI permits new snapshots but rejects modification, rename, or deletion of an existing committed snapshot.
+- `docs/CHANGELOG.md` remains human-authored and is not rewritten by automation.
+
+### Validation
+
+- Pull-request validation passed for schema `1.1`.
+- `status`, `audit`, `preview`, and `update` completed successfully in CI.
+- Snapshot creation and SHA-256 integrity validation passed in CI.
+- Append-only snapshot enforcement passed in CI.
+- The post-merge `main` synchronization job completed successfully.
+- A permanent baseline snapshot was recorded with reason `Documentation registry and automation v1 complete`.
+
 ## 2026-09-13 — Production email and custom-domain cutover
 
 **Type:** Production architecture  
@@ -35,7 +63,6 @@ Austin Daily Briefing completed the production cutover to the custom-domain deli
 - Added `schema_version` beginning at `1.0`.
 - Secret and private configuration values are prohibited from the registry; only property names and purposes may be recorded.
 - Added `scripts/docs_sync.py` for registry status, audit, and documentation preview operations.
-- completed documentation subsystem: authoritative registry, automatic generated docs, CI validation, and immutable snapshots.
 
 ## Changelog policy
 

@@ -78,12 +78,8 @@ def nested_get(data: dict[str, Any], path: Iterable[str]) -> Any:
 def local_git_status() -> str:
     try:
         result = subprocess.run(
-            ["git", "status", "--short"],
-            cwd=ROOT,
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=5,
+            ["git", "status", "--short"], cwd=ROOT, check=False,
+            capture_output=True, text=True, timeout=5,
         )
     except (OSError, subprocess.TimeoutExpired):
         return "unavailable"
@@ -98,7 +94,6 @@ def status(registry: dict[str, Any]) -> int:
     automation = registry.get("automation", {})
     prod = nested_get(registry, ("environments", "production")) or {}
     dev = nested_get(registry, ("environments", "development")) or {}
-
     print("Austin Daily Briefing — Project State")
     print("=" * 38)
     print(f"Schema:          {registry.get('schema_version')}")
@@ -183,7 +178,6 @@ def audit(registry: dict[str, Any], *, quiet: bool = False) -> int:
     errors: list[str] = []
     warnings: list[str] = []
     ok: list[str] = []
-
     required_top = {
         "schema_version", "registry_version", "last_reviewed", "project",
         "environments", "services", "automation", "runtime_properties",
@@ -194,13 +188,11 @@ def audit(registry: dict[str, Any], *, quiet: bool = False) -> int:
         errors.append("Missing top-level fields: " + ", ".join(missing))
     else:
         ok.append("Required top-level registry fields are present")
-
     project = registry.get("project", {})
     if project.get("repository") != "Flexiblefabric/austin-daily-briefing":
         warnings.append("project.repository differs from the expected repository name")
     else:
         ok.append("Repository identity matches")
-
     if nested_get(registry, ("governance", "registry_is_authoritative")) is not True:
         errors.append("governance.registry_is_authoritative must be true")
     else:
@@ -219,27 +211,23 @@ def audit(registry: dict[str, Any], *, quiet: bool = False) -> int:
                 continue
             if isinstance(value, str) and ("/" in value or value.endswith((".json", ".md", ".py"))):
                 doc_paths.append((f"documentation.{key}", value))
-
     try:
         generated_targets(registry)
         snapshots_dir(registry)
         ok.append("Generated documentation and snapshot targets are guarded")
     except RegistryError as exc:
         errors.append(str(exc))
-
     for service_name, service in registry.get("services", {}).items():
         if isinstance(service, dict):
             for key in ("source_path", "workflow_path"):
                 value = service.get(key)
                 if isinstance(value, str):
                     doc_paths.append((f"services.{service_name}.{key}", value))
-
     for automation_name, automation in registry.get("automation", {}).items():
         if isinstance(automation, dict):
             value = automation.get("source_path")
             if isinstance(value, str):
                 doc_paths.append((f"automation.{automation_name}.source_path", value))
-
     missing_paths = [
         f"{label} -> {rel}" for label, rel in sorted(set(doc_paths))
         if not (ROOT / rel).exists()
@@ -281,7 +269,6 @@ def audit(registry: dict[str, Any], *, quiet: bool = False) -> int:
             warnings.append("Changelog does not contain an entry for the registry's current production cutover date")
         else:
             ok.append("Current production cutover is represented in the changelog")
-
     audit_snapshots(registry, errors, ok)
 
     if not quiet:
@@ -307,23 +294,17 @@ def render_project_status(registry: dict[str, Any]) -> str:
     services = registry["services"]
     automation = registry["automation"]
     lines = [
-        "# Austin Daily Briefing — Internal Project Status",
-        "",
-        "> Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.",
-        "",
+        "# Austin Daily Briefing — Internal Project Status", "",
+        "> Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.", "",
         f"- Schema version: `{registry['schema_version']}`",
         f"- Registry version: `{registry['registry_version']}`",
         f"- Last reviewed: `{registry['last_reviewed']}`",
         f"- Production status: **{prod.get('status', 'unknown')}**",
-        f"- Public site: {project.get('public_site', '')}",
-        "",
-        "## Production data",
-        "",
+        f"- Public site: {project.get('public_site', '')}", "",
+        "## Production data", "",
         f"- Subscriber database: {prod['subscriber_database']['title']} (`{prod['subscriber_database']['file_id']}`)",
         f"- Intake database: {prod['intake_database']['title']} (`{prod['intake_database']['file_id']}`)",
-        "",
-        "## Services",
-        "",
+        "", "## Services", "",
     ]
     for name, config in services.items():
         provider = config.get("provider") or config.get("platform") or "not recorded"
@@ -334,11 +315,7 @@ def render_project_status(registry: dict[str, Any]) -> str:
     lines.extend(["", "## Runtime configuration names", ""])
     for item in registry.get("runtime_properties", []):
         lines.append(f"- `{item['name']}` — {item.get('purpose', '')}")
-    lines.extend([
-        "",
-        "Secret and private configuration values are intentionally excluded from the registry and generated documentation.",
-        "",
-    ])
+    lines.extend(["", "Secret and private configuration values are intentionally excluded from the registry and generated documentation.", ""])
     return "\n".join(lines)
 
 
@@ -347,26 +324,17 @@ def render_architecture(registry: dict[str, Any]) -> str:
     prod = registry["environments"]["production"]
     dev = registry["environments"]["development"]
     lines = [
-        "# Austin Daily Briefing — Architecture",
-        "",
-        "> Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.",
-        "",
-        "## System overview",
-        "",
-        "Austin Daily Briefing uses Google Sheets and Google Apps Script as its operational control plane, Resend for outbound email delivery, Cloudflare Email Routing for replies, and GitHub Pages for the public website.",
-        "",
-        "## Environments",
-        "",
+        "# Austin Daily Briefing — Architecture", "",
+        "> Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.", "",
+        "## System overview", "",
+        "Austin Daily Briefing uses Google Sheets and Google Apps Script as its operational control plane, Resend for outbound email delivery, Cloudflare Email Routing for replies, and GitHub Pages for the public website.", "",
+        "## Environments", "",
         f"- **Production** — {prod.get('status', 'unknown')} — Drive folder `{prod.get('drive_folder_id', '')}`",
-        f"- **Development** — {dev.get('status', 'unknown')} — Drive folder `{dev.get('drive_folder_id', '')}`",
-        "",
-        "## Production data stores",
-        "",
+        f"- **Development** — {dev.get('status', 'unknown')} — Drive folder `{dev.get('drive_folder_id', '')}`", "",
+        "## Production data stores", "",
         f"- Subscriber database: {prod['subscriber_database']['title']} (`{prod['subscriber_database']['file_id']}`)",
-        f"- Intake database: {prod['intake_database']['title']} (`{prod['intake_database']['file_id']}`)",
-        "",
-        "## Services and boundaries",
-        "",
+        f"- Intake database: {prod['intake_database']['title']} (`{prod['intake_database']['file_id']}`)", "",
+        "## Services and boundaries", "",
     ]
     for name, config in services.items():
         provider = config.get("provider") or config.get("platform") or "not recorded"
@@ -374,19 +342,14 @@ def render_architecture(registry: dict[str, Any]) -> str:
         detail = f"; source `{source}`" if source else ""
         lines.append(f"- **{name}** — {config.get('status', 'unknown')} — {provider}{detail}")
     lines.extend([
-        "",
-        "## Delivery path",
-        "",
+        "", "## Delivery path", "",
         "1. Subscriber and preference state is maintained in the production Google Sheets control plane.",
         "2. Editorial generation creates delivery records for eligible profiles.",
         "3. Google Apps Script dispatchers deliver queued messages through Resend.",
         "4. Replies sent to `briefing@austindailybriefing.com` are routed by Cloudflare Email Routing to the externally configured monitored destination.",
         "5. The public website is deployed from `site/` to GitHub Pages at `austindailybriefing.com`.",
-        "",
-        "## Documentation control",
-        "",
-        "`PROJECT_STATE.json` is authoritative for technical project state. Generated status, architecture, and operations documents are derived from that registry. `CHANGELOG.md` remains human-authored.",
-        "",
+        "", "## Documentation control", "",
+        "`PROJECT_STATE.json` is authoritative for technical project state. Generated status, architecture, and operations documents are derived from that registry. `CHANGELOG.md` remains human-authored.", "",
     ])
     return "\n".join(lines)
 
@@ -396,12 +359,9 @@ def render_operations(registry: dict[str, Any]) -> str:
     props = registry.get("runtime_properties", [])
     governance = registry.get("governance", {})
     lines = [
-        "# Austin Daily Briefing — Operations",
-        "",
-        "> Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.",
-        "",
-        "## Routine automation",
-        "",
+        "# Austin Daily Briefing — Operations", "",
+        "> Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.", "",
+        "## Routine automation", "",
     ]
     for name, config in automation.items():
         fn = config.get("function")
@@ -413,18 +373,14 @@ def render_operations(registry: dict[str, Any]) -> str:
     lines.extend([
         "",
         "No runtime property values belong in this repository. Secret and private configuration values remain in their external runtime stores.",
-        "",
-        "## Documentation maintenance",
-        "",
+        "", "## Documentation maintenance", "",
         "- `python scripts/docs_sync.py status` — display authoritative state.",
         "- `python scripts/docs_sync.py audit` — validate registry, references, and snapshot integrity.",
         "- `python scripts/docs_sync.py preview` — preview all generated internal documentation.",
         "- `python scripts/docs_sync.py update` — audit and regenerate the generated internal documentation set.",
         "- `python scripts/docs_sync.py snapshot --reason \"...\"` — create an immutable point-in-time registry capture before or after a material production change.",
-        "",
-        "## Change-control rules",
-        "",
-    ]
+        "", "## Change-control rules", "",
+    ])
     for item in governance.get("changelog_required_for", []):
         lines.append(f"- Changelog entry required: {item}.")
     lines.extend(["", "The same material-change classes require a registry snapshot. Existing snapshots must never be edited or deleted.", ""])

@@ -205,7 +205,7 @@ function adbValidateWelcomeDeliveryGates_(database, intake) {
   if (env['Schema Baseline'] !== 'GOOGLE-23-1') throw new Error('Production schema mismatch.');
   if (env['Intake Mode'] !== 'GOOGLE ONLY') throw new Error('Production intake mode mismatch.');
   if (env['Allow External Delivery'] !== 'TRUE') throw new Error('Production external delivery is not enabled.');
-  if (cfg.Environment !== 'PRODUCTION-STAGING') throw new Error('Production intake identity mismatch.');
+  if (cfg.Environment !== 'PRODUCTION') throw new Error('Production intake identity mismatch.');
   if (cfg['Operational Production Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Configured database identity mismatch.');
   if (cfg['Processor Mode'] !== 'GOOGLE ONLY') throw new Error('Processor mode mismatch.');
   if (cfg['Delivery Mode'] !== 'ENABLED' || cfg['Welcome Delivery Mode'] !== 'ENABLED') {

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1",
-  "registry_version": "2026-09-13.4",
+  "registry_version": "2026-09-13.5",
   "last_reviewed": "2026-09-13",
   "project": {
     "name": "Austin Daily Briefing",
@@ -109,6 +109,15 @@
       "source_path": "scripts/docs_sync.py"
     }
   },
+  "manual_operations": {
+    "domain_health_check": {
+      "status": "available",
+      "cadence": "manual only",
+      "runbook": "docs/domain-health-check.md",
+      "reporting": "compact pass/fail table with a brief explanation for each failure",
+      "form_validation": "after form changes only"
+    }
+  },
   "runtime_properties": [
     {
       "name": "RESEND_API_KEY",
@@ -155,6 +164,7 @@
     "generated_operations": "docs/OPERATIONS.md",
     "snapshots_dir": "docs/snapshots",
     "cutover_runbook": "docs/resend-cutover.md",
+    "domain_health_runbook": "docs/domain-health-check.md",
     "sync_script": "scripts/docs_sync.py"
   },
   "governance": {

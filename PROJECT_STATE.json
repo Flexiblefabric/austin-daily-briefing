@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "registry_version": "2026-09-13.2",
+  "registry_version": "2026-09-13.3",
   "last_reviewed": "2026-09-13",
   "project": {
     "name": "Austin Daily Briefing",
@@ -103,7 +103,7 @@
       "source_path": "apps-script/ResendTransport.gs"
     },
     "documentation_sync": {
-      "cadence": "on authoritative registry changes to main",
+      "cadence": "on PROJECT_STATE.json or generator changes to main",
       "status": "live",
       "function": "python scripts/docs_sync.py update",
       "source_path": "scripts/docs_sync.py"

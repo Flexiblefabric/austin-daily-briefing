@@ -252,7 +252,8 @@ function sendAdbSenderChangeAnnouncementV1() {
   lock.waitLock(30000);
   try {
     const props = PropertiesService.getScriptProperties();
-    if (props.getProperty(ADB_RESEND.SENDER_CHANGE_APPROVAL_PROPERTY) !== 'APPROVED') {
+    const approval = props.getProperty(ADB_RESEND.SENDER_CHANGE_APPROVAL_PROPERTY);
+    if (approval !== 'APPROVED' && approval !== 'COMPLETE') {
       throw new Error('Sender-change announcement requires ADB_SENDER_CHANGE_APPROVAL=APPROVED.');
     }
 
@@ -302,7 +303,7 @@ function sendAdbSenderChangeAnnouncementV1() {
     const queuedAt = Utilities.formatDate(new Date(), 'America/Chicago', 'yyyy-MM-dd HH:mm:ss z');
     let created = 0;
 
-    active.forEach(function(row) {
+    if (approval === 'APPROVED') active.forEach(function(row) {
       const profileId = String(row['Profile ID']).trim();
       const messageId = 'SENDER-CHANGE-V1:' + profileId;
       if (existingIds.has(messageId)) return;

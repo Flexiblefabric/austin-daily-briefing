@@ -3,7 +3,7 @@
 > Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.
 
 - Schema version: `1.0`
-- Registry version: `2026-09-13.2`
+- Registry version: `2026-09-13.3`
 - Last reviewed: `2026-09-13`
 - Production status: **live**
 - Public site: https://austindailybriefing.com/
@@ -26,7 +26,7 @@
 - **daily_generation** — live — 08:00 America/Chicago
 - **welcome_dispatch** — live — hourly
 - **daily_dispatch** — live — hourly
-- **documentation_sync** — live — on authoritative registry changes to main
+- **documentation_sync** — live — on PROJECT_STATE.json or generator changes to main
 
 ## Runtime configuration names
 

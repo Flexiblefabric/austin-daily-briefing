@@ -20,6 +20,25 @@ ADB will retain Google Sheets and the existing Google-only Apps Script processor
 
 Do not disable or edit the current Gmail calls during this test.
 
+## Welcome queue staging
+
+After the basic transport test passes, replace the installed `ResendTransport.gs`
+with the current repository version. Add these Script properties:
+
+- `ADB_RESEND_WELCOME_MODE` = `CONTROLLED`
+- `ADB_RESEND_WELCOME_ALLOWLIST` = the exact controlled recipient address
+
+Do not create a time trigger yet. The function
+`dispatchQueuedWelcomeMessagesViaResendV1` reads only queued `WELCOME_V1` rows,
+rechecks the subscriber and profile immediately before sending, uses Message ID
+as Resend's idempotency key, and records the Resend provider ID in the existing
+delivery column. In controlled mode it skips every address outside the allowlist.
+
+Before its first run, create or identify one explicitly authorized queued welcome
+record for the allowlisted Active subscriber and snapshot that row. After the run,
+confirm one send, one provider ID, no duplicate row, and zero delivery to all
+other subscribers. Rerun once and confirm zero additional sends.
+
 ## Queue cutover contract
 
 After the controlled test passes, each live sender calls `adbSendEmailViaResend_` with:

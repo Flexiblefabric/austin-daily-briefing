@@ -4,7 +4,7 @@ Austin Daily Briefing is a one-page editorial website for a free, personalized d
 
 ## Live site
 
-[flexiblefabric.github.io/austin-daily-briefing](https://flexiblefabric.github.io/austin-daily-briefing/)
+[austindailybriefing.com](https://austindailybriefing.com/)
 
 ## Current state
 
@@ -30,4 +30,4 @@ The website is a static HTML and CSS project stored in `site/`. Its primary file
 
 ## Hosting
 
-GitHub Pages deploys the contents of `site/` through `.github/workflows/pages.yml`. Updates pushed to the `main` branch trigger the deployment workflow.
+GitHub Pages deploys the contents of `site/` through `.github/workflows/pages.yml` at the custom domain `austindailybriefing.com`. Updates pushed to the `main` branch trigger the deployment workflow.

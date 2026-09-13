@@ -10,6 +10,12 @@
 - **daily_dispatch** — live — hourly — `dispatchQueuedDailyBriefingsViaResendV1`
 - **documentation_sync** — live — on PROJECT_STATE.json or generator changes to main — `python scripts/docs_sync.py update`
 
+## Manual operational checks
+
+- **domain_health_check** — available — manual only — `docs/domain-health-check.md`
+  - Reporting: compact pass/fail table with a brief explanation for each failure.
+  - Form validation: after form changes only.
+
 ## Runtime configuration
 
 - `RESEND_API_KEY` — secret — Resend API authentication

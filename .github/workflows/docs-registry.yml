@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -38,11 +40,38 @@ jobs:
       - name: Audit registry and documentation
         run: python scripts/docs_sync.py audit
 
-      - name: Preview generated project status
+      - name: Preview generated documentation
         run: python scripts/docs_sync.py preview
 
-      - name: Exercise guarded generator
-        run: python scripts/docs_sync.py update
+      - name: Verify generated documentation is current
+        shell: bash
+        run: |
+          python scripts/docs_sync.py update
+          git diff --exit-code -- docs/PROJECT_STATUS.md docs/ARCHITECTURE.md docs/OPERATIONS.md
+
+      - name: Exercise immutable snapshot command
+        shell: bash
+        run: |
+          python scripts/docs_sync.py snapshot --reason "CI validation snapshot"
+          python scripts/docs_sync.py audit
+          git clean -fd docs/snapshots/
+
+      - name: Reject modified or deleted committed snapshots
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          changes="$(git diff --name-status "origin/${{ github.base_ref }}...HEAD" -- docs/snapshots/)"
+          if [ -z "$changes" ]; then
+            echo "No committed snapshot changes."
+            exit 0
+          fi
+          echo "$changes"
+          if echo "$changes" | awk '$1 != "A" { bad=1 } END { exit bad ? 1 : 0 }'; then
+            echo "Snapshot changes are append-only."
+          else
+            echo "Existing snapshots are immutable: modification, rename, or deletion is not allowed."
+            exit 1
+          fi
 
   sync:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -64,18 +93,18 @@ jobs:
       - name: Re-audit authoritative registry
         run: python scripts/docs_sync.py audit
 
-      - name: Regenerate internal project status
+      - name: Regenerate internal documentation
         run: python scripts/docs_sync.py update
 
-      - name: Commit generated status when changed
+      - name: Commit generated documentation when changed
         shell: bash
         run: |
-          if git diff --quiet -- docs/PROJECT_STATUS.md; then
+          if git diff --quiet -- docs/PROJECT_STATUS.md docs/ARCHITECTURE.md docs/OPERATIONS.md; then
             echo "Generated documentation is already current."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- docs/PROJECT_STATUS.md
-          git commit -m "docs: sync generated project status"
+          git add -- docs/PROJECT_STATUS.md docs/ARCHITECTURE.md docs/OPERATIONS.md
+          git commit -m "docs: sync generated internal documentation"
           git push origin HEAD:main

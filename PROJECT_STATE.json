@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.0",
-  "registry_version": "2026-09-13.3",
+  "schema_version": "1.1",
+  "registry_version": "2026-09-13.4",
   "last_reviewed": "2026-09-13",
   "project": {
     "name": "Austin Daily Briefing",
@@ -151,6 +151,9 @@
     "registry": "PROJECT_STATE.json",
     "changelog": "docs/CHANGELOG.md",
     "generated_status": "docs/PROJECT_STATUS.md",
+    "generated_architecture": "docs/ARCHITECTURE.md",
+    "generated_operations": "docs/OPERATIONS.md",
+    "snapshots_dir": "docs/snapshots",
     "cutover_runbook": "docs/resend-cutover.md",
     "sync_script": "scripts/docs_sync.py"
   },
@@ -158,6 +161,15 @@
     "registry_is_authoritative": true,
     "secrets_policy": "Store secret and private configuration names only; never store values.",
     "changelog_order": "newest_first",
+    "snapshots_are_immutable": true,
+    "snapshot_required_for": [
+      "production architecture changes",
+      "development-to-production promotions",
+      "production dependency replacements",
+      "data storage or routing changes",
+      "new production subsystems",
+      "rollbacks and migrations"
+    ],
     "changelog_required_for": [
       "production architecture changes",
       "development-to-production promotions",

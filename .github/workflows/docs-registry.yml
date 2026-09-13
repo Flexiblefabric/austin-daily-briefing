@@ -1,0 +1,37 @@
+name: Validate documentation registry
+
+on:
+  pull_request:
+    paths:
+      - "PROJECT_STATE.json"
+      - "docs/**"
+      - "scripts/docs_sync.py"
+      - ".github/workflows/docs-registry.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile docs sync utility
+        run: python -m py_compile scripts/docs_sync.py
+
+      - name: Show authoritative project status
+        run: python scripts/docs_sync.py status
+
+      - name: Audit registry and documentation
+        run: python scripts/docs_sync.py audit
+
+      - name: Preview generated project status
+        run: python scripts/docs_sync.py preview

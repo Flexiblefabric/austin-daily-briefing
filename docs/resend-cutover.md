@@ -73,3 +73,32 @@ The returned Resend `id` replaces the Gmail message ID in delivery history. Mark
 4. Administrator failure alerts
 
 Each path receives a controlled test and rollback check before the next path moves.
+
+
+## Sender-change announcement
+
+The repository contains a manual-only, approval-gated
+`sendAdbSenderChangeAnnouncementV1` function. It has no time trigger.
+
+Release sequence:
+
+1. Configure `austindailybriefing.com` as the GitHub Pages custom domain.
+2. Configure Cloudflare DNS and wait for the apex site to load over HTTPS.
+3. Verify the signup, Customize, Manage, social-preview, `robots.txt`, and
+   `sitemap.xml` links on the custom domain.
+4. Replace the installed Apps Script `ResendTransport.gs` with the current
+   repository version.
+5. In the production Message Templates sheet, set the single
+   `SENDER_CHANGE_V1` row Active to TRUE.
+6. Set Apps Script property `ADB_SENDER_CHANGE_APPROVAL` to `APPROVED`.
+7. Run `sendAdbSenderChangeAnnouncementV1` manually.
+8. Confirm the returned report has the expected Active-subscriber count and
+   `remaining: 0`, then confirm each queue row has a Resend provider ID.
+9. Run it once more and confirm `created: 0` and `sent: 0`. The approval
+   property should read `COMPLETE`.
+
+The function resolves the Active audience at release time, uses
+`SENDER-CHANGE-V1:<Profile ID>` as the deterministic queue/message identity,
+rechecks Active eligibility before each send, and refuses to run unless the
+custom-domain page is live and visibly identifies
+`briefing@austindailybriefing.com`.

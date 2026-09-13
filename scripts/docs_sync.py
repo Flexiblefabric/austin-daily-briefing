@@ -2,24 +2,33 @@
 """Austin Daily Briefing internal documentation registry utility.
 
 Commands:
-  status  summarize PROJECT_STATE.json
-  audit   validate registry structure and repository references
-  preview print the generated internal project-status document
-  update  audit first, then update only docs/PROJECT_STATUS.md
+  status    summarize PROJECT_STATE.json
+  audit     validate registry structure and repository references
+  preview   print the generated internal documentation
+  update    audit first, then update generated internal documentation
+  snapshot  write an immutable point-in-time copy of the authoritative registry
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
+from zoneinfo import ZoneInfo
 
 SUPPORTED_SCHEMA_MAJOR = 1
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = ROOT / "PROJECT_STATE.json"
+ALLOWED_GENERATED_TARGETS = {
+    "generated_status": "docs/PROJECT_STATUS.md",
+    "generated_architecture": "docs/ARCHITECTURE.md",
+    "generated_operations": "docs/OPERATIONS.md",
+}
 
 
 class RegistryError(RuntimeError):
@@ -113,6 +122,63 @@ def status(registry: dict[str, Any]) -> int:
     return 0
 
 
+def generated_targets(registry: dict[str, Any]) -> dict[str, Path]:
+    documentation = registry.get("documentation", {})
+    if not isinstance(documentation, dict):
+        raise RegistryError("documentation must be an object.")
+    targets: dict[str, Path] = {}
+    docs_root = (ROOT / "docs").resolve()
+    for key, expected in ALLOWED_GENERATED_TARGETS.items():
+        configured = documentation.get(key)
+        if configured != expected:
+            raise RegistryError(f"Guarded update refuses unexpected {key} target: {configured!r}")
+        target = (ROOT / configured).resolve()
+        if docs_root not in target.parents:
+            raise RegistryError(f"Generated target must remain inside docs/: {configured}")
+        targets[key] = target
+    return targets
+
+
+def snapshots_dir(registry: dict[str, Any]) -> Path:
+    configured = nested_get(registry, ("documentation", "snapshots_dir"))
+    if configured != "docs/snapshots":
+        raise RegistryError(f"Guarded snapshot refuses unexpected snapshots_dir: {configured!r}")
+    target = (ROOT / configured).resolve()
+    docs_root = (ROOT / "docs").resolve()
+    if target.parent != docs_root:
+        raise RegistryError("Snapshots directory must be docs/snapshots.")
+    return target
+
+
+def canonical_json(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
+def audit_snapshots(registry: dict[str, Any], errors: list[str], ok: list[str]) -> None:
+    directory = snapshots_dir(registry)
+    if not directory.exists():
+        ok.append("Snapshot directory has not been created yet")
+        return
+    count = 0
+    for path in sorted(directory.glob("*.json")):
+        count += 1
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            errors.append(f"Invalid snapshot JSON {path.relative_to(ROOT)}: {exc}")
+            continue
+        state = payload.get("state") if isinstance(payload, dict) else None
+        meta = payload.get("snapshot") if isinstance(payload, dict) else None
+        if not isinstance(state, dict) or not isinstance(meta, dict):
+            errors.append(f"Snapshot missing snapshot/state objects: {path.relative_to(ROOT)}")
+            continue
+        expected_hash = hashlib.sha256(canonical_json(state).encode("utf-8")).hexdigest()
+        if meta.get("state_sha256") != expected_hash:
+            errors.append(f"Snapshot integrity hash mismatch: {path.relative_to(ROOT)}")
+    if count:
+        ok.append(f"Validated {count} committed snapshot file(s)")
+
+
 def audit(registry: dict[str, Any], *, quiet: bool = False) -> int:
     errors: list[str] = []
     warnings: list[str] = []
@@ -139,15 +205,27 @@ def audit(registry: dict[str, Any], *, quiet: bool = False) -> int:
         errors.append("governance.registry_is_authoritative must be true")
     else:
         ok.append("Registry is marked authoritative")
+    if nested_get(registry, ("governance", "snapshots_are_immutable")) is not True:
+        errors.append("governance.snapshots_are_immutable must be true")
+    else:
+        ok.append("Snapshots are marked immutable")
 
     documentation = registry.get("documentation", {})
     doc_paths: list[tuple[str, str]] = []
     if isinstance(documentation, dict):
+        generated_keys = set(ALLOWED_GENERATED_TARGETS) | {"scope", "snapshots_dir"}
         for key, value in documentation.items():
-            if key in {"scope", "generated_status"}:
+            if key in generated_keys:
                 continue
             if isinstance(value, str) and ("/" in value or value.endswith((".json", ".md", ".py"))):
                 doc_paths.append((f"documentation.{key}", value))
+
+    try:
+        generated_targets(registry)
+        snapshots_dir(registry)
+        ok.append("Generated documentation and snapshot targets are guarded")
+    except RegistryError as exc:
+        errors.append(str(exc))
 
     for service_name, service in registry.get("services", {}).items():
         if isinstance(service, dict):
@@ -203,6 +281,8 @@ def audit(registry: dict[str, Any], *, quiet: bool = False) -> int:
             warnings.append("Changelog does not contain an entry for the registry's current production cutover date")
         else:
             ok.append("Current production cutover is represented in the changelog")
+
+    audit_snapshots(registry, errors, ok)
 
     if not quiet:
         print("ADB Documentation Audit")
@@ -262,50 +342,178 @@ def render_project_status(registry: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def generated_status_target(registry: dict[str, Any]) -> Path:
-    configured = nested_get(registry, ("documentation", "generated_status"))
-    if not isinstance(configured, str) or not configured:
-        raise RegistryError("documentation.generated_status is not configured.")
-    if configured != "docs/PROJECT_STATUS.md":
-        raise RegistryError(
-            "Guarded update refuses unexpected generated_status target: " + configured
-        )
-    target = (ROOT / configured).resolve()
-    docs_root = (ROOT / "docs").resolve()
-    if docs_root not in target.parents:
-        raise RegistryError("Generated status target must remain inside docs/.")
-    return target
+def render_architecture(registry: dict[str, Any]) -> str:
+    services = registry["services"]
+    prod = registry["environments"]["production"]
+    dev = registry["environments"]["development"]
+    lines = [
+        "# Austin Daily Briefing — Architecture",
+        "",
+        "> Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.",
+        "",
+        "## System overview",
+        "",
+        "Austin Daily Briefing uses Google Sheets and Google Apps Script as its operational control plane, Resend for outbound email delivery, Cloudflare Email Routing for replies, and GitHub Pages for the public website.",
+        "",
+        "## Environments",
+        "",
+        f"- **Production** — {prod.get('status', 'unknown')} — Drive folder `{prod.get('drive_folder_id', '')}`",
+        f"- **Development** — {dev.get('status', 'unknown')} — Drive folder `{dev.get('drive_folder_id', '')}`",
+        "",
+        "## Production data stores",
+        "",
+        f"- Subscriber database: {prod['subscriber_database']['title']} (`{prod['subscriber_database']['file_id']}`)",
+        f"- Intake database: {prod['intake_database']['title']} (`{prod['intake_database']['file_id']}`)",
+        "",
+        "## Services and boundaries",
+        "",
+    ]
+    for name, config in services.items():
+        provider = config.get("provider") or config.get("platform") or "not recorded"
+        source = config.get("source_path") or config.get("workflow_path")
+        detail = f"; source `{source}`" if source else ""
+        lines.append(f"- **{name}** — {config.get('status', 'unknown')} — {provider}{detail}")
+    lines.extend([
+        "",
+        "## Delivery path",
+        "",
+        "1. Subscriber and preference state is maintained in the production Google Sheets control plane.",
+        "2. Editorial generation creates delivery records for eligible profiles.",
+        "3. Google Apps Script dispatchers deliver queued messages through Resend.",
+        "4. Replies sent to `briefing@austindailybriefing.com` are routed by Cloudflare Email Routing to the externally configured monitored destination.",
+        "5. The public website is deployed from `site/` to GitHub Pages at `austindailybriefing.com`.",
+        "",
+        "## Documentation control",
+        "",
+        "`PROJECT_STATE.json` is authoritative for technical project state. Generated status, architecture, and operations documents are derived from that registry. `CHANGELOG.md` remains human-authored.",
+        "",
+    ])
+    return "\n".join(lines)
+
+
+def render_operations(registry: dict[str, Any]) -> str:
+    automation = registry["automation"]
+    props = registry.get("runtime_properties", [])
+    governance = registry.get("governance", {})
+    lines = [
+        "# Austin Daily Briefing — Operations",
+        "",
+        "> Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.",
+        "",
+        "## Routine automation",
+        "",
+    ]
+    for name, config in automation.items():
+        fn = config.get("function")
+        extra = f" — `{fn}`" if fn else ""
+        lines.append(f"- **{name}** — {config.get('status', 'unknown')} — {config.get('cadence', 'cadence not recorded')}{extra}")
+    lines.extend(["", "## Runtime configuration", ""])
+    for item in props:
+        lines.append(f"- `{item['name']}` — {item.get('sensitivity', 'config')} — {item.get('purpose', '')}")
+    lines.extend([
+        "",
+        "No runtime property values belong in this repository. Secret and private configuration values remain in their external runtime stores.",
+        "",
+        "## Documentation maintenance",
+        "",
+        "- `python scripts/docs_sync.py status` — display authoritative state.",
+        "- `python scripts/docs_sync.py audit` — validate registry, references, and snapshot integrity.",
+        "- `python scripts/docs_sync.py preview` — preview all generated internal documentation.",
+        "- `python scripts/docs_sync.py update` — audit and regenerate the generated internal documentation set.",
+        "- `python scripts/docs_sync.py snapshot --reason \"...\"` — create an immutable point-in-time registry capture before or after a material production change.",
+        "",
+        "## Change-control rules",
+        "",
+    ]
+    for item in governance.get("changelog_required_for", []):
+        lines.append(f"- Changelog entry required: {item}.")
+    lines.extend(["", "The same material-change classes require a registry snapshot. Existing snapshots must never be edited or deleted.", ""])
+    return "\n".join(lines)
+
+
+def render_documents(registry: dict[str, Any]) -> dict[str, str]:
+    return {
+        "generated_status": render_project_status(registry),
+        "generated_architecture": render_architecture(registry),
+        "generated_operations": render_operations(registry),
+    }
 
 
 def preview(registry: dict[str, Any]) -> int:
-    target = generated_status_target(registry)
-    generated = render_project_status(registry)
-    print(f"Preview target: {target.relative_to(ROOT)}")
-    print("No files will be modified.\n")
-    if target.exists() and target.read_text(encoding="utf-8") == generated:
-        print("No change: generated content matches the current file.")
-        return 0
-    print(generated)
+    targets = generated_targets(registry)
+    rendered = render_documents(registry)
+    for key in ALLOWED_GENERATED_TARGETS:
+        target = targets[key]
+        print(f"\n=== Preview target: {target.relative_to(ROOT)} ===")
+        if target.exists() and target.read_text(encoding="utf-8") == rendered[key]:
+            print("No change: generated content matches the current file.")
+        else:
+            print(rendered[key])
+    print("\nNo files were modified.")
     return 0
 
 
 def update(registry: dict[str, Any]) -> int:
     if audit(registry, quiet=True) != 0:
         raise RegistryError("Audit failed; generated documentation was not modified.")
-    target = generated_status_target(registry)
-    generated = render_project_status(registry)
-    if target.exists() and target.read_text(encoding="utf-8") == generated:
-        print(f"No change: {target.relative_to(ROOT)} is current.")
-        return 0
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(generated, encoding="utf-8")
-    print(f"Updated {target.relative_to(ROOT)} from PROJECT_STATE.json.")
+    targets = generated_targets(registry)
+    rendered = render_documents(registry)
+    changed = 0
+    for key in ALLOWED_GENERATED_TARGETS:
+        target = targets[key]
+        content = rendered[key]
+        if target.exists() and target.read_text(encoding="utf-8") == content:
+            print(f"No change: {target.relative_to(ROOT)} is current.")
+            continue
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(content, encoding="utf-8")
+        print(f"Updated {target.relative_to(ROOT)} from PROJECT_STATE.json.")
+        changed += 1
+    print(f"Generated documentation changes: {changed}")
+    return 0
+
+
+def snapshot(registry: dict[str, Any], reason: str | None) -> int:
+    if audit(registry, quiet=True) != 0:
+        raise RegistryError("Audit failed; snapshot was not created.")
+    directory = snapshots_dir(registry)
+    directory.mkdir(parents=True, exist_ok=True)
+    timezone_name = nested_get(registry, ("project", "operating_timezone")) or "UTC"
+    now = datetime.now(ZoneInfo(timezone_name))
+    stamp = now.strftime("%Y-%m-%dT%H%M%S%z")
+    registry_version = str(registry.get("registry_version", "unknown"))
+    safe_version = "".join(ch if ch.isalnum() or ch in ".-_" else "-" for ch in registry_version)
+    filename = f"{stamp}__registry-{safe_version}.json"
+    target = directory / filename
+    if target.exists():
+        raise RegistryError(f"Snapshot already exists and will not be overwritten: {target.relative_to(ROOT)}")
+    state_hash = hashlib.sha256(canonical_json(registry).encode("utf-8")).hexdigest()
+    payload = {
+        "snapshot": {
+            "snapshot_version": "1.0",
+            "created_at": now.isoformat(),
+            "operating_timezone": timezone_name,
+            "registry_version": registry_version,
+            "schema_version": registry.get("schema_version"),
+            "reason": reason or "manual",
+            "source": "PROJECT_STATE.json",
+            "state_sha256": state_hash,
+            "immutable": True,
+        },
+        "state": registry,
+    }
+    target.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"Created immutable snapshot: {target.relative_to(ROOT)}")
     return 0
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("status", "audit", "preview", "update"))
+    sub = parser.add_subparsers(dest="command", required=True)
+    for name in ("status", "audit", "preview", "update"):
+        sub.add_parser(name)
+    snap = sub.add_parser("snapshot")
+    snap.add_argument("--reason", default=None, help="Why this point-in-time snapshot is being created")
     return parser
 
 
@@ -322,6 +530,8 @@ def main() -> int:
             return preview(registry)
         if args.command == "update":
             return update(registry)
+        if args.command == "snapshot":
+            return snapshot(registry, args.reason)
         raise RegistryError(f"Unsupported command: {args.command}")
     except RegistryError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)

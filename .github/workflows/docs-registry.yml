@@ -1,4 +1,4 @@
-name: Validate documentation registry
+name: Maintain documentation registry
 
 on:
   pull_request:
@@ -7,6 +7,11 @@ on:
       - "docs/**"
       - "scripts/docs_sync.py"
       - ".github/workflows/docs-registry.yml"
+  push:
+    branches: [main]
+    paths:
+      - "PROJECT_STATE.json"
+      - "scripts/docs_sync.py"
   workflow_dispatch:
 
 permissions:
@@ -36,8 +41,41 @@ jobs:
       - name: Preview generated project status
         run: python scripts/docs_sync.py preview
 
+      - name: Exercise guarded generator
+        run: python scripts/docs_sync.py update
+
+  sync:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Re-audit authoritative registry
+        run: python scripts/docs_sync.py audit
+
       - name: Regenerate internal project status
         run: python scripts/docs_sync.py update
 
-      - name: Verify generated documentation is committed
-        run: git diff --exit-code -- docs/PROJECT_STATUS.md
+      - name: Commit generated status when changed
+        shell: bash
+        run: |
+          if git diff --quiet -- docs/PROJECT_STATUS.md; then
+            echo "Generated documentation is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- docs/PROJECT_STATUS.md
+          git commit -m "docs: sync generated project status"
+          git push origin HEAD:main

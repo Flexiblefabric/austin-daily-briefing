@@ -35,3 +35,9 @@ jobs:
 
       - name: Preview generated project status
         run: python scripts/docs_sync.py preview
+
+      - name: Regenerate internal project status
+        run: python scripts/docs_sync.py update
+
+      - name: Verify generated documentation is committed
+        run: git diff --exit-code -- docs/PROJECT_STATUS.md

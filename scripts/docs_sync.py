@@ -180,7 +180,7 @@ def audit(registry: dict[str, Any], *, quiet: bool = False) -> int:
     ok: list[str] = []
     required_top = {
         "schema_version", "registry_version", "last_reviewed", "project",
-        "environments", "services", "automation", "runtime_properties",
+        "environments", "services", "automation", "manual_operations", "runtime_properties",
         "documentation", "governance",
     }
     missing = sorted(required_top - registry.keys())
@@ -228,6 +228,11 @@ def audit(registry: dict[str, Any], *, quiet: bool = False) -> int:
             value = automation.get("source_path")
             if isinstance(value, str):
                 doc_paths.append((f"automation.{automation_name}.source_path", value))
+    for operation_name, operation in registry.get("manual_operations", {}).items():
+        if isinstance(operation, dict):
+            value = operation.get("runbook")
+            if isinstance(value, str):
+                doc_paths.append((f"manual_operations.{operation_name}.runbook", value))
     missing_paths = [
         f"{label} -> {rel}" for label, rel in sorted(set(doc_paths))
         if not (ROOT / rel).exists()
@@ -356,6 +361,7 @@ def render_architecture(registry: dict[str, Any]) -> str:
 
 def render_operations(registry: dict[str, Any]) -> str:
     automation = registry["automation"]
+    manual_operations = registry.get("manual_operations", {})
     props = registry.get("runtime_properties", [])
     governance = registry.get("governance", {})
     lines = [
@@ -367,6 +373,15 @@ def render_operations(registry: dict[str, Any]) -> str:
         fn = config.get("function")
         extra = f" — `{fn}`" if fn else ""
         lines.append(f"- **{name}** — {config.get('status', 'unknown')} — {config.get('cadence', 'cadence not recorded')}{extra}")
+    lines.extend(["", "## Manual operational checks", ""])
+    for name, config in manual_operations.items():
+        runbook = config.get("runbook")
+        runbook_link = f" — `{runbook}`" if runbook else ""
+        lines.append(f"- **{name}** — {config.get('status', 'unknown')} — {config.get('cadence', 'manual only')}{runbook_link}")
+        if config.get("reporting"):
+            lines.append(f"  - Reporting: {config['reporting']}.")
+        if config.get("form_validation"):
+            lines.append(f"  - Form validation: {config['form_validation']}.")
     lines.extend(["", "## Runtime configuration", ""])
     for item in props:
         lines.append(f"- `{item['name']}` — {item.get('sensitivity', 'config')} — {item.get('purpose', '')}")

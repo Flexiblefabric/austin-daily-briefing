@@ -54,6 +54,36 @@ Keep the existing six-hour subscriber processor separate. Before resuming it,
 remove its Gmail welcome-dispatch instructions so it only processes intake and
 queues `WELCOME_V1`; Apps Script owns welcome delivery after promotion.
 
+## Daily briefing staging
+
+The morning editorial automation no longer sends with Gmail. It creates one
+complete `DAILY_BRIEFING_V1` queue row per eligible profile, including `Plain
+Text`, `HTML`, and `Run ID`. It also writes one Briefing History row per story
+and profile with `Delivery Status` set to `Pending`; do not use `ALL` for these
+new delivery-linked history rows.
+
+Install the current `ResendTransport.gs`, then add these Script properties:
+
+- `ADB_RESEND_DAILY_MODE` = `CONTROLLED`
+- `ADB_RESEND_DAILY_ALLOWLIST` = the exact controlled P001 recipient address
+
+Leave the morning automation paused. Run one controlled editorial generation
+for P001, confirm that it creates exactly one queued message whose ID begins
+`DAILY-RESEND-QA:P001:`, and then run
+`dispatchQueuedDailyBriefingsViaResendV1` manually. Confirm one Resend ID, all
+matching history rows marked Sent with that provider ID, inbox delivery, active
+links, and a second dispatcher run reporting zero sends.
+
+After those checks pass, run `promoteAdbResendDailyV1`. It validates the P001 QA
+queue and history evidence, changes daily transport to LIVE, and creates one
+hourly dispatcher trigger. Then change the morning automation from controlled
+P001 generation to all eligible Active profiles and resume its 8:00 AM Central
+schedule.
+
+The rollback is `pauseAdbResendDailyV1`. It removes only the daily dispatcher
+trigger and returns daily transport to CONTROLLED; it does not affect the live
+welcome trigger.
+
 ## Queue cutover contract
 
 After the controlled test passes, each live sender calls `adbSendEmailViaResend_` with:

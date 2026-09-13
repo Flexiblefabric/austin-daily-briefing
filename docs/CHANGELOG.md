@@ -35,6 +35,7 @@ Austin Daily Briefing completed the production cutover to the custom-domain deli
 - Added `schema_version` beginning at `1.0`.
 - Secret and private configuration values are prohibited from the registry; only property names and purposes may be recorded.
 - Added `scripts/docs_sync.py` for registry status, audit, and documentation preview operations.
+- completed documentation subsystem: authoritative registry, automatic generated docs, CI validation, and immutable snapshots.
 
 ## Changelog policy
 

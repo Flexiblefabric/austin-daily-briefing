@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
-"""Austin Daily Briefing documentation registry utility.
+"""Austin Daily Briefing internal documentation registry utility.
 
-Version 1 is intentionally read-only. It provides:
-  status  - summarize the authoritative PROJECT_STATE.json registry
-  audit   - validate registry structure and referenced repository paths
-  preview - show the generated internal project-status document that a future
-            update command would write
-
-No command in this version edits files.
+Commands:
+  status  summarize PROJECT_STATE.json
+  audit   validate registry structure and repository references
+  preview print the generated internal project-status document
+  update  audit first, then update only docs/PROJECT_STATUS.md
 """
 
 from __future__ import annotations
 
 import argparse
 import json
-import os
 import subprocess
 import sys
 from pathlib import Path
@@ -103,40 +100,28 @@ def status(registry: dict[str, Any]) -> int:
     print(f"Production:      {prod.get('status', 'unknown')}")
     print(f"Development:     {dev.get('status', 'unknown')}")
     print(f"Git worktree:    {local_git_status()}")
-    print()
-    print("Services")
+    print("\nServices")
     for name, config in services.items():
         if isinstance(config, dict):
             provider = config.get("provider") or config.get("platform") or ""
             suffix = f" — {provider}" if provider else ""
             print(f"- {name}: {config.get('status', 'unknown')}{suffix}")
-    print()
-    print("Automation")
+    print("\nAutomation")
     for name, config in automation.items():
         if isinstance(config, dict):
-            print(
-                f"- {name}: {config.get('status', 'unknown')}"
-                f" — {config.get('cadence', 'cadence not recorded')}"
-            )
+            print(f"- {name}: {config.get('status', 'unknown')} — {config.get('cadence', 'cadence not recorded')}")
     return 0
 
 
-def audit(registry: dict[str, Any]) -> int:
+def audit(registry: dict[str, Any], *, quiet: bool = False) -> int:
     errors: list[str] = []
     warnings: list[str] = []
     ok: list[str] = []
 
     required_top = {
-        "schema_version",
-        "registry_version",
-        "last_reviewed",
-        "project",
-        "environments",
-        "services",
-        "automation",
-        "runtime_properties",
-        "documentation",
-        "governance",
+        "schema_version", "registry_version", "last_reviewed", "project",
+        "environments", "services", "automation", "runtime_properties",
+        "documentation", "governance",
     }
     missing = sorted(required_top - registry.keys())
     if missing:
@@ -155,8 +140,8 @@ def audit(registry: dict[str, Any]) -> int:
     else:
         ok.append("Registry is marked authoritative")
 
-    doc_paths: list[tuple[str, str]] = []
     documentation = registry.get("documentation", {})
+    doc_paths: list[tuple[str, str]] = []
     if isinstance(documentation, dict):
         for key, value in documentation.items():
             if key in {"scope", "generated_status"}:
@@ -177,10 +162,10 @@ def audit(registry: dict[str, Any]) -> int:
             if isinstance(value, str):
                 doc_paths.append((f"automation.{automation_name}.source_path", value))
 
-    missing_paths: list[str] = []
-    for label, rel in sorted(set(doc_paths)):
-        if not (ROOT / rel).exists():
-            missing_paths.append(f"{label} -> {rel}")
+    missing_paths = [
+        f"{label} -> {rel}" for label, rel in sorted(set(doc_paths))
+        if not (ROOT / rel).exists()
+    ]
     if missing_paths:
         errors.extend(f"Referenced repository path does not exist: {item}" for item in missing_paths)
     else:
@@ -219,20 +204,21 @@ def audit(registry: dict[str, Any]) -> int:
         else:
             ok.append("Current production cutover is represented in the changelog")
 
-    print("ADB Documentation Audit")
-    print("=" * 23)
-    for item in ok:
-        print(f"OK   {item}")
-    for item in warnings:
-        print(f"WARN {item}")
-    for item in errors:
-        print(f"FAIL {item}")
-    print()
-    if errors:
-        print(f"Result: FAILED ({len(errors)} error(s), {len(warnings)} warning(s))")
-        return 1
-    print(f"Result: PASSED ({len(warnings)} warning(s))")
-    return 0
+    if not quiet:
+        print("ADB Documentation Audit")
+        print("=" * 23)
+        for item in ok:
+            print(f"OK   {item}")
+        for item in warnings:
+            print(f"WARN {item}")
+        for item in errors:
+            print(f"FAIL {item}")
+        print()
+        if errors:
+            print(f"Result: FAILED ({len(errors)} error(s), {len(warnings)} warning(s))")
+        else:
+            print(f"Result: PASSED ({len(warnings)} warning(s))")
+    return 1 if errors else 0
 
 
 def render_project_status(registry: dict[str, Any]) -> str:
@@ -240,7 +226,6 @@ def render_project_status(registry: dict[str, Any]) -> str:
     prod = registry["environments"]["production"]
     services = registry["services"]
     automation = registry["automation"]
-
     lines = [
         "# Austin Daily Briefing — Internal Project Status",
         "",
@@ -263,17 +248,12 @@ def render_project_status(registry: dict[str, Any]) -> str:
     for name, config in services.items():
         provider = config.get("provider") or config.get("platform") or "not recorded"
         lines.append(f"- **{name}** — {config.get('status', 'unknown')} — {provider}")
-
     lines.extend(["", "## Automation", ""])
     for name, config in automation.items():
-        lines.append(
-            f"- **{name}** — {config.get('status', 'unknown')} — {config.get('cadence', 'cadence not recorded')}"
-        )
-
+        lines.append(f"- **{name}** — {config.get('status', 'unknown')} — {config.get('cadence', 'cadence not recorded')}")
     lines.extend(["", "## Runtime configuration names", ""])
     for item in registry.get("runtime_properties", []):
         lines.append(f"- `{item['name']}` — {item.get('purpose', '')}")
-
     lines.extend([
         "",
         "Secret and private configuration values are intentionally excluded from the registry and generated documentation.",
@@ -282,13 +262,25 @@ def render_project_status(registry: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def preview(registry: dict[str, Any]) -> int:
-    output_path = nested_get(registry, ("documentation", "generated_status"))
-    if not isinstance(output_path, str) or not output_path:
+def generated_status_target(registry: dict[str, Any]) -> Path:
+    configured = nested_get(registry, ("documentation", "generated_status"))
+    if not isinstance(configured, str) or not configured:
         raise RegistryError("documentation.generated_status is not configured.")
+    if configured != "docs/PROJECT_STATUS.md":
+        raise RegistryError(
+            "Guarded update refuses unexpected generated_status target: " + configured
+        )
+    target = (ROOT / configured).resolve()
+    docs_root = (ROOT / "docs").resolve()
+    if docs_root not in target.parents:
+        raise RegistryError("Generated status target must remain inside docs/.")
+    return target
+
+
+def preview(registry: dict[str, Any]) -> int:
+    target = generated_status_target(registry)
     generated = render_project_status(registry)
-    target = ROOT / output_path
-    print(f"Preview target: {output_path}")
+    print(f"Preview target: {target.relative_to(ROOT)}")
     print("No files will be modified.\n")
     if target.exists() and target.read_text(encoding="utf-8") == generated:
         print("No change: generated content matches the current file.")
@@ -297,9 +289,23 @@ def preview(registry: dict[str, Any]) -> int:
     return 0
 
 
+def update(registry: dict[str, Any]) -> int:
+    if audit(registry, quiet=True) != 0:
+        raise RegistryError("Audit failed; generated documentation was not modified.")
+    target = generated_status_target(registry)
+    generated = render_project_status(registry)
+    if target.exists() and target.read_text(encoding="utf-8") == generated:
+        print(f"No change: {target.relative_to(ROOT)} is current.")
+        return 0
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(generated, encoding="utf-8")
+    print(f"Updated {target.relative_to(ROOT)} from PROJECT_STATE.json.")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("status", "audit", "preview"))
+    parser.add_argument("command", choices=("status", "audit", "preview", "update"))
     return parser
 
 
@@ -314,6 +320,8 @@ def main() -> int:
             return audit(registry)
         if args.command == "preview":
             return preview(registry)
+        if args.command == "update":
+            return update(registry)
         raise RegistryError(f"Unsupported command: {args.command}")
     except RegistryError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)

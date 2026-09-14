@@ -44,6 +44,7 @@ jobs:
         run: python scripts/docs_sync.py preview
 
       - name: Verify generated documentation is current
+        if: github.event_name == 'pull_request'
         shell: bash
         run: |
           python scripts/docs_sync.py update

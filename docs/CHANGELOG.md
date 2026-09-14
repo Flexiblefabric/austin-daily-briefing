@@ -2,6 +2,33 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-09-14 — Production watchdog restoration and prompt durability
+
+**Type:** Production operations and governance  
+**Components:** production watchdog, automation prompt registry, scheduler slot policy, documentation CI  
+**Registry impact:** Yes
+
+The production health watchdog was recreated after a disabled scheduler copy became unavailable. A durable GitHub-backed prompt lifecycle now prevents paused or deleted scheduler tasks from becoming the only lost copy.
+
+### Changes
+
+- Recreated the production watchdog on a daily 09:30 America/Chicago schedule.
+- Expanded watchdog coverage to distinguish morning generation, daily Resend delivery, welcome queue health, and subscriber operations.
+- Added canonical GitHub prompt files for the production daily briefing, subscriber operations, and watchdog.
+- Established Active, Held, Development, and Retired prompt lifecycle states.
+- Established a five-slot budget: three vital ADB tasks, one non-ADB weekly task, and one unallocated reserve.
+- Held and development tasks now remain repository-only instead of relying on disabled scheduler records.
+- Updated documentation CI so pushes to `PROJECT_STATE.json` can regenerate generated documentation instead of failing before the sync job runs.
+- Advanced the registry to schema 1.2 and recorded current scheduler identifiers.
+- Preserved a new immutable registry snapshot.
+
+### Validation
+
+- The replacement watchdog task was created successfully and is active.
+- The production workbook and Gmail administrator-alert connection passed harmless read checks before task creation.
+- Canonical prompt files were committed without subscriber addresses, private routing destinations, credentials, or raw tokens.
+- The previous watchdog identifier remains recorded only as historical recovery evidence.
+
 ## 2026-09-13 — Documentation registry and automation v1 complete
 
 **Type:** Production subsystem  

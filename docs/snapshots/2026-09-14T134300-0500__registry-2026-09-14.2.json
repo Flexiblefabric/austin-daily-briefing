@@ -1,0 +1,251 @@
+{
+  "snapshot": {
+    "snapshot_version": "1.0",
+    "created_at": "2026-09-14T13:43:00-05:00",
+    "operating_timezone": "America/Chicago",
+    "registry_version": "2026-09-14.2",
+    "schema_version": "1.2",
+    "reason": "Restore production watchdog and establish durable automation prompt governance",
+    "source": "PROJECT_STATE.json",
+    "immutable": true
+  },
+  "state": {
+    "schema_version": "1.2",
+    "registry_version": "2026-09-14.2",
+    "last_reviewed": "2026-09-14",
+    "project": {
+      "name": "Austin Daily Briefing",
+      "repository": "Flexiblefabric/austin-daily-briefing",
+      "default_branch": "main",
+      "operating_timezone": "America/Chicago",
+      "public_site": "https://austindailybriefing.com/"
+    },
+    "environments": {
+      "production": {
+        "status": "live",
+        "drive_folder_id": "1ISgKMDxOE5VzYTvxtdGe7OmYoFddkAC4",
+        "subscriber_database": {
+          "title": "Austin Daily Briefing — Subscriber Preferences",
+          "file_id": "1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0"
+        },
+        "intake_database": {
+          "title": "Austin Daily Briefing — Google Forms Production Intake",
+          "file_id": "1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho"
+        },
+        "forms": {
+          "join": {
+            "title": "Join Austin Daily Briefing",
+            "file_id": "1Z8gETjM0o9apyikoj_i_HCxJkZEIVY-pxthRyWq89zY"
+          },
+          "customize": {
+            "title": "Customize Austin Daily Briefing",
+            "file_id": "1NK2EO8-74IBhHzPrFux9SHOAyje398VlHP_bGFxkQC8"
+          },
+          "manage": {
+            "title": "Manage Austin Daily Briefing",
+            "file_id": "1nU19OXiKqcLAtyOyYKrwDmrDLxD4cJiYjuIKRwSuLlM"
+          },
+          "confirm_change": {
+            "title": "Confirm Austin Daily Briefing Change",
+            "file_id": "1Zs8KfqqHJ83aJHKspNJVVtaHM9YkMwLYoLLjJurFJG0"
+          }
+        }
+      },
+      "development": {
+        "status": "active",
+        "drive_folder_id": "102Kz3qosNQUL52KPNXYVJRzOFkcuBsfj",
+        "subscriber_database": {
+          "title": "Austin Daily Briefing — DEV — Subscriber Preferences",
+          "file_id": "1rl5GTOvuBSHyFK1r9CqI_6Z5gAwtgsTQnQQf9VCMeyM"
+        },
+        "intake_database": {
+          "title": "Austin Daily Briefing — Google Forms DEV Intake",
+          "file_id": "1TiSgmFxij8p3wKnt_skTFXQvAOEuR2wI5c6V8Jq_Yyw"
+        }
+      }
+    },
+    "services": {
+      "control_plane": {
+        "platform": "Google Sheets + Google Apps Script",
+        "status": "live"
+      },
+      "email_delivery": {
+        "provider": "Resend",
+        "status": "live",
+        "from": "Austin Daily Briefing <briefing@austindailybriefing.com>",
+        "reply_to": "briefing@austindailybriefing.com",
+        "source_path": "apps-script/ResendTransport.gs"
+      },
+      "reply_routing": {
+        "provider": "Cloudflare Email Routing",
+        "status": "live",
+        "public_address": "briefing@austindailybriefing.com",
+        "private_destination": "configured externally; intentionally not stored"
+      },
+      "website": {
+        "provider": "GitHub Pages",
+        "status": "live",
+        "domain": "austindailybriefing.com",
+        "workflow_path": ".github/workflows/pages.yml",
+        "source_path": "site/"
+      }
+    },
+    "automation": {
+      "subscriber_processor": {
+        "cadence": "every 6 hours",
+        "status": "live",
+        "verification": "manual/external",
+        "task_id": "6aa1acbcf17c8191a9a89cc95b433629",
+        "scheduler_state": "active",
+        "prompt_path": "docs/automation-prompts/production-subscriber-operations.md"
+      },
+      "daily_generation": {
+        "cadence": "08:00 America/Chicago",
+        "status": "live",
+        "verification": "manual/external",
+        "task_id": "6a91bd2144d081918d9d54d5c14d1175",
+        "scheduler_state": "active",
+        "prompt_path": "docs/automation-prompts/austin-daily-briefing.md"
+      },
+      "welcome_dispatch": {
+        "cadence": "hourly",
+        "status": "live",
+        "function": "dispatchQueuedWelcomeMessagesViaResendV1",
+        "source_path": "apps-script/ResendTransport.gs"
+      },
+      "daily_dispatch": {
+        "cadence": "hourly",
+        "status": "live",
+        "function": "dispatchQueuedDailyBriefingsViaResendV1",
+        "source_path": "apps-script/ResendTransport.gs"
+      },
+      "documentation_sync": {
+        "cadence": "on PROJECT_STATE.json or generator changes to main",
+        "status": "live",
+        "function": "python scripts/docs_sync.py update",
+        "source_path": "scripts/docs_sync.py"
+      },
+      "production_health_watchdog": {
+        "cadence": "09:30 America/Chicago",
+        "status": "live",
+        "scheduler_state": "active",
+        "task_id": "6aa8401e16a88191ae14ba1b4d6cba6e",
+        "prompt_path": "docs/automation-prompts/production-health-watchdog.md",
+        "specification_id": "ADB-WATCHDOG-PROD-2.0",
+        "coverage": "subscriber operations, morning generation, daily Resend delivery, and welcome Resend queue health",
+        "alert_transport": "validated Gmail administrator-alert path"
+      }
+    },
+    "manual_operations": {
+      "domain_health_check": {
+        "status": "available",
+        "cadence": "manual only",
+        "runbook": "docs/domain-health-check.md",
+        "reporting": "compact pass/fail table with a brief explanation for each failure",
+        "form_validation": "after form changes only"
+      },
+      "v2_shadow_review": {
+        "status": "development",
+        "cadence": "manual only",
+        "runbook": "docs/v2-shadow-review-prompt.md",
+        "specification_id": "ADB-V2-SHADOW-0.1",
+        "weight_fingerprint": "20-20-15-15-10-10-10",
+        "task_status": "held — repository only",
+        "production_boundary": "read-only; no queue, delivery, configuration, or data writes",
+        "reporting": "V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation",
+        "verification": "canonical prompt preserved in GitHub; no scheduler slot required while held"
+      }
+    },
+    "runtime_properties": [
+      {
+        "name": "RESEND_API_KEY",
+        "sensitivity": "secret",
+        "purpose": "Resend API authentication"
+      },
+      {
+        "name": "ADB_RESEND_TEST_RECIPIENT",
+        "sensitivity": "private_config",
+        "purpose": "controlled transport test recipient"
+      },
+      {
+        "name": "ADB_RESEND_WELCOME_MODE",
+        "sensitivity": "config",
+        "purpose": "welcome dispatcher CONTROLLED/LIVE mode"
+      },
+      {
+        "name": "ADB_RESEND_WELCOME_ALLOWLIST",
+        "sensitivity": "private_config",
+        "purpose": "controlled welcome-delivery allowlist"
+      },
+      {
+        "name": "ADB_RESEND_DAILY_MODE",
+        "sensitivity": "config",
+        "purpose": "daily dispatcher CONTROLLED/LIVE mode"
+      },
+      {
+        "name": "ADB_RESEND_DAILY_ALLOWLIST",
+        "sensitivity": "private_config",
+        "purpose": "controlled daily-delivery allowlist"
+      },
+      {
+        "name": "ADB_SENDER_CHANGE_APPROVAL",
+        "sensitivity": "config",
+        "purpose": "manual sender-change announcement approval gate"
+      }
+    ],
+    "documentation": {
+      "scope": "internal technical documentation only",
+      "registry": "PROJECT_STATE.json",
+      "changelog": "docs/CHANGELOG.md",
+      "generated_status": "docs/PROJECT_STATUS.md",
+      "generated_architecture": "docs/ARCHITECTURE.md",
+      "generated_operations": "docs/OPERATIONS.md",
+      "snapshots_dir": "docs/snapshots",
+      "cutover_runbook": "docs/resend-cutover.md",
+      "domain_health_runbook": "docs/domain-health-check.md",
+      "sync_script": "scripts/docs_sync.py",
+      "v2_shadow_prompt": "docs/v2-shadow-review-prompt.md",
+      "automation_prompt_registry": "docs/automation-prompts/README.md",
+      "daily_generation_prompt": "docs/automation-prompts/austin-daily-briefing.md",
+      "subscriber_operations_prompt": "docs/automation-prompts/production-subscriber-operations.md",
+      "production_watchdog_prompt": "docs/automation-prompts/production-health-watchdog.md"
+    },
+    "governance": {
+      "registry_is_authoritative": true,
+      "secrets_policy": "Store secret and private configuration names only; never store values.",
+      "changelog_order": "newest_first",
+      "snapshots_are_immutable": true,
+      "snapshot_required_for": [
+        "production architecture changes",
+        "development-to-production promotions",
+        "production dependency replacements",
+        "data storage or routing changes",
+        "new production subsystems",
+        "rollbacks and migrations"
+      ],
+      "changelog_required_for": [
+        "production architecture changes",
+        "development-to-production promotions",
+        "production dependency replacements",
+        "data storage or routing changes",
+        "new production subsystems",
+        "rollbacks and migrations"
+      ]
+    },
+    "automation_governance": {
+      "scheduler_capacity": 5,
+      "active_task_budget": {
+        "production_daily_briefing": 1,
+        "production_subscriber_operations": 1,
+        "production_health_watchdog": 1,
+        "non_adb_weekly_movement_plan": 1,
+        "unallocated_reserve": 1
+      },
+      "durable_source": "GitHub canonical prompt files and PROJECT_STATE.json",
+      "scheduler_copy_policy": "Runtime copies are disposable and must never be the only copy of a task prompt.",
+      "held_task_policy": "Held and development tasks remain repository-only and consume no scheduler slot.",
+      "disable_warning": "Disabling a task may cause it to be treated as deleted and disappear from the task interface.",
+      "restoration_rule": "Recreate from the canonical prompt, then record the new task ID and active state."
+    }
+  }
+}

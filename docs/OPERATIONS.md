@@ -15,6 +15,8 @@
 - **domain_health_check** — available — manual only — `docs/domain-health-check.md`
   - Reporting: compact pass/fail table with a brief explanation for each failure.
   - Form validation: after form changes only.
+- **v2_shadow_review** — development — manual only — `docs/v2-shadow-review-prompt.md`
+  - Reporting: V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation.
 
 ## Runtime configuration
 

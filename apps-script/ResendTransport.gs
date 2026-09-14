@@ -175,8 +175,9 @@ function dispatchQueuedWelcomeMessagesViaResendV1() {
       const subject = String(row.Subject || welcomeTemplates[0].Subject || 'Welcome to the Austin Daily Briefing');
       const text = adbWelcomePlainText_();
       const html = adbWelcomeHtml_();
+      let result;
       try {
-        const result = adbSendEmailViaResend_({
+        result = adbSendEmailViaResend_({
           to: email,
           subject: subject,
           text: text,

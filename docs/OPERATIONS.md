@@ -9,6 +9,7 @@
 - **welcome_dispatch** — live — hourly — `dispatchQueuedWelcomeMessagesViaResendV1`
 - **daily_dispatch** — live — hourly — `dispatchQueuedDailyBriefingsViaResendV1`
 - **documentation_sync** — live — on PROJECT_STATE.json or generator changes to main — `python scripts/docs_sync.py update`
+- **production_health_watchdog** — live — 09:30 America/Chicago
 
 ## Manual operational checks
 

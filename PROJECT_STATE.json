@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.1",
-  "registry_version": "2026-09-14.1",
+  "schema_version": "1.2",
+  "registry_version": "2026-09-14.2",
   "last_reviewed": "2026-09-14",
   "project": {
     "name": "Austin Daily Briefing",
@@ -83,12 +83,18 @@
     "subscriber_processor": {
       "cadence": "every 6 hours",
       "status": "live",
-      "verification": "manual/external"
+      "verification": "manual/external",
+      "task_id": "6aa1acbcf17c8191a9a89cc95b433629",
+      "scheduler_state": "active",
+      "prompt_path": "docs/automation-prompts/production-subscriber-operations.md"
     },
     "daily_generation": {
       "cadence": "08:00 America/Chicago",
       "status": "live",
-      "verification": "manual/external"
+      "verification": "manual/external",
+      "task_id": "6a91bd2144d081918d9d54d5c14d1175",
+      "scheduler_state": "active",
+      "prompt_path": "docs/automation-prompts/austin-daily-briefing.md"
     },
     "welcome_dispatch": {
       "cadence": "hourly",
@@ -107,6 +113,16 @@
       "status": "live",
       "function": "python scripts/docs_sync.py update",
       "source_path": "scripts/docs_sync.py"
+    },
+    "production_health_watchdog": {
+      "cadence": "09:30 America/Chicago",
+      "status": "live",
+      "scheduler_state": "active",
+      "task_id": "6aa8401e16a88191ae14ba1b4d6cba6e",
+      "prompt_path": "docs/automation-prompts/production-health-watchdog.md",
+      "specification_id": "ADB-WATCHDOG-PROD-2.0",
+      "coverage": "subscriber operations, morning generation, daily Resend delivery, and welcome Resend queue health",
+      "alert_transport": "validated Gmail administrator-alert path"
     }
   },
   "manual_operations": {
@@ -123,10 +139,10 @@
       "runbook": "docs/v2-shadow-review-prompt.md",
       "specification_id": "ADB-V2-SHADOW-0.1",
       "weight_fingerprint": "20-20-15-15-10-10-10",
-      "task_status": "paused",
+      "task_status": "held — repository only",
       "production_boundary": "read-only; no queue, delivery, configuration, or data writes",
       "reporting": "V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation",
-      "verification": "canonical prompt and paused task execution copy use the same specification ID and weight fingerprint"
+      "verification": "canonical prompt preserved in GitHub; no scheduler slot required while held"
     }
   },
   "runtime_properties": [
@@ -177,7 +193,11 @@
     "cutover_runbook": "docs/resend-cutover.md",
     "domain_health_runbook": "docs/domain-health-check.md",
     "sync_script": "scripts/docs_sync.py",
-    "v2_shadow_prompt": "docs/v2-shadow-review-prompt.md"
+    "v2_shadow_prompt": "docs/v2-shadow-review-prompt.md",
+    "automation_prompt_registry": "docs/automation-prompts/README.md",
+    "daily_generation_prompt": "docs/automation-prompts/austin-daily-briefing.md",
+    "subscriber_operations_prompt": "docs/automation-prompts/production-subscriber-operations.md",
+    "production_watchdog_prompt": "docs/automation-prompts/production-health-watchdog.md"
   },
   "governance": {
     "registry_is_authoritative": true,
@@ -200,5 +220,20 @@
       "new production subsystems",
       "rollbacks and migrations"
     ]
+  },
+  "automation_governance": {
+    "scheduler_capacity": 5,
+    "active_task_budget": {
+      "production_daily_briefing": 1,
+      "production_subscriber_operations": 1,
+      "production_health_watchdog": 1,
+      "non_adb_weekly_movement_plan": 1,
+      "unallocated_reserve": 1
+    },
+    "durable_source": "GitHub canonical prompt files and PROJECT_STATE.json",
+    "scheduler_copy_policy": "Runtime copies are disposable and must never be the only copy of a task prompt.",
+    "held_task_policy": "Held and development tasks remain repository-only and consume no scheduler slot.",
+    "disable_warning": "Disabling a task may cause it to be treated as deleted and disappear from the task interface.",
+    "restoration_rule": "Recreate from the canonical prompt, then record the new task ID and active state."
   }
 }

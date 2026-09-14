@@ -175,9 +175,8 @@ function dispatchQueuedWelcomeMessagesViaResendV1() {
       const subject = String(row.Subject || welcomeTemplates[0].Subject || 'Welcome to the Austin Daily Briefing');
       const text = adbWelcomePlainText_();
       const html = adbWelcomeHtml_();
-      let result;
       try {
-        result = adbSendEmailViaResend_({
+        const result = adbSendEmailViaResend_({
           to: email,
           subject: subject,
           text: text,
@@ -517,8 +516,9 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
         throw new Error('Briefing History is not in a clean Pending state for Run ID ' + runId + '.');
       }
 
+      let result;
       try {
-        const result = adbSendEmailViaResend_({
+        result = adbSendEmailViaResend_({
           to: email,
           subject: subject,
           text: textBody,

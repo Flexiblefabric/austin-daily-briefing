@@ -1,6 +1,6 @@
 # Austin Daily Briefing
 
-Austin Daily Briefing is a one-page editorial website for a free, personalized daily email covering Austin news, useful context, things to do, and subscribers' selected interests. It is an independent passion project.
+Austin Daily Briefing is an editorial website for a free, personalized daily email covering Austin news, useful context, things to do, and subscribers' selected interests. It is an independent experimental passion project.
 
 ## Live site
 
@@ -13,6 +13,7 @@ The public landing page is live and search indexing is enabled. It includes:
 - Production forms for signup, briefing customization, and subscription management
 - An illustrative briefing sample and an explanation of the three primary content areas
 - Frequently asked questions covering personalization, information use, and subscription controls
+- Dedicated privacy and terms pages written in plain language
 - Responsive layouts, keyboard focus states, a skip link, and reduced-motion support
 - Open Graph and X/Twitter metadata with a branded social-sharing preview
 
@@ -27,6 +28,8 @@ The website is a static HTML and CSS project stored in `site/`. Its primary file
 - `austin.webp` — primary page image
 - `social-preview.jpg` — shared-link preview image
 - `favicon.svg` — browser icon
+- `privacy.html` — privacy practices, subscriber choices, and service providers
+- `terms.html` — experimental-service terms and content limitations
 
 ## Hosting
 

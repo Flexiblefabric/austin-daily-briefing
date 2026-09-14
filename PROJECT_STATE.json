@@ -125,7 +125,8 @@
       "weight_fingerprint": "20-20-15-15-10-10-10",
       "task_status": "paused",
       "production_boundary": "read-only; no queue, delivery, configuration, or data writes",
-      "reporting": "V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation"
+      "reporting": "V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation",
+      "verification": "canonical prompt and paused task execution copy use the same specification ID and weight fingerprint"
     }
   },
   "runtime_properties": [

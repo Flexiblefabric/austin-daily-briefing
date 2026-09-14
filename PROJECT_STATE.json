@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1",
-  "registry_version": "2026-09-13.5",
-  "last_reviewed": "2026-09-13",
+  "registry_version": "2026-09-14.1",
+  "last_reviewed": "2026-09-14",
   "project": {
     "name": "Austin Daily Briefing",
     "repository": "Flexiblefabric/austin-daily-briefing",
@@ -116,6 +116,16 @@
       "runbook": "docs/domain-health-check.md",
       "reporting": "compact pass/fail table with a brief explanation for each failure",
       "form_validation": "after form changes only"
+    },
+    "v2_shadow_review": {
+      "status": "development",
+      "cadence": "manual only",
+      "runbook": "docs/v2-shadow-review-prompt.md",
+      "specification_id": "ADB-V2-SHADOW-0.1",
+      "weight_fingerprint": "20-20-15-15-10-10-10",
+      "task_status": "paused",
+      "production_boundary": "read-only; no queue, delivery, configuration, or data writes",
+      "reporting": "V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation"
     }
   },
   "runtime_properties": [
@@ -165,7 +175,8 @@
     "snapshots_dir": "docs/snapshots",
     "cutover_runbook": "docs/resend-cutover.md",
     "domain_health_runbook": "docs/domain-health-check.md",
-    "sync_script": "scripts/docs_sync.py"
+    "sync_script": "scripts/docs_sync.py",
+    "v2_shadow_prompt": "docs/v2-shadow-review-prompt.md"
   },
   "governance": {
     "registry_is_authoritative": true,

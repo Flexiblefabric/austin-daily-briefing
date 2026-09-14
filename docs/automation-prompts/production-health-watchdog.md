@@ -3,6 +3,8 @@
 **Specification ID:** `ADB-WATCHDOG-PROD-2.0`  
 **Lifecycle:** Active production  
 **Schedule:** Daily at 09:30 America/Chicago  
+**Current scheduler state:** Active  
+**Current task ID:** `6aa8401e16a88191ae14ba1b4d6cba6e`  
 **Previous task ID:** `6aa31c5243c88191b85b2f7dab65ec56` — disabled/deleted  
 **Canonical path:** `docs/automation-prompts/production-health-watchdog.md`
 

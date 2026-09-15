@@ -36,3 +36,7 @@ ADB reserves scheduler capacity deliberately. Production Daily Briefing, Product
 - [Production Health Watchdog](production-health-watchdog.md) — active after recreation
 - [V2 Shadow Review](../v2-shadow-review-prompt.md) — development/manual
 - [Domain Health Check](../domain-health-check.md) — manual runbook
+
+## Shared presentation standards
+
+- [Source-Link Presentation Standard](../source-link-standard.md) — staged cross-platform source attribution and link-format specification

@@ -39,4 +39,4 @@ ADB reserves scheduler capacity deliberately. Production Daily Briefing, Product
 
 ## Shared presentation standards
 
-- [Source-Link Presentation Standard](../source-link-standard.md) — staged cross-platform source attribution and link-format specification
+- [Source-Link Presentation Standard](../source-link-standard.md) — active cross-platform source attribution and link-format specification

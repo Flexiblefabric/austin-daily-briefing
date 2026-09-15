@@ -1,7 +1,7 @@
 # ADB Source-Link Presentation Standard
 
 **Specification ID:** `ADB-LINKS-1.0`  
-**Status:** Staged for controlled QA  
+**Status:** Active production  
 **Scope:** Daily briefing HTML, daily briefing plain text, website samples, and future archived issues
 
 ## Purpose
@@ -70,4 +70,4 @@ Do not use generic or document-type-only labels for editorial sources, including
 
 Before queueing an edition, verify that every Top Story, Under the Radar item, More for You item, and Friday recap item with a claim has at least one visible publisher-named source link. Verify that weather and event links use their functional labels. HTML and plain text must contain the same destinations in the same order.
 
-Controlled QA must cover Gmail, Outlook/Hotmail, Yahoo, Proton, and a narrow mobile viewport. Check visible attribution, wrapping, tap behavior, contrast, URL parity, and that no source label is stranded from its link.
+Controlled QA must cover Gmail, Outlook/Hotmail, Yahoo, and a narrow mobile viewport. Proton is optional and was excluded from the initial production-release test scope. Check visible attribution, wrapping, tap behavior, contrast, URL parity, and that no source label is stranded from its link.

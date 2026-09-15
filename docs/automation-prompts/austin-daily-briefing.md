@@ -1,6 +1,6 @@
 # Austin Daily Briefing — Canonical Automation Prompt
 
-**Specification ID:** `ADB-DAILY-PROD-1.0`  
+**Specification ID:** `ADB-DAILY-PROD-1.1`
 **Lifecycle:** Active production  
 **Schedule:** Daily at 08:00 America/Chicago  
 **Scheduler task ID:** `6a91bd2144d081918d9d54d5c14d1175`  
@@ -42,8 +42,11 @@ Create Austin Pulse with weather; about five Top Stories with compact geography/
 EMAIL FORMAT
 Generate mobile-safe HTML plus equivalent plain text. Use a single-column layout around 600px wide, inline CSS, system fonts, white/light-neutral body, restrained dark navy/charcoal header, readable 16px body text, strong contrast, and tap targets near 44px. Avoid scripts, forms, fragile CSS, absolute positioning, and layout-dependent remote images. Images are optional and fail-soft. If generated, label them "Austin-inspired view." Use semantic source links. Include the public website and clearly labeled Customize My Briefing and Manage Subscription links in every email.
 
+SOURCE-LINK PRESENTATION
+Follow `docs/source-link-standard.md` (`ADB-LINKS-1.0`). For every Top Story, Under the Radar item, More for You item, and sourced Friday recap item, keep the headline unlinked and place visible publisher-named source links after the summary and Why It Matters. Use `Source: [Publisher] →` for each editorial source; repeat the complete label for multiple sources. Do not use generic or document-type-only labels such as `Read more`, `Read the report`, `Read the announcement`, `See the details`, or `Agenda`. Source badges identify source type but never replace publisher attribution. Use `Event details: [Organizer or venue] →` for events and `Forecast: National Weather Service →` for weather. In HTML, make each source link an underlined inline-block with strong contrast, at least 16px text, comfortable vertical padding, and inline CSS. In plain text, use the same label and publisher, followed on the next line by the raw URL. Preserve the same destinations and order in HTML and plain text.
+
 PRE-QUEUE VALIDATION
-For each profile verify: subscriber and profile are uniquely eligible and Active; no Off topic appears in More for You; saved volume and depth settings are reflected; every source/event link was reviewed; no inaccessible source is sole support; repeat rules are satisfied; HTML is intact; plain text contains the same essentials; and the subject is correct. Remove or replace a failing optional item. Abort for a safety-gate or recipient/profile-identity failure.
+For each profile verify: subscriber and profile are uniquely eligible and Active; no Off topic appears in More for You; saved volume and depth settings are reflected; every source/event link was reviewed; no inaccessible source is sole support; every editorial item has visible publisher attribution; no prohibited generic source label remains; HTML and plain text contain the same source destinations in the same order; repeat rules are satisfied; HTML is intact; plain text contains the same essentials; and the subject is correct. Remove or replace a failing optional item. Abort for a safety-gate or recipient/profile-identity failure.
 
 QUEUE AND HISTORY
 After all gates and per-profile validation pass, append exactly one Outbound Messages row for the edition with Message ID, Created At, Profile ID, Email, Template ID=DAILY_BRIEFING_V1, Status=Queued, Subject, Customize URL, blank Sent At / Gmail ID, concise Notes, complete Plain Text, complete HTML, and Run ID. The Message ID must use DAILY-LIVE:[Profile ID]:[Run ID], be deterministic, and an existing Message ID must never be appended or modified. Keep Plain Text and HTML individually below 45,000 characters.

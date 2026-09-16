@@ -1,9 +1,9 @@
 # ADB V2 Shadow Review — Canonical Prompt
 
-**Specification ID:** `ADB-V2-SHADOW-0.1`  
+**Specification ID:** `ADB-V2-SHADOW-0.2`  
 **Weight fingerprint:** `20-20-15-15-10-10-10`  
 **Status:** Development / manual shadow testing  
-**Adopted:** 2026-09-14  
+**Adopted:** 2026-09-16  
 **Canonical repository path:** `docs/v2-shadow-review-prompt.md`
 
 This file is the authoritative prompt and scoring contract for manual Austin Daily Briefing V2 story-selection shadow reviews. The saved ChatGPT task is an execution copy. If the task prompt, a prior chat, or a run-time interpretation conflicts with this file, this file controls. Do not change scoring weights, thresholds, override meanings, section boundaries, or output requirements during a run. Proposed changes belong in the evaluation notes and require an explicit revision to this file.
@@ -16,7 +16,7 @@ This is evaluation only. Do not send email, queue messages, edit Google Sheets, 
 
 At the beginning of the result, print:
 
-- Specification ID: `ADB-V2-SHADOW-0.1`
+- Specification ID: `ADB-V2-SHADOW-0.2`
 - Weight fingerprint: `20-20-15-15-10-10-10`
 - Execution mode: `MANUAL SHADOW — READ ONLY`
 
@@ -45,7 +45,15 @@ Search current official and primary Austin, Travis County, and Central Texas sou
 - Weather, environment, parks, and major regional conditions
 - The active Interest Catalog for More for You candidates
 
-Treat **Under the Radar** as a separate discovery lane so early-stage, lower-visibility, or structurally important developments are not crowded out by headline coverage. Score its candidates with the same core model and sourcing standard.
+Treat **Under the Radar** as an independent discovery lane. Search official agendas, public records, local organizations, specialist reporting, and community sources for consequential developments receiving limited public attention. Run this search even when the main headline search has a full slate. Record the source and the specific overlooked fact or decision found; a lower-ranked headline candidate does not become Under the Radar merely because a slot is open. Score every candidate with the same core model and sourcing standard.
+
+After scoring, place each eligible discovery in exactly one section:
+
+- **Top Stories** if its immediate scope and consequence warrant broad prominence. Record that it was found through the Under the Radar search, but do not also publish it in Under the Radar.
+- **Under the Radar** if it has meaningful reader value, credible sourcing, and a specific reason readers may reasonably miss it, yet its scope or current prominence makes it a better fit there than among the lead stories.
+- **Neither** if it fails a gate or is displaced by stronger candidates. Never backfill Under the Radar with a rejected or passed-over headline solely to fill the section.
+
+Under the Radar may be empty. Do not demote a strong discovery from Top Stories or promote a weak candidate to manufacture an Under the Radar item. A story's presence in a Top Stories slate means it is prominent in ADB, even if its underlying development was previously underreported elsewhere. The `Underreported / discovery value` score may still recognize the value of finding it; it does not determine final section placement by itself.
 
 Seek a broad enough candidate pool to test the ranking system across multiple lanes. Do not pad the pool with weak, stale, inaccessible, or irrelevant items merely to reach a number.
 
@@ -65,12 +73,20 @@ Before scoring a previously covered topic:
 2. Record `Material Update = TRUE` or `FALSE`.
 3. State exactly what changed.
 
-A material development may include a vote, ruling, deadline, funding decision, lawsuit, construction phase, hearing, cancellation, opening, closure, official release, new data, or another change that alters what the reader knows or can do.
+A material development may include a completed vote, ruling, funding decision, filed lawsuit, changed construction phase, hearing outcome, cancellation, actual opening or closure, official release, new data, or a newly announced or changed deadline that alters what the reader knows or can do. A previously announced deadline or meeting merely arriving on the calendar is not a material update.
 
 - If a repeated topic has **no material development**, reject it as a repeat.
 - If a material development exists, the candidate becomes eligible for scoring. Material Update does not guarantee selection or automatically add bonus points.
 - Score the development's incremental reader value under **New-information value**.
 - Apply the separate **Freshness Veto** after scoring when appropriate.
+
+### Event timing is a separate label
+
+Record `Event timing = upcoming / today / completed` when an event or deadline is relevant. This describes *when* it happens, not whether the story changed. For a previously covered topic, set `Material Update = TRUE` only when a verified new fact changes the reader's understanding or options; do not flip the flag because the calendar advanced, registration remained open, or a scheduled hearing began without a reported substantive development.
+
+An upcoming consequential decision may be eligible as a new story on its first coverage, subject to the normal score and editorial ranking. If already covered, a same-day reminder normally belongs in **Things to Do / Keep an Eye On** only when attendance or participation remains useful. A verified vote, decision, cancellation, material agenda change, or consequential new testimony may pass the repeat gate on its own merits. Record the exact change. Event timeliness can earn points under `Timeliness / actionability` only after eligibility; it cannot supply missing `New-information value` or rescue a repeat.
+
+Do not fill Top Stories with routine hearings, meetings, openings, or calendar reminders. Require a substantive public consequence or genuinely new information as for any other candidate. Do not impose a quota that blocks a genuinely consequential event.
 
 ## Fixed 100-point base score
 
@@ -111,6 +127,7 @@ The base score measures editorial value and is shared across profiles.
 - Exclude Off topics from More for You.
 - The shared Top Stories slate must not be personalized.
 - Things to Do / Keep an Eye On remains an event-utility section, not a back door for low-scoring news candidates.
+- An event reminder may be useful there without qualifying as a new ranked story; label its event timing separately from material-update status.
 
 Use one generic/default test profile constructed from the active preference structure. Do not use a real subscriber identity.
 
@@ -197,12 +214,14 @@ Show ranked candidates in a table. For each include:
 - The seven component scores
 - Base-score total
 - Material Update status when applicable
+- Event timing when relevant, separate from Material Update
+- Under the Radar discovery provenance and placement reason when relevant
 - Selection Balance effect
 - Freshness Veto or Discovery Promotion, if used
 - Concise rationale
 - Verified source link or links
 
-Clearly distinguish shared Top Stories, Under the Radar, More for You, and event-section candidates. Do not present a personalized candidate as a shared Top Story.
+Clearly distinguish shared Top Stories, Under the Radar, More for You, and event-section candidates. Do not present a personalized candidate as a shared Top Story. Return up to 10 eligible ranked candidates; do not pad a short list with rejected stories or routine events.
 
 ### 3. Production comparison
 
@@ -215,7 +234,7 @@ Compare V2 with the completed live ADB by actual section. Identify:
 - Omitted
 - Different section placement
 
-Give the likely reason for each difference. Do not claim to know production causality when the reason is an inference. Do not treat Austin Pulse previewing a Top Story as duplication.
+Give the likely reason for each difference. Do not claim to know production causality when the reason is an inference. Check source publication/update times against production's send time before calling something an omission available to the morning workflow. Do not treat Austin Pulse previewing a Top Story as duplication.
 
 ### 4. Material-update audit
 
@@ -226,6 +245,8 @@ List every reviewed candidate marked `Material Update = TRUE`, including:
 - Base score
 - Final treatment
 - Whether the Freshness Veto was applied
+
+Also list any production item labeled `Material Update = TRUE` that V2 classifies as a calendar-only reminder. Show its event timing and explain the disagreement without silently rewriting production history.
 
 ### 5. Notable rejects
 
@@ -245,10 +266,11 @@ State whether V2 appears better, worse, or mixed for this run. Identify:
 - Possible false promotions or demotions
 - Scoring ambiguities
 - Repeat-control behavior
-- Balance behavior
+- Balance behavior, including whether the independent Under the Radar search yielded a qualifying item
+- Whether a consequential pre-send story was missed, with verified publication timing
 - Any recommended specification change
 
-Recommendations do not modify this specification. Continue using `ADB-V2-SHADOW-0.1` until the canonical file is explicitly revised.
+Recommendations do not modify this specification. Continue using `ADB-V2-SHADOW-0.2` until the canonical file is explicitly revised.
 
 ## Prohibited behavior
 
@@ -263,4 +285,6 @@ Do not:
 - Use Discovery Promotion to solve repetition.
 - Use Freshness Veto to promote a candidate.
 - Treat Austin Pulse as a separate scored section.
+- Treat the arrival of a previously announced event as a material update without a verified new development.
+- Backfill Under the Radar with a rejected headline candidate or force an item into that section.
 - Expose subscriber data.

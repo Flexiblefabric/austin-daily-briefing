@@ -26,7 +26,7 @@ Before making any write or sending any message, read the intake workbook's Integ
 If any check fails, make no writes and send no email. Report the exact mismatch.
 
 CORE PROCESSING
-Process only unprocessed form responses. Use each response's immutable response key as the idempotency key and never process the same response twice.
+Process unprocessed form responses. Use each response's immutable response key as the idempotency key. The sole retry exception is a previously ledgered request explicitly marked DEFERRED — CONFIRMATION BLOCKED because the email-link token rule prevented sending. Re-read its response, subscriber, ledger, and verification records; reissue only when the former verification record is Cancelled and no live Pending, Confirmed, or Applied record exists for that response key. Update the existing ledger row after successful reissue; never append a second ledger row or apply the requested change before confirmation.
 
 1. SIGNUP
 - Validate the email and required fields.
@@ -38,13 +38,13 @@ Process only unprocessed form responses. Use each response's immutable response 
 2. MANAGEMENT
 - Treat pause, resume, unsubscribe, and ownership-sensitive changes as protected operations.
 - Apply the existing confirmation/verification rules and production links.
-- Confirmation emails, when required, may use the currently validated Gmail path and must contain only the generic confirmation link and non-sensitive context.
-- Never include subscriber tokens, internal IDs, private profile data, or private forwarding addresses in email.
+- Confirmation emails, when required, may use the currently validated Gmail path and must contain only the generic HTTPS confirmation link and non-sensitive context. The single-use token is permitted only inside that link's prefilled token parameter; this is the narrow exception to the email token prohibition. Do not print it separately or include internal IDs, private profile data, or private forwarding addresses in email.
+- Generate a fresh 32-byte cryptographically random token for each new or retried request; store only its SHA-256 hash in Verification Queue. Use the configured 24-hour expiry and scope the token to the exact request and subscribed address. Never store a raw token or token-bearing URL in the intake ledger, Verification Queue, Outbound Messages, logs, notes, GitHub, or task output. Do not consume a token merely when a link is opened; consume it only on a valid confirmation form submission. On send failure, cancel the new verification record and leave the request deferred.
 - Apply the requested state change only after the required confirmation has been validated.
 - Preserve subscriber history and idempotency.
 
 3. CUSTOMIZATION
-- Apply validated preference/profile changes to the matching subscriber.
+- Stage validated preference/profile changes for confirmation from the matching subscriber; apply only after a valid single-use confirmation submission.
 - Preserve existing values when the submitted field is intentionally blank and the production rules say blank means no change.
 - Do not silently create a second subscriber for an existing email.
 
@@ -52,7 +52,7 @@ WELCOME DELIVERY OWNERSHIP
 The Resend Apps Script queue dispatcher is the sole owner of WELCOME_V1 delivery. This automation must never send a welcome through Gmail or Resend. Apart from creating one new Queued WELCOME_V1 row for an eligible signup, it must not change welcome queue delivery status, Sent At, provider message ID, retry, or error fields. Do not replay, repair, or re-send an existing welcome.
 
 PROCESS ORDER
-Process signup responses, then management responses, then customization responses, then eligible confirmations. Re-read the relevant subscriber and response row immediately before each write. Continue past an invalid individual response only when doing so cannot compromise another subscriber; record the row-specific error.
+Process signup responses, then management responses, then customization responses (including the narrowly eligible deferred retry), then eligible confirmations. Re-read the relevant subscriber, response, ledger, and verification row immediately before each write. For a deferred retry, preserve the cancelled record as audit history, create one fresh verification record and link, send once, and update the existing ledger result to pending confirmation only after successful send. If already reissued or confirmed, skip without duplicate email. Continue past an invalid individual response only when doing so cannot compromise another subscriber; record the row-specific error.
 
 MONITORING
 Update only the Subscriber Operations monitoring/status row for this run. Do not update or impersonate the Welcome Dispatcher status. Report counts for responses inspected, successfully processed, skipped as already processed, confirmation messages sent, and errors. If there was no eligible work, record a successful zero-work run without generating email.

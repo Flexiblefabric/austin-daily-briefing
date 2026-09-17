@@ -1,12 +1,12 @@
 # Feedback and corrections promotion
 
-Status: draft. The Google Form remains titled `[DEV] Austin Daily Briefing — Feedback & Corrections` until the site changes are approved for release. Do not share its responder link on the production site before promotion.
+Status: live. PR #9 was merged on September 17, 2026. The public form title and description were verified in the responder view, and the confirmation message was saved in the editor. The corrections log, privacy update, and footer links were checked on the live site. The earlier four test submissions were deleted; the form had zero responses at promotion.
 
-## Google Form updates at promotion
+## Public Google Form copy
 
-Rename the form to `Austin Daily Briefing — Feedback & Corrections`.
+Form title: `Austin Daily Briefing — Feedback & Corrections`.
 
-Replace the form description with:
+Form description:
 
 > Use this form to report a possible error, request clarification, share feedback, or tell us about an accessibility or technical problem.
 >
@@ -22,7 +22,7 @@ Replace the form description with:
 >
 > Corrections log: https://austindailybriefing.com/corrections.html
 
-Replace the confirmation message with:
+Confirmation message:
 
 > Thank you. Your submission has been received and will be reviewed.
 >
@@ -32,13 +32,10 @@ Replace the confirmation message with:
 
 Google Forms sends an automatic copy of the submitted answers. Do not claim that it sends a separate editorial decision or resolution email. The copied submission stays in the recipient's own mailbox.
 
-## Release order
+## Ongoing operation
 
-1. Review the draft site pull request, including the empty corrections log and privacy language.
-2. Update the Form title, description, and confirmation message above. Check that responder copies remain enabled and that the Form shows zero test responses.
-3. Merge the site pull request. GitHub Pages will publish the corrections log, privacy update, and footer links.
-4. Open the public site and form from the footer. Confirm the policy and log URLs resolve, the Form no longer says `[DEV]`, and the form still accepts responses.
-5. Review submissions manually. Record only confirmed material errors or meaningful clarifications in the next available briefing and in `site/corrections.html`. Include the affected briefing date, what was wrong or unclear, what changed, and a supporting source when available. Do not publish the submitter's identity or private message.
-6. Delete each complete Google Form response, including its collected email address, after review and no later than 15 days after submission. No response spreadsheet is connected. This is a manual practice and must be checked regularly; no scheduled task is used.
+- Review submissions manually. Record only confirmed material errors or meaningful clarifications in the next available briefing and in `site/corrections.html`. Include the affected briefing date, what was wrong or unclear, what changed, and a supporting source when available. Do not publish the submitter's identity or private message.
+- Delete each complete Google Form response, including its collected email address, after review and no later than 15 days after submission. No response spreadsheet is connected. This is a manual commitment and must be checked regularly; no scheduled task is used.
+- Responder email collection is set to "Responder input," and a response copy is set to "Always." The form remains published.
 
 Submitting the sitemap to a search engine remains a separate later step.

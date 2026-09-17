@@ -30,6 +30,13 @@ ALLOWED_GENERATED_TARGETS = {
     "generated_operations": "docs/OPERATIONS.md",
 }
 
+# This snapshot predates the state_sha256 metadata field. Keep it immutable and
+# verify its original state against this independently recorded digest.
+LEGACY_SNAPSHOT_HASHES = {
+    "2026-09-14T134300-0500__registry-2026-09-14.2.json":
+        "7f0bc651340629e2776659dcf785368bd783aca1773ba6b0c97963c1b4f33908",
+}
+
 
 class RegistryError(RuntimeError):
     pass
@@ -168,7 +175,10 @@ def audit_snapshots(registry: dict[str, Any], errors: list[str], ok: list[str]) 
             errors.append(f"Snapshot missing snapshot/state objects: {path.relative_to(ROOT)}")
             continue
         expected_hash = hashlib.sha256(canonical_json(state).encode("utf-8")).hexdigest()
-        if meta.get("state_sha256") != expected_hash:
+        recorded_hash = meta.get("state_sha256")
+        if recorded_hash is None:
+            recorded_hash = LEGACY_SNAPSHOT_HASHES.get(path.name)
+        if recorded_hash != expected_hash:
             errors.append(f"Snapshot integrity hash mismatch: {path.relative_to(ROOT)}")
     if count:
         ok.append(f"Validated {count} committed snapshot file(s)")

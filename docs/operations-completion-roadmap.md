@@ -1,0 +1,61 @@
+# Operations completion and task reconciliation roadmap
+
+**Status:** Planned; documentation only. No production monitoring or delivery behavior changes in this document.
+**Scope:** Subscriber intake through welcome delivery; daily generation through delivery; scheduled-task existence and timing. V2 editorial shadow evidence and Friday recap development are tracked separately.
+
+## Existing paths and boundaries
+
+- Production Subscriber Operations runs every six hours and owns intake processing and creation of one queued `WELCOME_V1` message per eligible signup. The hourly Apps Script welcome dispatcher alone owns sending and queue delivery fields.
+- The 08:00 America/Chicago daily generation task creates `DAILY_BRIEFING_V1` queue and Briefing History rows. The hourly Apps Script daily dispatcher alone sends and updates delivery results.
+- The 09:30 watchdog already checks Subscriber Operations freshness, daily generation, daily queue/history/provider consistency, and aged or failed welcome rows. It may update only its own Operations Status and History records and send administrator alerts; it cannot repair delivery.
+- `PROJECT_STATE.json` and canonical prompt files record the intended ChatGPT task IDs and schedules. Live scheduler state is the evidence for whether a task exists and is enabled. Apps Script trigger state must be checked through its runtime, not inferred from the ChatGPT task list.
+- No subscriber addresses, tokens, administrator addresses, payloads, or provider credentials belong in GitHub or alert text.
+
+## Phase 1 — Define the completion contract (staged, no production writes)
+
+Map actual production columns, ledgers, status rows, and Apps Script triggers before editing any prompt or script. Document the join keys and permissible latency. Use the recorded Response Key and source tuple for an already ledgered intake response; do not derive a second identity. Use deterministic Message ID for each welcome or daily queue record and Run ID + Profile ID for daily history. Inspect the signup-to-reactivation rules and distinguish a new welcome-eligible signup from an existing subscriber action.
+
+| Journey | Expected terminal evidence | Explicit exceptions |
+|---|---|---|
+| Signup | Valid production signup response has one reconciled ledger result, one eligible subscriber/profile, one deterministic welcome queue row, and `Sent` plus one Resend provider ID after the dispatcher runs. | Invalid/duplicate/rejected response, deliberate suppression, existing-subscriber path, or no welcome entitlement must have a specific auditable disposition. |
+| Daily issue | Each uniquely eligible Active profile has one current-date deterministic queue row, matching history rows, `Sent` and one consistent Resend provider ID after dispatch. | Explicitly recorded zero-eligible success, identity ambiguity, or a documented exclusion must not be counted as a silent success. |
+| Scheduled tasks | Each Active registered ChatGPT task resolves to one live enabled task with matching task ID, schedule/timezone, recent run outcome, and plausible next run. | Held/Development/Retired prompts have no expected active task. Apps Script triggers are verified separately. |
+
+Completion means provider acceptance and matching internal records; it does **not** prove inbox placement or that a subscriber read the email. Record pending within the agreed processing window, unhealthy after it, and unknown when evidence cannot be read. Do not treat a missing row or inaccessible scheduler as a successful zero-work run.
+
+## Phase 2 — Signup-to-welcome reconciliation (stage and test)
+
+1. Build a read-only reconciler over the production response, ledger, subscriber/profile, and welcome queue evidence. Report counts and sanitized row references by stage; avoid subscriber identifiers in task output or alerts.
+2. Reconcile every eligible signup since the last known good scan, plus an overlap window so a missed run is still visible. Persist a high-water mark only after a successful scan and retain enough overlap to detect partial writes. Specify retention and recovery behavior before promotion.
+3. Add an explicit age threshold based on the six-hour intake cadence and hourly welcome dispatch. Keep the existing watchdog's two-hour threshold for an already queued welcome. Set the signup-to-queue threshold after observing actual run timing; a newly submitted response must remain Pending during its legitimate processing window.
+4. Detect orphaned ledger states, valid responses never processed, duplicate keys/message IDs, queued but never sent welcomes, Failed rows, and Sent rows missing a provider ID. Reconcile legitimate suppression/reactivation outcomes.
+5. Exercise DEV fixtures for new signup, duplicate submission, existing subscriber/reactivation, invalid response, delayed processor, partial write, send failure, and clean replay. Verify that checks never send or mutate a subscriber.
+6. Promote read-only detection first; then add one incident type and administrator alert only after clean DEV runs and a controlled production observation. Existing processor and dispatcher retain sole write/send ownership.
+
+**Acceptance:** Every controlled case has one correct disposition, zero duplicate welcome sends, no test subscriber in production, and an intentional zero-work run stays healthy. A deliberately stranded valid signup becomes unhealthy after the documented threshold and recovers only when the completion evidence exists.
+
+## Phase 3 — Task and trigger reconciliation (stage and test)
+
+1. Check the authoritative registry against the live ChatGPT task list/metadata using task IDs. Compare Active/Held status, enabled state, schedule and timezone, last run status/time, and expected next run. Treat a missing, disabled, duplicate, or materially mismatched Active task as unhealthy. Define tolerance for scheduler latency and unavailable metadata.
+2. Confirm that the authorized operator connection can read scheduler state during unattended execution. If it cannot, record `Unknown — scheduler state unavailable`; provide a manual reconciliation runbook and do not claim continuous task verification. Do not add another task or scrape the UI.
+3. Inspect the installed Apps Script trigger handlers for the hourly welcome/daily dispatchers, separate from ChatGPT tasks. Specify how last dispatcher success is evidenced. Do not assume a queue row's Sent status proves the trigger is still installed.
+4. Test missing task, disabled task, changed schedule, stale/failed last run, missing next run, Held task absent, duplicate active task, missing Apps Script trigger, and temporary API read failure in a controlled environment. Do not disable a production task to manufacture a test.
+5. Add this check to an existing production monitoring execution only after permission/availability and runtime tests pass. The 09:30 watchdog is the preferred daily checkpoint; keep critical signup and delivery checks on their existing cadence. Record task registration changes when scheduler copies are restored.
+
+**Acceptance:** The monitor detects each simulated mismatch without editing tasks, queues, or recipients; it reports Unknown for unreadable scheduler data; and restoring the registered task produces an evidenced recovery.
+
+## Phase 4 — Production rollout and review
+
+- Follow [the short release checklist](release-checklist.md). Snapshot and changelog are required when the promotion changes the production monitoring subsystem or registry; prompt, code, and registry edits must agree before release.
+- Run controlled DEV cases, then a read-only production observation across at least one signup processor cycle and one daily briefing cycle. Compare counts by hand before enabling new alerts.
+- Promote one reconciliation path at a time. Preserve existing component alerts and daily per-component deduplication. Monitor the first two live cycles and verify one genuine or controlled failure/recovery path without sending a duplicate subscriber message.
+- Roll back new alerting/check logic independently of the intake processor and dispatchers if it generates false positives. Keep any recorded incident history for audit.
+
+## Priorities and dependencies
+
+1. Phase 1 schema and timing inventory.
+2. Phase 2 signup completion, since the recent missed signups are the clearest uncovered reader journey.
+3. Phase 3 scheduler and Apps Script trigger checks, subject to runtime access.
+4. Phase 4 staged promotion and short post-release review.
+
+No V2 promotion, Friday recap change, or shadow-review evidence-log work is part of this release.

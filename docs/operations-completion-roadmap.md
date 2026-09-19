@@ -1,6 +1,6 @@
 # Operations completion and task reconciliation roadmap
 
-**Status:** Planned; documentation only. No production monitoring or delivery behavior changes in this document.
+**Status:** In progress. Phase 1 completion contract and production baseline completed 2026-09-19; no production monitoring or delivery behavior changed.
 **Scope:** Subscriber intake through welcome delivery; daily generation through delivery; scheduled-task existence and timing. V2 editorial shadow evidence and Friday recap development are tracked separately.
 
 ## Existing paths and boundaries
@@ -11,9 +11,9 @@
 - `PROJECT_STATE.json` and canonical prompt files record the intended ChatGPT task IDs and schedules. Live scheduler state is the evidence for whether a task exists and is enabled. Apps Script trigger state must be checked through its runtime, not inferred from the ChatGPT task list.
 - No subscriber addresses, tokens, administrator addresses, payloads, or provider credentials belong in GitHub or alert text.
 
-## Phase 1 — Define the completion contract (staged, no production writes)
+## Phase 1 — Define the completion contract (completed 2026-09-19)
 
-Map actual production columns, ledgers, status rows, and Apps Script triggers before editing any prompt or script. Document the join keys and permissible latency. Use the recorded Response Key and source tuple for an already ledgered intake response; do not derive a second identity. Use deterministic Message ID for each welcome or daily queue record and Run ID + Profile ID for daily history. Inspect the signup-to-reactivation rules and distinguish a new welcome-eligible signup from an existing subscriber action.
+The production signup path, join keys, timing states, privacy boundaries, baseline, and test gate are defined in [the end-to-end completion contract](end-to-end-completion-spec.md). Use the recorded Response Key and source tuple for an already ledgered intake response; do not derive a second identity. Use deterministic Message ID for each welcome and Run ID + Profile ID for daily history.
 
 | Journey | Expected terminal evidence | Explicit exceptions |
 |---|---|---|
@@ -27,7 +27,7 @@ Completion means provider acceptance and matching internal records; it does **no
 
 1. Build a read-only reconciler over the production response, ledger, subscriber/profile, and welcome queue evidence. Report counts and sanitized row references by stage; avoid subscriber identifiers in task output or alerts.
 2. Reconcile every eligible signup since the last known good scan, plus an overlap window so a missed run is still visible. Persist a high-water mark only after a successful scan and retain enough overlap to detect partial writes. Specify retention and recovery behavior before promotion.
-3. Add an explicit age threshold based on the six-hour intake cadence and hourly welcome dispatch. Keep the existing watchdog's two-hour threshold for an already queued welcome. Set the signup-to-queue threshold after observing actual run timing; a newly submitted response must remain Pending during its legitimate processing window.
+3. Apply the adopted timing model: Pending for up to 8 hours from valid signup to a reconciled queue/disposition, then Unhealthy; after queuing, Pending for up to 2 additional hours, then Unhealthy. Explicit failures, contradictions, duplicates, and identity/cardinality defects are unhealthy immediately.
 4. Detect orphaned ledger states, valid responses never processed, duplicate keys/message IDs, queued but never sent welcomes, Failed rows, and Sent rows missing a provider ID. Reconcile legitimate suppression/reactivation outcomes.
 5. Exercise DEV fixtures for new signup, duplicate submission, existing subscriber/reactivation, invalid response, delayed processor, partial write, send failure, and clean replay. Verify that checks never send or mutate a subscriber.
 6. Promote read-only detection first; then add one incident type and administrator alert only after clean DEV runs and a controlled production observation. Existing processor and dispatcher retain sole write/send ownership.

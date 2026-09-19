@@ -3,8 +3,8 @@
 > Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.
 
 - Schema version: `1.2`
-- Registry version: `2026-09-14.2`
-- Last reviewed: `2026-09-14`
+- Registry version: `2026-09-19.1`
+- Last reviewed: `2026-09-19`
 - Production status: **live**
 - Public site: https://austindailybriefing.com/
 

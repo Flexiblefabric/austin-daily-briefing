@@ -23,9 +23,9 @@ The production signup path, join keys, timing states, privacy boundaries, baseli
 
 Completion means provider acceptance and matching internal records; it does **not** prove inbox placement or that a subscriber read the email. Record pending within the agreed processing window, unhealthy after it, and unknown when evidence cannot be read. Do not treat a missing row or inaccessible scheduler as a successful zero-work run.
 
-## Phase 2 — Signup-to-welcome reconciliation (stage and test)
+## Phase 2 — Signup-to-welcome reconciliation (in progress)
 
-1. Build a read-only reconciler over the production response, ledger, subscriber/profile, and welcome queue evidence. Report counts and sanitized row references by stage; avoid subscriber identifiers in task output or alerts.
+1. Build a read-only reconciler over the production response, ledger, subscriber/profile, and welcome queue evidence. Report counts and sanitized row references by stage; avoid subscriber identifiers in task output or alerts. The first canonical observation prompt is stored at [end-to-end-completion-observation.md](automation-prompts/end-to-end-completion-observation.md), with controlled classifications in [the test vectors](end-to-end-completion-test-vectors.md).
 2. Reconcile every eligible signup since the last known good scan, plus an overlap window so a missed run is still visible. Persist a high-water mark only after a successful scan and retain enough overlap to detect partial writes. Specify retention and recovery behavior before promotion.
 3. Apply the adopted timing model: Pending for up to 8 hours from valid signup to a reconciled queue/disposition, then Unhealthy; after queuing, Pending for up to 2 additional hours, then Unhealthy. Explicit failures, contradictions, duplicates, and identity/cardinality defects are unhealthy immediately.
 4. Detect orphaned ledger states, valid responses never processed, duplicate keys/message IDs, queued but never sent welcomes, Failed rows, and Sent rows missing a provider ID. Reconcile legitimate suppression/reactivation outcomes.

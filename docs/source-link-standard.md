@@ -38,7 +38,7 @@ Recommended pattern:
 
 ```html
 <p style="margin:12px 0 0;">
-  <a href="[URL]" style="display:inline-block;padding:8px 0;color:#0b5cad;font-size:16px;font-weight:700;text-decoration:underline;">
+  <a href="[URL]" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">
     Source: [Publisher] →
   </a>
 </p>

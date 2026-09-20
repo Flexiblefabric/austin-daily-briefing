@@ -552,23 +552,33 @@ Signal a consequential development that readers may reasonably have missed.
 
 ### Canonical visual treatment
 
-- Larger enclosing Warm Wash field or approved neutral field.
+Use a **header-band treatment** rather than a full-section Warm Wash field.
+
 - Signal Red top rule: approximately 4–5px.
-- Internal padding: approximately 22–26px.
+- Warm Wash header band containing the `UNDER THE RADAR` label.
+- Paper story body below the header band.
+- Internal story padding: approximately 22–26px.
 - Increased major-section separation.
-- Section label in Charcoal.
 - Headline uses standard story hierarchy.
+
+This treatment makes Under the Radar recognizable as a special discovery lane without turning the entire component into a nested card.
 
 ### Why It Matters inside Under the Radar
 
-Retain its own Signal Red left rule and inset treatment.
+Use the standard Why It Matters treatment without modification:
 
-Because both components use Warm Wash, implementation must preserve a clear nested distinction. Preferred approaches include:
+- Warm Wash background.
+- Signal Red left rule.
+- Standard inset padding and typography.
 
-- Slightly lighter or Paper inner Why It Matters field while retaining its red left rule, or
-- Preserve Warm Wash but use clear internal spacing and a red rule strong enough to distinguish the nested component.
+Because the Under the Radar story body remains Paper, Why It Matters retains the same canonical appearance it uses elsewhere in the newsletter.
 
-Do not allow the Why It Matters box to visually disappear into the Under the Radar field.
+The visual semantics are intentionally distinct:
+
+- Under the Radar: Signal Red top rule + Warm Wash header band.
+- Why It Matters: Warm Wash field + Signal Red left rule.
+
+Do not use a full Warm Wash outer body for Under the Radar, and do not create a special Paper variant of Why It Matters inside this section.
 
 ### Omitted state
 
@@ -1051,8 +1061,9 @@ Before implementation promotion, verify each component against the following.
 ### Under the Radar
 
 - Strong top rule.
-- Distinct outer field.
-- Nested Why It Matters still visually legible.
+- Warm Wash header band.
+- Paper story body.
+- Nested Why It Matters uses the standard Warm Wash + Signal Red left-rule treatment.
 
 ### Austin Ahead
 

@@ -1,9 +1,9 @@
 # Austin Daily Briefing Editorial System
 
 **Version:** 0.1  
-**Status:** Working draft for review  
+**Status:** Approved; canonical editorial standard  
 **Internal creative principle:** **Serious about the facts. Alive to Austin.**  
-**Proposed canonical path:** `docs/editorial-system.md`
+**Canonical path:** `docs/editorial-system.md`
 
 ## 1. Purpose
 
@@ -687,7 +687,7 @@ Operational mechanics should not be copied into this document unless they change
 
 ## 28. Governance
 
-Once approved, this file should become the canonical source for reader-facing ADB editorial standards.
+This file is the canonical source for reader-facing ADB editorial standards.
 
 The Editorial System defines **what ADB publishes and how it should behave editorially**.
 

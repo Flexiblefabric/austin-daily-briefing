@@ -7,8 +7,8 @@
     .descriptor { font-family: 'IBM Plex Sans Condensed', 'Arial Narrow', Arial, sans-serif; font-weight: 500; letter-spacing: 2px; }
   </style>
   <rect width="900" height="220" fill="#fffefa"/>
-  <text class="austin" x="28" y="164" font-size="154" fill="#181818">AUSTIN</text>
-  <rect x="554" y="40" width="5" height="140" fill="#db2d2d"/>
-  <text class="descriptor" x="582" y="99" font-size="62" fill="#181818">DAILY</text>
-  <text class="descriptor" x="582" y="164" font-size="62" fill="#181818">BRIEFING<tspan fill="#db2d2d">.</tspan></text>
+  <text class="austin" x="18" y="164" font-size="154" fill="#181818">AUSTIN</text>
+  <rect x="566" y="40" width="5" height="140" fill="#db2d2d"/>
+  <text class="descriptor" x="590" y="99" font-size="62" fill="#181818">DAILY</text>
+  <text class="descriptor" x="590" y="164" font-size="62" fill="#181818">BRIEFING<tspan fill="#db2d2d">.</tspan></text>
 </svg>

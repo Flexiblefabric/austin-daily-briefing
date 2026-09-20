@@ -58,16 +58,16 @@ def draw_spaced(draw: ImageDraw.ImageDraw, xy: tuple[float, float], text: str,
 
 
 def write_masthead(newsreader: Path, plex: Path, output_dir: Path) -> None:
-    austin, _ = glyph_runs("AUSTIN", newsreader, 154, 28, 164, -8)
-    daily, _ = glyph_runs("DAILY", plex, 62, 582, 99, 2)
-    briefing, briefing_width = glyph_runs("BRIEFING", plex, 62, 582, 164, 2)
-    period, _ = glyph_runs(".", plex, 62, 582 + briefing_width, 164, 0)
+    austin, _ = glyph_runs("AUSTIN", newsreader, 154, 18, 164, -8)
+    daily, _ = glyph_runs("DAILY", plex, 62, 590, 99, 2)
+    briefing, briefing_width = glyph_runs("BRIEFING", plex, 62, 590, 164, 2)
+    period, _ = glyph_runs(".", plex, 62, 590 + briefing_width, 164, 0)
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="900" height="220" viewBox="0 0 900 220" role="img" aria-labelledby="title desc">
   <title id="title">Austin Daily Briefing</title>
   <desc id="desc">Austin in a modern editorial serif, separated by a red vertical rule from Daily Briefing stacked in a condensed sans serif.</desc>
   <rect width="900" height="220" fill="{PAPER}"/>
   <g fill="{CHARCOAL}">{''.join(austin)}</g>
-  <rect x="554" y="40" width="5" height="140" fill="{RED}"/>
+  <rect x="566" y="40" width="5" height="140" fill="{RED}"/>
   <g fill="{CHARCOAL}">{''.join(daily)}{''.join(briefing)}</g>
   <g fill="{RED}">{''.join(period)}</g>
 </svg>
@@ -79,10 +79,10 @@ def write_masthead(newsreader: Path, plex: Path, output_dir: Path) -> None:
     draw = ImageDraw.Draw(image)
     news_font = ImageFont.truetype(str(newsreader), 154 * scale)
     plex_font = ImageFont.truetype(str(plex), 62 * scale)
-    draw_spaced(draw, (28 * scale, 164 * scale), "AUSTIN", news_font, CHARCOAL, -8 * scale)
-    draw.rectangle((554 * scale, 40 * scale, 559 * scale, 180 * scale), fill=RED)
-    draw_spaced(draw, (582 * scale, 99 * scale), "DAILY", plex_font, CHARCOAL, 2 * scale)
-    end = draw_spaced(draw, (582 * scale, 164 * scale), "BRIEFING", plex_font, CHARCOAL, 2 * scale)
+    draw_spaced(draw, (18 * scale, 164 * scale), "AUSTIN", news_font, CHARCOAL, -8 * scale)
+    draw.rectangle((566 * scale, 40 * scale, 571 * scale, 180 * scale), fill=RED)
+    draw_spaced(draw, (590 * scale, 99 * scale), "DAILY", plex_font, CHARCOAL, 2 * scale)
+    end = draw_spaced(draw, (590 * scale, 164 * scale), "BRIEFING", plex_font, CHARCOAL, 2 * scale)
     draw.text((end, 164 * scale), ".", font=plex_font, fill=RED, anchor="ls")
     image.resize((900, 220), Image.Resampling.LANCZOS).save(output_dir / "adb-masthead.png", optimize=True)
 
@@ -109,6 +109,29 @@ def write_mark(newsreader: Path, output_dir: Path) -> None:
     draw_spaced(draw, ((128 * scale) - text_width / 2, 143 * scale), "ADB", font, PAPER, -4 * scale)
     draw.rectangle((74 * scale, 166 * scale, 182 * scale, 174 * scale), fill=RED)
     image.resize((256, 256), Image.Resampling.LANCZOS).save(output_dir / "adb-mark.png", optimize=True)
+
+    reversed_svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">ADB</title>
+  <desc id="desc">The letters ADB in Newsreader inside a white circular outline with a red underline.</desc>
+  <circle cx="128" cy="128" r="118" fill="none" stroke="{PAPER}" stroke-width="8"/>
+  <g fill="{PAPER}">{''.join(mark)}</g>
+  <rect x="74" y="166" width="108" height="8" fill="{RED}"/>
+</svg>
+'''
+    (output_dir / "adb-mark-reversed-outlined.svg").write_text(reversed_svg, encoding="utf-8")
+
+    reversed_image = Image.new("RGBA", (256 * scale, 256 * scale), (255, 255, 255, 0))
+    reversed_draw = ImageDraw.Draw(reversed_image)
+    reversed_draw.ellipse(
+        (10 * scale, 10 * scale, 246 * scale, 246 * scale),
+        outline=PAPER,
+        width=8 * scale,
+    )
+    draw_spaced(reversed_draw, ((128 * scale) - text_width / 2, 143 * scale), "ADB", font, PAPER, -4 * scale)
+    reversed_draw.rectangle((74 * scale, 166 * scale, 182 * scale, 174 * scale), fill=RED)
+    reversed_image.resize((256, 256), Image.Resampling.LANCZOS).save(
+        output_dir / "adb-mark-reversed.png", optimize=True
+    )
 
 
 def main() -> None:

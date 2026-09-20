@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">ADB</title>
+  <desc id="desc">The letters ADB in Newsreader inside a charcoal circle with a red underline.</desc>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500&amp;display=swap');
+    .mark { font-family: 'Newsreader', Georgia, serif; font-weight: 500; letter-spacing: -4px; }
+  </style>
+  <circle cx="128" cy="128" r="122" fill="#181818"/>
+  <text class="mark" x="128" y="143" text-anchor="middle" font-size="86" fill="#fffefa">ADB</text>
+  <rect x="74" y="166" width="108" height="8" fill="#db2d2d"/>
+</svg>

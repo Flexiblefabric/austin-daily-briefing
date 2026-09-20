@@ -5,7 +5,7 @@
 
 ## Primary masthead
 
-The horizontal masthead uses `AUSTIN` in uppercase Newsreader. `DAILY` and `BRIEFING.` are stacked, left-aligned, and set in IBM Plex Sans Condensed. A signal-red vertical rule separates the two blocks. The descriptor should match the visible height of `AUSTIN`. The period after `BRIEFING` remains red.
+The horizontal masthead uses `AUSTIN` in uppercase Newsreader. `DAILY` and `BRIEFING.` are stacked, left-aligned, and set in IBM Plex Sans Condensed. A signal-red vertical rule separates the two blocks. The rule must sit fully within the optical gap and must never touch either word block; the 900-pixel master keeps at least 12 pixels of clear space after the visible edge of `AUSTIN`. The descriptor should match the visible height of `AUSTIN`. The period after `BRIEFING` remains red.
 
 Use the primary masthead at the top of every Austin Daily Briefing edition. Preserve generous clear space and never compress, distort, restack, or recolor the mark.
 
@@ -13,7 +13,7 @@ Use the primary masthead at the top of every Austin Daily Briefing edition. Pres
 
 The compact mark is `ADB` in uppercase Newsreader, without a period, enclosed in a charcoal circle. A short signal-red underline carries the primary identity accent into the compact form.
 
-Use the compact mark for favicons, avatars, narrow mobile placements, and the newsletter footer. Do not use it as a replacement for the full masthead when the full name can fit comfortably.
+Use the compact mark for favicons, avatars, and narrow mobile placements. The newsletter footer uses the reversed treatment: a transparent field with a paper-white ring and letters, retaining the signal-red underline, against the charcoal footer. Do not place the charcoal-filled mark on the charcoal footer. Do not use the compact mark as a replacement for the full masthead when the full name can fit comfortably.
 
 ## Typography
 
@@ -39,6 +39,10 @@ Signal red is an accent. Reserve it for the masthead divider, the punctuation ma
 - Maintain strong contrast in light and reversed treatments.
 - Keep an HTML text fallback for clients that block images.
 - Convert the approved marks to outlined SVG and production PNG exports before live email promotion so the exact typography does not depend on remote font loading.
+
+## Newsletter spacing
+
+Major sections use deliberately generous vertical spacing so a full edition does not become a continuous wall of text. The reference email uses 42 pixels above and below standard major sections on desktop, 46 pixels around Under the Radar, and 34 pixels on narrow mobile screens. Stories grouped inside a section remain more compact so the rhythm varies between section breaks and related items.
 
 ## Newsletter order
 

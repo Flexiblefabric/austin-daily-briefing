@@ -5,14 +5,14 @@
  * Admin Hold test profile is never made production-eligible. Exact recipients,
  * branch payloads, and idempotency keys keep the send bounded and replay-safe.
  */
-function sendNewsletterRedesignQaV1() {
+function sendNewsletterRedesignQaV2() {
   const recipients = [
     'Flexiblefoam@yahoo.com',
     'claro12407@gmail.com',
     'adbtester12@hotmail.com'
   ];
-  const subject = '[CONTROLLED TEST] Austin Daily Briefing — Newsletter Redesign QA';
-  const runId = 'newsletter-redesign-qa-v1-20260920';
+  const subject = '[CONTROLLED TEST] Austin Daily Briefing — Newsletter Redesign QA Revision 2';
+  const runId = 'newsletter-redesign-qa-v2-20260920';
   const payload = adbLoadNewsletterRedesignQa_();
 
   const results = recipients.map(function(recipient) {
@@ -25,7 +25,7 @@ function sendNewsletterRedesignQaV1() {
       tags: {
         message_type: 'newsletter_redesign_qa',
         environment: 'production',
-        qa_run: 'redesign_v1'
+        qa_run: 'redesign_v2'
       }
     });
     return {recipient: recipient, providerId: result.id, statusCode: result.statusCode};
@@ -36,7 +36,7 @@ function sendNewsletterRedesignQaV1() {
 }
 
 /** Read-only preflight: fetches and validates the exact payload without sending. */
-function validateNewsletterRedesignQaV1() {
+function validateNewsletterRedesignQaV2() {
   const payload = adbLoadNewsletterRedesignQa_();
   const report = {
     htmlChars: payload.html.length,
@@ -47,6 +47,9 @@ function validateNewsletterRedesignQaV1() {
   };
   if (report.htmlLinks !== report.textUrls || report.htmlLinks !== 15) {
     throw new Error('HTML/plain-text destination parity failed.');
+  }
+  if (payload.html.indexOf('adb-mark-reversed.png') < 0 || payload.html.indexOf('major-section') < 0) {
+    throw new Error('Revision 2 layout markers are missing.');
   }
   Logger.log(JSON.stringify(report));
   return report;

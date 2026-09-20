@@ -38,7 +38,7 @@ It uses:
 
 The descriptor block should visually approximate the visible height of `AUSTIN`.
 
-**Status:** established design direction; final typography, optical spacing, and production geometry remain in refinement. Current SVG and PNG exports are working assets, not immutable production masters.
+**Status:** established. The approved masthead is the canonical identity mark. Production exports should preserve its approved typography, optical spacing, proportions, and color treatment.
 
 The divider must remain fully inside the optical gap and must never touch either word block. Preserve generous clear space. Do not stretch, compress, restack, rotate, decorate, or recolor the mark arbitrarily.
 
@@ -751,7 +751,7 @@ A formal revision is warranted when changing the brand palette, primary type rol
 
 | Component | Status |
 |---|---|
-| Masthead | In refinement |
+| Masthead | Established |
 | Compact mark | Established |
 | Core palette | Established |
 | Typography roles | Established |

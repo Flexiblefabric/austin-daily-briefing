@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="220" viewBox="0 0 900 220" role="img" aria-labelledby="title desc">
+  <title id="title">Austin Daily Briefing</title>
+  <desc id="desc">Austin in a modern editorial serif, separated by a red vertical rule from Daily Briefing stacked in a condensed sans serif.</desc>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500&amp;family=Newsreader:opsz,wght@6..72,500&amp;display=swap');
+    .austin { font-family: 'Newsreader', Georgia, serif; font-weight: 500; letter-spacing: -8px; }
+    .descriptor { font-family: 'IBM Plex Sans Condensed', 'Arial Narrow', Arial, sans-serif; font-weight: 500; letter-spacing: 2px; }
+  </style>
+  <rect width="900" height="220" fill="#fffefa"/>
+  <text class="austin" x="28" y="164" font-size="154" fill="#181818">AUSTIN</text>
+  <rect x="554" y="40" width="5" height="140" fill="#db2d2d"/>
+  <text class="descriptor" x="582" y="99" font-size="62" fill="#181818">DAILY</text>
+  <text class="descriptor" x="582" y="164" font-size="62" fill="#181818">BRIEFING<tspan fill="#db2d2d">.</tspan></text>
+</svg>

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Austin Daily Briefing — Layout Preview</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500&amp;family=Newsreader:opsz,wght@6..72,400;6..72,500&amp;display=swap');
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #ece9e2; color: #181818; font-family: Arial, Helvetica, sans-serif; }
+    a { color: #8f1717; }
+    .shell { width: 100%; padding: 28px 14px; }
+    .email { width: 100%; max-width: 620px; margin: 0 auto; background: #fffefa; box-shadow: 0 12px 36px rgba(24,24,24,.10); }
+    .preview-banner { padding: 10px 22px; background: #181818; color: #fffefa; font: 500 13px/1.2 'IBM Plex Sans Condensed', Arial, sans-serif; letter-spacing: .12em; text-align: center; }
+    .masthead { padding: 30px 26px 22px; border-bottom: 1px solid #dedad1; text-align: center; }
+    .masthead img { display: block; width: 100%; max-width: 500px; height: auto; margin: 0 auto; }
+    .issue-date { margin-top: 12px; color: #68635a; font: 500 14px/1.3 'IBM Plex Sans Condensed', Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+    .content { padding: 0 34px; }
+    .section { padding: 30px 0; border-bottom: 1px solid #dedad1; }
+    .section-label { margin: 0 0 12px; color: #a51e1e; font: 500 14px/1.2 'IBM Plex Sans Condensed', Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+    .pulse { margin: 0; padding-left: 18px; border-left: 4px solid #db2d2d; color: #2a2926; font: 400 21px/1.48 'Newsreader', Georgia, serif; }
+    .weather { display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+    .weather-main { margin: 0; font: 500 25px/1.15 'Newsreader', Georgia, serif; }
+    .weather-detail { margin: 8px 0 0; color: #565149; font-size: 16px; line-height: 1.55; }
+    .weather-temp { font: 500 46px/1 'IBM Plex Sans Condensed', Arial, sans-serif; }
+    .headline { margin: 0; font: 500 31px/1.08 'Newsreader', Georgia, serif; letter-spacing: -.02em; }
+    .story-headline { margin: 0; font: 500 24px/1.14 'Newsreader', Georgia, serif; }
+    .meta { margin: 10px 0 0; color: #68635a; font: 500 13px/1.3 'IBM Plex Sans Condensed', Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+    .summary { margin: 16px 0 0; font-size: 17px; line-height: 1.58; }
+    .why { margin: 16px 0 0; padding: 14px 16px; background: #f2efe8; font-size: 16px; line-height: 1.52; }
+    .why strong { font-family: 'IBM Plex Sans Condensed', Arial, sans-serif; letter-spacing: .03em; }
+    .source { display: inline-block; margin-top: 10px; padding: 8px 0; color: #8f1717; font-size: 16px; font-weight: 700; text-decoration: underline; }
+    .story { padding: 25px 0; border-top: 1px solid #dedad1; }
+    .story:first-of-type { border-top: 0; padding-top: 0; }
+    .utr { padding: 24px; background: #f2efe8; border-top: 5px solid #db2d2d; }
+    .utr .section-label { color: #181818; }
+    .personal-grid { display: grid; gap: 18px; }
+    .personal { padding-bottom: 18px; border-bottom: 1px solid #dedad1; }
+    .personal:last-child { padding-bottom: 0; border-bottom: 0; }
+    .personal h3 { margin: 0; font: 500 21px/1.18 'Newsreader', Georgia, serif; }
+    .personal p { margin: 8px 0 0; font-size: 16px; line-height: 1.5; }
+    .event { display: grid; grid-template-columns: 54px 1fr; gap: 16px; padding: 16px 0; border-top: 1px solid #dedad1; }
+    .event:first-of-type { border-top: 0; padding-top: 0; }
+    .event-date { color: #a51e1e; font: 500 18px/1 'IBM Plex Sans Condensed', Arial, sans-serif; text-align: center; }
+    .event-date span { display: block; margin-top: 4px; color: #181818; font-size: 25px; }
+    .event h3 { margin: 0; font: 500 20px/1.18 'Newsreader', Georgia, serif; }
+    .event p { margin: 7px 0 0; color: #565149; font-size: 15px; line-height: 1.45; }
+    .footer { padding: 34px 28px; background: #181818; color: #fffefa; text-align: center; }
+    .footer img { width: 74px; height: 74px; }
+    .footer p { margin: 16px auto; max-width: 460px; color: #d8d4cc; font-size: 15px; line-height: 1.55; }
+    .pause { display: block; width: 100%; max-width: 340px; margin: 24px auto 18px; padding: 15px 18px; background: #db2d2d; color: #fff; font: 500 18px/1.2 'IBM Plex Sans Condensed', Arial, sans-serif; text-decoration: none; }
+    .footer-links a { display: inline-block; padding: 8px; color: #fffefa; font-size: 14px; }
+    @media (max-width: 520px) {
+      .shell { padding: 0; }
+      .email { box-shadow: none; }
+      .masthead { padding: 24px 18px 18px; }
+      .content { padding: 0 22px; }
+      .section { padding: 25px 0; }
+      .pulse { font-size: 19px; }
+      .headline { font-size: 28px; }
+      .weather { grid-template-columns: 1fr; gap: 10px; }
+      .weather-temp { font-size: 39px; }
+      .utr { margin-left: -6px; margin-right: -6px; padding: 21px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <main class="email" aria-label="Austin Daily Briefing layout preview">
+      <div class="preview-banner">LAYOUT PREVIEW · SAMPLE CONTENT · NOT A LIVE EDITION</div>
+      <header class="masthead">
+        <img src="../assets/brand/adb-masthead.svg" alt="Austin Daily Briefing">
+        <div class="issue-date">Sunday · September 20, 2026</div>
+      </header>
+
+      <div class="content">
+        <section class="section" aria-labelledby="pulse-heading">
+          <h2 class="section-label" id="pulse-heading">Austin Pulse</h2>
+          <p class="pulse">Austin is starting the day with immediate heat concerns and longer-term decisions about schools, infrastructure, and growth. Public agencies are asking residents to watch changing conditions today, while several quieter policy choices could shape how neighborhoods experience the months ahead.</p>
+        </section>
+
+        <section class="section weather" aria-labelledby="weather-heading">
+          <div>
+            <h2 class="section-label" id="weather-heading">Weather</h2>
+            <p class="weather-main">Hot, sunny, and increasingly uncomfortable</p>
+            <p class="weather-detail">Plan outdoor activity for the morning, carry water, and check the latest advisory before afternoon events.</p>
+            <a class="source" href="https://www.weather.gov/ewx/">Forecast: National Weather Service →</a>
+          </div>
+          <div class="weather-temp" aria-label="High 99 degrees">99°</div>
+        </section>
+
+        <section class="section" aria-labelledby="featured-heading">
+          <h2 class="section-label">Featured Top Story</h2>
+          <h1 class="headline" id="featured-heading">School-closure debate moves from projections to neighborhood consequences</h1>
+          <p class="meta">Austin · Education · Government + Independent</p>
+          <p class="summary">Families and district leaders are moving into a more consequential phase of the school-consolidation discussion, with attention shifting toward travel times, program continuity, and what individual campuses mean to their surrounding neighborhoods.</p>
+          <p class="why"><strong>Why it matters:</strong> A closure decision affects more than enrollment totals. It can change transportation burdens, access to specialized programs, and how families remain connected to public schools.</p>
+          <a class="source" href="https://www.austinisd.org/">Source: Austin ISD →</a>
+        </section>
+
+        <section class="section" aria-labelledby="top-stories-heading">
+          <h2 class="section-label" id="top-stories-heading">Top Stories</h2>
+
+          <article class="story">
+            <h3 class="story-headline">County budget choices put service capacity under the microscope</h3>
+            <p class="meta">Travis County · Public Services · Government</p>
+            <p class="summary">Commissioners are balancing immediate operating needs against longer-term pressure on health, justice, and social-service systems.</p>
+            <p class="why"><strong>Why it matters:</strong> Budget decisions determine whether already-busy programs can respond as demand grows.</p>
+            <a class="source" href="https://www.traviscountytx.gov/">Source: Travis County →</a>
+          </article>
+
+          <article class="story">
+            <h3 class="story-headline">Updated health notice expands the list of possible exposure locations</h3>
+            <p class="meta">Austin · Public Health · Government</p>
+            <p class="summary">The revised notice gives residents additional locations and time windows to review when considering possible exposure.</p>
+            <p class="why"><strong>Why it matters:</strong> Clear dates and locations help people determine whether they should monitor symptoms or contact a clinician.</p>
+            <a class="source" href="https://www.austintexas.gov/department/health">Source: Austin Public Health →</a>
+          </article>
+
+          <article class="story">
+            <h3 class="story-headline">Development agreement preserves flexibility for a changing employment corridor</h3>
+            <p class="meta">Austin Area · Growth · Government</p>
+            <p class="summary">The agreement keeps several future uses available while establishing the rules that will guide infrastructure and development decisions.</p>
+            <p class="why"><strong>Why it matters:</strong> Early land-use decisions can shape traffic, utilities, and employment patterns long before construction begins.</p>
+            <a class="source" href="https://www.austintexas.gov/">Source: City of Austin →</a>
+          </article>
+
+          <article class="story">
+            <h3 class="story-headline">Water-line financing application returns with corrected figures</h3>
+            <p class="meta">Austin · Infrastructure · Government</p>
+            <p class="summary">City staff corrected the application supporting a request for financing to replace aging water lines.</p>
+            <p class="why"><strong>Why it matters:</strong> Replacement work can reduce leaks and service interruptions in neighborhoods with older infrastructure.</p>
+            <a class="source" href="https://www.austintexas.gov/department/austin-water">Source: Austin Water →</a>
+          </article>
+        </section>
+
+        <section class="section" aria-labelledby="utr-heading">
+          <div class="utr">
+            <h2 class="section-label" id="utr-heading">Under the Radar</h2>
+            <h3 class="story-headline">A technical financing correction could unlock millions for basic infrastructure</h3>
+            <p class="summary">The paperwork change is easy to overlook, but it moves a substantial water-line replacement request closer to consideration.</p>
+            <p class="why"><strong>Why it matters:</strong> Administrative steps often determine whether essential projects can proceed on schedule.</p>
+            <a class="source" href="https://www.austintexas.gov/department/austin-water">Source: Austin Water →</a>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="more-heading">
+          <h2 class="section-label" id="more-heading">More for You</h2>
+          <div class="personal-grid">
+            <article class="personal">
+              <h3>UT researchers collaborate on lower-energy AI memory</h3>
+              <p>A research partnership is exploring memory systems intended to reduce the energy demands of advanced computing.</p>
+              <a class="source" href="https://news.utexas.edu/">Source: The University of Texas at Austin →</a>
+            </article>
+            <article class="personal">
+              <h3>Tony Baker brings a weekend run to Cap City</h3>
+              <p>The touring comedian’s Austin dates offer a straightforward option for an evening out.</p>
+              <a class="source" href="https://www.capcitycomedy.com/">Event details: Cap City Comedy Club →</a>
+            </article>
+            <article class="personal">
+              <h3>A cyberpunk FPS reveals a much more flexible game underneath</h3>
+              <p>Game Informer’s preview highlights an immersive-sim structure built around player choice and environmental systems.</p>
+              <a class="source" href="https://gameinformer.com/preview/2026/08/31/so-much-more-than-a-cyberpunk-fps">Source: Game Informer →</a>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="events-heading">
+          <h2 class="section-label" id="events-heading">Events</h2>
+          <article class="event">
+            <div class="event-date">SEP<span>20</span></div>
+            <div>
+              <h3>Evening comedy at Cap City</h3>
+              <p>Check the venue for showtime, age restrictions, and remaining tickets.</p>
+              <a class="source" href="https://www.capcitycomedy.com/">Event details: Cap City Comedy Club →</a>
+            </div>
+          </article>
+          <article class="event">
+            <div class="event-date">SEP<span>21</span></div>
+            <div>
+              <h3>Public meeting and community calendar</h3>
+              <p>Review upcoming City meetings and participation information.</p>
+              <a class="source" href="https://www.austintexas.gov/calendar">Event details: City of Austin →</a>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <img src="../assets/brand/adb-mark.svg" alt="ADB">
+        <p>You’re receiving Austin Daily Briefing because you subscribed to a concise, personalized look at what matters locally.</p>
+        <a class="pause" href="https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform">Pause or unsubscribe</a>
+        <div class="footer-links">
+          <a href="https://austindailybriefing.com/">Visit the website</a>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform">Customize</a>
+          <a href="https://austindailybriefing.com/corrections.html">Corrections</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

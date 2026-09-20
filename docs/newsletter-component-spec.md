@@ -1,7 +1,7 @@
 # Austin Daily Briefing Newsletter Component Specification
 
 **Specification ID:** `ADB-NEWSLETTER-COMPONENTS-0.1`  
-**Status:** Working draft for review  
+**Status:** Approved; canonical newsletter component specification  
 **Scope:** Daily ADB newsletter HTML and plain-text rendering  
 **Depends on:** `docs/design-system.md`, `docs/editorial-system.md`, `docs/source-link-standard.md`
 
@@ -1145,7 +1145,7 @@ Useful code or assets from the superseded branch may be selectively reintroduced
 
 ## 35. Governance
 
-Once approved, this file becomes the canonical implementation specification for ADB newsletter components.
+This file is the canonical implementation specification for ADB newsletter components.
 
 A formal revision is required when changing:
 

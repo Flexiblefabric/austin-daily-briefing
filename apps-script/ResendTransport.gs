@@ -20,7 +20,12 @@ const ADB_RESEND = Object.freeze({
   PRODUCTION_INTAKE_ID: '1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho',
   CUSTOMIZE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform',
   MANAGE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform',
+  FEEDBACK_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSc_0-djww4qboFaEn9k-nEponrCBBqz-MCB81sOUtLjVsOZ7w/viewform',
   SITE_URL: 'https://austindailybriefing.com/',
+  TERMS_URL: 'https://austindailybriefing.com/terms.html',
+  PRIVACY_URL: 'https://austindailybriefing.com/privacy.html',
+  MASTHEAD_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/assets/brand/adb-masthead@2x.png',
+  FOOTER_MARK_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/assets/brand/adb-mark-reversed@2x.png',
   SENDER_CHANGE_APPROVAL_PROPERTY: 'ADB_SENDER_CHANGE_APPROVAL'
 });
 
@@ -698,14 +703,73 @@ function adbKeyValueSheet_(sheet) {
 }
 
 function adbWelcomePlainText_() {
-  return 'Welcome to the Austin Daily Briefing.\n\nYour concise, personalized Austin news briefing is built around the topics and reading style you choose. New subscriptions begin with balanced default preferences.\n\nCustomize my briefing: ' + ADB_RESEND.CUSTOMIZE_URL + '\n\nManage subscription: ' + ADB_RESEND.MANAGE_URL + '\n\nYou can reply directly to this email.';
+  return 'AUSTIN DAILY BRIEFING\n\n' +
+    'WELCOME TO THE AUSTIN DAILY BRIEFING\n\n' +
+    'Each morning, you\'ll get a short rundown of what\'s happening in Austin: city decisions, local business, development, and the things worth knowing that day.\n\n' +
+    'WHAT TO EXPECT\n\n' +
+    'Short.\nMost briefings take 5–7 minutes to read. Most editions begin with about five Top Stories. Key facts come first, and source links are always provided.\n\n' +
+    'Personalized.\nMore for You is built from the topics you choose and the level of detail you want. The briefing adjusts to match.\n\n' +
+    'Austin-first.\nThe shared briefing stays focused on Austin and developments consequential to the immediate area. Personalized items may reach beyond Austin when that context matches your selected interests.\n\n' +
+    'YOUR STARTING SETTINGS\n\n' +
+    'Everyone receives the shared Top Stories. For personalized sections, subscribers begin with all interest categories set to Normal and standard reading settings. Most people adjust this within the first week.\n\n' +
+    'CUSTOMIZE MY BRIEFING\n\n' +
+    'Choose your topics and reading style. It takes about 30 seconds, and you can change it anytime.\n\n' +
+    'Customize my briefing\n' + ADB_RESEND.CUSTOMIZE_URL + '\n\n' +
+    'CORRECTIONS, TIPS, AND FEEDBACK\n\n' +
+    'Reply to this email and it goes to a human for review. If we got something wrong, tell us. If you know something we should be covering, tell us that too.\n\n' +
+    'Austin Daily Briefing\n\n' +
+    'Manage subscription\n' + ADB_RESEND.MANAGE_URL + '\n' +
+    'Pause or unsubscribe\n' + ADB_RESEND.MANAGE_URL + '\n' +
+    'Feedback\n' + ADB_RESEND.FEEDBACK_URL + '\n' +
+    'Terms\n' + ADB_RESEND.TERMS_URL + '\n' +
+    'Privacy\n' + ADB_RESEND.PRIVACY_URL;
 }
 
 function adbWelcomeHtml_() {
-  return '<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;line-height:1.55;color:#202124">' +
-    '<h1 style="font-size:26px;margin:0 0 16px">Welcome to the Austin Daily Briefing</h1>' +
-    '<p>Your concise, personalized Austin news briefing is built around the topics and reading style you choose. New subscriptions begin with balanced default preferences.</p>' +
-    '<p><a href="' + ADB_RESEND.CUSTOMIZE_URL + '" style="display:inline-block;padding:12px 16px;background:#171717;color:#fff;text-decoration:none">Customize my briefing</a></p>' +
-    '<p><a href="' + ADB_RESEND.MANAGE_URL + '">Manage subscription</a></p>' +
-    '<p style="font-size:13px;color:#5f6368">You can reply directly to this email.</p></div>';
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark">' +
+    '<style>@media only screen and (max-width:620px){.outer-pad{padding:0!important}.content-pad{padding-left:22px!important;padding-right:22px!important}.masthead-pad{padding:24px 18px 18px!important}.section{padding-top:30px!important;padding-bottom:30px!important}.welcome-title{font-size:30px!important;line-height:1.12!important}.footer-pad{padding-left:22px!important;padding-right:22px!important}.cta{display:block!important;width:auto!important;text-align:center!important}}</style>' +
+    '</head><body style="margin:0;padding:0;background:#ece9e2;color:#181818;font-family:Arial,Helvetica,sans-serif;">' +
+    '<div style="display:none!important;max-height:0;max-width:0;opacity:0;overflow:hidden;color:transparent;">Welcome to Austin Daily Briefing. Here is what to expect and how to personalize your briefing.</div>' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;background:#ece9e2;"><tr><td class="outer-pad" align="center" style="padding:28px 14px;">' +
+    '<table role="presentation" width="620" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:620px;background:#fffefa;">' +
+    '<tr><td class="masthead-pad" align="center" style="padding:30px 26px 22px;border-bottom:1px solid #dedad1;background:#fffefa;">' +
+    '<img src="' + ADB_RESEND.MASTHEAD_URL + '" width="500" alt="Austin Daily Briefing" style="display:block;width:100%;max-width:500px;height:auto;border:0;outline:none;text-decoration:none;"></td></tr>' +
+    '<tr><td class="content-pad" style="padding:0 34px;background:#fffefa;">' +
+
+    '<div class="section" style="padding:38px 0 32px;border-bottom:1px solid #dedad1;">' +
+    '<h1 class="welcome-title" style="margin:0;color:#181818;font-family:Georgia,\'Times New Roman\',serif;font-size:34px;line-height:1.08;font-weight:700;">Welcome to the Austin Daily Briefing</h1>' +
+    '<p style="margin:18px 0 0;font-size:17px;line-height:1.6;color:#2a2926;">Each morning, you\'ll get a short rundown of what\'s happening in Austin: city decisions, local business, development, and the things worth knowing that day.</p></div>' +
+
+    '<div class="section" style="padding:32px 0;border-bottom:1px solid #dedad1;">' +
+    '<div style="margin:0 0 18px;color:#8f1717;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;">WHAT TO EXPECT</div>' +
+    '<p style="margin:0 0 16px;font-size:16px;line-height:1.58;color:#2a2926;"><strong>Short.</strong> Most briefings take 5–7 minutes to read. Most editions begin with about five <em>Top Stories</em>. Key facts come first, and source links are always provided.</p>' +
+    '<p style="margin:0 0 16px;font-size:16px;line-height:1.58;color:#2a2926;"><strong>Personalized.</strong> <em>More for You</em> is built from the topics you choose and the level of detail you want. The briefing adjusts to match.</p>' +
+    '<p style="margin:0;font-size:16px;line-height:1.58;color:#2a2926;"><strong>Austin-first.</strong> The shared briefing stays focused on Austin and developments consequential to the immediate area. Personalized items may reach beyond Austin when that context matches your selected interests.</p></div>' +
+
+    '<div class="section" style="padding:32px 0;border-bottom:1px solid #dedad1;">' +
+    '<div style="margin:0 0 12px;color:#8f1717;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;">YOUR STARTING SETTINGS</div>' +
+    '<div style="padding:18px;border:1px solid #dedad1;background:#fffefa;"><p style="margin:0;font-size:16px;line-height:1.58;color:#2a2926;">Everyone receives the shared Top Stories. For personalized sections, subscribers begin with all interest categories set to Normal and standard reading settings. Most people adjust this within the first week.</p></div></div>' +
+
+    '<div class="section" style="padding:32px 0;border-bottom:1px solid #dedad1;">' +
+    '<div style="margin:0 0 10px;color:#8f1717;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;">CUSTOMIZE MY BRIEFING</div>' +
+    '<p style="margin:0;font-size:16px;line-height:1.58;color:#2a2926;">Choose your topics and reading style. It takes about 30 seconds, and you can change it anytime.</p>' +
+    '<p style="margin:20px 0 0;"><a class="cta" href="' + ADB_RESEND.CUSTOMIZE_URL + '" style="display:inline-block;min-height:44px;box-sizing:border-box;padding:13px 18px;background:#db2d2d;color:#fffefa;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:16px;font-weight:700;text-decoration:none;">Customize my briefing</a></p></div>' +
+
+    '<div class="section" style="padding:32px 0 36px;">' +
+    '<div style="margin:0 0 10px;color:#8f1717;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;">CORRECTIONS, TIPS, AND FEEDBACK</div>' +
+    '<p style="margin:0;font-size:16px;line-height:1.58;color:#2a2926;">Reply to this email and it goes to a human for review. If we got something wrong, tell us. If you know something we should be covering, tell us that too.</p>' +
+    '<p style="margin:20px 0 0;font-size:16px;font-weight:700;line-height:1.5;color:#181818;">Austin Daily Briefing</p></div>' +
+    '</td></tr>' +
+
+    '<tr><td class="footer-pad" align="center" style="padding:30px 34px;background:#181818;color:#fffefa;text-align:center;">' +
+    '<img src="' + ADB_RESEND.FOOTER_MARK_URL + '" width="72" alt="ADB" style="display:block;width:72px;height:auto;border:0;margin:0 auto;">' +
+    '<p style="margin:18px 0 0;font-size:15px;line-height:1.9;">' +
+    '<a href="' + ADB_RESEND.MANAGE_URL + '" style="color:#fffefa;text-decoration:underline;">Manage subscription</a> · ' +
+    '<a href="' + ADB_RESEND.MANAGE_URL + '" style="color:#fffefa;text-decoration:underline;">Pause or unsubscribe</a> · ' +
+    '<a href="' + ADB_RESEND.FEEDBACK_URL + '" style="color:#fffefa;text-decoration:underline;">Feedback</a> · ' +
+    '<a href="' + ADB_RESEND.TERMS_URL + '" style="color:#fffefa;text-decoration:underline;">Terms</a> · ' +
+    '<a href="' + ADB_RESEND.PRIVACY_URL + '" style="color:#fffefa;text-decoration:underline;">Privacy</a></p></td></tr>' +
+    '</table></td></tr></table></body></html>';
 }

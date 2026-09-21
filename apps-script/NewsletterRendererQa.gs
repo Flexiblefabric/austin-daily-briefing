@@ -9,9 +9,9 @@
  */
 const ADB_NEWSLETTER_RENDERER_QA = Object.freeze({
   ALLOWLIST_PROPERTY: 'ADB_NEWSLETTER_RENDERER_QA_ALLOWLIST',
-  BRANCH: 'newsletter-renderer-v0-1',
-  HTML_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/newsletter-renderer-v0-1/design/newsletter-renderer-qa.html',
-  TEXT_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/newsletter-renderer-v0-1/design/newsletter-renderer-qa.txt',
+  BRANCH: 'main',
+  HTML_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/design/newsletter-renderer-qa.html',
+  TEXT_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/design/newsletter-renderer-qa.txt',
   SUBJECT: '[CONTROLLED TEST] Austin Daily Briefing — Newsletter Renderer v0.1 · Revision 2'
 });
 

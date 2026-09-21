@@ -1,7 +1,7 @@
 # Newsletter Redesign Promotion
 
 **Release:** `newsletter-redesign-v0-1`  
-**Status:** Promotion integration staged; controlled queue-path QA in progress  
+**Status:** Promoted to production; controlled promotion QA complete  
 **Scope:** Daily briefing renderer, redesigned welcome email, and optional What's New release communication  
 **Production architecture:** Unchanged  
 **Delivery provider:** Unchanged — Resend through the existing Apps Script queue dispatcher
@@ -70,30 +70,32 @@ No trigger, delivery mode, API credential, or subscriber-processing change is pa
 
 A single `DAILY-RESEND-QA` payload has been queued for the existing dedicated production QA profile using the approved newsletter reference payload and the normal `DAILY_BRIEFING_V1` queue/history path.
 
-Before production promotion, require:
+Controlled queue-path result: **PASS**.
 
-- Queue row begins in `Queued`.
-- Matching Briefing History row begins in `Pending`.
-- Existing daily dispatcher accepts the QA row through the normal Resend path.
-- Queue becomes `Sent` with exactly one provider ID.
-- Matching history becomes `Sent` with the same provider ID.
-- The received message matches the approved renderer.
-- Replay/duplicate behavior produces no second send.
+Verified evidence:
 
-Do not promote the new morning prompt until this controlled queue-path test passes.
+- The QA queue row began in `Queued`.
+- The matching Briefing History row began in `Pending`.
+- The existing daily dispatcher accepted the QA row through the normal Resend path.
+- The queue transitioned to `Sent` with exactly one provider ID.
+- The matching history row transitioned to `Sent` with the same provider ID.
+- The received message matched the approved renderer.
+- A replay of the dispatcher reported `0 sent`, confirming duplicate protection for the already-Sent QA row.
 
-## Promotion sequence
+## Promotion result
 
-1. Complete controlled queue-path QA.
-2. Review the received queue-path message.
-3. Merge this PR only after all required CI passes.
-4. Synchronize the merged `ResendTransport.gs` into the production Apps Script project.
-5. Run the read-only Welcome validation and one allowlisted Welcome test after code synchronization.
-6. Synchronize the active Austin Daily Briefing scheduler prompt with the merged canonical `ADB-DAILY-PROD-1.2` prompt.
-7. Keep the existing 08:00 schedule and existing daily dispatcher.
-8. Observe the first live redesigned edition end to end.
-9. Require the 09:30 production watchdog to confirm generation and Resend delivery health.
-10. Check for duplicate sends, stuck queues, invalid links, or subscriber-impact anomalies.
+Completed:
+
+1. Controlled queue-path QA passed.
+2. The received queue-path message was reviewed and approved.
+3. Promotion PR #18 passed required documentation CI and was merged to `main`.
+4. The merged `ResendTransport.gs` was synchronized into the production Apps Script project.
+5. The promoted production Welcome template was validated and delivered successfully through a manual allowlisted production QA send.
+6. The active Austin Daily Briefing scheduler prompt was synchronized with canonical `ADB-DAILY-PROD-1.2`.
+7. The existing 08:00 America/Chicago schedule and existing Resend dispatcher were preserved.
+8. Duplicate/replay testing passed with `0 sent` on replay.
+
+Routine post-release observation remains with the existing production controls: the next scheduled live redesigned edition should be observed end to end and the 09:30 production watchdog should confirm generation and delivery health. This is normal post-release monitoring rather than an open promotion gate.
 
 ## Rollback
 
@@ -106,9 +108,10 @@ If the first production run exposes a material renderer defect:
 
 ## Release record requirements
 
-Because this is a development-to-production promotion, final promotion requires:
+This development-to-production promotion has the required release records:
 
-- A newest-first `docs/CHANGELOG.md` entry.
-- An immutable `PROJECT_STATE.json` snapshot.
-- The short release checklist completed in the PR/release record.
-- Observed post-promotion production result recorded after the first live cycle.
+- Newest-first `docs/CHANGELOG.md` entry: complete.
+- Immutable `PROJECT_STATE.json` snapshot: complete.
+- Short release checklist in PR #18: complete for promotion gates.
+- Controlled queue-path and production Welcome post-promotion checks: complete.
+- First scheduled live-cycle observation: delegated to normal production monitoring and watchdog evidence.

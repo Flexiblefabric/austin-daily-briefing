@@ -2,6 +2,33 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-09-21 — Newsletter identity and Welcome redesign promotion
+
+**Type:** Development-to-production promotion  
+**Components:** daily briefing presentation, Welcome email, brand assets, subscriber-facing release communication  
+**Registry impact:** Yes
+
+Austin Daily Briefing completed controlled client QA for the new newsletter identity and redesigned Welcome experience and began production promotion through the existing queue and Resend delivery architecture.
+
+### Changes
+
+- Promoted the approved masthead, centered branded footer, Featured/Top Story hierarchy, Why It Matters treatment, Under the Radar header-band treatment, More for You orientation, Austin Ahead taxonomy, and mobile Weather behavior.
+- Added an optional `What's New` component for material subscriber-facing product updates.
+- Added a one-time-per-profile redesign notice with an expiry after September 28, 2026.
+- Redesigned the Welcome email using the same masthead, typography, color system, subscriber controls, and live feedback/privacy/terms destinations.
+- Advanced the canonical morning briefing prompt to `ADB-DAILY-PROD-1.2`.
+- Preserved the existing subscriber database, queue model, Resend transport ownership, dispatcher cadence, and 08:00 America/Chicago morning-generation schedule.
+
+### Validation
+
+- Controlled newsletter rendering passed desktop and mobile review.
+- Dark mode and image-blocked states remained usable.
+- Newsletter and Welcome HTML/plain-text destination parity passed.
+- The controlled production queue-path message transitioned from Queued to Sent exactly once with one Resend provider ID.
+- The matching Briefing History QA row transitioned from Pending to Sent with the same provider ID.
+- The received queue-path message matched the approved design.
+- Final replay/duplicate verification remains the last controlled promotion gate before production synchronization.
+
 ## 2026-09-14 — Production watchdog restoration and prompt durability
 
 **Type:** Production operations and governance  

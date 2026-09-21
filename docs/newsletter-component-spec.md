@@ -231,8 +231,9 @@ The standard HTML newsletter appears in this order:
 9. More for You.
 10. Austin Ahead.
 11. Friday recap, when applicable.
-12. Correction or clarification notice when required by editorial policy and placement rules.
-13. Footer.
+12. What's New, when warranted.
+13. Correction or clarification notice when required by editorial policy and placement rules.
+14. Footer.
 
 Why It Matters is embedded inside applicable story components.
 
@@ -715,7 +716,78 @@ Style this as quiet body text, not an error or warning.
 
 The future expanded Friday version is outside this specification until separately approved.
 
-## 20. Corrections and Clarifications Component
+## 20. What's New Component
+
+**Conditional. Omit entirely when there is no meaningful subscriber-facing product update.**
+
+### Purpose
+
+Explain material changes to the reader experience without turning the briefing into product release notes.
+
+Use What's New for changes such as:
+
+- A visible newsletter redesign.
+- A new recurring section or reader feature.
+- A meaningful personalization change.
+- A major editorial-process update that changes how the briefing works.
+- A new subscriber control or capability.
+
+Do not use What's New for routine maintenance, internal scoring adjustments, bug fixes that do not affect readers, or minor implementation changes.
+
+### Placement
+
+Place What's New near the end of the editorial body:
+
+1. After Austin Ahead and any Friday recap.
+2. Before corrections/clarifications when both are present.
+3. Before the footer.
+
+Corrections remain higher priority when placement must change for reader safety or accuracy.
+
+### Anatomy
+
+1. Section label: `WHAT'S NEW`.
+2. One compact explanatory paragraph.
+3. Optional reader-facing link when a permanent update or explanation page exists.
+
+### Content rule
+
+A strong What's New note answers, in plain language:
+
+- What changed?
+- Why did ADB change it?
+- What does it mean for the reader?
+- Does the reader need to do anything?
+
+The section should describe the reader-facing effect, not internal implementation details.
+
+### Visual treatment
+
+What's New should be deliberately quieter than editorial story components:
+
+- Paper background.
+- No full Warm Wash field.
+- No Signal Red rule by default.
+- Section label may use Link Red or Supporting Gray according to the standard section-label treatment.
+- Optional Rule Gray top divider or boundary.
+- Body text uses the normal reading sans serif.
+- No button unless reader action is genuinely required.
+- Do not style it like Why It Matters, Under the Radar, a correction, or an advertisement.
+
+### Repetition
+
+What's New is not a standing daily section.
+
+- Run it when a material change launches.
+- A shorter follow-up may appear once later when useful.
+- Do not fill the section merely to keep it present.
+- Once the update is established, remove it from the briefing and rely on permanent website/help documentation.
+
+### Empty state
+
+No placeholder. Omit the entire component.
+
+## 21. Corrections and Clarifications Component
 
 **Conditional but required when the Editorial System calls for a visible correction or meaningful clarification.**
 
@@ -757,7 +829,7 @@ To avoid confusion with Why It Matters and Under the Radar:
 
 Direct, specific, and non-defensive.
 
-## 21. Friday Recap Component
+## 22. Friday Recap Component
 
 **Conditional on Friday.**
 
@@ -778,7 +850,7 @@ Remain part of the standard edition.
 
 Do not introduce a separate Friday brand system yet.
 
-## 22. Footer Component
+## 23. Footer Component
 
 **Required.**
 
@@ -830,7 +902,7 @@ Use muted paper/gray text with sufficient contrast.
 
 Keep legal language concise.
 
-## 23. Buttons
+## 24. Buttons
 
 Buttons should be rare.
 
@@ -846,7 +918,7 @@ Primary button treatment:
 
 Article sources remain text links.
 
-## 24. Dividers and Section Boundaries
+## 25. Dividers and Section Boundaries
 
 Default divider:
 
@@ -863,7 +935,7 @@ Reserved Signal Red rules:
 
 Do not add new red-rule semantics casually.
 
-## 25. Empty and Omitted States
+## 26. Empty and Omitted States
 
 Component behavior must be predictable.
 
@@ -876,11 +948,12 @@ Component behavior must be predictable.
 | More for You | Omit if no eligible personalized item |
 | Austin Ahead | Show approved empty state |
 | Friday recap | Omit if not Friday or if no meaningful weekly arc is available |
+| What's New | Omit unless a material subscriber-facing update warrants it |
 | Corrections | Omit unless required |
 
 Never create weak content solely to avoid an empty visual space.
 
-## 26. Plain-Text Newsletter
+## 27. Plain-Text Newsletter
 
 The plain-text edition must preserve the same editorial content and destination order as HTML.
 
@@ -930,7 +1003,7 @@ https://...
 - No raw HTML.
 - Do not omit Why It Matters from plain text when present in HTML.
 
-## 27. Responsive Behavior
+## 28. Responsive Behavior
 
 ### Narrow screens
 
@@ -955,7 +1028,7 @@ At approximately 360–390px:
 - Do not compress headline size below readable hierarchy.
 - Use vertical stacking rather than shrinking tap targets.
 
-## 28. Dark Mode Resilience
+## 29. Dark Mode Resilience
 
 Email clients may alter backgrounds and text.
 
@@ -970,7 +1043,7 @@ Implementation should:
 
 Do not embed critical body text in images as a dark-mode workaround.
 
-## 29. Image-Blocked State
+## 30. Image-Blocked State
 
 When images are blocked:
 
@@ -980,7 +1053,7 @@ When images are blocked:
 - Footer must still identify ADB in text even if the compact mark is hidden.
 - No content meaning should depend solely on an image.
 
-## 30. Accessibility Requirements
+## 31. Accessibility Requirements
 
 Every production component must support:
 
@@ -998,7 +1071,7 @@ Every production component must support:
 
 Austin Ahead labels must literally contain `GO`, `WATCH`, or `PLAN`; color cannot be the only indicator.
 
-## 31. Content-Length Guardrails
+## 32. Content-Length Guardrails
 
 These are layout guardrails, not editorial quotas.
 
@@ -1030,13 +1103,17 @@ Follow Editorial System subscriber depth:
 
 Aim for one or two short sentences.
 
+### What's New
+
+Aim for approximately 40–90 words. Keep it focused on the reader-facing change and whether any action is required.
+
 ### Footer
 
 Keep receiving-context copy to one compact paragraph.
 
 If content materially exceeds these ranges, the renderer should not truncate automatically. Editorial generation should be corrected upstream.
 
-## 32. Component QA Checklist
+## 33. Component QA Checklist
 
 Before implementation promotion, verify each component against the following.
 
@@ -1055,6 +1132,7 @@ Before implementation promotion, verify each component against the following.
 - Under the Radar omitted when absent.
 - Austin Ahead always present.
 - Friday recap only when applicable.
+- What's New omitted unless a material subscriber-facing change warrants it.
 
 ### Why It Matters
 
@@ -1104,7 +1182,7 @@ Before implementation promotion, verify each component against the following.
 - Image-blocked test.
 - Dark-mode review where available.
 
-## 33. Implementation Boundary
+## 34. Implementation Boundary
 
 This specification does not authorize direct production replacement of the current renderer.
 
@@ -1124,7 +1202,7 @@ Do not revive or merge the superseded newsletter redesign branch as the producti
 
 Useful code or assets from the superseded branch may be selectively reintroduced only after comparison with current canonical specifications.
 
-## 34. Component Status
+## 35. Component Status
 
 | Component | Status |
 |---|---|
@@ -1142,13 +1220,14 @@ Useful code or assets from the superseded branch may be selectively reintroduced
 | Austin Ahead | Established |
 | GO / WATCH / PLAN | Established |
 | Friday recap | Current interim treatment |
+| What's New | Established optional treatment |
 | Friday expanded Austin Ahead | Future specification |
 | Corrections notice | Proposed in this specification |
 | Hidden preheader | Proposed / optional |
 | Footer | Established |
 | Dark-mode implementation details | To be validated in QA |
 
-## 35. Governance
+## 36. Governance
 
 This file is the canonical implementation specification for ADB newsletter components.
 
@@ -1162,12 +1241,13 @@ A formal revision is required when changing:
 - Austin Ahead construction or taxonomy.
 - Masthead usage.
 - Footer control hierarchy.
+- What's New construction or placement.
 - Corrections notice behavior.
 - Plain-text parity requirements.
 - Major responsive behavior.
 
 Minor client-specific CSS repairs may be made without a specification revision when they preserve the intended component behavior.
 
-## 36. Newsletter Component Standard in One Sentence
+## 37. Newsletter Component Standard in One Sentence
 
 > **Each ADB newsletter component should communicate one clear editorial function, fit naturally into a continuous reading flow, survive ordinary email-client degradation, and remain recognizably ADB without relying on decorative complexity.**

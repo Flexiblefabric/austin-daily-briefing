@@ -75,6 +75,15 @@ The send function:
 - Sends only to addresses in the `ADB_NEWSLETTER_RENDERER_QA_ALLOWLIST` Script property.
 - Uses a stable QA idempotency key per recipient.
 
+## Asset-integrity verification
+
+The staged brand files were rechecked against the current ADB DEV package before controlled QA:
+
+- Masthead SVG/PNG/2× PNG: byte-for-byte match.
+- Standard compact mark SVG/PNG/2× PNG: byte-for-byte match.
+- Reversed compact mark SVG/PNG/2× PNG: byte-for-byte match.
+- The current outlined-export package is authoritative for the vector masters; older duplicate Drive exports are not used as the comparison source.
+
 ## Automated preflight already checked in repository staging
 
 The staged HTML/plain-text sample currently passes:

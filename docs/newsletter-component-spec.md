@@ -599,7 +599,7 @@ Present personally relevant material without visually separating it into a diffe
 ### Section anatomy
 
 1. `MORE FOR YOU` section label.
-2. Optional short descriptor: `Selected from your saved interests.`
+2. Required orientation descriptor: `Selected based on your saved interests.`
 3. One or more personalized items.
 
 ### Item anatomy
@@ -642,7 +642,8 @@ Provide near-term Austin utility.
 ### Section anatomy
 
 1. `AUSTIN AHEAD` section label.
-2. One or more items, or the approved empty state.
+2. Required orientation descriptor: `What to attend, watch, and plan around in the days ahead.`
+3. One or more items, or the approved empty state.
 
 ### Item anatomy
 
@@ -669,7 +670,7 @@ Exactly one label per item:
 - `WATCH`
 - `PLAN`
 
-These are mutually exclusive.
+These are mutually exclusive **per item**. Multiple items in the same briefing may use the same label; for example, an edition may contain several `GO` items when several qualifying events are worth including.
 
 ### Label treatment
 
@@ -819,6 +820,10 @@ Treatment:
 
 Do not obscure or de-emphasize exit controls.
 
+### Footer alignment
+
+Center the footer mark, receiving-context copy, primary pause/unsubscribe control, and utility-link group within the newsletter frame.
+
 ### Footer copy
 
 Use muted paper/gray text with sufficient contrast.
@@ -935,7 +940,7 @@ At approximately 520px and below:
 - Content padding becomes about 22px.
 - Featured headline reduces modestly.
 - Austin Pulse remains readable with its red rule.
-- Weather stacks vertically.
+- Weather stacks vertically. The weather-copy cell and temperature cell should each become full-width rows, with the temperature treatment below the condition copy rather than squeezing the headline into a narrow column.
 - Austin Ahead date/action labels remain above or adjacent to titles without crowding.
 - Source links wrap as units.
 - Footer buttons expand toward full available width.

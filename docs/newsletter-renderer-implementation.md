@@ -1,6 +1,6 @@
 # Newsletter Renderer v0.1 — Implementation Record
 
-**Status:** Controlled QA approved; ready for promotion integration  
+**Status:** Promoted to production; release QA complete  
 **Branch:** `newsletter-renderer-v0-1`  
 **Production impact:** None  
 **Canonical component specification:** `docs/newsletter-component-spec.md`
@@ -273,4 +273,23 @@ Confirmed in received email:
 
 Before promotion, the newsletter specification and QA sample were extended with the optional `WHAT'S NEW` component for material subscriber-facing product updates. It is intentionally quiet, non-standing, and appears near the end of the editorial body before corrections/footer. The first production redesign announcement should use this component.
 
-PR #17 remains non-production staging. Promotion should occur through a fresh branch from `main` after this staging PR is merged.
+PR #17 was merged as the approved staging baseline. Production integration was completed through PR #18, followed by the post-promotion Welcome QA harness update in PR #19.
+
+
+## Production promotion closeout
+
+Release `newsletter-redesign-v0-1` is promoted.
+
+Final controlled evidence:
+
+- Newsletter client QA: PASS.
+- Welcome redesign client QA: PASS.
+- Production queue-path newsletter QA: PASS.
+- Queue/history provider-ID parity: PASS.
+- Replay/duplicate protection: PASS (`0 sent` on replay).
+- Production Apps Script Welcome renderer synchronization: complete.
+- Post-promotion production Welcome delivery: PASS.
+- Canonical morning-generation prompt: `ADB-DAILY-PROD-1.2`, synchronized to the active 08:00 America/Chicago scheduler task.
+- Required changelog and immutable registry snapshot: complete.
+
+The next scheduled live edition and 09:30 watchdog check are routine post-release observation. No additional promotion gate remains open.

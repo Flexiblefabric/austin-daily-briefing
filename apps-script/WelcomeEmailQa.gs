@@ -12,8 +12,8 @@
  */
 const ADB_WELCOME_QA = Object.freeze({
   ALLOWLIST_PROPERTY: 'ADB_WELCOME_QA_ALLOWLIST',
-  SUBJECT: '[CONTROLLED TEST] Welcome to the Austin Daily Briefing',
-  RUN_ID: 'welcome-email-v1-qa-r1'
+  SUBJECT: '[CONTROLLED TEST] Welcome to the Austin Daily Briefing · Post-promotion',
+  RUN_ID: 'welcome-email-v1-qa-r2'
 });
 
 /** Read-only check of the current production welcome template. */
@@ -25,9 +25,17 @@ function validateWelcomeEmailQaV1() {
   if (!String(htmlBody || '').trim()) throw new Error('Welcome HTML body is empty.');
 
   const requiredText = [
-    'Welcome to the Austin Daily Briefing',
-    'Customize my briefing:',
-    'Manage subscription:'
+    'WELCOME TO THE AUSTIN DAILY BRIEFING',
+    'WHAT TO EXPECT',
+    'YOUR STARTING SETTINGS',
+    'CUSTOMIZE MY BRIEFING',
+    'CORRECTIONS, TIPS, AND FEEDBACK',
+    'Customize my briefing',
+    'Manage subscription',
+    'Pause or unsubscribe',
+    'Feedback',
+    'Terms',
+    'Privacy'
   ];
   requiredText.forEach(function(marker) {
     if (textBody.indexOf(marker) < 0) throw new Error('Missing welcome text marker: ' + marker);
@@ -35,8 +43,17 @@ function validateWelcomeEmailQaV1() {
 
   const requiredHtml = [
     'Welcome to the Austin Daily Briefing',
+    'WHAT TO EXPECT',
+    'YOUR STARTING SETTINGS',
+    'CUSTOMIZE MY BRIEFING',
+    'CORRECTIONS, TIPS, AND FEEDBACK',
+    ADB_RESEND.MASTHEAD_URL,
+    ADB_RESEND.FOOTER_MARK_URL,
     ADB_RESEND.CUSTOMIZE_URL,
-    ADB_RESEND.MANAGE_URL
+    ADB_RESEND.MANAGE_URL,
+    ADB_RESEND.FEEDBACK_URL,
+    ADB_RESEND.TERMS_URL,
+    ADB_RESEND.PRIVACY_URL
   ];
   requiredHtml.forEach(function(marker) {
     if (htmlBody.indexOf(marker) < 0) throw new Error('Missing welcome HTML marker: ' + marker);
@@ -83,7 +100,7 @@ function sendWelcomeEmailQaV1() {
       tags: {
         message_type: 'welcome_qa',
         environment: 'production',
-        qa_run: 'welcome_v1_r1'
+        qa_run: 'welcome_v1_r2'
       }
     });
     return {recipient: recipient, providerId: result.id, statusCode: result.statusCode};

@@ -99,6 +99,34 @@ The staged HTML/plain-text sample currently passes:
 
 This repository check does not replace actual email-client QA.
 
+## Controlled QA — first client review
+
+The first controlled send completed successfully and rendered well across the tested clients. The following findings were recorded:
+
+### Passed without material defect
+
+- Masthead rendered correctly on desktop and mobile.
+- Austin Pulse rule and typography held.
+- Featured Top Story hierarchy was clear.
+- Why It Matters and Under the Radar interacted as intended.
+- More for You flowed naturally from the shared stories.
+- Source links worked where correctly targeted.
+- Image-blocked rendering remained usable.
+- Dark mode remained legible.
+- Pause/unsubscribe and the other valid footer controls worked.
+
+### Refinements required before QA PASS
+
+1. Center the footer content and controls.
+2. Replace the incorrect `/feedback.html` destination with the live Feedback & Corrections Google Form.
+3. Stack the Weather copy and temperature into full-width mobile rows so the headline is not squeezed.
+4. Make the More for You orientation descriptor required and explicitly tie the section to saved interests.
+5. Add an Austin Ahead orientation descriptor.
+6. Clarify that GO / WATCH / PLAN are mutually exclusive per item, not quotas across the section. Multiple items may share one label.
+7. Run a second controlled send after these changes.
+
+The second QA harness uses a new idempotency key (`newsletter-renderer-v0-1-qa-r2`) so the revised message can be delivered to the same controlled inboxes without colliding with the first Resend QA send.
+
 ## Phase 2 — Controlled email-client QA
 
 After the branch is reviewed:

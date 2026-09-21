@@ -34,6 +34,7 @@ function validateNewsletterRendererV01() {
     'UNDER THE RADAR',
     'MORE FOR YOU',
     'AUSTIN AHEAD',
+    "WHAT'S NEW",
     'WHY IT MATTERS',
     'CORRECTION',
     'Pause or unsubscribe',

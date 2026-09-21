@@ -186,3 +186,25 @@ If production rendering fails after promotion:
 - Restore the last known-good morning briefing prompt from GitHub.
 - Do not roll back subscriber data, Resend transport, or queue/history state unless a separate defect is found there.
 - Existing sent messages are immutable; corrections follow normal ADB corrections policy when content, rather than styling, was affected.
+
+
+## Welcome email controlled QA
+
+The current production welcome email should be reviewed separately from the daily briefing renderer before any welcome-template redesign is proposed.
+
+`apps-script/WelcomeEmailQa.gs` provides:
+
+- `validateWelcomeEmailQaV1()` — read-only validation of the current production welcome HTML and plain text.
+- `sendWelcomeEmailQaV1()` — manual, allowlisted Resend delivery of that same current production welcome template.
+
+Safety characteristics:
+
+- No Outbound Messages writes.
+- No Briefing History writes.
+- No subscriber-state changes.
+- No delivery-mode changes.
+- No triggers.
+- No production welcome template changes.
+- Requires `ADB_WELCOME_QA_ALLOWLIST` Script property.
+
+This test intentionally sends the existing production welcome template as-is so client rendering, links, hierarchy, and branding can be evaluated before deciding whether the welcome experience should be redesigned to match the new newsletter identity.

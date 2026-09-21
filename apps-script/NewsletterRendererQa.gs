@@ -12,7 +12,7 @@ const ADB_NEWSLETTER_RENDERER_QA = Object.freeze({
   BRANCH: 'newsletter-renderer-v0-1',
   HTML_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/newsletter-renderer-v0-1/design/newsletter-renderer-qa.html',
   TEXT_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/newsletter-renderer-v0-1/design/newsletter-renderer-qa.txt',
-  SUBJECT: '[CONTROLLED TEST] Austin Daily Briefing — Newsletter Renderer v0.1'
+  SUBJECT: '[CONTROLLED TEST] Austin Daily Briefing — Newsletter Renderer v0.1 · Revision 2'
 });
 
 function validateNewsletterRendererV01() {
@@ -71,7 +71,7 @@ function sendNewsletterRendererQaV01() {
   }
 
   const payload = adbLoadNewsletterRendererQaV01_();
-  const runId = 'newsletter-renderer-v0-1-qa';
+  const runId = 'newsletter-renderer-v0-1-qa-r2';
   const results = allowlist.map(function(recipient) {
     const result = adbSendEmailViaResend_({
       to: recipient,

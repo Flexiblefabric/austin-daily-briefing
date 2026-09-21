@@ -27,7 +27,12 @@ Austin Daily Briefing completed controlled client QA for the new newsletter iden
 - The controlled production queue-path message transitioned from Queued to Sent exactly once with one Resend provider ID.
 - The matching Briefing History QA row transitioned from Pending to Sent with the same provider ID.
 - The received queue-path message matched the approved design.
-- Final replay/duplicate verification remains the last controlled promotion gate before production synchronization.
+- Replay/duplicate verification passed: rerunning the daily dispatcher after the controlled QA send reported `0 sent`.
+- Promotion PR #18 merged after documentation CI passed.
+- The active 08:00 America/Chicago scheduler prompt was synchronized to canonical `ADB-DAILY-PROD-1.2`.
+- The production Apps Script Welcome renderer was synchronized from `main`.
+- A post-promotion controlled Welcome send reached the QA inbox using the new production Welcome template.
+- No subscriber eligibility, queue ownership, transport, trigger, or schedule changes were introduced.
 
 ## 2026-09-14 — Production watchdog restoration and prompt durability
 

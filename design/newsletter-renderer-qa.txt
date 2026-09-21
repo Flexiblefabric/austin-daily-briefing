@@ -1,0 +1,132 @@
+AUSTIN DAILY BRIEFING
+Sunday, September 20, 2026
+CONTROLLED COMPONENT QA — NOT A LIVE EDITION
+
+AUSTIN PULSE
+This controlled preview exercises the full ADB component system: a featured story, shared Top Stories, Under the Radar, personalized material, Austin Ahead, a correction notice, weather, and the footer. The copy is intentionally illustrative rather than a live briefing.
+
+WEATHER
+Warm with a chance of late-day storms
+High 94° · Low 74°
+Sample weather copy demonstrates the utility-first treatment. Routine conditions should remain concise.
+
+Forecast: National Weather Service
+https://www.weather.gov/ewx/
+
+FEATURED TOP STORY
+Sample city decision demonstrates the featured-story hierarchy
+Austin · City Policy · Government + Independent
+
+This summary shows how ADB should explain a material development in a compact paragraph before moving into consequence and context.
+
+WHY IT MATTERS
+The component separates what happened from what changes because of it, giving the reader practical context without turning the explanation into an opinion box.
+
+Source: City of Austin
+https://www.austintexas.gov/
+Source: KUT 90.5
+https://www.kut.org/
+
+TOP STORIES
+
+Transit sample shows the standard story component
+Austin · Transportation · Government
+
+A standard Top Story uses the same anatomy as the featured story with a smaller headline and tighter spacing.
+
+WHY IT MATTERS
+Readers can scan a consistent visual cue for consequence across every major story.
+
+Source: CapMetro
+https://www.capmetro.org/
+
+Housing sample demonstrates a second shared story
+Austin · Housing · Government
+
+This copy exists only to exercise long-form wrapping, metadata, and the repeated story rhythm.
+
+WHY IT MATTERS
+The treatment stays identical even when the topic changes.
+
+Source: City of Austin Housing Department
+https://www.austintexas.gov/department/housing
+
+Public-safety sample exercises the third story state
+Travis County · Public Safety · Government
+
+Standard stories should remain continuous and editorial rather than turning into separate cards.
+
+WHY IT MATTERS
+The hierarchy depends on typography, spacing, and rules rather than heavy containers.
+
+Source: Travis County
+https://www.traviscountytx.gov/
+
+UNDER THE RADAR
+
+Header-band treatment keeps the discovery lane distinct
+
+The outer component returns to Paper below the Warm Wash header band, preventing nested beige boxes.
+
+WHY IT MATTERS
+Why It Matters keeps its normal appearance, so each component retains one stable visual meaning.
+
+Source: City of Austin
+https://www.austintexas.gov/public-information-request
+
+MORE FOR YOU
+Selected from your saved interests.
+
+Technology sample shows a personalized news item
+Personalized content remains recognizably ADB without looking like a separate feed.
+
+Source: The University of Texas at Austin
+https://news.utexas.edu/
+
+Arts sample shows a lighter personalized item
+Lighter material can use a shorter utility summary without an unnecessary Why It Matters box.
+
+Source: Visit Austin
+https://www.austintexas.org/events/
+
+AUSTIN AHEAD
+
+GO · SAT
+Sample weekend event
+A concise utility description tells the reader what the option is and what to check before going.
+Event details: Visit Austin
+https://www.austintexas.org/events/
+
+WATCH · TUE
+Sample public meeting to watch
+WATCH indicates an approaching development that primarily requires awareness rather than action.
+Source: City of Austin
+https://www.austintexas.gov/calendar
+
+PLAN · MON–THU
+Sample overnight road closures
+PLAN is reserved for items that may require rerouting, registration, scheduling, or another practical adjustment.
+Source: TxDOT I-35 Capital Express
+https://my35capex.com/
+
+CORRECTION · SEPTEMBER 19, 2026
+This sample demonstrates the neutral correction treatment. The notice states what was wrong or unclear and supplies the corrected information directly.
+
+View the corrections log
+https://austindailybriefing.com/corrections.html
+
+PAUSE OR UNSUBSCRIBE
+https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform
+
+Visit the website
+https://austindailybriefing.com/
+Customize
+https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform
+Feedback & corrections
+https://austindailybriefing.com/feedback.html
+Corrections log
+https://austindailybriefing.com/corrections.html
+Privacy
+https://austindailybriefing.com/privacy.html
+Terms
+https://austindailybriefing.com/terms.html

@@ -75,7 +75,7 @@ Source: City of Austin
 https://www.austintexas.gov/public-information-request
 
 MORE FOR YOU
-Selected from your saved interests.
+Selected based on your saved interests.
 
 Technology sample shows a personalized news item
 Personalized content remains recognizably ADB without looking like a separate feed.
@@ -90,6 +90,7 @@ Source: Visit Austin
 https://www.austintexas.org/events/
 
 AUSTIN AHEAD
+What to attend, watch, and plan around in the days ahead.
 
 GO · SAT
 Sample weekend event
@@ -123,7 +124,7 @@ https://austindailybriefing.com/
 Customize
 https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform
 Feedback & corrections
-https://austindailybriefing.com/feedback.html
+https://docs.google.com/forms/d/e/1FAIpQLSc_0-djww4qboFaEn9k-nEponrCBBqz-MCB81sOUtLjVsOZ7w/viewform
 Corrections log
 https://austindailybriefing.com/corrections.html
 Privacy

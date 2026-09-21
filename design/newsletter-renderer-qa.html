@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>Austin Daily Briefing — Newsletter Renderer QA</title>
+  <style>
+    @media only screen and (max-width:620px){
+      .outer-pad{padding:0!important}
+      .content-pad{padding-left:22px!important;padding-right:22px!important}
+      .masthead-pad{padding:24px 18px 18px!important}
+      .major{padding-top:34px!important;padding-bottom:34px!important}
+      .featured{font-size:28px!important;line-height:1.12!important}
+      .story-head{font-size:22px!important}
+      .pulse{font-size:19px!important}
+      .footer-pad{padding-left:22px!important;padding-right:22px!important}
+      .cta{display:block!important;width:auto!important;text-align:center!important}
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background:#ece9e2;color:#181818;font-family:Arial,Helvetica,sans-serif;">
+  <div style="display:none!important;max-height:0;max-width:0;opacity:0;overflow:hidden;color:transparent;">
+    Component QA preview for the approved Austin Daily Briefing newsletter system.
+  </div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;background:#ece9e2;">
+    <tr>
+      <td class="outer-pad" align="center" style="padding:28px 14px;">
+        <table role="presentation" width="620" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:620px;background:#fffefa;">
+          <tr>
+            <td align="center" style="padding:10px 20px;background:#181818;color:#fffefa;font-family:'Arial Narrow',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">
+              CONTROLLED COMPONENT QA · NOT A LIVE EDITION
+            </td>
+          </tr>
+          <tr>
+            <td class="masthead-pad" align="center" style="padding:30px 26px 22px;border-bottom:1px solid #dedad1;background:#fffefa;">
+              <img src="https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/newsletter-renderer-v0-1/assets/brand/adb-masthead@2x.png"
+                   width="500" alt="Austin Daily Briefing"
+                   style="display:block;width:100%;max-width:500px;height:auto;border:0;outline:none;text-decoration:none;">
+              <div style="margin-top:12px;color:#68635a;font-family:'Arial Narrow',Arial,sans-serif;font-size:14px;font-weight:700;line-height:1.3;letter-spacing:1.1px;text-transform:uppercase;">
+                SUNDAY · SEPTEMBER 20, 2026
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="content-pad" style="padding:0 34px;background:#fffefa;">
+
+              <div class="major" style="padding:42px 0;border-bottom:1px solid #dedad1;">
+                <div style="margin:0 0 12px;color:#8f1717;font-family:'Arial Narrow',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">AUSTIN PULSE</div>
+                <p class="pulse" style="margin:0;padding-left:18px;border-left:4px solid #db2d2d;color:#2a2926;font-family:Georgia,'Times New Roman',serif;font-size:21px;line-height:1.48;">
+                  This controlled preview exercises the full ADB component system: a featured story, shared Top Stories, Under the Radar, personalized material, Austin Ahead, a correction notice, weather, and the footer. The copy is intentionally illustrative rather than a live briefing.
+                </p>
+              </div>
+
+              <div class="major" style="padding:42px 0;border-bottom:1px solid #dedad1;">
+                <div style="margin:0 0 14px;color:#8f1717;font-family:'Arial Narrow',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">WEATHER</div>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td valign="top" style="padding:0 18px 0 0;">
+                      <div style="font-family:Georgia,'Times New Roman',serif;font-size:22px;font-weight:700;line-height:1.25;color:#181818;">Warm with a chance of late-day storms</div>
+                      <p style="margin:10px 0 0;font-size:16px;line-height:1.55;color:#2a2926;">Sample weather copy demonstrates the utility-first treatment. Routine conditions should remain concise.</p>
+                    </td>
+                    <td class="weather-temp" width="120" valign="top" align="right" style="font-family:'Arial Narrow',Arial,sans-serif;font-size:26px;font-weight:700;line-height:1.15;color:#181818;">94° / 74°</td>
+                  </tr>
+                </table>
+                <p style="margin:12px 0 0;">
+                  <a href="https://www.weather.gov/ewx/" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Forecast: National Weather Service →</a>
+                </p>
+              </div>
+
+              <div class="major" style="padding:42px 0;border-bottom:1px solid #dedad1;">
+                <div style="margin:0 0 12px;color:#8f1717;font-family:'Arial Narrow',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">FEATURED TOP STORY</div>
+                <h1 class="featured" style="margin:0;color:#181818;font-family:Georgia,'Times New Roman',serif;font-size:31px;line-height:1.1;font-weight:700;">Sample city decision demonstrates the featured-story hierarchy</h1>
+                <p style="margin:10px 0 0;color:#68635a;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.35;letter-spacing:.8px;text-transform:uppercase;">AUSTIN · CITY POLICY · GOVERNMENT + INDEPENDENT</p>
+                <p style="margin:16px 0 0;font-size:17px;line-height:1.58;color:#2a2926;">This summary shows how ADB should explain a material development in a compact paragraph before moving into consequence and context.</p>
+                <div style="margin:16px 0 0;padding:15px 16px;border-left:4px solid #db2d2d;background:#f2efe8;">
+                  <div style="margin:0 0 5px;color:#181818;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">WHY IT MATTERS</div>
+                  <p style="margin:0;font-size:16px;line-height:1.53;color:#2a2926;">The component separates what happened from what changes because of it, giving the reader practical context without turning the explanation into an opinion box.</p>
+                </div>
+                <p style="margin:10px 0 0;">
+                  <a href="https://www.austintexas.gov/" style="display:block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Source: City of Austin →</a>
+                  <a href="https://www.kut.org/" style="display:block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Source: KUT 90.5 →</a>
+                </p>
+              </div>
+
+              <div class="major" style="padding:42px 0;border-bottom:1px solid #dedad1;">
+                <div style="margin:0 0 14px;color:#8f1717;font-family:'Arial Narrow',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">TOP STORIES</div>
+
+                <div style="padding:0 0 26px;border-bottom:1px solid #dedad1;">
+                  <h2 class="story-head" style="margin:0;color:#181818;font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:1.17;font-weight:700;">Transit sample shows the standard story component</h2>
+                  <p style="margin:9px 0 0;color:#68635a;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.35;letter-spacing:.8px;text-transform:uppercase;">AUSTIN · TRANSPORTATION · GOVERNMENT</p>
+                  <p style="margin:14px 0 0;font-size:16px;line-height:1.57;color:#2a2926;">A standard Top Story uses the same anatomy as the featured story with a smaller headline and tighter spacing.</p>
+                  <div style="margin:15px 0 0;padding:15px 16px;border-left:4px solid #db2d2d;background:#f2efe8;">
+                    <div style="margin:0 0 5px;color:#181818;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">WHY IT MATTERS</div>
+                    <p style="margin:0;font-size:16px;line-height:1.53;color:#2a2926;">Readers can scan a consistent visual cue for consequence across every major story.</p>
+                  </div>
+                  <p style="margin:10px 0 0;"><a href="https://www.capmetro.org/" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Source: CapMetro →</a></p>
+                </div>
+
+                <div style="padding:26px 0;border-bottom:1px solid #dedad1;">
+                  <h2 class="story-head" style="margin:0;color:#181818;font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:1.17;font-weight:700;">Housing sample demonstrates a second shared story</h2>
+                  <p style="margin:9px 0 0;color:#68635a;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.35;letter-spacing:.8px;text-transform:uppercase;">AUSTIN · HOUSING · GOVERNMENT</p>
+                  <p style="margin:14px 0 0;font-size:16px;line-height:1.57;color:#2a2926;">This copy exists only to exercise long-form wrapping, metadata, and the repeated story rhythm.</p>
+                  <div style="margin:15px 0 0;padding:15px 16px;border-left:4px solid #db2d2d;background:#f2efe8;">
+                    <div style="margin:0 0 5px;color:#181818;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">WHY IT MATTERS</div>
+                    <p style="margin:0;font-size:16px;line-height:1.53;color:#2a2926;">The treatment stays identical even when the topic changes.</p>
+                  </div>
+                  <p style="margin:10px 0 0;"><a href="https://www.austintexas.gov/department/housing" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Source: City of Austin Housing Department →</a></p>
+                </div>
+
+                <div style="padding:26px 0 0;">
+                  <h2 class="story-head" style="margin:0;color:#181818;font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:1.17;font-weight:700;">Public-safety sample exercises the third story state</h2>
+                  <p style="margin:9px 0 0;color:#68635a;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.35;letter-spacing:.8px;text-transform:uppercase;">TRAVIS COUNTY · PUBLIC SAFETY · GOVERNMENT</p>
+                  <p style="margin:14px 0 0;font-size:16px;line-height:1.57;color:#2a2926;">Standard stories should remain continuous and editorial rather than turning into separate cards.</p>
+                  <div style="margin:15px 0 0;padding:15px 16px;border-left:4px solid #db2d2d;background:#f2efe8;">
+                    <div style="margin:0 0 5px;color:#181818;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">WHY IT MATTERS</div>
+                    <p style="margin:0;font-size:16px;line-height:1.53;color:#2a2926;">The hierarchy depends on typography, spacing, and rules rather than heavy containers.</p>
+                  </div>
+                  <p style="margin:10px 0 0;"><a href="https://www.traviscountytx.gov/" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Source: Travis County →</a></p>
+                </div>
+              </div>
+
+              <div class="major" style="padding:46px 0;border-bottom:1px solid #dedad1;">
+                <div style="border-top:5px solid #db2d2d;">
+                  <div style="padding:14px 22px;background:#f2efe8;color:#181818;font-family:'Arial Narrow',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">UNDER THE RADAR</div>
+                  <div style="padding:24px 22px;background:#fffefa;">
+                    <h2 class="story-head" style="margin:0;color:#181818;font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:1.17;font-weight:700;">Header-band treatment keeps the discovery lane distinct</h2>
+                    <p style="margin:14px 0 0;font-size:16px;line-height:1.57;color:#2a2926;">The outer component returns to Paper below the Warm Wash header band, preventing nested beige boxes.</p>
+                    <div style="margin:16px 0 0;padding:15px 16px;border-left:4px solid #db2d2d;background:#f2efe8;">
+                      <div style="margin:0 0 5px;color:#181818;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">WHY IT MATTERS</div>
+                      <p style="margin:0;font-size:16px;line-height:1.53;color:#2a2926;">Why It Matters keeps its normal appearance, so each component retains one stable visual meaning.</p>
+                    </div>
+                    <p style="margin:10px 0 0;"><a href="https://www.austintexas.gov/public-information-request" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Source: City of Austin →</a></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="major" style="padding:42px 0;border-bottom:1px solid #dedad1;">
+                <div style="margin:0 0 6px;color:#8f1717;font-family:'Arial Narrow',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">MORE FOR YOU</div>
+                <p style="margin:0 0 18px;color:#68635a;font-size:14px;line-height:1.5;">Selected from your saved interests.</p>
+                <div style="padding:0 0 22px;border-bottom:1px solid #dedad1;">
+                  <h3 style="margin:0;color:#181818;font-family:Georgia,'Times New Roman',serif;font-size:21px;line-height:1.2;">Technology sample shows a personalized news item</h3>
+                  <p style="margin:10px 0 0;font-size:16px;line-height:1.55;color:#2a2926;">Personalized content remains recognizably ADB without looking like a separate feed.</p>
+                  <p style="margin:8px 0 0;"><a href="https://news.utexas.edu/" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Source: The University of Texas at Austin →</a></p>
+                </div>
+                <div style="padding:22px 0 0;">
+                  <h3 style="margin:0;color:#181818;font-family:Georgia,'Times New Roman',serif;font-size:21px;line-height:1.2;">Arts sample shows a lighter personalized item</h3>
+                  <p style="margin:10px 0 0;font-size:16px;line-height:1.55;color:#2a2926;">Lighter material can use a shorter utility summary without an unnecessary Why It Matters box.</p>
+                  <p style="margin:8px 0 0;"><a href="https://www.austintexas.org/events/" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Source: Visit Austin →</a></p>
+                </div>
+              </div>
+
+              <div class="major" style="padding:42px 0;border-bottom:1px solid #dedad1;">
+                <div style="margin:0 0 18px;color:#8f1717;font-family:'Arial Narrow',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">AUSTIN AHEAD</div>
+
+                <div style="padding:0 0 20px;border-bottom:1px solid #dedad1;">
+                  <div style="color:#181818;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;"><span style="color:#db2d2d;">GO</span> · SAT</div>
+                  <h3 style="margin:7px 0 0;color:#181818;font-family:Georgia,'Times New Roman',serif;font-size:20px;line-height:1.2;">Sample weekend event</h3>
+                  <p style="margin:9px 0 0;font-size:16px;line-height:1.5;color:#2a2926;">A concise utility description tells the reader what the option is and what to check before going.</p>
+                  <p style="margin:7px 0 0;"><a href="https://www.austintexas.org/events/" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Event details: Visit Austin →</a></p>
+                </div>
+
+                <div style="padding:20px 0;border-bottom:1px solid #dedad1;">
+                  <div style="color:#181818;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;"><span style="color:#db2d2d;">WATCH</span> · TUE</div>
+                  <h3 style="margin:7px 0 0;color:#181818;font-family:Georgia,'Times New Roman',serif;font-size:20px;line-height:1.2;">Sample public meeting to watch</h3>
+                  <p style="margin:9px 0 0;font-size:16px;line-height:1.5;color:#2a2926;">WATCH indicates an approaching development that primarily requires awareness rather than action.</p>
+                  <p style="margin:7px 0 0;"><a href="https://www.austintexas.gov/calendar" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Source: City of Austin →</a></p>
+                </div>
+
+                <div style="padding:20px 0 0;">
+                  <div style="color:#181818;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;"><span style="color:#db2d2d;">PLAN</span> · MON–THU</div>
+                  <h3 style="margin:7px 0 0;color:#181818;font-family:Georgia,'Times New Roman',serif;font-size:20px;line-height:1.2;">Sample overnight road closures</h3>
+                  <p style="margin:9px 0 0;font-size:16px;line-height:1.5;color:#2a2926;">PLAN is reserved for items that may require rerouting, registration, scheduling, or another practical adjustment.</p>
+                  <p style="margin:7px 0 0;"><a href="https://my35capex.com/" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">Source: TxDOT I-35 Capital Express →</a></p>
+                </div>
+              </div>
+
+              <div class="major" style="padding:42px 0;">
+                <div style="padding:18px;border:1px solid #dedad1;background:#fffefa;">
+                  <div style="margin:0 0 7px;color:#db2d2d;font-family:'Arial Narrow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">CORRECTION · SEPTEMBER 19, 2026</div>
+                  <p style="margin:0;font-size:16px;line-height:1.55;color:#2a2926;">This sample demonstrates the neutral correction treatment. The notice states what was wrong or unclear and supplies the corrected information directly.</p>
+                  <p style="margin:8px 0 0;"><a href="https://austindailybriefing.com/corrections.html" style="display:inline-block;padding:8px 0;color:#8f1717;font-size:16px;font-weight:700;text-decoration:underline;">View the corrections log →</a></p>
+                </div>
+              </div>
+
+            </td>
+          </tr>
+          <tr>
+            <td class="footer-pad" style="padding:32px 34px;background:#181818;color:#fffefa;">
+              <img src="https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/newsletter-renderer-v0-1/assets/brand/adb-mark-reversed@2x.png"
+                   width="72" alt="ADB" style="display:block;width:72px;height:auto;border:0;">
+              <p style="margin:18px 0 0;color:#dedad1;font-size:15px;line-height:1.55;">You are receiving Austin Daily Briefing because you subscribed to a concise local briefing.</p>
+              <p style="margin:18px 0 0;">
+                <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform" style="display:inline-block;min-height:44px;box-sizing:border-box;padding:13px 18px;background:#db2d2d;color:#fffefa;font-family:'Arial Narrow',Arial,sans-serif;font-size:16px;font-weight:700;text-decoration:none;">Pause or unsubscribe</a>
+              </p>
+              <p style="margin:18px 0 0;font-size:15px;line-height:1.8;">
+                <a href="https://austindailybriefing.com/" style="color:#fffefa;text-decoration:underline;">Visit the website</a><br>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform" style="color:#fffefa;text-decoration:underline;">Customize</a><br>
+                <a href="https://austindailybriefing.com/feedback.html" style="color:#fffefa;text-decoration:underline;">Feedback &amp; corrections</a><br>
+                <a href="https://austindailybriefing.com/corrections.html" style="color:#fffefa;text-decoration:underline;">Corrections log</a><br>
+                <a href="https://austindailybriefing.com/privacy.html" style="color:#fffefa;text-decoration:underline;">Privacy</a><br>
+                <a href="https://austindailybriefing.com/terms.html" style="color:#fffefa;text-decoration:underline;">Terms</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -208,3 +208,29 @@ Safety characteristics:
 - Requires `ADB_WELCOME_QA_ALLOWLIST` Script property.
 
 This test intentionally sends the existing production welcome template as-is so client rendering, links, hierarchy, and branding can be evaluated before deciding whether the welcome experience should be redesigned to match the new newsletter identity.
+
+
+## Welcome redesign staged for QA
+
+A redesigned welcome message is staged for controlled review:
+
+- `design/welcome-email-qa.html`
+- `design/welcome-email-qa.txt`
+- `validateWelcomeRedesignQaV1()`
+- `sendWelcomeRedesignQaV1()`
+
+The redesign uses the approved masthead and centered Charcoal footer, preserves the live Customize / Manage / Feedback / Terms / Privacy destinations, and keeps HTML/plain-text destination order identical.
+
+Two copy adjustments were made to avoid publishing claims that conflict with current production behavior:
+
+1. The draft phrase `Every morning at 9 a.m.` is rendered as `Each morning` because the current canonical generation schedule is 08:00 America/Chicago. If the product schedule is intentionally changed to 09:00, the welcome copy should be revised together with the production schedule.
+2. The draft `Local` promise is rendered as `Austin-first` because shared coverage is local, while personalized More for You interests can legitimately include broader U.S. or global material under the active interest catalog.
+
+Current QA preflight:
+- HTML: 8,574 characters.
+- Plain text: 1,910 characters.
+- 6 destinations in each format.
+- Exact destination-order parity: PASS.
+- Required welcome, masthead, footer, customization, and feedback markers: PASS.
+
+The staged redesign is QA-only and does not modify `adbWelcomeHtml_`, `adbWelcomePlainText_`, Message Templates, queue behavior, or live Welcome delivery.

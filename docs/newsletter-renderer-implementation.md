@@ -1,6 +1,6 @@
 # Newsletter Renderer v0.1 — Implementation Record
 
-**Status:** Staging / controlled QA  
+**Status:** Controlled QA approved; ready for promotion integration  
 **Branch:** `newsletter-renderer-v0-1`  
 **Production impact:** None  
 **Canonical component specification:** `docs/newsletter-component-spec.md`
@@ -234,3 +234,43 @@ Current QA preflight:
 - Required welcome, masthead, footer, customization, and feedback markers: PASS.
 
 The staged redesign is QA-only and does not modify `adbWelcomeHtml_`, `adbWelcomePlainText_`, Message Templates, queue behavior, or live Welcome delivery.
+
+
+## Controlled QA approval
+
+The user completed controlled review of both the redesigned daily newsletter and redesigned welcome message and approved the new design for promotion.
+
+### Newsletter QA — PASS
+
+Confirmed in received email:
+
+- Masthead rendered correctly on desktop and mobile.
+- Austin Pulse styling held.
+- Featured story hierarchy was appropriate.
+- Why It Matters and Under the Radar behaved as intended.
+- More for You flowed naturally from shared stories.
+- Source links worked after correction of the Feedback & Corrections destination.
+- Footer was revised to centered alignment.
+- Mobile Weather was revised to full-width stacking.
+- More for You and Austin Ahead orientation descriptors were added.
+- Image-blocked rendering remained usable.
+- Dark mode remained legible.
+- Subscriber controls worked.
+- HTML/plain-text destination parity remains exact.
+
+### Welcome redesign QA — PASS
+
+Confirmed in received email:
+
+- Delivery reached the inbox.
+- The original welcome message required redesign due to missing masthead/footer.
+- The redesigned welcome uses the approved masthead and centered branded footer.
+- Copy was updated to accurately reflect current production behavior.
+- HTML/plain-text destination parity remains exact.
+- The redesigned welcome is approved for promotion.
+
+### What's New
+
+Before promotion, the newsletter specification and QA sample were extended with the optional `WHAT'S NEW` component for material subscriber-facing product updates. It is intentionally quiet, non-standing, and appears near the end of the editorial body before corrections/footer. The first production redesign announcement should use this component.
+
+PR #17 remains non-production staging. Promotion should occur through a fresh branch from `main` after this staging PR is merged.

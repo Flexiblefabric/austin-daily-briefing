@@ -106,8 +106,8 @@ function sendWelcomeEmailQaV1() {
  * welcome QA allowlist. It does not modify the production welcome template.
  */
 const ADB_WELCOME_REDESIGN_QA = Object.freeze({
-  HTML_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/newsletter-renderer-v0-1/design/welcome-email-qa.html',
-  TEXT_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/newsletter-renderer-v0-1/design/welcome-email-qa.txt',
+  HTML_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/design/welcome-email-qa.html',
+  TEXT_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/design/welcome-email-qa.txt',
   SUBJECT: '[CONTROLLED TEST] Welcome to the Austin Daily Briefing · Redesign',
   RUN_ID: 'welcome-email-redesign-v0-1-qa-r1'
 });

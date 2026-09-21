@@ -97,3 +97,107 @@ function sendWelcomeEmailQaV1() {
   Logger.log(JSON.stringify(report));
   return report;
 }
+
+
+/**
+ * Austin Daily Briefing — redesigned welcome email controlled QA
+ *
+ * Loads the staged welcome redesign from GitHub and sends only to the explicit
+ * welcome QA allowlist. It does not modify the production welcome template.
+ */
+const ADB_WELCOME_REDESIGN_QA = Object.freeze({
+  HTML_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/newsletter-renderer-v0-1/design/welcome-email-qa.html',
+  TEXT_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/newsletter-renderer-v0-1/design/welcome-email-qa.txt',
+  SUBJECT: '[CONTROLLED TEST] Welcome to the Austin Daily Briefing · Redesign',
+  RUN_ID: 'welcome-email-redesign-v0-1-qa-r1'
+});
+
+function validateWelcomeRedesignQaV1() {
+  const htmlBody = adbFetchNewsletterRendererQaAsset_(ADB_WELCOME_REDESIGN_QA.HTML_URL);
+  const textBody = adbFetchNewsletterRendererQaAsset_(ADB_WELCOME_REDESIGN_QA.TEXT_URL);
+
+  if (htmlBody.indexOf('CONTROLLED WELCOME QA') < 0 ||
+      textBody.indexOf('CONTROLLED WELCOME QA') < 0) {
+    throw new Error('Controlled welcome redesign marker missing.');
+  }
+
+  const htmlUrls = adbExtractNewsletterQaHtmlUrls_(htmlBody);
+  const textUrls = adbExtractNewsletterQaTextUrls_(textBody);
+  if (htmlUrls.length !== textUrls.length) {
+    throw new Error('Welcome redesign HTML/plain-text URL count mismatch: ' +
+      htmlUrls.length + ' vs ' + textUrls.length + '.');
+  }
+  for (let i = 0; i < htmlUrls.length; i++) {
+    if (htmlUrls[i] !== textUrls[i]) {
+      throw new Error('Welcome redesign URL order mismatch at index ' + i + '.');
+    }
+  }
+
+  const requiredMarkers = [
+    'Welcome to the Austin Daily Briefing',
+    'WHAT TO EXPECT',
+    'YOUR STARTING SETTINGS',
+    'CUSTOMIZE MY BRIEFING',
+    'CORRECTIONS, TIPS, AND FEEDBACK',
+    'adb-masthead@2x.png',
+    'adb-mark-reversed@2x.png'
+  ];
+  requiredMarkers.forEach(function(marker) {
+    if (htmlBody.indexOf(marker) < 0) throw new Error('Missing welcome redesign marker: ' + marker);
+  });
+
+  if (htmlBody.length > 45000 || textBody.length > 45000) {
+    throw new Error('Welcome redesign QA payload exceeds safe Sheets cell limit.');
+  }
+
+  const report = {
+    htmlChars: htmlBody.length,
+    textChars: textBody.length,
+    destinationCount: htmlUrls.length,
+    requiredMarkers: requiredMarkers.length,
+    sendAttempted: false
+  };
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
+function sendWelcomeRedesignQaV1() {
+  validateWelcomeRedesignQaV1();
+
+  const allowlist = String(PropertiesService.getScriptProperties()
+    .getProperty(ADB_WELCOME_QA.ALLOWLIST_PROPERTY) || '')
+    .split(',')
+    .map(function(value) { return value.trim().toLowerCase(); })
+    .filter(Boolean);
+
+  if (!allowlist.length) {
+    throw new Error('Set ' + ADB_WELCOME_QA.ALLOWLIST_PROPERTY + ' before sending.');
+  }
+
+  const htmlBody = adbFetchNewsletterRendererQaAsset_(ADB_WELCOME_REDESIGN_QA.HTML_URL);
+  const textBody = adbFetchNewsletterRendererQaAsset_(ADB_WELCOME_REDESIGN_QA.TEXT_URL);
+
+  const results = allowlist.map(function(recipient) {
+    const result = adbSendEmailViaResend_({
+      to: recipient,
+      subject: ADB_WELCOME_REDESIGN_QA.SUBJECT,
+      text: textBody,
+      html: htmlBody,
+      idempotencyKey: ADB_WELCOME_REDESIGN_QA.RUN_ID + ':' + recipient,
+      tags: {
+        message_type: 'welcome_redesign_qa',
+        environment: 'production',
+        qa_run: 'welcome_redesign_v0_1'
+      }
+    });
+    return {recipient: recipient, providerId: result.id, statusCode: result.statusCode};
+  });
+
+  const report = {
+    runId: ADB_WELCOME_REDESIGN_QA.RUN_ID,
+    sent: results.length,
+    results: results
+  };
+  Logger.log(JSON.stringify(report));
+  return report;
+}

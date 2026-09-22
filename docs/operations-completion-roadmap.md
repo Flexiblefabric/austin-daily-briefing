@@ -32,6 +32,12 @@ Completion means provider acceptance and matching internal records; it does **no
 5. Exercise DEV fixtures for new signup, duplicate submission, existing subscriber/reactivation, invalid response, delayed processor, partial write, send failure, and clean replay. Verify that checks never send or mutate a subscriber.
 6. Promote read-only detection first; then add one incident type and administrator alert only after clean DEV runs and a controlled production observation. Existing processor and dispatcher retain sole write/send ownership.
 
+### 2026-09-22 reusable full-scan baseline
+
+A manual read-only run of the reusable full-scan model reviewed all 12 populated production Signup journeys. All 12 were Complete, with zero Pending, Unhealthy, Unknown, duplicate-ledger, duplicate-Welcome, duplicate-action, or identity-cardinality results. Three early journeys were recognized through permitted legacy Gmail delivery evidence; newer journeys use Resend provider evidence. The known source-row-9 / ledger-row-23 missing Signup Actions record remains the single audit-only defect. See [end-to-end-completion-reconciliation-baseline.md](end-to-end-completion-reconciliation-baseline.md).
+
+This baseline validates the current production joins and classifications, but it does not replace the controlled DEV failure/replay fixtures.
+
 **Acceptance:** Every controlled case has one correct disposition, zero duplicate welcome sends, no test subscriber in production, and an intentional zero-work run stays healthy. A deliberately stranded valid signup becomes unhealthy after the documented threshold and recovers only when the completion evidence exists.
 
 ## Phase 3 — Task and trigger reconciliation (manual scheduler baseline complete; trigger visibility pending)

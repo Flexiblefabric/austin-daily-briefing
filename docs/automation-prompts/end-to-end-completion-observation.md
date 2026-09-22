@@ -1,13 +1,13 @@
 # End-to-end completion observation — canonical prompt
 
 **Specification ID:** `ADB-COMPLETION-OBS-0.1`  
-**Lifecycle:** Development / one-time read-only observation  
+**Lifecycle:** Retired — one-time read-only observation completed 2026-09-20  
 **Observation start:** `2026-09-19T16:22:10Z` (`2026-09-19 11:22:10 America/Chicago`)  
 **Duration:** 24 hours  
 **Canonical contract:** `docs/end-to-end-completion-spec.md`  
 **Production writes, repairs, sends, or alerts:** Prohibited
 
-This prompt is the durable execution copy for the first 24-hour production observation. The scheduled copy may consume the single reserve task slot only until its one-time run completes.
+This prompt is the durable execution copy for the first 24-hour production observation. The one-time scheduler run completed and this prompt is now preserved for audit only. Do not recreate it without a new explicit observation plan. Durable closeout evidence is recorded in [`../end-to-end-completion-observation-result.md`](../end-to-end-completion-observation-result.md).
 
 ## Execution prompt
 

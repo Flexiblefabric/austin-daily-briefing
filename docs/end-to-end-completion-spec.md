@@ -70,6 +70,28 @@ The 2026-09-19 read-only review found:
 
 The production subscriber database metadata reports timezone `Etc/GMT`, while operational text timestamps are labeled CT and the intake workbook uses `America/Chicago`. The reconciler must not rely on workbook-local interpretation of those text values. During development, parse the established formats explicitly and compare in America/Chicago. A future schema revision should prefer machine-readable timestamps with offsets.
 
+## Reusable scan state and recovery
+
+The first reusable reconciler should remain **stateless and full-scan** while production signup volume is small enough for bounded reads of the populated response, ledger, audit, subscriber/profile, and Welcome queue tables. A full scan is safer than introducing a mutable high-water mark before it is operationally necessary and automatically covers missed runs and long-delayed records.
+
+For the initial recurring implementation:
+
+- Read the currently populated production Signup response and Signup ledger ranges on every run.
+- Reconcile every nonblank Signup response to its ledger disposition and, when applicable, its downstream audit/profile/Welcome evidence.
+- Continue reporting unresolved records on every run until they become Complete, Closed by an authoritative disposition, or remain explicitly Unhealthy/Unknown.
+- Do not persist subscriber identifiers, raw response keys, provider IDs, addresses, bodies, or tokens in monitoring state.
+- The monitor may persist only sanitized aggregate/status evidence that it owns after a separate production-monitoring promotion.
+
+If volume later requires incremental scanning, introduce a high-water mark only through a reviewed schema/runtime change. That future design must:
+
+1. advance the high-water mark only after a complete successful scan;
+2. re-scan an overlap window of at least 24 hours;
+3. retain unresolved sanitized row references outside the high-water boundary until terminal resolution;
+4. leave the prior high-water mark unchanged after an Unknown/partial read;
+5. support a full-scan recovery mode that can reconstruct state without sending or repairing subscriber messages.
+
+After promotion into production monitoring, incident/recovery evidence should follow the existing Operations History retention policy. The reconciler itself remains observational and never becomes an alternate subscriber processor or dispatcher.
+
 ## Read-only reconciler output
 
 A run reports only:
@@ -80,7 +102,7 @@ A run reports only:
 - Duplicate/cardinality counts.
 - Baseline or prior-run comparison when available.
 
-Never report addresses, subscriber names, email bodies, confirmation tokens, raw provider IDs, or administrator routing. High-water marks may advance only after a complete successful scan. Re-scan an overlap window of at least 24 hours; retain unresolved records until completion or an explicit closed disposition.
+Never report addresses, subscriber names, email bodies, confirmation tokens, raw provider IDs, or administrator routing. Use the full-scan rule above for the initial recurring implementation; do not add mutable high-water state merely as an optimization.
 
 ## Test gate
 

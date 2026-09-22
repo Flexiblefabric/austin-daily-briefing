@@ -2,12 +2,12 @@
 
 **Status:** Active development evidence  
 **Canonical scoring contract:** [`docs/v2-shadow-review-prompt.md`](./v2-shadow-review-prompt.md)  
-**Current specification:** `ADB-V2-SHADOW-0.2`  
+**Current specification:** `ADB-V2-SHADOW-0.3`  
 **Weight fingerprint:** `20-20-15-15-10-10-10`  
 **Observation window:** 2026-09-14 through 2026-09-26  
 **Decision point:** Review promotion readiness after the 2026-09-26 run
 
-This is the durable comparison record for manual, read-only V2 shadow reviews. It is deliberately small: one scorecard, one daily record per run, and one open-issues list. It does not replace the canonical prompt and does not authorize production changes.
+This is the durable comparison record for manual, read-only V2 shadow reviews. Runs through 2026-09-19 used `ADB-V2-SHADOW-0.2`; remaining runs use `ADB-V2-SHADOW-0.3`, which adds counterfactual V2-history continuity and proposal/adoption verification without changing the fixed score weights, eligibility floor, or override definitions. It is deliberately small: one scorecard, one daily record per run, and one open-issues list. It does not replace the canonical prompt and does not authorize production changes.
 
 ## Recording rules
 
@@ -95,12 +95,25 @@ After each run:
 - **Under the Radar:** No qualifying new item. The lane remained empty.
 - **Verdict:** Mixed, leaning V2. V2 improves repeat discipline, but its apparent discovery advantage is inflated unless shadow-history continuity is measured.
 
+### 2026-09-22 methodology update
+
+Before the remaining observation runs, the canonical shadow specification advanced to `ADB-V2-SHADOW-0.3`.
+
+The change does **not** alter the 100-point weights, 60-point floor, Freshness Veto, Discovery Promotion, or Selection Balance definitions. It resolves three test-method issues identified by the first six runs:
+
+- prior V2 Top Story and Under the Radar selections now form a counterfactual shared repeat history;
+- recurring unresolved discoveries can no longer be counted repeatedly as fresh V2 wins;
+- proposals, board packets, recommendations, and pending actions must be labeled distinctly from adopted/final outcomes;
+- legacy event-section language is aligned with the current Austin Ahead product.
+
+This makes the remaining shadow runs a stricter promotion test while preserving the historical `0.2` results for comparison.
+
 ## Open issues before promotion
 
 | Issue | Evidence | Required resolution |
 |---|---|---|
-| Shadow-history continuity | AHA and Seabrook recurred across three shadow comparisons without a new development | Decide whether promotion testing should simulate V2's own prior selections in addition to checking production history |
-| Source verification | AHA was based on a board packet and proposed changes, not an adoption vote | Keep proposal/adoption language explicit and require accessible support for selected claims |
+| Shadow-history continuity | AHA and Seabrook recurred across three shadow comparisons without a new development | **Resolved for remaining runs:** `0.3` uses counterfactual V2 history while preserving production history for comparison |
+| Source verification | AHA was based on a board packet and proposed changes, not an adoption vote | **Resolved as a specification control:** `0.3` requires explicit proposal/adoption status and supporting evidence; continue auditing execution |
 | Under the Radar consistency | Strong independent discoveries sometimes become Top Stories; other days legitimately produce no item | Preserve independent search, single placement, and permission to leave the section empty |
 | Friday wrap-up maturity | 2026-09-18 wrap-up was valid but thin | Keep outside current V2 promotion decision unless separately specified and tested |
 | Promotion threshold | Six runs favor V2, but the sample is still short | Complete daily manual runs through 2026-09-26, then assess errors and regressions as well as win count |

@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-09-21.1",
-  "last_reviewed": "2026-09-21",
+  "registry_version": "2026-09-22.1",
+  "last_reviewed": "2026-09-22",
   "project": {
     "name": "Austin Daily Briefing",
     "repository": "Flexiblefabric/austin-daily-briefing",
@@ -139,12 +139,28 @@
       "status": "development",
       "cadence": "manual only",
       "runbook": "docs/v2-shadow-review-prompt.md",
-      "specification_id": "ADB-V2-SHADOW-0.1",
+      "specification_id": "ADB-V2-SHADOW-0.2",
       "weight_fingerprint": "20-20-15-15-10-10-10",
       "task_status": "held — repository only",
       "production_boundary": "read-only; no queue, delivery, configuration, or data writes",
       "reporting": "V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation",
       "verification": "canonical prompt preserved in GitHub; no scheduler slot required while held"
+    },
+    "completion_observation": {
+      "status": "retired",
+      "cadence": "one-time; completed 2026-09-20",
+      "runbook": "docs/automation-prompts/end-to-end-completion-observation.md",
+      "task_id": "6aaeb71dc79481918ad4984cf43208b2",
+      "result": "docs/end-to-end-completion-observation-result.md",
+      "production_boundary": "read-only; no writes, repairs, sends, alerts, or dispatcher invocation",
+      "verification": "one-time scheduler run completed; durable retrospective evidence recorded"
+    },
+    "task_reconciliation": {
+      "status": "available",
+      "cadence": "manual/read-only",
+      "runbook": "docs/task-reconciliation.md",
+      "reporting": "exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable",
+      "verification": "manual baseline recorded 2026-09-22; Apps Script trigger state remains separate"
     }
   },
   "runtime_properties": [
@@ -200,7 +216,10 @@
     "daily_generation_prompt": "docs/automation-prompts/austin-daily-briefing.md",
     "subscriber_operations_prompt": "docs/automation-prompts/production-subscriber-operations.md",
     "production_watchdog_prompt": "docs/automation-prompts/production-health-watchdog.md",
-    "v2_shadow_log": "docs/v2-shadow-review-log.md"
+    "v2_shadow_log": "docs/v2-shadow-review-log.md",
+    "roadmap": "docs/ROADMAP.md",
+    "completion_observation_result": "docs/end-to-end-completion-observation-result.md",
+    "task_reconciliation": "docs/task-reconciliation.md"
   },
   "governance": {
     "registry_is_authoritative": true,

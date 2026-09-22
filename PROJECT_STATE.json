@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-09-22.2",
+  "registry_version": "2026-09-22.3",
   "last_reviewed": "2026-09-22",
   "project": {
     "name": "Austin Daily Briefing",
@@ -161,6 +161,14 @@
       "runbook": "docs/task-reconciliation.md",
       "reporting": "exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable",
       "verification": "manual baseline recorded 2026-09-22; Apps Script trigger state remains separate"
+    },
+    "completion_reconciliation": {
+      "status": "development",
+      "cadence": "manual/read-only",
+      "runbook": "docs/automation-prompts/end-to-end-completion-reconcile.md",
+      "specification_id": "ADB-COMPLETION-RECON-0.1",
+      "production_boundary": "read-only; no writes, repairs, sends, alerts, or dispatcher invocation",
+      "reporting": "privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1"
     }
   },
   "runtime_properties": [
@@ -220,7 +228,8 @@
     "roadmap": "docs/ROADMAP.md",
     "completion_observation_result": "docs/end-to-end-completion-observation-result.md",
     "task_reconciliation": "docs/task-reconciliation.md",
-    "reader_change_communications": "docs/reader-change-communications.md"
+    "reader_change_communications": "docs/reader-change-communications.md",
+    "completion_reconciliation_prompt": "docs/automation-prompts/end-to-end-completion-reconcile.md"
   },
   "governance": {
     "registry_is_authoritative": true,

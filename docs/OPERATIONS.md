@@ -21,6 +21,8 @@
 - **completion_observation** — retired — one-time; completed 2026-09-20 — `docs/automation-prompts/end-to-end-completion-observation.md`
 - **task_reconciliation** — available — manual/read-only — `docs/task-reconciliation.md`
   - Reporting: exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable.
+- **completion_reconciliation** — development — manual/read-only — `docs/automation-prompts/end-to-end-completion-reconcile.md`
+  - Reporting: privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1.
 
 ## Runtime configuration
 

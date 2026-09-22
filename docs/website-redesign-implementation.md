@@ -1,12 +1,12 @@
 # Website Redesign Implementation
 
-**Status:** Staged for review  
+**Status:** Promoted to production 2026-09-22  
 **Design specification:** [website-design-spec.md](website-design-spec.md)  
 **Branch:** `website-redesign-stage-v1`
 
 ## Scope of this staging pass
 
-This staging pass implements the first production-shaped version of the approved website redesign without merging it to `main`.
+This implementation record describes the production website redesign merged in PR #23 and deployed successfully through GitHub Pages on 2026-09-22.
 
 Included:
 
@@ -30,9 +30,8 @@ Included:
 
 ## Deliberately deferred
 
-The following remain outside this staging pass:
+The following remain outside this release:
 
-- replacing the existing skyline-based social preview image;
 - introducing visible editorial photography or illustration;
 - Friday Austin Explorer web components;
 - remote web-font loading or font self-hosting;
@@ -72,3 +71,15 @@ Require:
 - no broken production brand assets;
 - GitHub Pages workflow readiness;
 - explicit approval to promote.
+
+
+## Promotion result
+
+- PR #23 was merged to `main` on 2026-09-22.
+- The GitHub Pages deployment for the merge commit completed successfully.
+- Desktop/mobile visual review and explicit promotion approval were completed before merge.
+- The site now exposes Home, How ADB Works, What's New, Corrections, Privacy, and Terms through the common publication shell.
+- The brand-system social card is stored as `site/social-preview.png`; metadata references were reconciled to that asset after promotion.
+- No subscriber, queue, email-delivery, or personalization behavior changed.
+
+The redesign is complete. Future Friday Explorer modules, general editorial imagery, analytics, and archive/CMS work remain separate roadmap items or deferred ideas.

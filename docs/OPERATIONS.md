@@ -18,6 +18,9 @@
   - Form validation: after form changes only.
 - **v2_shadow_review** — development — manual only — `docs/v2-shadow-review-prompt.md`
   - Reporting: V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation.
+- **completion_observation** — retired — one-time; completed 2026-09-20 — `docs/automation-prompts/end-to-end-completion-observation.md`
+- **task_reconciliation** — available — manual/read-only — `docs/task-reconciliation.md`
+  - Reporting: exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable.
 
 ## Runtime configuration
 

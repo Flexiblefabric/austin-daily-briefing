@@ -5,7 +5,7 @@
 **Current specification:** `ADB-V2-SHADOW-0.3`  
 **Weight fingerprint:** `20-20-15-15-10-10-10`  
 **Observation window:** 2026-09-14 through 2026-09-26  
-**Decision point:** Review promotion readiness after the 2026-09-26 run
+**Decision point:** Review promotion readiness after the 2026-09-26 run  
 **Testing pause:** No shadow runs were recorded 2026-09-20 through 2026-09-22 while compute capacity was unavailable; missing days are not evidence for or against V2.
 
 This is the durable comparison record for manual, read-only V2 shadow reviews. Runs through 2026-09-19 used `ADB-V2-SHADOW-0.2`; remaining runs use `ADB-V2-SHADOW-0.3`, which adds counterfactual V2-history continuity and proposal/adoption verification without changing the fixed score weights, eligibility floor, or override definitions. It is deliberately small: one scorecard, one daily record per run, and one open-issues list. It does not replace the canonical prompt and does not authorize production changes.
@@ -46,7 +46,7 @@ After each run:
 - Mixed, leaning V2: **2**
 - Production better: **0**
 - Distinct consequential production misses corrected by V2 include the measles exposure, AISD takeover dispute, Central Health budget/tax decision, mail-ballot ruling, East Sixth overdose cluster, AHA voucher proposals, and Seabrook Square II.
-- Evidence currently supports the working conclusion that V2 is outperforming production, with repeat-memory and source-verification limitations still unresolved.
+- Evidence currently supports the working conclusion that V2 is outperforming production. Repeat-memory and proposal/adoption verification controls were strengthened in `0.3`; the remaining runs must test whether those controls work as intended.
 - Continue daily manual testing through **2026-09-26** before making a promotion recommendation.
 
 ## Daily records

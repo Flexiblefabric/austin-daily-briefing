@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-09-22.1",
+  "registry_version": "2026-09-22.2",
   "last_reviewed": "2026-09-22",
   "project": {
     "name": "Austin Daily Briefing",
@@ -139,7 +139,7 @@
       "status": "development",
       "cadence": "manual only",
       "runbook": "docs/v2-shadow-review-prompt.md",
-      "specification_id": "ADB-V2-SHADOW-0.2",
+      "specification_id": "ADB-V2-SHADOW-0.3",
       "weight_fingerprint": "20-20-15-15-10-10-10",
       "task_status": "held — repository only",
       "production_boundary": "read-only; no queue, delivery, configuration, or data writes",
@@ -219,7 +219,8 @@
     "v2_shadow_log": "docs/v2-shadow-review-log.md",
     "roadmap": "docs/ROADMAP.md",
     "completion_observation_result": "docs/end-to-end-completion-observation-result.md",
-    "task_reconciliation": "docs/task-reconciliation.md"
+    "task_reconciliation": "docs/task-reconciliation.md",
+    "reader_change_communications": "docs/reader-change-communications.md"
   },
   "governance": {
     "registry_is_authoritative": true,

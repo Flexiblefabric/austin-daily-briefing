@@ -1,9 +1,9 @@
 # ADB V2 Shadow Review — Canonical Prompt
 
-**Specification ID:** `ADB-V2-SHADOW-0.2`  
+**Specification ID:** `ADB-V2-SHADOW-0.3`  
 **Weight fingerprint:** `20-20-15-15-10-10-10`  
 **Status:** Development / manual shadow testing  
-**Adopted:** 2026-09-16  
+**Adopted:** 2026-09-22  
 **Canonical repository path:** `docs/v2-shadow-review-prompt.md`
 
 This file is the authoritative prompt and scoring contract for manual Austin Daily Briefing V2 story-selection shadow reviews. The saved ChatGPT task is an execution copy. If the task prompt, a prior chat, or a run-time interpretation conflicts with this file, this file controls. Do not change scoring weights, thresholds, override meanings, section boundaries, or output requirements during a run. Proposed changes belong in the evaluation notes and require an explicit revision to this file.
@@ -16,7 +16,7 @@ This is evaluation only. Do not send email, queue messages, edit Google Sheets, 
 
 At the beginning of the result, print:
 
-- Specification ID: `ADB-V2-SHADOW-0.2`
+- Specification ID: `ADB-V2-SHADOW-0.3`
 - Weight fingerprint: `20-20-15-15-10-10-10`
 - Execution mode: `MANUAL SHADOW — READ ONLY`
 
@@ -27,7 +27,8 @@ If the weights used do not exactly match the fingerprint, stop and report a spec
 - Production database: Google Sheet ID `1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0`.
 - Read the active Interest Catalog and current default profile/preference structure needed to construct one generic test profile.
 - Read the current-day production Briefing History and, only if needed to reconstruct the production slate, the matching daily briefing queue record.
-- Review at least the previous 14 days of Briefing History for repeat control.
+- Review at least the previous 14 days of Briefing History for actual production repeat control.
+- Read `docs/v2-shadow-review-log.md` for prior V2 shadow selections in the same observation window so the run can simulate what V2 itself would already have shown readers. Do not infer shadow history from memory when the log is unavailable.
 - Never use or expose subscriber email addresses, tokens, delivery addresses, or private profile data.
 - If no current-day production slate exists, still run V2 and label the production comparison `Not available`. Never create or repair production output.
 
@@ -59,6 +60,8 @@ Seek a broad enough candidate pool to test the ranking system across multiple la
 
 Verify that every selected link opens and supports the stated claim. Prefer original reporting or the most authoritative accessible source. Replace inaccessible, stale, blocked, or paywalled sources when practical. An inaccessible source may not be the sole support for an included claim.
 
+For proposals, draft rules, staff recommendations, agenda items, board packets, announced plans, pending votes, or other non-final actions, state the procedural status explicitly. Never describe a proposal as adopted, approved, enacted, funded, or final unless the supporting source establishes that outcome. When the distinction materially affects the story, prefer a primary source or accessible independent corroboration that makes the status clear.
+
 ## Source-confidence gate
 
 Source confidence is an eligibility and validation gate, **not a scored component**.
@@ -67,7 +70,18 @@ Reject or replace a candidate when its central claim cannot be supported by an a
 
 ## Repeat and material-change gate
 
-Before scoring a previously covered topic:
+Use two distinct histories during shadow testing:
+
+1. **Production history** — what the live briefing actually published in the previous 14 days.
+2. **Counterfactual V2 history** — what prior V2 shadow runs selected, as recorded in the durable evidence log.
+
+The counterfactual history prevents an unresolved discovery from being counted as a fresh V2 advantage on multiple days merely because production never published it.
+
+For shared coverage, prior V2 Top Stories and Under the Radar selections count toward the counterfactual shared history. Generic-profile More for You selections are tracked separately for personalized repeat testing and must not suppress a shared Top Story merely because the generic test profile saw it in More for You.
+
+The displayed V2 slate should use counterfactual V2 history for V2 repeat eligibility. Preserve production history separately for the live-production comparison so the evaluation can explain where the two histories diverge.
+
+Before scoring a topic previously covered in the applicable history:
 
 1. Determine whether a material development occurred.
 2. Record `Material Update = TRUE` or `FALSE`.
@@ -84,7 +98,7 @@ A material development may include a completed vote, ruling, funding decision, f
 
 Record `Event timing = upcoming / today / completed` when an event or deadline is relevant. This describes *when* it happens, not whether the story changed. For a previously covered topic, set `Material Update = TRUE` only when a verified new fact changes the reader's understanding or options; do not flip the flag because the calendar advanced, registration remained open, or a scheduled hearing began without a reported substantive development.
 
-An upcoming consequential decision may be eligible as a new story on its first coverage, subject to the normal score and editorial ranking. If already covered, a same-day reminder normally belongs in **Things to Do / Keep an Eye On** only when attendance or participation remains useful. A verified vote, decision, cancellation, material agenda change, or consequential new testimony may pass the repeat gate on its own merits. Record the exact change. Event timeliness can earn points under `Timeliness / actionability` only after eligibility; it cannot supply missing `New-information value` or rescue a repeat.
+An upcoming consequential decision may be eligible as a new story on its first coverage, subject to the normal score and editorial ranking. If already covered, a same-day reminder normally belongs in **Austin Ahead** only when attendance, participation, preparation, or near-term awareness remains useful. A verified vote, decision, cancellation, material agenda change, or consequential new testimony may pass the repeat gate on its own merits. Record the exact change. Event timeliness can earn points under `Timeliness / actionability` only after eligibility; it cannot supply missing `New-information value` or rescue a repeat.
 
 Do not fill Top Stories with routine hearings, meetings, openings, or calendar reminders. Require a substantive public consequence or genuinely new information as for any other candidate. Do not impose a quota that blocks a genuinely consequential event.
 
@@ -126,7 +140,7 @@ The base score measures editorial value and is shared across profiles.
 - For More for You, first require base score `>=60`, then use the generic profile's saved High/Normal/Off preferences and adjacent interests as secondary selection and ordering signals.
 - Exclude Off topics from More for You.
 - The shared Top Stories slate must not be personalized.
-- Things to Do / Keep an Eye On remains an event-utility section, not a back door for low-scoring news candidates.
+- Austin Ahead remains an event-utility section, not a back door for low-scoring news candidates.
 - An event reminder may be useful there without qualifying as a new ranked story; label its event timing separately from material-update status.
 
 Use one generic/default test profile constructed from the active preference structure. Do not use a real subscriber identity.
@@ -203,6 +217,7 @@ Include:
 - Whether the production comparison was available
 - Generic-profile preference summary without identity data
 - Confirmation that no production write or delivery occurred
+- Number of prior V2 shadow days successfully loaded for counterfactual repeat control
 
 ### 2. V2 Top 10
 
@@ -221,7 +236,7 @@ Show ranked candidates in a table. For each include:
 - Concise rationale
 - Verified source link or links
 
-Clearly distinguish shared Top Stories, Under the Radar, More for You, and event-section candidates. Do not present a personalized candidate as a shared Top Story. Return up to 10 eligible ranked candidates; do not pad a short list with rejected stories or routine events.
+Clearly distinguish shared Top Stories, Under the Radar, More for You, and Austin Ahead candidates. Do not present a personalized candidate as a shared Top Story. Return up to 10 eligible ranked candidates; do not pad a short list with rejected stories or routine events.
 
 ### 3. Production comparison
 
@@ -248,6 +263,8 @@ List every reviewed candidate marked `Material Update = TRUE`, including:
 
 Also list any production item labeled `Material Update = TRUE` that V2 classifies as a calendar-only reminder. Show its event timing and explain the disagreement without silently rewriting production history.
 
+When production history and counterfactual V2 history disagree, identify both. A story can be new to production yet still be a V2 shadow-history repeat, or vice versa.
+
 ### 5. Notable rejects
 
 Show the strongest rejected candidates with:
@@ -265,12 +282,13 @@ State whether V2 appears better, worse, or mixed for this run. Identify:
 - Production choices V2 should have retained
 - Possible false promotions or demotions
 - Scoring ambiguities
-- Repeat-control behavior
+- Repeat-control behavior under both production history and counterfactual V2 history
+- Whether any apparent V2 discovery advantage is a repeated unresolved shadow discovery; do not count it as a new win
 - Balance behavior, including whether the independent Under the Radar search yielded a qualifying item
 - Whether a consequential pre-send story was missed, with verified publication timing
 - Any recommended specification change
 
-Recommendations do not modify this specification. Continue using `ADB-V2-SHADOW-0.2` until the canonical file is explicitly revised.
+Recommendations do not modify this specification. Continue using `ADB-V2-SHADOW-0.3` until the canonical file is explicitly revised.
 
 ## Prohibited behavior
 

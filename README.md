@@ -106,6 +106,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the generated architectur
 | [`assets/brand/`](assets/brand/) | Approved production masthead and compact brand assets |
 | [`design/`](design/) | Static newsletter and Welcome reference/QA payloads |
 | [`docs/`](docs/) | Editorial, design, component, operational, release, and governance documentation |
+| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Canonical cross-project backlog and current work status |
 | [`docs/automation-prompts/`](docs/automation-prompts/) | Durable canonical copies of active automation prompts |
 | [`docs/snapshots/`](docs/snapshots/) | Immutable point-in-time captures of material technical state |
 | [`scripts/`](scripts/) | Documentation registry and synchronization tooling |
@@ -124,6 +125,7 @@ The project uses separate specifications for editorial meaning, visual identity,
 - [**Production Subscriber Operations**](docs/automation-prompts/production-subscriber-operations.md) — canonical signup, management, customization, and confirmation processing rules.
 - [**Production Health Watchdog**](docs/automation-prompts/production-health-watchdog.md) — production monitoring rules.
 - [**Technical Changelog**](docs/CHANGELOG.md) — material production changes, newest first.
+- [**Project Roadmap**](docs/ROADMAP.md) — pending, blocked, deferred, and recently completed cross-project work.
 
 When specifications overlap, use the narrower canonical document for its domain rather than treating this README as an implementation specification.
 

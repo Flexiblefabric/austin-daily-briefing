@@ -34,7 +34,8 @@ ADB reserves scheduler capacity deliberately. Production Daily Briefing, Product
 - [Austin Daily Briefing](austin-daily-briefing.md) — active
 - [Production Subscriber Operations](production-subscriber-operations.md) — active
 - [Production Health Watchdog](production-health-watchdog.md) — active after recreation
-- [End-to-end Completion Observation](end-to-end-completion-observation.md) — development / one-time 24-hour read-only observation
+- [End-to-end Completion Observation](end-to-end-completion-observation.md) — retired; one-time observation completed 2026-09-20
+- [End-to-end Completion Reconciliation](end-to-end-completion-reconcile.md) — development/manual read-only
 - [V2 Shadow Review](../v2-shadow-review-prompt.md) — development/manual
 - [Domain Health Check](../domain-health-check.md) — manual runbook
 

@@ -1,6 +1,6 @@
 # Austin Daily Briefing Website Design Specification
 
-**Status:** Draft design specification  
+**Status:** Approved and implemented in production  
 **Scope:** Public website redesign  
 **Applies to:** `site/`  
 **Related systems:** [Design System](design-system.md), [Editorial System](editorial-system.md), [Newsletter Component Specification](newsletter-component-spec.md)
@@ -419,7 +419,7 @@ Preserve and update:
 - robots.txt;
 - sitemap.xml.
 
-The current skyline-based social preview should eventually be replaced with a brand-system social card.
+The skyline-based social preview has been replaced by the brand-system social card at `site/social-preview.png`.
 
 The social card may be graphical even while the public site itself remains image-free.
 

@@ -1,6 +1,6 @@
 # Operations completion and task reconciliation roadmap
 
-**Status:** In progress. Phase 1 completion contract and production baseline completed 2026-09-19; no production monitoring or delivery behavior changed.
+**Status:** In progress. Phase 1 contract completed 2026-09-19; first 24-hour read-only observation completed 2026-09-20; manual ChatGPT-task reconciliation baseline recorded 2026-09-22. No new completion alerts or repair behavior are enabled.
 **Scope:** Subscriber intake through welcome delivery; daily generation through delivery; scheduled-task existence and timing. V2 editorial shadow evidence and Friday recap development are tracked separately.
 
 ## Existing paths and boundaries
@@ -23,10 +23,10 @@ The production signup path, join keys, timing states, privacy boundaries, baseli
 
 Completion means provider acceptance and matching internal records; it does **not** prove inbox placement or that a subscriber read the email. Record pending within the agreed processing window, unhealthy after it, and unknown when evidence cannot be read. Do not treat a missing row or inaccessible scheduler as a successful zero-work run.
 
-## Phase 2 — Signup-to-welcome reconciliation (in progress)
+## Phase 2 — Signup-to-welcome reconciliation (in progress; observation complete)
 
-1. Build a read-only reconciler over the production response, ledger, subscriber/profile, and welcome queue evidence. Report counts and sanitized row references by stage; avoid subscriber identifiers in task output or alerts. The first canonical observation prompt is stored at [end-to-end-completion-observation.md](automation-prompts/end-to-end-completion-observation.md), with controlled classifications in [the test vectors](end-to-end-completion-test-vectors.md).
-2. Reconcile every eligible signup since the last known good scan, plus an overlap window so a missed run is still visible. Persist a high-water mark only after a successful scan and retain enough overlap to detect partial writes. Specify retention and recovery behavior before promotion.
+1. The first read-only production observation is complete. Its durable closeout is recorded in [end-to-end-completion-observation-result.md](end-to-end-completion-observation-result.md); the one-time canonical prompt is retained as a retired audit artifact. The observation found one in-window signup still inside the healthy intake window at cutoff; that journey later completed inside the contract window. The known audit-only defect remained a delivery-complete integrity gap.
+2. The initial reusable reconciler will use a stateless full scan of the small populated production signup/ledger/audit/Welcome tables rather than introduce a mutable high-water mark prematurely. The contract now defines future high-water, >=24-hour overlap, unresolved-record retention, Unknown handling, and full-scan recovery rules if incremental scanning later becomes necessary.
 3. Apply the adopted timing model: Pending for up to 8 hours from valid signup to a reconciled queue/disposition, then Unhealthy; after queuing, Pending for up to 2 additional hours, then Unhealthy. Explicit failures, contradictions, duplicates, and identity/cardinality defects are unhealthy immediately.
 4. Detect orphaned ledger states, valid responses never processed, duplicate keys/message IDs, queued but never sent welcomes, Failed rows, and Sent rows missing a provider ID. Reconcile legitimate suppression/reactivation outcomes.
 5. Exercise DEV fixtures for new signup, duplicate submission, existing subscriber/reactivation, invalid response, delayed processor, partial write, send failure, and clean replay. Verify that checks never send or mutate a subscriber.
@@ -34,11 +34,11 @@ Completion means provider acceptance and matching internal records; it does **no
 
 **Acceptance:** Every controlled case has one correct disposition, zero duplicate welcome sends, no test subscriber in production, and an intentional zero-work run stays healthy. A deliberately stranded valid signup becomes unhealthy after the documented threshold and recovers only when the completion evidence exists.
 
-## Phase 3 — Task and trigger reconciliation (stage and test)
+## Phase 3 — Task and trigger reconciliation (manual scheduler baseline complete; trigger visibility pending)
 
-1. Check the authoritative registry against the live ChatGPT task list/metadata using task IDs. Compare Active/Held status, enabled state, schedule and timezone, last run status/time, and expected next run. Treat a missing, disabled, duplicate, or materially mismatched Active task as unhealthy. Define tolerance for scheduler latency and unavailable metadata.
-2. Confirm that the authorized operator connection can read scheduler state during unattended execution. If it cannot, record `Unknown — scheduler state unavailable`; provide a manual reconciliation runbook and do not claim continuous task verification. Do not add another task or scrape the UI.
-3. Inspect the installed Apps Script trigger handlers for the hourly welcome/daily dispatchers, separate from ChatGPT tasks. Specify how last dispatcher success is evidenced. Do not assume a queue row's Sent status proves the trigger is still installed.
+1. A manual read-only baseline on 2026-09-22 reconciled all three registered active ADB ChatGPT tasks by exact task ID, enabled state, recurrence/timezone, and recent-run plausibility. All three matched. The reusable rules and baseline are recorded in [task-reconciliation.md](task-reconciliation.md).
+2. The current operator connection can read scheduler state interactively. Unattended scheduler-read capability has not yet been proven; any monitor run that cannot read it must report `Unknown — scheduler state unavailable`. The available scheduler metadata also does not guarantee an authoritative expected-next-run field, so the runbook forbids inventing one.
+3. Apps Script trigger state remains unresolved. Inspect the installed hourly Welcome/Daily dispatcher triggers through an authoritative Apps Script runtime interface when available. Historical Sent rows/provider IDs prove execution occurred previously but do not prove the triggers remain installed now.
 4. Test missing task, disabled task, changed schedule, stale/failed last run, missing next run, Held task absent, duplicate active task, missing Apps Script trigger, and temporary API read failure in a controlled environment. Do not disable a production task to manufacture a test.
 5. Add this check to an existing production monitoring execution only after permission/availability and runtime tests pass. The 09:30 watchdog is the preferred daily checkpoint; keep critical signup and delivery checks on their existing cadence. Record task registration changes when scheduler copies are restored.
 
@@ -53,9 +53,10 @@ Completion means provider acceptance and matching internal records; it does **no
 
 ## Priorities and dependencies
 
-1. Phase 1 schema and timing inventory.
-2. Phase 2 signup completion, since the recent missed signups are the clearest uncovered reader journey.
-3. Phase 3 scheduler and Apps Script trigger checks, subject to runtime access.
-4. Phase 4 staged promotion and short post-release review.
+1. Execute the documented DEV completion vectors for the reusable full-scan reconciler.
+2. Obtain authoritative Apps Script trigger visibility or preserve trigger state as Unknown.
+3. Validate controlled scheduler mismatch cases without disrupting production.
+4. Stage one completion incident class, then integrate approved reconciliation into the existing watchdog.
+5. Complete the short post-promotion observation before closing the monitoring subsystem.
 
 No V2 promotion, Friday recap change, or shadow-review evidence-log work is part of this release.

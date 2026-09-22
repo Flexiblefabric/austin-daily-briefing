@@ -3,7 +3,7 @@
 > Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.
 
 - Schema version: `1.2`
-- Registry version: `2026-09-22.1`
+- Registry version: `2026-09-22.2`
 - Last reviewed: `2026-09-22`
 - Production status: **live**
 - Public site: https://austindailybriefing.com/

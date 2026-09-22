@@ -4,7 +4,7 @@
 **Design specification:** [website-design-spec.md](website-design-spec.md)  
 **Branch:** `website-redesign-stage-v1`
 
-## Scope of this staging pass
+## Implementation scope
 
 This implementation record describes the production website redesign merged in PR #23 and deployed successfully through GitHub Pages on 2026-09-22.
 
@@ -41,9 +41,9 @@ The following remain outside this release:
 
 The site currently uses the canonical font stacks with reliable fallbacks. The masthead itself remains exact because it is an outlined production SVG.
 
-## Review focus
+## Review completed
 
-Before promotion, review:
+The promotion review covered:
 
 1. masthead scale and spacing;
 2. desktop navigation balance;
@@ -56,11 +56,9 @@ Before promotion, review:
 9. Corrections, Privacy, and Terms readability inside the new shell;
 10. all external subscriber and feedback destinations.
 
-## Promotion gate
+## Promotion gate — satisfied
 
-Do not merge this redesign solely because the HTML is complete.
-
-Require:
+Promotion required:
 
 - desktop visual review;
 - mobile visual review;

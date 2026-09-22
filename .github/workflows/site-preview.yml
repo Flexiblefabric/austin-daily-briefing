@@ -1,0 +1,69 @@
+name: Build site preview artifact
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify site entry point
+        run: test -f site/index.html
+
+      - name: Check local HTML asset targets
+        shell: python
+        run: |
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlsplit
+
+          site = Path("site").resolve()
+          failures = []
+
+          class Links(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.refs = []
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  for key in ("href", "src"):
+                      if key in attrs:
+                          self.refs.append(attrs[key])
+
+          for html in Path("site").rglob("*.html"):
+              parser = Links()
+              parser.feed(html.read_text(encoding="utf-8"))
+              for ref in parser.refs:
+                  if not ref or ref.startswith(("#", "http://", "https://", "mailto:", "tel:", "data:", "javascript:")):
+                      continue
+                  path = urlsplit(ref).path
+                  if not path:
+                      continue
+                  target = (site / path.lstrip("/")) if path.startswith("/") else (html.parent / path)
+                  target = target.resolve()
+                  if site not in target.parents and target != site:
+                      failures.append(f"{html}: target escapes site root: {ref}")
+                      continue
+                  if target.is_dir():
+                      target = target / "index.html"
+                  if not target.exists():
+                      failures.append(f"{html}: missing target: {ref}")
+
+          if failures:
+              raise SystemExit("\n".join(failures))
+
+      - name: Upload preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-preview
+          path: site
+          include-hidden-files: true
+          retention-days: 7

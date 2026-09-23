@@ -102,20 +102,18 @@ Do not enrich subscriber profiles with inferred demographic, behavioral, health,
 
 ## 6. Retention baseline
 
-Retention must preserve idempotency and audit safety while avoiding unnecessary indefinite copies of personal data.
+The operational retention schedule is defined in [data-retention.md](data-retention.md).
 
-Current retention work should distinguish:
+Key limits include:
 
-- active subscriber records;
-- append-only source/intake rows;
-- completed verification records;
-- outbound delivery logs;
-- old production backup spreadsheets;
-- feedback/correction submissions.
+- unsubscribed subscriber/profile data: up to 12 months before deletion/minimization;
+- terminal verification records: 90 days;
+- recipient-linked delivery records: 90 days;
+- profile-linked Briefing History: 180 days;
+- routine production backups containing subscriber data: 30 days, maximum 2 rolling copies;
+- feedback/corrections raw submissions and submitter email: no more than 15 days.
 
-Until a safe redaction/retention mechanism is tested, do not delete or reorder append-only source rows used by response-key reconciliation.
-
-Backups containing subscriber information require an explicit purpose and review date rather than indefinite accumulation.
+Raw intake rows currently have a documented temporary exception because production idempotency/reconciliation depends on historical source-row identity. The exception is reviewed quarterly and must be removed once a processor-safe archival/redaction method is validated.
 
 ## 7. Logging and documentation
 

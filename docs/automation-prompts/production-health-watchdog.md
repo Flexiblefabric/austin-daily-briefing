@@ -13,7 +13,7 @@ This version retains the 09:30 production-health checks and adds the first promo
 ## Execution prompt
 
 CANONICAL SPECIFICATION
-Before execution, read https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/docs/automation-prompts/production-health-watchdog.md. That file is authoritative. This saved prompt is an execution copy. If the canonical file is inaccessible or conflicts with this copy, stop and report the problem rather than improvising.
+Before execution, read https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/docs/automation-prompts/production-health-watchdog.md and require Specification ID ADB-WATCHDOG-PROD-2.1. Verify freshness against the current `main` branch copy of this exact path with the connected GitHub contents API; a cached raw response can show an earlier version. Use the current GitHub `main` copy as authoritative when raw retrieval is stale. If the current `main` file is inaccessible, has a different Specification ID, or conflicts with this saved prompt, stop and report the problem rather than improvising.
 
 Run the Austin Daily Briefing production health watchdog using only:
 - Production database ID 1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0

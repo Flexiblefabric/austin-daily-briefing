@@ -23,8 +23,8 @@ Use these states:
 | OPS-1 | Completion monitoring | Close out the first 24-hour signup-to-Welcome observation in repository evidence | Complete | Durable retrospective result recorded; original ephemeral scheduler transcript not claimed |
 | OPS-2 | Completion monitoring | Mark the one-time completion-observation prompt/task lifecycle complete or retired | Complete | Prompt retired; completed task ID recorded in technical registry |
 | OPS-3 | Completion monitoring | Define reusable read-only signup-to-Welcome reconciler state: high-water mark, overlap window, retention, recovery | Complete | Initial implementation uses safer stateless full-scan; future incremental-state rules documented; reusable manual prompt added |
-| OPS-4 | Completion monitoring | Exercise the documented DEV completion test vectors | Ready | Reusable production full-scan baseline passed 2026-09-22; controlled DEV failure/replay fixtures still required |
-| OPS-5 | Completion monitoring | Stage the first completion incident class after clean DEV validation | Blocked | OPS-3 and OPS-4 |
+| OPS-4 | Completion monitoring | Exercise the documented DEV completion test vectors | Complete | 15/15 documented vectors passed in the controlled synthetic DEV harness; mutation guard passed; result recorded in `end-to-end-completion-dev-test-result.md` |
+| OPS-5 | Completion monitoring | Stage the first completion incident class after clean DEV validation | Ready | OPS-3 and OPS-4 complete; choose one incident class and validate its administrator-alert path without changing subscriber delivery ownership |
 | OPS-6 | Task reconciliation | Reconcile registered active ChatGPT tasks against live scheduler metadata | Complete | 2026-09-22 baseline matches all three registered active ADB tasks |
 | OPS-7 | Task reconciliation | Define scheduler latency/unavailable-metadata handling and reusable reconciliation report | Complete | Runbook defines health/Unknown behavior, existing component tolerances, and next-run metadata limits |
 | OPS-8 | Task reconciliation | Verify installed Apps Script welcome/daily dispatcher triggers and define trigger-health evidence | Blocked | Requires Apps Script runtime/trigger visibility; queue history alone is insufficient |
@@ -62,7 +62,7 @@ Use these states:
 - Repository README replaced with current project-level orientation.
 - Canonical Editorial System, Design System, Newsletter Component Specification, and Source-Link Standard established.
 - Documentation registry, generated status/architecture/operations docs, changelog, and immutable snapshots established.
-- V2 shadow evidence log formalized through the 2026-09-19 run.
+- V2 shadow evidence log formalized through the 2026-09-19 run.\n- Completion-monitoring DEV vector gate passed 15/15 with a no-mutation synthetic harness.
 
 ## Deliberately deferred ideas
 

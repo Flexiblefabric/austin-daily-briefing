@@ -1,6 +1,6 @@
 # Operations completion and task reconciliation roadmap
 
-**Status:** In progress. Phase 1 contract completed 2026-09-19; first 24-hour read-only observation completed 2026-09-20; manual ChatGPT-task reconciliation baseline recorded 2026-09-22. No new completion alerts or repair behavior are enabled.
+**Status:** In progress. Phase 1 contract completed 2026-09-19; first 24-hour read-only observation completed 2026-09-20; manual ChatGPT-task reconciliation baseline and controlled DEV completion-vector gate completed 2026-09-22. No new completion alerts or repair behavior are enabled.
 **Scope:** Subscriber intake through welcome delivery; daily generation through delivery; scheduled-task existence and timing. V2 editorial shadow evidence and Friday recap development are tracked separately.
 
 ## Existing paths and boundaries
@@ -29,14 +29,14 @@ Completion means provider acceptance and matching internal records; it does **no
 2. The initial reusable reconciler will use a stateless full scan of the small populated production signup/ledger/audit/Welcome tables rather than introduce a mutable high-water mark prematurely. The contract now defines future high-water, >=24-hour overlap, unresolved-record retention, Unknown handling, and full-scan recovery rules if incremental scanning later becomes necessary.
 3. Apply the adopted timing model: Pending for up to 8 hours from valid signup to a reconciled queue/disposition, then Unhealthy; after queuing, Pending for up to 2 additional hours, then Unhealthy. Explicit failures, contradictions, duplicates, and identity/cardinality defects are unhealthy immediately.
 4. Detect orphaned ledger states, valid responses never processed, duplicate keys/message IDs, queued but never sent welcomes, Failed rows, and Sent rows missing a provider ID. Reconcile legitimate suppression/reactivation outcomes.
-5. Exercise DEV fixtures for new signup, duplicate submission, existing subscriber/reactivation, invalid response, delayed processor, partial write, send failure, and clean replay. Verify that checks never send or mutate a subscriber.
+5. **Completed 2026-09-22.** The controlled synthetic DEV harness exercised all 15 documented vectors in `end-to-end-completion-test-vectors.md`; every expected classification matched and the fixture mutation guard passed. See [end-to-end-completion-dev-test-result.md](end-to-end-completion-dev-test-result.md) and `scripts/test_completion_vectors.py`. No subscriber/profile/queue writes, dispatcher invocations, or sends occurred.
 6. Promote read-only detection first; then add one incident type and administrator alert only after clean DEV runs and a controlled production observation. Existing processor and dispatcher retain sole write/send ownership.
 
 ### 2026-09-22 reusable full-scan baseline
 
 A manual read-only run of the reusable full-scan model reviewed all 12 populated production Signup journeys. All 12 were Complete, with zero Pending, Unhealthy, Unknown, duplicate-ledger, duplicate-Welcome, duplicate-action, or identity-cardinality results. Three early journeys were recognized through permitted legacy Gmail delivery evidence; newer journeys use Resend provider evidence. The known source-row-9 / ledger-row-23 missing Signup Actions record remains the single audit-only defect. See [end-to-end-completion-reconciliation-baseline.md](end-to-end-completion-reconciliation-baseline.md).
 
-This baseline validates the current production joins and classifications, but it does not replace the controlled DEV failure/replay fixtures.
+This baseline validates the current production joins and classifications. The controlled DEV failure/replay classification gate was subsequently completed on 2026-09-22 with 15/15 documented vectors passing.
 
 **Acceptance:** Every controlled case has one correct disposition, zero duplicate welcome sends, no test subscriber in production, and an intentional zero-work run stays healthy. A deliberately stranded valid signup becomes unhealthy after the documented threshold and recovers only when the completion evidence exists.
 

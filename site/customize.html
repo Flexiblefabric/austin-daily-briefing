@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Design preview for the future native Austin Daily Briefing customization page.">
+  <meta name="theme-color" content="#181818">
+  <title>Customize — Austin Daily Briefing</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="masthead-row wrap">
+    <a class="brand-link" href="./" aria-label="Austin Daily Briefing home"><img src="brand/adb-masthead.svg" width="900" height="220" alt="Austin Daily Briefing"></a>
+  </div>
+  <div class="nav-shell">
+    <nav class="desktop-nav wrap" aria-label="Main navigation">
+      <div class="nav-primary">
+        <a class="nav-link" href="how-it-works.html">How ADB Works</a>
+        <a class="nav-link" href="whats-new.html">What’s New</a>
+        <a class="nav-link" href="./#sample">See a Sample</a>
+      </div>
+      <div class="nav-actions">
+        <span class="nav-action" aria-current="page">Customize</span>
+        <a class="nav-action" href="https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform" target="_blank" rel="noopener noreferrer">Manage</a>
+        <a class="button" href="https://docs.google.com/forms/d/e/1FAIpQLSfoDFw2mnESsjLPCJkBBhmSnxSl0P7tc7t19bUFq1bbE0BSaA/viewform" target="_blank" rel="noopener noreferrer">Get the Briefing</a>
+      </div>
+    </nav>
+    <div class="mobile-nav wrap">
+      <div class="mobile-nav-bar">
+        <a class="button" href="https://docs.google.com/forms/d/e/1FAIpQLSfoDFw2mnESsjLPCJkBBhmSnxSl0P7tc7t19bUFq1bbE0BSaA/viewform" target="_blank" rel="noopener noreferrer">Get the Briefing</a>
+        <details class="mobile-menu">
+          <summary class="menu-summary">Menu</summary>
+          <nav class="mobile-menu-panel" aria-label="Mobile navigation">
+            <a href="how-it-works.html">How ADB Works</a>
+            <a href="whats-new.html">What’s New</a>
+            <a href="./#sample">See a Sample</a>
+            <span class="mobile-current">Customize</span>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform" target="_blank" rel="noopener noreferrer">Manage</a>
+            <a href="corrections.html">Corrections</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+          </nav>
+        </details>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="customize-main" id="main">
+  <header class="customize-header wrap">
+    <p class="eyebrow">Your briefing</p>
+    <h1>Customize your briefing.</h1>
+    <p class="lede">Choose what you want to see more or less of in More for You, and adjust how much detail the briefing gives you. Leave anything unchanged that you do not want to update.</p>
+  </header>
+
+  <div class="prototype-banner" role="note">
+    <div class="wrap">
+      <strong>Design preview.</strong> This staged page does not submit or change subscriber data.
+    </div>
+  </div>
+
+  <div class="customize-layout wrap">
+    <aside class="customize-aside">
+      <p class="section-label">Before you start</p>
+      <p>Use the email address that receives Austin Daily Briefing.</p>
+      <p>We’ll send a confirmation link to that address before applying any changes.</p>
+      <div class="security-note">
+        <strong>Your current settings stay private.</strong>
+        <p>This form does not reveal saved preferences. Only the changes you request are sent for confirmation.</p>
+      </div>
+    </aside>
+
+    <form class="customize-form" novalidate>
+      <fieldset class="identity-fieldset">
+        <legend><span class="form-section-number">00</span> Subscriber</legend>
+        <label class="field-label" for="subscriber-email">Email address</label>
+        <input class="text-input" id="subscriber-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com">
+        <p class="field-help">Use the address that receives Austin Daily Briefing.</p>
+      </fieldset>
+
+      <fieldset class="preference-section">
+  <legend><span class="form-section-number">01</span> Austin & Civic Life</legend>
+  <div class="preference-row">
+    <div class="preference-name" id="CIV01-label">Local Government & Policy</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CIV01-label">
+      <input type="radio" id="CIV01-keep_current" name="CIV01" value="keep_current" checked>
+        <label for="CIV01-keep_current">Keep current</label>
+      <input type="radio" id="CIV01-off" name="CIV01" value="off">
+        <label for="CIV01-off">Off</label>
+      <input type="radio" id="CIV01-normal" name="CIV01" value="normal">
+        <label for="CIV01-normal">Normal</label>
+      <input type="radio" id="CIV01-high" name="CIV01" value="high">
+        <label for="CIV01-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CIV02-label">Housing, Homelessness & Urban Life</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CIV02-label">
+      <input type="radio" id="CIV02-keep_current" name="CIV02" value="keep_current" checked>
+        <label for="CIV02-keep_current">Keep current</label>
+      <input type="radio" id="CIV02-off" name="CIV02" value="off">
+        <label for="CIV02-off">Off</label>
+      <input type="radio" id="CIV02-normal" name="CIV02" value="normal">
+        <label for="CIV02-normal">Normal</label>
+      <input type="radio" id="CIV02-high" name="CIV02" value="high">
+        <label for="CIV02-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CIV03-label">Transportation & Transit</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CIV03-label">
+      <input type="radio" id="CIV03-keep_current" name="CIV03" value="keep_current" checked>
+        <label for="CIV03-keep_current">Keep current</label>
+      <input type="radio" id="CIV03-off" name="CIV03" value="off">
+        <label for="CIV03-off">Off</label>
+      <input type="radio" id="CIV03-normal" name="CIV03" value="normal">
+        <label for="CIV03-normal">Normal</label>
+      <input type="radio" id="CIV03-high" name="CIV03" value="high">
+        <label for="CIV03-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CIV04-label">Public Safety & Courts</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CIV04-label">
+      <input type="radio" id="CIV04-keep_current" name="CIV04" value="keep_current" checked>
+        <label for="CIV04-keep_current">Keep current</label>
+      <input type="radio" id="CIV04-off" name="CIV04" value="off">
+        <label for="CIV04-off">Off</label>
+      <input type="radio" id="CIV04-normal" name="CIV04" value="normal">
+        <label for="CIV04-normal">Normal</label>
+      <input type="radio" id="CIV04-high" name="CIV04" value="high">
+        <label for="CIV04-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CIV05-label">LGBTQ+ Community</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CIV05-label">
+      <input type="radio" id="CIV05-keep_current" name="CIV05" value="keep_current" checked>
+        <label for="CIV05-keep_current">Keep current</label>
+      <input type="radio" id="CIV05-off" name="CIV05" value="off">
+        <label for="CIV05-off">Off</label>
+      <input type="radio" id="CIV05-normal" name="CIV05" value="normal">
+        <label for="CIV05-normal">Normal</label>
+      <input type="radio" id="CIV05-high" name="CIV05" value="high">
+        <label for="CIV05-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CIV06-label">Development, Land Use & Zoning</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CIV06-label">
+      <input type="radio" id="CIV06-keep_current" name="CIV06" value="keep_current" checked>
+        <label for="CIV06-keep_current">Keep current</label>
+      <input type="radio" id="CIV06-off" name="CIV06" value="off">
+        <label for="CIV06-off">Off</label>
+      <input type="radio" id="CIV06-normal" name="CIV06" value="normal">
+        <label for="CIV06-normal">Normal</label>
+      <input type="radio" id="CIV06-high" name="CIV06" value="high">
+        <label for="CIV06-high">High</label>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset class="preference-section">
+  <legend><span class="form-section-number">02</span> Culture & Leisure</legend>
+  <div class="preference-row">
+    <div class="preference-name" id="CUL01-label">Stand-up Comedy</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CUL01-label">
+      <input type="radio" id="CUL01-keep_current" name="CUL01" value="keep_current" checked>
+        <label for="CUL01-keep_current">Keep current</label>
+      <input type="radio" id="CUL01-off" name="CUL01" value="off">
+        <label for="CUL01-off">Off</label>
+      <input type="radio" id="CUL01-normal" name="CUL01" value="normal">
+        <label for="CUL01-normal">Normal</label>
+      <input type="radio" id="CUL01-high" name="CUL01" value="high">
+        <label for="CUL01-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CUL02-label">Live Music</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CUL02-label">
+      <input type="radio" id="CUL02-keep_current" name="CUL02" value="keep_current" checked>
+        <label for="CUL02-keep_current">Keep current</label>
+      <input type="radio" id="CUL02-off" name="CUL02" value="off">
+        <label for="CUL02-off">Off</label>
+      <input type="radio" id="CUL02-normal" name="CUL02" value="normal">
+        <label for="CUL02-normal">Normal</label>
+      <input type="radio" id="CUL02-high" name="CUL02" value="high">
+        <label for="CUL02-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CUL03-label">Arts, Museums & Visual Culture</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CUL03-label">
+      <input type="radio" id="CUL03-keep_current" name="CUL03" value="keep_current" checked>
+        <label for="CUL03-keep_current">Keep current</label>
+      <input type="radio" id="CUL03-off" name="CUL03" value="off">
+        <label for="CUL03-off">Off</label>
+      <input type="radio" id="CUL03-normal" name="CUL03" value="normal">
+        <label for="CUL03-normal">Normal</label>
+      <input type="radio" id="CUL03-high" name="CUL03" value="high">
+        <label for="CUL03-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CUL04-label">Food & Restaurants</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CUL04-label">
+      <input type="radio" id="CUL04-keep_current" name="CUL04" value="keep_current" checked>
+        <label for="CUL04-keep_current">Keep current</label>
+      <input type="radio" id="CUL04-off" name="CUL04" value="off">
+        <label for="CUL04-off">Off</label>
+      <input type="radio" id="CUL04-normal" name="CUL04" value="normal">
+        <label for="CUL04-normal">Normal</label>
+      <input type="radio" id="CUL04-high" name="CUL04" value="high">
+        <label for="CUL04-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CUL05-label">Outdoors, Parks & Nature</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CUL05-label">
+      <input type="radio" id="CUL05-keep_current" name="CUL05" value="keep_current" checked>
+        <label for="CUL05-keep_current">Keep current</label>
+      <input type="radio" id="CUL05-off" name="CUL05" value="off">
+        <label for="CUL05-off">Off</label>
+      <input type="radio" id="CUL05-normal" name="CUL05" value="normal">
+        <label for="CUL05-normal">Normal</label>
+      <input type="radio" id="CUL05-high" name="CUL05" value="high">
+        <label for="CUL05-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CUL06-label">Nightlife & Bars</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CUL06-label">
+      <input type="radio" id="CUL06-keep_current" name="CUL06" value="keep_current" checked>
+        <label for="CUL06-keep_current">Keep current</label>
+      <input type="radio" id="CUL06-off" name="CUL06" value="off">
+        <label for="CUL06-off">Off</label>
+      <input type="radio" id="CUL06-normal" name="CUL06" value="normal">
+        <label for="CUL06-normal">Normal</label>
+      <input type="radio" id="CUL06-high" name="CUL06" value="high">
+        <label for="CUL06-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="CUL07-label">Theater & Performing Arts</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="CUL07-label">
+      <input type="radio" id="CUL07-keep_current" name="CUL07" value="keep_current" checked>
+        <label for="CUL07-keep_current">Keep current</label>
+      <input type="radio" id="CUL07-off" name="CUL07" value="off">
+        <label for="CUL07-off">Off</label>
+      <input type="radio" id="CUL07-normal" name="CUL07" value="normal">
+        <label for="CUL07-normal">Normal</label>
+      <input type="radio" id="CUL07-high" name="CUL07" value="high">
+        <label for="CUL07-high">High</label>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset class="preference-section">
+  <legend><span class="form-section-number">03</span> Technology & Ideas</legend>
+  <div class="preference-row">
+    <div class="preference-name" id="TEC01-label">Artificial Intelligence</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="TEC01-label">
+      <input type="radio" id="TEC01-keep_current" name="TEC01" value="keep_current" checked>
+        <label for="TEC01-keep_current">Keep current</label>
+      <input type="radio" id="TEC01-off" name="TEC01" value="off">
+        <label for="TEC01-off">Off</label>
+      <input type="radio" id="TEC01-normal" name="TEC01" value="normal">
+        <label for="TEC01-normal">Normal</label>
+      <input type="radio" id="TEC01-high" name="TEC01" value="high">
+        <label for="TEC01-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="TEC02-label">Gaming</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="TEC02-label">
+      <input type="radio" id="TEC02-keep_current" name="TEC02" value="keep_current" checked>
+        <label for="TEC02-keep_current">Keep current</label>
+      <input type="radio" id="TEC02-off" name="TEC02" value="off">
+        <label for="TEC02-off">Off</label>
+      <input type="radio" id="TEC02-normal" name="TEC02" value="normal">
+        <label for="TEC02-normal">Normal</label>
+      <input type="radio" id="TEC02-high" name="TEC02" value="high">
+        <label for="TEC02-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="TEC03-label">Science, Space & Astronomy</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="TEC03-label">
+      <input type="radio" id="TEC03-keep_current" name="TEC03" value="keep_current" checked>
+        <label for="TEC03-keep_current">Keep current</label>
+      <input type="radio" id="TEC03-off" name="TEC03" value="off">
+        <label for="TEC03-off">Off</label>
+      <input type="radio" id="TEC03-normal" name="TEC03" value="normal">
+        <label for="TEC03-normal">Normal</label>
+      <input type="radio" id="TEC03-high" name="TEC03" value="high">
+        <label for="TEC03-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="TEC04-label">Philosophy & Big Ideas</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="TEC04-label">
+      <input type="radio" id="TEC04-keep_current" name="TEC04" value="keep_current" checked>
+        <label for="TEC04-keep_current">Keep current</label>
+      <input type="radio" id="TEC04-off" name="TEC04" value="off">
+        <label for="TEC04-off">Off</label>
+      <input type="radio" id="TEC04-normal" name="TEC04" value="normal">
+        <label for="TEC04-normal">Normal</label>
+      <input type="radio" id="TEC04-high" name="TEC04" value="high">
+        <label for="TEC04-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="TEC05-label">Consumer Technology</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="TEC05-label">
+      <input type="radio" id="TEC05-keep_current" name="TEC05" value="keep_current" checked>
+        <label for="TEC05-keep_current">Keep current</label>
+      <input type="radio" id="TEC05-off" name="TEC05" value="off">
+        <label for="TEC05-off">Off</label>
+      <input type="radio" id="TEC05-normal" name="TEC05" value="normal">
+        <label for="TEC05-normal">Normal</label>
+      <input type="radio" id="TEC05-high" name="TEC05" value="high">
+        <label for="TEC05-high">High</label>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset class="preference-section">
+  <legend><span class="form-section-number">04</span> Broader Interests</legend>
+  <div class="preference-row">
+    <div class="preference-name" id="LIF01-label">Business & Economy</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="LIF01-label">
+      <input type="radio" id="LIF01-keep_current" name="LIF01" value="keep_current" checked>
+        <label for="LIF01-keep_current">Keep current</label>
+      <input type="radio" id="LIF01-off" name="LIF01" value="off">
+        <label for="LIF01-off">Off</label>
+      <input type="radio" id="LIF01-normal" name="LIF01" value="normal">
+        <label for="LIF01-normal">Normal</label>
+      <input type="radio" id="LIF01-high" name="LIF01" value="high">
+        <label for="LIF01-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="LIF02-label">Books & Publishing</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="LIF02-label">
+      <input type="radio" id="LIF02-keep_current" name="LIF02" value="keep_current" checked>
+        <label for="LIF02-keep_current">Keep current</label>
+      <input type="radio" id="LIF02-off" name="LIF02" value="off">
+        <label for="LIF02-off">Off</label>
+      <input type="radio" id="LIF02-normal" name="LIF02" value="normal">
+        <label for="LIF02-normal">Normal</label>
+      <input type="radio" id="LIF02-high" name="LIF02" value="high">
+        <label for="LIF02-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="LIF03-label">Health & Wellness</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="LIF03-label">
+      <input type="radio" id="LIF03-keep_current" name="LIF03" value="keep_current" checked>
+        <label for="LIF03-keep_current">Keep current</label>
+      <input type="radio" id="LIF03-off" name="LIF03" value="off">
+        <label for="LIF03-off">Off</label>
+      <input type="radio" id="LIF03-normal" name="LIF03" value="normal">
+        <label for="LIF03-normal">Normal</label>
+      <input type="radio" id="LIF03-high" name="LIF03" value="high">
+        <label for="LIF03-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="LIF04-label">Sports</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="LIF04-label">
+      <input type="radio" id="LIF04-keep_current" name="LIF04" value="keep_current" checked>
+        <label for="LIF04-keep_current">Keep current</label>
+      <input type="radio" id="LIF04-off" name="LIF04" value="off">
+        <label for="LIF04-off">Off</label>
+      <input type="radio" id="LIF04-normal" name="LIF04" value="normal">
+        <label for="LIF04-normal">Normal</label>
+      <input type="radio" id="LIF04-high" name="LIF04" value="high">
+        <label for="LIF04-high">High</label>
+    </div>
+  </div>
+  <div class="preference-row">
+    <div class="preference-name" id="LIF05-label">Film, TV & Streaming</div>
+    <div class="segmented" role="radiogroup" aria-labelledby="LIF05-label">
+      <input type="radio" id="LIF05-keep_current" name="LIF05" value="keep_current" checked>
+        <label for="LIF05-keep_current">Keep current</label>
+      <input type="radio" id="LIF05-off" name="LIF05" value="off">
+        <label for="LIF05-off">Off</label>
+      <input type="radio" id="LIF05-normal" name="LIF05" value="normal">
+        <label for="LIF05-normal">Normal</label>
+      <input type="radio" id="LIF05-high" name="LIF05" value="high">
+        <label for="LIF05-high">High</label>
+    </div>
+  </div>
+</fieldset>
+
+      <fieldset class="preference-section">
+        <legend><span class="form-section-number">05</span> Briefing style</legend>
+        <div class="style-row">
+    <div><div class="preference-name" id="more_for_you_volume-label">How much More for You content do you want?</div></div>
+    <div class="segmented segmented-wide" role="radiogroup" aria-labelledby="more_for_you_volume-label">
+      <input type="radio" id="more_for_you_volume-keep_current" name="more_for_you_volume" value="keep_current" checked>
+        <label for="more_for_you_volume-keep_current">Keep current</label>
+      <input type="radio" id="more_for_you_volume-fewer" name="more_for_you_volume" value="fewer">
+        <label for="more_for_you_volume-fewer">Fewer</label>
+      <input type="radio" id="more_for_you_volume-standard" name="more_for_you_volume" value="standard">
+        <label for="more_for_you_volume-standard">Standard</label>
+      <input type="radio" id="more_for_you_volume-more" name="more_for_you_volume" value="more">
+        <label for="more_for_you_volume-more">More</label>
+    </div>
+  </div>
+        <div class="style-row">
+    <div><div class="preference-name" id="summary_style-label">How should story summaries read?</div></div>
+    <div class="segmented segmented-wide" role="radiogroup" aria-labelledby="summary_style-label">
+      <input type="radio" id="summary_style-keep_current" name="summary_style" value="keep_current" checked>
+        <label for="summary_style-keep_current">Keep current</label>
+      <input type="radio" id="summary_style-concise" name="summary_style" value="concise">
+        <label for="summary_style-concise">Concise</label>
+      <input type="radio" id="summary_style-standard" name="summary_style" value="standard">
+        <label for="summary_style-standard">Standard</label>
+      <input type="radio" id="summary_style-explanatory" name="summary_style" value="explanatory">
+        <label for="summary_style-explanatory">Explanatory</label>
+    </div>
+  </div>
+        <div class="style-row">
+    <div><div class="preference-name" id="why_it_matters_length-label">How long should Why It Matters explanations be?</div></div>
+    <div class="segmented segmented-wide" role="radiogroup" aria-labelledby="why_it_matters_length-label">
+      <input type="radio" id="why_it_matters_length-keep_current" name="why_it_matters_length" value="keep_current" checked>
+        <label for="why_it_matters_length-keep_current">Keep current</label>
+      <input type="radio" id="why_it_matters_length-brief" name="why_it_matters_length" value="brief">
+        <label for="why_it_matters_length-brief">Brief</label>
+      <input type="radio" id="why_it_matters_length-standard" name="why_it_matters_length" value="standard">
+        <label for="why_it_matters_length-standard">Standard</label>
+      <input type="radio" id="why_it_matters_length-detailed" name="why_it_matters_length" value="detailed">
+        <label for="why_it_matters_length-detailed">Detailed</label>
+    </div>
+  </div>
+      </fieldset>
+
+      <div class="confirmation-explainer">
+        <p class="section-label">What happens next</p>
+        <h2>Nothing changes until you confirm.</h2>
+        <p>After you submit, ADB will send a single-use confirmation link to the subscribed address. If the request was not yours, you can ignore the message.</p>
+      </div>
+
+      <div class="form-actions">
+        <button class="button prototype-submit" type="button" aria-describedby="prototype-submit-note">Submit changes</button>
+        <p id="prototype-submit-note">Prototype only — submission is intentionally disabled.</p>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-main">
+      <div class="footer-brand-cell"><img class="footer-mark" src="brand/adb-mark-reversed.svg" width="256" height="256" alt="ADB"></div>
+      <div class="footer-links"><p class="footer-heading">Product</p><a href="./">Home</a><a href="how-it-works.html">How ADB Works</a><a href="whats-new.html">What’s New</a></div>
+      <div class="footer-links"><p class="footer-heading">Subscriber</p><span>Customize</span><a href="https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform" target="_blank" rel="noopener noreferrer">Manage</a><a href="https://docs.google.com/forms/d/e/1FAIpQLSc_0-djww4qboFaEn9k-nEponrCBBqz-MCB81sOUtLjVsOZ7w/viewform" target="_blank" rel="noopener noreferrer">Feedback</a></div>
+      <div class="footer-links"><p class="footer-heading">Trust</p><a href="corrections.html">Corrections</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+    </div>
+    <div class="footer-bottom"><span>Austin, Texas · An independent experimental project</span><span><a href="mailto:briefing@austindailybriefing.com">briefing@austindailybriefing.com</a></span></div>
+  </div>
+</footer>
+</body>
+</html>

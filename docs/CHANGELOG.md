@@ -2,6 +2,33 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-09-23 — Signup completion incident monitoring promotion
+
+**Type:** Development-to-production monitoring promotion  
+**Components:** production watchdog, signup-to-Welcome reconciliation, administrator alerts  
+**Registry impact:** Yes
+
+Austin Daily Briefing promoted the first completion-specific incident class into the existing 09:30 America/Chicago production watchdog.
+
+### Changes
+
+- Advanced the production watchdog to `ADB-WATCHDOG-PROD-2.1`.
+- Added a stateless signup-to-Welcome full scan using the established `ADB-COMPLETION-0.1` joins and timing rules.
+- Promoted only `Unhealthy — intake incomplete` for administrator alerting: a valid signup older than eight hours without a reconciled ledger result or eligible queue/disposition.
+- Added a dedicated `Signup Completion` Operations Status component and locked Release Config controls for the staged completion-monitoring policy.
+- Preserved one-alert-per-component-per-Central-day deduplication and silent recovery.
+- Kept all other completion Unhealthy/Unknown classifications report-only for this first stage.
+- Preserved subscriber processor and Resend dispatcher ownership; the watchdog cannot repair, resend, replay, or alter subscriber-facing records.
+
+### Validation
+
+- All 15 documented completion vectors passed the controlled DEV classifier.
+- The no-mutation fixture guard passed.
+- All 10 staged alert-policy checks passed.
+- A synthetic `[CONTROLLED TEST]` administrator alert was accepted by Gmail and observed in the inbox.
+- The pre-promotion production full-scan baseline contained no intake-incomplete journeys.
+- No subscriber-facing message, profile, preference, status, or delivery record was modified by the controlled tests.
+
 ## 2026-09-21 — Newsletter identity and Welcome redesign promotion
 
 **Type:** Development-to-production promotion  

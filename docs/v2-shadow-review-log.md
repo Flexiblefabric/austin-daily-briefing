@@ -38,14 +38,15 @@ After each run:
 | 2026-09-17 | 17 | V2 better, verification caveat | Added AHA voucher-policy proposals and Seabrook Square II; found the water framework independently | AHA proposals were not yet adopted; source verification remained important | Water framework selected; AHA promoted from discovery to Top Stories |
 | 2026-09-18 | 17 | Mixed, leaning V2 | Again identified AHA voucher proposals and Seabrook; improved placement of Rosewood and the water framework | Repeated the same unresolved shadow discoveries because only production history was checked | Water framework selected |
 | 2026-09-19 | 18 | Mixed, leaning V2 | Rejected the Rosewood calendar-only repeat; preserved three genuine material updates; official run again surfaced AHA and Seabrook | AHA and Seabrook are now shadow-history repeats, so the official production-history comparison overstates V2's fresh advantage | Empty; no qualifying new item found |
+| 2026-09-23 | 18 | V2 better | Retained the ICE and data-center leads; added the Travis County budget, Camp Mystic criminal investigation, prison-AC ruling, and Bloom at Lamar Square proposal | Production delivery remained queued; the Austin Current article exposed no exact publication time, so that omission carries a timing caveat | Bloom at Lamar Square proposal selected |
 
 ### Current reading
 
-- Completed comparable runs: **6**
-- V2 better: **4**
+- Completed comparable runs: **7**
+- V2 better: **5**
 - Mixed, leaning V2: **2**
 - Production better: **0**
-- Distinct consequential production misses corrected by V2 include the measles exposure, AISD takeover dispute, Central Health budget/tax decision, mail-ballot ruling, East Sixth overdose cluster, AHA voucher proposals, and Seabrook Square II.
+- Distinct consequential production misses corrected by V2 include the measles exposure, AISD takeover dispute, Central Health budget/tax decision, mail-ballot ruling, East Sixth overdose cluster, AHA voucher proposals, Seabrook Square II, the Texas prison-air-conditioning ruling, the Camp Mystic criminal-investigation warrants, and the Bloom at Lamar Square fee-waiver proposal. The Travis County budget is also a likely correction, subject to publication-time verification.
 - Evidence currently supports the working conclusion that V2 is outperforming production. Repeat-memory and proposal/adoption verification controls were strengthened in `0.3`; the remaining runs must test whether those controls work as intended.
 - Continue daily manual testing through **2026-09-26** before making a promotion recommendation.
 
@@ -108,6 +109,19 @@ The change does **not** alter the 100-point weights, 60-point floor, Freshness V
 - legacy event-section language is aligned with the current Austin Ahead product.
 
 This makes the remaining shadow runs a stricter promotion test while preserving the historical `0.2` results for comparison.
+
+
+### 2026-09-23
+
+- **Run status:** First run under `ADB-V2-SHADOW-0.3`. The validated production slate was available, but all outbound messages still showed `Queued`; the comparison is against that queued slate rather than confirmed delivery.
+- **Production Top Stories:** ICE shooting victim's partial paralysis and hospital return; statewide data-center permit pause; Cedar Park Flock-camera debate; Mendocino Farms South Lamar opening.
+- **V2 shared Top Stories:** ICE medical/custody update and local investigation; Travis County's proposed $2.3B budget; expanded statewide data-center permit pause; Camp Mystic criminal-investigation warrants; federal prison-air-conditioning ruling.
+- **V2 corrections:** Replaced the unverified Cedar Park agenda framing and low-consequence restaurant opening with consequential civic, court, and public-safety reporting available before the scheduled send. The Austin Current budget story was dated September 22 but exposed no exact publication time, so it is recorded with a timing caveat.
+- **Material-update audit:** ICE was a genuine material update and was retained. V2 also classified the data-center action as material because the new order expanded the earlier grid-connection pause to state-issued permits; production marked it `FALSE`. The Lake Austin meetings were calendar timing only, not a material update, and remained Austin Ahead utility.
+- **Under the Radar:** Independent official-agenda search found a pending ordinance to waive or reimburse up to $541,314 in right-of-way fees for 100 deeply affordable units at Bloom at Lamar Square. It was selected as Under the Radar and explicitly labeled pending, not approved.
+- **Counterfactual repeat control:** AHA voucher proposals and Seabrook Square II were rejected as unresolved shadow-history repeats. No recurring discovery was counted as a new V2 win.
+- **Personalization:** Claude Opus 5.5 cleared the floor and remained More for You. Mendocino Farms, Palo Alto Networks, Wind Runners, and the comedy listing did not clear the shared scoring floor or belonged in event utility rather than ranked personalized news. No Discovery Promotion or Freshness Veto was used.
+- **Verdict:** V2 better. The improvement is material despite the delivery-status and Austin Current timing caveats.
 
 ## Open issues before promotion
 

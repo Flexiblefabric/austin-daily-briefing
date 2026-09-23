@@ -1,6 +1,6 @@
 # Subscriber Data Security Baseline
 
-**Status:** Draft for owner review  
+**Status:** Approved operational baseline  
 **Workstream:** SEC-1 — Subscriber data security  
 **Applies to:** Austin Daily Briefing production and development subscriber systems  
 **Control plane:** Google Forms + Google Sheets + Google Apps Script  
@@ -329,10 +329,15 @@ Checklist:
 - confirm public website code exposes no Sheet IDs, secret endpoint keys, edit URLs, or internal IDs that do not need to be public.
 
 ### Retention
-- review terminal verification records older than 30 days;
-- review raw intake rows older than 90 days;
-- review full outbound payloads older than 30 days;
-- review delivery/history records older than 90 days;
+- review terminal verification records older than 90 days;
+- review unsubscribed subscriber/profile records approaching or exceeding 12 months;
+- review signup/management/customization action records older than 12 months;
+- review whether the documented intake-retention exception is still necessary for source rows approaching or exceeding the 12-month target;
+- review recipient-linked outbound delivery records older than 90 days;
+- review profile-linked Briefing History older than 180 days;
+- review routine production backups older than 30 days or more than 2 rolling copies;
+- review direct support/privacy correspondence older than 90 days after resolution;
+- review security-incident evidence older than 12 months after incident closure without an active exception;
 - verify Operations History 30-day cleanup;
 - verify feedback/correction responses were deleted within 15 days;
 - review stale DEV fixtures.
@@ -361,14 +366,16 @@ A security review is required before:
 
 A public Privacy Policy update is required when a material operational change affects what subscriber information is collected, how it is used, with whom it is shared, or how long it is retained.
 
-## 12. SEC-1 acceptance criteria
+## 12. SEC-1 acceptance
 
-SEC-1 is complete when the owner approves:
+Approved 2026-09-23 as the project-wide subscriber-data security baseline.
 
-- this classification model;
-- the minimum access-control baseline;
-- adoption of `docs/data-retention.md` as the sole authoritative retention schedule;
-- the incident-response sequence;
-- quarterly access/retention review cadence.
+The approved baseline includes:
 
-Implementation/enforcement gaps discovered from this baseline become SEC-2, SEC-3, SEC-4, or dedicated follow-up tasks rather than being silently treated as already fixed.
+- the Class 0–4 data classification model;
+- the minimum least-privilege access-control baseline;
+- `docs/data-retention.md` as the sole authoritative retention schedule;
+- the incident-response sequence and severity guide;
+- quarterly access and retention review, plus review after material operator/account changes.
+
+Implementation or enforcement gaps discovered against this baseline belong in SEC-2, SEC-3, SEC-4, or a dedicated follow-up task rather than being silently treated as already fixed.

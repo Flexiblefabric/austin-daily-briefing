@@ -3,7 +3,7 @@
 **Status:** Approved operational baseline  
 **Effective:** 2026-09-23  
 **Scope:** Subscriber, intake, verification, delivery, backup, and feedback data used by Austin Daily Briefing  
-**Principle:** Keep identifiable data only as long as it has a defined operational, security, audit, or subscriber-service purpose.
+**Principle:** Keep identifiable data only as long as it has a defined operational, security, audit, or subscriber-service purpose.\n**Security baseline:** [`subscriber-data-security-baseline.md`](subscriber-data-security-baseline.md)
 
 These rules are designed for the current Google Sheets + Apps Script architecture. They do not require a database migration.
 

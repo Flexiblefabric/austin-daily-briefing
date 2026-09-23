@@ -44,7 +44,7 @@ Use these states:
 | WEB-3 | Website | Promote website design specification status from draft to approved/implemented | Complete | Canonical design spec status reconciled |
 | WEB-4 | Website | Record a concise post-fix live-site verification | Review | After WEB-1 deployment |
 | FORM-1 | Native subscriber forms | Define native-form architecture, security model, and migration rules while preserving the Google Sheets + Apps Script control plane | Active | Design work can proceed now; no production writes yet |
-| FORM-2 | Native customization | Design the first-party customization page and map every field to the existing customization intake schema | Active | Draft design in `docs/native-customization-design.md`; security/UX review next |
+| FORM-2 | Native customization | Design the first-party customization page and map every field to the existing customization intake schema | Review | Design spec plus non-submitting `site/customize.html` prototype staged; visual/security review next |
 | FORM-3 | Native customization | Build a non-production Apps Script intake endpoint that accepts validated website submissions and writes to the existing customization intake path | Blocked | FORM-2 and security review |
 | FORM-4 | Native customization | Add subscriber verification for preference changes using single-use, scoped confirmation links and hashed tokens | Blocked | FORM-1 security model |
 | FORM-5 | Native customization | Run DEV parity/idempotency/security tests against the existing processor before any production cutover | Blocked | FORM-3 and FORM-4 |
@@ -53,10 +53,10 @@ Use these states:
 | FORM-8 | Native feedback | Design and implement first-party feedback/corrections intake with current retention and privacy rules | Deferred | After signup or when operational capacity allows |
 | FORM-9 | Native management | Design authenticated pause/resume/reset/unsubscribe flows using signed or single-use verification rather than email-only identity | Deferred | Security model proven in customization/signup |
 | FORM-10 | Native forms | Decide whether and when public Google Forms can be retired; retain background/fallback forms until native flows have sustained production evidence | Deferred | Successful rollout of preceding native forms |
-| SEC-1 | Subscriber data security | Document data classification, access-control baseline, retention, incident-response, and periodic access review for subscriber email/preference data | Ready | Can be completed without infrastructure migration |
-| SEC-2 | Subscriber data security | Audit production Drive/Sheet sharing, folder inheritance, editor rights, account MFA, Apps Script access, and external collaborators | Ready | Manual Google account/Drive review |
-| SEC-3 | Subscriber data security | Minimize stored subscriber data and identify preference fields that could reveal sensitive characteristics; avoid collecting unnecessary sensitive data | Ready | SEC-1 |
-| SEC-4 | Subscriber data security | Define breach-response and notification decision path, including vendor incidents and Texas-law review | Ready | SEC-1 |
+| SEC-1 | Subscriber data security | Document data classification, access-control baseline, retention, incident-response, and periodic access review for subscriber email/preference data | Complete | Baseline added in `docs/subscriber-data-security.md` |
+| SEC-2 | Subscriber data security | Audit production Drive/Sheet sharing, folder inheritance, editor rights, account MFA, Apps Script access, and external collaborators | Active | Drive/Sheets audit passed; MFA, account recovery, Apps Script deployment/editor access, Resend/Cloudflare access remain manual checks |
+| SEC-3 | Subscriber data security | Minimize stored subscriber data and identify preference fields that could reveal sensitive characteristics; avoid collecting unnecessary sensitive data | Active | Preference classification complete; backup and raw-intake retention rules still needed |
+| SEC-4 | Subscriber data security | Define breach-response and notification decision path, including vendor incidents and Texas-law review | Active | Initial incident-response baseline documented; notification/legal decision detail remains to be completed |
 | FRI-1 | Friday edition | Define the purpose and anatomy of the improved Friday weekly recap | Ready | Keep separate from V2 promotion |
 | FRI-2 | Austin Weekend Explorer | Define Weekend Explorer as the richer Friday utility layer and its relationship to Austin Ahead | Ready | Product-design work |
 | FRI-3 | Austin Weekend Explorer | Define discovery sources, selection rules, section anatomy, and length limits | Blocked | FRI-2 |

@@ -44,7 +44,7 @@ Use these states:
 | WEB-3 | Website | Promote website design specification status from draft to approved/implemented | Complete | Canonical design spec status reconciled |
 | WEB-4 | Website | Record a concise post-fix live-site verification | Review | After WEB-1 deployment |
 | FORM-1 | Native subscriber forms | Define native-form architecture, security model, and migration rules while preserving the Google Sheets + Apps Script control plane | Active | Design work can proceed now; no production writes yet |
-| FORM-2 | Native customization | Design the first-party customization page and map every field to the existing customization intake schema | Ready | FORM-1 |
+| FORM-2 | Native customization | Design the first-party customization page and map every field to the existing customization intake schema | Active | Draft design in `docs/native-customization-design.md`; security/UX review next |
 | FORM-3 | Native customization | Build a non-production Apps Script intake endpoint that accepts validated website submissions and writes to the existing customization intake path | Blocked | FORM-2 and security review |
 | FORM-4 | Native customization | Add subscriber verification for preference changes using single-use, scoped confirmation links and hashed tokens | Blocked | FORM-1 security model |
 | FORM-5 | Native customization | Run DEV parity/idempotency/security tests against the existing processor before any production cutover | Blocked | FORM-3 and FORM-4 |

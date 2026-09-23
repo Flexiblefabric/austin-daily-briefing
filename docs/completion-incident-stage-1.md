@@ -68,3 +68,25 @@ The harness must prove:
 10. alert text explicitly preserves the no-repair/no-resend monitoring boundary.
 
 After those checks pass, the next gate is a controlled administrator-alert transport test using synthetic evidence only. Promotion into the live 09:30 watchdog remains a separate production change requiring the short release checklist, canonical-prompt/registry review, changelog entry, and immutable snapshot if promoted.
+
+
+## Controlled execution result — 2026-09-23
+
+The pure alert-policy harness passed **10/10** checks:
+
+- healthy Pending intake produced no alert;
+- the first staged intake-incomplete incident was alert-eligible;
+- same-day replay was deduplicated;
+- a still-unresolved next-day incident remained eligible once for that Central date;
+- recovery was silent;
+- other unhealthy completion classes remained report-only;
+- Unknown remained report-only;
+- the controlled subject prefix was enforced;
+- the privacy guard passed;
+- the no-repair/no-resend boundary was present in the alert text.
+
+A single synthetic controlled alert was then sent through the existing administrator-only Gmail path with the required `[CONTROLLED TEST]` prefix. Gmail accepted the message and the connected mailbox metadata shows it in both Sent and Inbox. No subscriber address, raw response key, Profile ID, Message ID, provider ID, token, message body, or private routing detail from production was included.
+
+No production workbook, subscriber, profile, queue, Briefing History, task, trigger, or dispatcher state was modified by this controlled alert test.
+
+**Stage-1 status:** Controlled policy and transport validation passed. Live watchdog integration is not yet promoted.

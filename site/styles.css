@@ -201,3 +201,61 @@ p{margin:0 0 18px}
   .footer-bottom span{display:block;margin-bottom:8px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+
+/* Native customization prototype */
+.customize-main{padding:0 0 96px}
+.customize-header{padding:68px 0 46px;max-width:1180px}
+.customize-header h1{font-size:clamp(46px,5.8vw,72px);margin-bottom:20px}
+.prototype-banner{background:var(--wash);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:12px 0;color:#413d37;font-size:14px}
+.prototype-banner strong{font-family:var(--condensed);text-transform:uppercase;letter-spacing:.07em;font-size:12px;margin-right:8px}
+.customize-layout{display:grid;grid-template-columns:minmax(220px,.34fr) minmax(0,1fr);gap:7%;align-items:start;padding-top:52px}
+.customize-aside{position:sticky;top:24px;max-width:290px}
+.customize-aside>p:not(.section-label){color:#47433e}
+.security-note{border-top:4px solid var(--signal);padding-top:16px;margin-top:28px}
+.security-note strong{font-family:var(--serif);font-size:20px}
+.security-note p{font-size:14px;color:var(--support);margin:7px 0 0}
+.customize-form{min-width:0}
+.customize-form fieldset{border:0;padding:0;margin:0;min-inline-size:0}
+.customize-form legend{width:100%;font:700 14px/1.3 var(--condensed);letter-spacing:.07em;text-transform:uppercase;border-top:1px solid var(--charcoal);padding:18px 0 20px}
+.form-section-number{display:inline-block;color:var(--signal);min-width:32px}
+.identity-fieldset{padding-bottom:48px!important}
+.field-label{display:block;font:700 13px/1.3 var(--condensed);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.text-input{width:min(100%,520px);min-height:50px;border:1px solid #8b857c;background:#fff;padding:12px 14px;color:var(--charcoal);border-radius:0}
+.text-input:focus{outline:3px solid var(--signal);outline-offset:2px;border-color:var(--charcoal)}
+.field-help{font-size:13px;color:var(--support);margin:7px 0 0}
+.preference-section{padding-bottom:50px!important}
+.preference-row,.style-row{display:grid;grid-template-columns:minmax(220px,1fr) minmax(430px,1.45fr);gap:28px;align-items:center;padding:17px 0;border-bottom:1px solid var(--rule)}
+.preference-row:last-child,.style-row:last-child{border-bottom:0}
+.preference-name{font-size:15px;line-height:1.35;font-weight:700}
+.segmented{display:grid;grid-template-columns:1.3fr repeat(3,1fr);border:1px solid #8b857c;background:var(--paper)}
+.segmented input{position:absolute;opacity:0;pointer-events:none}
+.segmented label{display:flex;align-items:center;justify-content:center;min-height:42px;padding:8px 9px;border-right:1px solid var(--rule);font:700 12px/1.15 var(--condensed);letter-spacing:.035em;text-transform:uppercase;cursor:pointer;text-align:center}
+.segmented label:last-child{border-right:0}
+.segmented input:focus-visible+label{outline:3px solid var(--signal);outline-offset:-3px;position:relative;z-index:1}
+.segmented input:checked+label{background:var(--charcoal);color:var(--paper)}
+.segmented input:checked+label::before{content:"✓";margin-right:6px;color:var(--paper);font-size:11px}
+.segmented-wide{grid-template-columns:1.3fr repeat(3,1fr)}
+.confirmation-explainer{background:var(--wash);border-left:4px solid var(--signal);padding:24px 26px;margin:4px 0 30px}
+.confirmation-explainer h2{font-size:30px;margin-bottom:10px}
+.confirmation-explainer p:last-child{margin-bottom:0}
+.form-actions{border-top:1px solid var(--charcoal);padding-top:24px}
+.form-actions p{font-size:13px;color:var(--support);margin:9px 0 0}
+.prototype-submit{border:0;cursor:not-allowed;opacity:.82}
+.mobile-current{display:block;padding:11px 12px;color:var(--signal);font:700 13px/1.25 var(--condensed);letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--rule)}
+
+@media(max-width:900px){
+  .customize-layout{grid-template-columns:1fr;gap:34px}
+  .customize-aside{position:static;max-width:720px}
+  .preference-row,.style-row{grid-template-columns:1fr;gap:10px;padding:18px 0 21px}
+}
+@media(max-width:600px){
+  .customize-main{padding-bottom:70px}
+  .customize-header{padding:48px 0 36px}
+  .customize-layout{padding-top:38px}
+  .segmented,.segmented-wide{grid-template-columns:repeat(2,1fr)}
+  .segmented label{border-bottom:1px solid var(--rule);min-height:46px}
+  .segmented label:nth-of-type(2),.segmented label:nth-of-type(4){border-right:0}
+  .segmented label:nth-of-type(3),.segmented label:nth-of-type(4){border-bottom:0}
+  .confirmation-explainer{padding:20px 18px}
+}

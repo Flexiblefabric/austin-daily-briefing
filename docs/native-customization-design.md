@@ -283,14 +283,16 @@ The native form should not create a second long-term database.
 
 Use the existing production control plane and existing verification/audit structures.
 
-Before promotion, define exact retention for:
+The proposed project-wide retention baseline is now defined in [subscriber-data-security-baseline.md](subscriber-data-security-baseline.md). Native customization must inherit that policy rather than create its own second retention model.
+
+Before promotion, confirm implementation can meet the adopted targets for:
 
 - native intake source rows;
 - applied/expired verification records;
 - failed/invalid request metadata;
 - abuse-control counters.
 
-Keep only what is needed to operate, reconcile, protect, or honor subscriber requests.
+Keep only what is needed to operate, reconcile, protect, or honor subscriber requests. Any exception must be documented with a review date.
 
 ## 12. Accessibility
 

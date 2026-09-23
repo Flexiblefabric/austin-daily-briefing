@@ -5,6 +5,7 @@
 **Applies to:** Austin Daily Briefing production and development subscriber systems  
 **Control plane:** Google Forms + Google Sheets + Google Apps Script  
 **Related public policy:** `site/privacy.html`  
+**Authoritative retention policy:** `docs/data-retention.md`  
 **Related design:** `docs/native-customization-design.md`
 
 ## 1. Purpose
@@ -188,37 +189,37 @@ Production subscriber data should use the following minimum controls:
 
 ## 6. Retention schedule
 
-The table below is the proposed operational baseline. Where current automation does not yet enforce a target automatically, the target remains a documented cleanup requirement rather than a claim of existing automated deletion.
+The authoritative retention schedule is [data-retention.md](data-retention.md), which was already approved as the operational baseline effective 2026-09-23. SEC-1 does not create a second or competing schedule.
 
-| Data | Target retention | End-of-life action |
-| --- | --- | --- |
-| Active subscriber email, status, profile and current preferences | While actively subscribed | Retain while needed to deliver/manage service |
-| Minimal unsubscribe/suppression record | While needed to honor the unsubscribe, unless deletion is required/approved | Reduce to the minimum fields needed to prevent accidental delivery |
-| Raw signup/customize/manage intake rows | 90 days after terminal processing | Delete or reduce after reconciliation window closes |
-| Pending verification record | Up to configured 24-hour validity, plus operational processing time | Mark Expired/Cancelled if unused |
-| Applied/Expired/Cancelled verification metadata | 30 days after terminal state | Delete token hash and unnecessary request details; retain only minimal audit evidence if still needed |
-| Raw verification token | Never stored | Transient only in confirmation link generation/delivery |
-| Invalid/failed request metadata | 30 days | Delete unless needed for an active incident investigation |
-| Abuse/security-event metadata | 90 days after resolution | Delete or further minimize unless legal/security need requires longer |
-| Welcome/daily Outbound Message full HTML/plain-text payload | 30 days after terminal delivery state | Remove body content where practical; retain minimal delivery evidence |
-| Outbound delivery metadata without message body | 90 days | Delete or aggregate unless needed for an unresolved incident |
-| Subscriber-specific Briefing History | 90 days | Delete or de-identify; only 14 days is required for routine repeat control |
-| Operations History / watchdog incidents | 30 days | Delete under existing operations retention rule |
-| Feedback/correction Form submission and submitter email | After review and no later than 15 days | Delete complete Form response |
-| Published correction entry | Indefinite public record unless later correction/removal is required | Keep privacy-safe; never publish submitter identity |
-| Direct inbound email/reply | As long as needed to respond/investigate; review during quarterly cleanup | Delete when no longer operationally useful |
-| DEV synthetic fixtures | Until test/release closes, normally no more than 30 days | Delete or anonymize after test evidence is recorded |
-| Public source code/docs | Project lifecycle | Standard repository retention; no Class 2–4 data permitted |
+Security reviews, native-form design, cleanup procedures, and future automated retention enforcement must use that file as the source of truth.
 
-### Retention exceptions
+Current approved targets are:
 
-Retention may be extended when:
-- an active security incident is under investigation;
-- a legal preservation obligation applies;
-- a payment, contractual, or vendor dispute requires evidence;
-- deleting the record would prevent ADB from honoring an unsubscribe or privacy request.
+| Data | Approved retention |
+| --- | --- |
+| Active subscriber record and current preferences | While subscription is active |
+| Paused subscriber record and preferences | While paused |
+| Unsubscribed subscriber/profile/preferences | Up to 12 months after unsubscribe, then delete/minimize |
+| Signup / management / customization action records | 12 months after final processing |
+| Google/native intake source rows | Target 12 months, subject to the documented processor-safety exception |
+| Intake ledger | 12 months after final processing, or longer only where required for idempotency across retained source rows |
+| Verification Queue — Pending | Until applied/cancelled/expired under configured TTL |
+| Verification Queue — Applied / Expired / Cancelled | 90 days after terminal status |
+| Raw verification token | Never stored |
+| Outbound message delivery records | 90 days after terminal delivery state |
+| Profile-linked Briefing History | 180 days |
+| Production backups containing subscriber data | Maximum 30 days and no more than 2 routine rolling backups |
+| Feedback/corrections raw submission + submitter email | Until reviewed and no later than 15 days |
+| Published correction/clarification | Indefinite privacy-safe editorial record |
+| Direct support/privacy correspondence | 90 days after issue resolution unless an exception applies |
+| Security-incident evidence | Until incident closure plus 12 months |
 
-Any exception should be limited to the smallest required data and documented with a review date.
+### Retention implementation rules
+
+- The temporary intake-retention exception in `data-retention.md` remains in force: historical production Form source rows must not be routinely altered until a controlled test proves reconciliation remains safe.
+- No automated purge is introduced directly in production. Each data class requires DEV testing and an explicit promotion step before automated deletion.
+- Any retention exception must follow the rules in `data-retention.md` and be limited to the smallest required data with a documented review date.
+- SEC-2 and later security work should audit compliance against the approved schedule rather than redefining it.
 
 ## 7. Data minimization rules
 
@@ -366,7 +367,7 @@ SEC-1 is complete when the owner approves:
 
 - this classification model;
 - the minimum access-control baseline;
-- the exact retention targets in Section 6;
+- adoption of `docs/data-retention.md` as the sole authoritative retention schedule;
 - the incident-response sequence;
 - quarterly access/retention review cadence.
 

@@ -108,8 +108,8 @@ Before connecting the website prototype:
 - invalid token does not confirm;
 - expired token does not confirm;
 - opening a valid token link does not consume it;
-- first valid confirmation POST confirms it;
-- second confirmation POST does not confirm again;
+- first explicit confirmation click confirms it through the HtmlService `google.script.run` server call;
+- a repeated confirmation attempt does not confirm again;
 - processor applies Confirmed request once;
 - production IDs receive no writes.
 
@@ -139,3 +139,10 @@ Production requires:
 - public navigation/link update;
 - fallback Google customization form retained;
 - explicit promotion approval.
+
+
+## 10. Confirmation UI implementation note
+
+Apps Script `HtmlService` pages are rendered in a sandboxed iframe. The confirmation page therefore must not rely on ordinary form navigation to invoke the web-app `doPost` route. The staged implementation uses an explicit button and `google.script.run` to call `confirmNativeCustomizationDevFromUiV1()` on the server.
+
+Opening the email link remains read-only. The raw token is held only in the transient confirmation page and is passed to the server only after the reader explicitly presses **Confirm changes**. It is not written to Sheets or logs.

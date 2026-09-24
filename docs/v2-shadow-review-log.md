@@ -39,14 +39,15 @@ After each run:
 | 2026-09-18 | 17 | Mixed, leaning V2 | Again identified AHA voucher proposals and Seabrook; improved placement of Rosewood and the water framework | Repeated the same unresolved shadow discoveries because only production history was checked | Water framework selected |
 | 2026-09-19 | 18 | Mixed, leaning V2 | Rejected the Rosewood calendar-only repeat; preserved three genuine material updates; official run again surfaced AHA and Seabrook | AHA and Seabrook are now shadow-history repeats, so the official production-history comparison overstates V2's fresh advantage | Empty; no qualifying new item found |
 | 2026-09-23 | 18 | V2 better | Retained the ICE and data-center leads; added the Travis County budget, Camp Mystic criminal investigation, prison-AC ruling, and Bloom at Lamar Square proposal | Production delivery remained queued; the Austin Current article exposed no exact publication time, so that omission carries a timing caveat | Bloom at Lamar Square proposal selected |
+| 2026-09-24 | 20 | V2 better | Surfaced the statewide voter-registration backlog before the live send and prevented yesterday's V2 selections from repeating without new developments | Two strong current-day discoveries published after the 8:37 a.m. CDT send and therefore cannot count as production omissions | Texas youth-prison lockdown records retained |
 
 ### Current reading
 
-- Completed comparable runs: **7**
-- V2 better: **5**
+- Completed comparable runs: **8**
+- V2 better: **6**
 - Mixed, leaning V2: **2**
 - Production better: **0**
-- Distinct consequential production misses corrected by V2 include the measles exposure, AISD takeover dispute, Central Health budget/tax decision, mail-ballot ruling, East Sixth overdose cluster, AHA voucher proposals, Seabrook Square II, the Texas prison-air-conditioning ruling, the Camp Mystic criminal-investigation warrants, and the Bloom at Lamar Square fee-waiver proposal. The Travis County budget is also a likely correction, subject to publication-time verification.
+- Distinct consequential production misses corrected by V2 include the measles exposure, AISD takeover dispute, Central Health budget/tax decision, mail-ballot ruling, East Sixth overdose cluster, AHA voucher proposals, Seabrook Square II, the Texas prison-air-conditioning ruling, the Camp Mystic criminal-investigation warrants, and the Bloom at Lamar Square fee-waiver proposal, and the statewide voter-registration processing backlog. The Travis County budget is also a likely correction, subject to publication-time verification.
 - Evidence currently supports the working conclusion that V2 is outperforming production. Repeat-memory and proposal/adoption verification controls were strengthened in `0.3`; the remaining runs must test whether those controls work as intended.
 - Continue daily manual testing through **2026-09-26** before making a promotion recommendation.
 
@@ -123,6 +124,19 @@ This makes the remaining shadow runs a stricter promotion test while preserving 
 - **Personalization:** Claude Opus 5.5 cleared the floor and remained More for You. Mendocino Farms, Palo Alto Networks, Wind Runners, and the comedy listing did not clear the shared scoring floor or belonged in event utility rather than ranked personalized news. No Discovery Promotion or Freshness Veto was used.
 - **Verdict:** V2 better. The improvement is material despite the delivery-status and Austin Current timing caveats.
 
+### 2026-09-24
+
+- **Run timing:** Production was accepted by Resend at 8:37:11 a.m. CDT. Publication-time checks used the source's original timestamp and Central Time where available; later syndication timestamps were not substituted for original publication times.
+- **Production Top Stories:** Austin's independent investigation and new video in the ICE shooting; Texas prison-air-conditioning ruling; Camp Mystic criminal investigation; Rivian rear-camera recall; Austin Opera performance center.
+- **V2 shared Top Stories:** Statewide voter-registration application backlog; Austin Transit Partnership's cheaper office decision; identification of Jason Landry's remains; Austin Opera performance center; Athena's rehabilitated owlet release. The ATP and Landry stories were published after production's send and are not recorded as production omissions.
+- **V2 correction:** The Associated Press voter-registration backlog report was published at 6:37 p.m. ET on September 23—5:37 p.m. CDT, about 15 hours before the live send. It described a state systems error that withheld applications from counties for nearly a year, possible primary-election disenfranchisement, and an October processing deadline. This was the consequential pre-send production omission.
+- **Production strengths retained:** Austin Opera remained an eligible shared story. The Texas youth-prison lockdown investigation remained the qualifying Under the Radar item.
+- **Repeat control:** ICE's local investigation, the prison-AC ruling, and Camp Mystic warrants were new to today's production slate but were already selected by V2 on September 23. No post-September-23 substantive development was verified, so they were rejected from today's counterfactual V2 slate as non-material repeats. The ICE investigation/video remains a valid `Material Update = TRUE` relative to production history but `FALSE` relative to V2 shadow history.
+- **Section changes:** Rivian's recall cleared the floor at 60 but moved from a shared Top Story to More for You because Austin relevance was limited and the generic profile marks Consumer Technology High. Big Queer Weekend remained Austin Ahead event utility rather than a material-update story.
+- **Under the Radar:** The independent search retained the Texas Newsroom's records-based youth-prison lockdown investigation. It was not a rejected headline used as filler; its internal-records provenance, high public-interest value, and low likely visibility support the placement.
+- **Overrides and balance:** No Freshness Veto or Discovery Promotion was used. Non-material repeats failed before scoring; event arrival did not create material change. Selection Balance did not alter any base score.
+- **Verdict:** V2 better. The verified pre-send voter-registration omission is consequential, and `0.3` correctly prevented yesterday's shadow slate from becoming today's reader experience. Post-send ATP and Landry reporting improved the current-day V2 slate but did not count against production.
+
 ## Open issues before promotion
 
 | Issue | Evidence | Required resolution |
@@ -131,7 +145,7 @@ This makes the remaining shadow runs a stricter promotion test while preserving 
 | Source verification | AHA was based on a board packet and proposed changes, not an adoption vote | **Resolved as a specification control:** `0.3` requires explicit proposal/adoption status and supporting evidence; continue auditing execution |
 | Under the Radar consistency | Strong independent discoveries sometimes become Top Stories; other days legitimately produce no item | Preserve independent search, single placement, and permission to leave the section empty |
 | Friday wrap-up maturity | 2026-09-18 wrap-up was valid but thin | Keep outside current V2 promotion decision unless separately specified and tested |
-| Promotion threshold | Six runs favor V2, but the sample is still short | Complete daily manual runs through 2026-09-26, then assess errors and regressions as well as win count |
+| Promotion threshold | Eight comparable runs favor V2 overall, but the sample is still short | Complete daily manual runs through 2026-09-26, then assess errors and regressions as well as win count |
 
 ## Promotion-review checklist
 

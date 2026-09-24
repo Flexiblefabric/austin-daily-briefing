@@ -174,6 +174,9 @@ function doPost(e) {
     const action = String(params.action || 'request').toLowerCase();
 
     if (action === 'confirm') {
+      // Compatibility path for direct POST clients. The HtmlService confirmation
+      // UI uses confirmNativeCustomizationDevFromUiV1() via google.script.run
+      // because HtmlService itself is rendered inside a sandboxed iframe.
       const result = adbNativeConfirmRequestDevV1_(params.token || '');
       return adbNativeConfirmationResultHtml_(result);
     }
@@ -430,6 +433,27 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
     return adbNativeAcceptedResult_();
   } finally {
     lock.releaseLock();
+  }
+}
+
+/**
+ * Public server function called only after an explicit click in the HtmlService
+ * confirmation UI. google.script.run invokes this function asynchronously.
+ *
+ * The response is deliberately generic and contains no subscriber/request data.
+ */
+function confirmNativeCustomizationDevFromUiV1(rawToken) {
+  try {
+    adbNativeCustomizeDevAssertEnabled_();
+    const result = adbNativeConfirmRequestDevV1_(rawToken);
+    return {
+      ok: !!result.ok,
+      status: String(result.status || 'invalid_or_expired')
+    };
+  } catch (error) {
+    console.error('Native customization DEV UI confirmation failed: ' +
+      String(error && error.message ? error.message : error).slice(0, 500));
+    return {ok:false,status:'temporary_error'};
   }
 }
 
@@ -954,7 +978,10 @@ function adbNativePostMessageHtml_(result) {
 }
 
 function adbNativeConfirmPromptHtml_(rawToken) {
-  const token = adbNativeEscapeHtml_(rawToken);
+  // The token is embedded only in this transient HtmlService response. It is
+  // never written to Sheets/logs and is sent to the server only after the
+  // reader explicitly presses Confirm changes.
+  const tokenJson = JSON.stringify(String(rawToken || '')).replace(/</g, '\\u003c');
   const html = '<!doctype html><html><head><meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width,initial-scale=1">' +
     '<title>Confirm briefing changes</title></head>' +
@@ -963,12 +990,41 @@ function adbNativeConfirmPromptHtml_(rawToken) {
     '<div style="border-top:5px solid #db2d2d;padding-top:24px">' +
     '<p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#db2d2d">Austin Daily Briefing · DEV</p>' +
     '<h1 style="font-family:Georgia,serif;font-size:36px">Confirm your briefing changes.</h1>' +
-    '<p>Nothing changes until you press the confirmation button below. This link can be used once and expires after 24 hours.</p>' +
-    '<form method="post"><input type="hidden" name="action" value="confirm">' +
-    '<input type="hidden" name="token" value="' + token + '">' +
-    '<button type="submit" style="background:#db2d2d;color:white;border:0;padding:12px 18px;font-weight:700;cursor:pointer">Confirm changes</button>' +
-    '</form><p style="margin-top:24px;color:#68635a;font-size:14px">If you did not request this, close this page and no changes will be applied.</p>' +
-    '</div></main></body></html>';
+    '<p id="message">Nothing changes until you press the confirmation button below. This link can be used once and expires after 24 hours.</p>' +
+    '<button id="confirmButton" type="button" style="background:#db2d2d;color:white;border:0;padding:12px 18px;font-weight:700;cursor:pointer">Confirm changes</button>' +
+    '<p style="margin-top:24px;color:#68635a;font-size:14px">If you did not request this, close this page and no changes will be applied.</p>' +
+    '</div></main>' +
+    '<script>' +
+    '(function(){' +
+      'var token=' + tokenJson + ';' +
+      'var button=document.getElementById("confirmButton");' +
+      'var message=document.getElementById("message");' +
+      'var started=false;' +
+      'function finish(result){' +
+        'if(result&&result.ok&&result.status==="confirmed"){' +
+          'message.textContent="Request confirmed. Your changes are authorized and ready for the DEV processor.";' +
+          'button.textContent="Confirmed";button.disabled=true;' +
+          'return;' +
+        '}' +
+        'if(result&&result.status==="temporary_error"){' +
+          'message.textContent="We could not confirm this request right now. Please try again later.";' +
+          'button.disabled=false;button.textContent="Confirm changes";started=false;' +
+          'return;' +
+        '}' +
+        'message.textContent="This confirmation link is invalid, expired, or already used.";' +
+        'button.textContent="Link unavailable";button.disabled=true;' +
+      '}' +
+      'function fail(){' +
+        'message.textContent="We could not confirm this request right now. Please try again later.";' +
+        'button.disabled=false;button.textContent="Confirm changes";started=false;' +
+      '}' +
+      'button.addEventListener("click",function(){' +
+        'if(started)return;started=true;button.disabled=true;button.textContent="Confirming…";' +
+        'google.script.run.withSuccessHandler(finish).withFailureHandler(fail)' +
+          '.confirmNativeCustomizationDevFromUiV1(token);' +
+      '});' +
+    '})();' +
+    '<\\/script></body></html>';
   return HtmlService.createHtmlOutput(html);
 }
 

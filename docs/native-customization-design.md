@@ -277,6 +277,12 @@ If needed later:
 - stronger global throttling;
 - signed newsletter links that reduce repeated email entry.
 
+## 10A. SEC-3 verification-storage requirement
+
+The SEC-3 minimization review found that the current production Google verification Form persists the submitted raw verification token in its response sheet. Native verification must remove that behavior rather than reproduce it.
+
+FORM-4 must use a token-consuming endpoint that receives the raw token transiently, hashes it immediately server-side, validates it against the pending Verification Queue record, and stores only non-secret confirmation state. Raw tokens and token-bearing URLs must never be written to Sheets, logs, GitHub, task output, or monitoring. See `subscriber-data-minimization-review-2026-09-23.md`.
+
 ## 11. Privacy and retention
 
 The native form should not create a second long-term database.

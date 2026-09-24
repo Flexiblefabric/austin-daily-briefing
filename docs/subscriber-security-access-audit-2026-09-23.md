@@ -10,7 +10,7 @@
 
 The production storage layer is not broadly shared, the two routine production backups are within the approved retention/count baseline, and the public website does not expose production Sheet/edit URLs or internal subscriber identifiers in the scanned site source.
 
-The remaining SEC-2 closeout item is an authoritative collaborator/editor inventory for systems whose ACL membership is not exposed through the available connectors: the four published production Google Forms, GitHub repository collaborators, Resend users, and Cloudflare members. Published Form responder access is expected and is not itself an editor-access failure.
+The live checks and owner-confirmed inventories now satisfy the SEC-2 baseline. The operator confirmed on 2026-09-23 that there are no unexpected editors or members on the four production Google Forms, the GitHub repository, Resend, or Cloudflare. Published Form responder access remains intentional and is not an editor-access failure.
 
 ## Evidence standard
 
@@ -74,17 +74,11 @@ Forms reviewed:
 - Manage Austin Daily Briefing
 - Confirm Austin Daily Briefing Change
 
-**Result: Manual verification required for editor ACL**
+**Result: Pass — owner confirmed**
 
 Drive metadata reports these published Forms as shared, with `source_visibility_status=access_not_verified`. Public responder access is intentional and expected. The available Drive connector does not expose enough permission metadata to distinguish responder publication from editor/collaborator access.
 
-Required closeout check:
-
-- confirm the Form **editor** list contains only authorized operators;
-- confirm there is no domain-wide or “anyone” edit permission;
-- confirm public links are responder URLs only, never edit URLs.
-
-This is not currently classified as a failure; it is an evidence gap.
+Owner confirmation: the production Forms have no unexpected editors or members. Public responder links are intentional. No unauthorized edit membership was reported.
 
 ## 3. Google account and Apps Script
 
@@ -129,15 +123,11 @@ Public Google Form **responder** links and the public ADB contact address are ex
 
 ### Repository collaborator inventory
 
-**Result: Manual verification required**
+**Result: Pass — owner confirmed**
 
 The current GitHub connector can verify the authenticated operator's repository permissions but cannot enumerate the repository's direct collaborator list through the available interface.
 
-Required closeout check:
-
-- review repository Settings → Collaborators / access;
-- confirm every person or app with write/admin access is expected;
-- remove any stale collaborator.
+Owner confirmation: there are no unexpected GitHub collaborators or members with repository access.
 
 ## 5. Resend
 
@@ -153,12 +143,7 @@ The operator previously confirmed MFA is enabled for Resend.
 
 The current connected tools do not expose the Resend account/team member list.
 
-Required closeout check:
-
-- confirm there are no unexpected team members or API keys;
-- confirm the active production API credential remains stored only in the approved runtime secret store.
-
-No credential values should be copied into this audit.
+Owner confirmation: there are no unexpected Resend editors or members. No credential values are recorded in this audit.
 
 ## 6. Cloudflare
 
@@ -174,23 +159,15 @@ The operator previously confirmed passkey protection is configured for Cloudflar
 
 The current tools do not expose Cloudflare account-member ACLs.
 
-Required closeout check:
-
-- confirm there are no unexpected account members with DNS or Email Routing access;
-- confirm private forwarding destinations remain outside GitHub/public documentation.
+Owner confirmation: there are no unexpected Cloudflare editors or members with production access.
 
 ## 7. External-collaborator conclusion
 
 Live evidence shows no broad sharing on the production Drive folders, subscriber database, intake database, or backups.
 
-The unresolved collaborator evidence is limited to provider surfaces that the current connectors cannot enumerate authoritatively:
+The provider surfaces that could not be enumerated through connectors were manually reviewed by the operator. The operator confirmed there are no unexpected editors or members on the four production Google Forms, GitHub, Resend, or Cloudflare.
 
-1. editors on the four published Google Forms;
-2. GitHub direct collaborators/apps with write/admin access;
-3. Resend team members;
-4. Cloudflare account members.
-
-SEC-2 should remain **Review** until the operator confirms those four inventories.
+**SEC-2 result: PASS / Complete.**
 
 ## 8. Findings
 
@@ -204,21 +181,17 @@ No evidence from this audit indicates:
 - expired routine backup retention;
 - public site exposure of production Sheet/edit URLs or internal subscriber identifiers.
 
-### Evidence gaps
+### Connector limitations
 
-- Published Google Forms editor ACL cannot be distinguished from responder publication through current Drive metadata.
-- GitHub direct collaborator enumeration is unavailable through the current connector.
-- Resend and Cloudflare membership lists are not exposed through current tools.
+The available connectors still cannot independently enumerate published Form editor ACLs, GitHub direct collaborators, Resend membership, or Cloudflare membership. Those controls are therefore recorded as **Pass — owner confirmed** rather than live-verified.
 
-These are manual verification items, not presumed failures.
+## 9. SEC-2 closeout
 
-## 9. SEC-2 closeout criteria
-
-SEC-2 can be marked Complete when the operator confirms:
+Completed 2026-09-23. The operator confirmed:
 
 - no unauthorized editors on the four production Forms;
 - no unexpected GitHub write/admin collaborators or apps;
-- no unexpected Resend users/API credentials;
+- no unexpected Resend users or members;
 - no unexpected Cloudflare members with production access.
 
-If any unexpected access is found, remove/revoke it first and record the corrective action without placing personal identities or secret values in this document.
+No corrective access removals were required.

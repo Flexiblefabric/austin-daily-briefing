@@ -86,7 +86,7 @@ For one allowlisted address:
 6. confirm receipt of the controlled DEV message;
 7. open the link;
 8. verify that simply opening the page does not apply changes;
-9. press **Confirm changes**;
+9. press **Confirm changes** and verify the browser navigates to the confirmation result page;
 10. run `inspectNativeCustomizationDevStateV1()` and confirm one verification is `Confirmed`;
 11. run `processConfirmedNativeCustomizationDevV1()`;
 12. verify the intended DEV profile changes occurred exactly once;
@@ -108,7 +108,7 @@ Before connecting the website prototype:
 - invalid token does not confirm;
 - expired token does not confirm;
 - opening a valid token link does not consume it;
-- first explicit confirmation click confirms it through the HtmlService `google.script.run` server call;
+- first explicit confirmation click submits a top-level POST to the deployed `/exec` URL and confirms it;
 - a repeated confirmation attempt does not confirm again;
 - processor applies Confirmed request once;
 - production IDs receive no writes.
@@ -143,11 +143,10 @@ Production requires:
 
 ## 10. Confirmation UI implementation note
 
-Apps Script `HtmlService` pages are rendered in a sandboxed iframe. The confirmation page therefore must not rely on ordinary form navigation to invoke the web-app `doPost` route. The staged implementation uses an explicit button and `google.script.run` to call `confirmNativeCustomizationDevFromUiV1()` on the server.
+Apps Script `HtmlService` pages are rendered in a sandboxed iframe. Controlled browser QA showed that the `google.script.run` confirmation path was not reliable in this deployment: clicking **Confirm changes** navigated to a blank Apps Script shell and left the verification in `Pending`.
 
-Opening the email link remains read-only. The raw token is held only in the transient confirmation page and is passed to the server only after the reader explicitly presses **Confirm changes**. It is not written to Sheets or logs.
+The DEV confirmation page now uses a plain HTML form with `method="post"`, `target="_top"`, and the configured DEV `/exec` URL as its action. The POST contains only `action=confirm` and the raw verification token. The existing `doPost` confirmation route hashes and validates the token under the script lock, enforces expiry and single use, and returns a minimal confirmation result page.
 
+Opening the email link remains read-only. The raw token exists only in the email URL and transient confirmation form; it is not written to Sheets or logs.
 
-### Confirmation-page regression note
-
-Controlled QA exposed a client-script rendering defect in the first `google.script.run` confirmation revision: the generated HtmlService document emitted an escaped `<\\/script>` sequence instead of a real closing `</script>` tag. The browser therefore could not execute the confirmation click handler. The DEV implementation now emits a real closing script tag and the unit suite asserts the generated confirmation HTML contains the executable `google.script.run` call and valid script closure before deployment.
+The unit suite includes a regression check that the generated confirmation page contains an explicit POST, a top-level target, the confirmation action, and a token field, and does not depend on `google.script.run`.

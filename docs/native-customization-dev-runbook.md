@@ -146,3 +146,8 @@ Production requires:
 Apps Script `HtmlService` pages are rendered in a sandboxed iframe. The confirmation page therefore must not rely on ordinary form navigation to invoke the web-app `doPost` route. The staged implementation uses an explicit button and `google.script.run` to call `confirmNativeCustomizationDevFromUiV1()` on the server.
 
 Opening the email link remains read-only. The raw token is held only in the transient confirmation page and is passed to the server only after the reader explicitly presses **Confirm changes**. It is not written to Sheets or logs.
+
+
+### Confirmation-page regression note
+
+Controlled QA exposed a client-script rendering defect in the first `google.script.run` confirmation revision: the generated HtmlService document emitted an escaped `<\\/script>` sequence instead of a real closing `</script>` tag. The browser therefore could not execute the confirmation click handler. The DEV implementation now emits a real closing script tag and the unit suite asserts the generated confirmation HTML contains the executable `google.script.run` call and valid script closure before deployment.

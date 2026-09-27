@@ -39,16 +39,20 @@ After each run:
 | 2026-09-18 | 17 | Mixed, leaning V2 | Again identified AHA voucher proposals and Seabrook; improved placement of Rosewood and the water framework | Repeated the same unresolved shadow discoveries because only production history was checked | Water framework selected |
 | 2026-09-19 | 18 | Mixed, leaning V2 | Rejected the Rosewood calendar-only repeat; preserved three genuine material updates; official run again surfaced AHA and Seabrook | AHA and Seabrook are now shadow-history repeats, so the official production-history comparison overstates V2's fresh advantage | Empty; no qualifying new item found |
 | 2026-09-23 | 18 | V2 better | Retained the ICE and data-center leads; added the Travis County budget, Camp Mystic criminal investigation, prison-AC ruling, and Bloom at Lamar Square proposal | Production delivery remained queued; the Austin Current article exposed no exact publication time, so that omission carries a timing caveat | Bloom at Lamar Square proposal selected |
+| 2026-09-24 | 20 | V2 better | Surfaced the statewide voter-registration backlog before the live send and prevented yesterday's V2 selections from repeating without new developments | Two strong current-day discoveries published after the 8:37 a.m. CDT send and therefore cannot count as production omissions | Texas youth-prison lockdown records retained |
+| 2026-09-25 | 21 | Mixed, leaning V2 | Retained four production leads and the independent braille-center discovery; replaced a V2-history repeat with the pre-send Manor police-vehicle fatality | The fatal crash was published only about 40 minutes before the live send; Friday wrap-up remains outside the V2 selection specification | Billman Braille Center retained |
+| 2026-09-27 | 18 | Mixed / no clear winner | Retained four strong production leads, rejected a Manor crash repeat in counterfactual V2 history, and correctly left Under the Radar empty | No clearly superior fifth shared lead emerged; the 2:37 p.m. late send changes timing fairness but produced no consequential production-only discovery | Empty; no qualifying new item found |
 
 ### Current reading
 
-- Completed comparable runs: **7**
-- V2 better: **5**
-- Mixed, leaning V2: **2**
+- Completed comparable runs: **10** *(nine during the planned window plus one post-window late-send stress test)*
+- V2 better: **6**
+- Mixed, leaning V2: **3**
+- Mixed / no clear winner: **1**
 - Production better: **0**
-- Distinct consequential production misses corrected by V2 include the measles exposure, AISD takeover dispute, Central Health budget/tax decision, mail-ballot ruling, East Sixth overdose cluster, AHA voucher proposals, Seabrook Square II, the Texas prison-air-conditioning ruling, the Camp Mystic criminal-investigation warrants, and the Bloom at Lamar Square fee-waiver proposal. The Travis County budget is also a likely correction, subject to publication-time verification.
+- Distinct consequential production misses corrected by V2 include the measles exposure, AISD takeover dispute, Central Health budget/tax decision, mail-ballot ruling, East Sixth overdose cluster, AHA voucher proposals, Seabrook Square II, the Texas prison-air-conditioning ruling, the Camp Mystic criminal-investigation warrants, and the Bloom at Lamar Square fee-waiver proposal, and the statewide voter-registration processing backlog. The Manor police-vehicle fatality is a timing-caveated correction because the story appeared only about 40 minutes before production send. The Travis County budget is also a likely correction, subject to publication-time verification.
 - Evidence currently supports the working conclusion that V2 is outperforming production. Repeat-memory and proposal/adoption verification controls were strengthened in `0.3`; the remaining runs must test whether those controls work as intended.
-- Continue daily manual testing through **2026-09-26** before making a promotion recommendation.
+- The planned observation window ended **2026-09-26**. No September 26 run is recorded. The September 27 run is a supplementary late-send stress test and should not silently substitute for the missing date in the promotion review.
 
 ## Daily records
 
@@ -123,6 +127,46 @@ This makes the remaining shadow runs a stricter promotion test while preserving 
 - **Personalization:** Claude Opus 5.5 cleared the floor and remained More for You. Mendocino Farms, Palo Alto Networks, Wind Runners, and the comedy listing did not clear the shared scoring floor or belonged in event utility rather than ranked personalized news. No Discovery Promotion or Freshness Veto was used.
 - **Verdict:** V2 better. The improvement is material despite the delivery-status and Austin Current timing caveats.
 
+### 2026-09-24
+
+- **Run timing:** Production was accepted by Resend at 8:37:11 a.m. CDT. Publication-time checks used the source's original timestamp and Central Time where available; later syndication timestamps were not substituted for original publication times.
+- **Production Top Stories:** Austin's independent investigation and new video in the ICE shooting; Texas prison-air-conditioning ruling; Camp Mystic criminal investigation; Rivian rear-camera recall; Austin Opera performance center.
+- **V2 shared Top Stories:** Statewide voter-registration application backlog; Austin Transit Partnership's cheaper office decision; identification of Jason Landry's remains; Austin Opera performance center; Athena's rehabilitated owlet release. The ATP and Landry stories were published after production's send and are not recorded as production omissions.
+- **V2 correction:** The Associated Press voter-registration backlog report was published at 6:37 p.m. ET on September 23—5:37 p.m. CDT, about 15 hours before the live send. It described a state systems error that withheld applications from counties for nearly a year, possible primary-election disenfranchisement, and an October processing deadline. This was the consequential pre-send production omission.
+- **Production strengths retained:** Austin Opera remained an eligible shared story. The Texas youth-prison lockdown investigation remained the qualifying Under the Radar item.
+- **Repeat control:** ICE's local investigation, the prison-AC ruling, and Camp Mystic warrants were new to today's production slate but were already selected by V2 on September 23. No post-September-23 substantive development was verified, so they were rejected from today's counterfactual V2 slate as non-material repeats. The ICE investigation/video remains a valid `Material Update = TRUE` relative to production history but `FALSE` relative to V2 shadow history.
+- **Section changes:** Rivian's recall cleared the floor at 60 but moved from a shared Top Story to More for You because Austin relevance was limited and the generic profile marks Consumer Technology High. Big Queer Weekend remained Austin Ahead event utility rather than a material-update story.
+- **Under the Radar:** The independent search retained the Texas Newsroom's records-based youth-prison lockdown investigation. It was not a rejected headline used as filler; its internal-records provenance, high public-interest value, and low likely visibility support the placement.
+- **Overrides and balance:** No Freshness Veto or Discovery Promotion was used. Non-material repeats failed before scoring; event arrival did not create material change. Selection Balance did not alter any base score.
+- **Verdict:** V2 better. The verified pre-send voter-registration omission is consequential, and `0.3` correctly prevented yesterday's shadow slate from becoming today's reader experience. Post-send ATP and Landry reporting improved the current-day V2 slate but did not count against production.
+
+
+### 2026-09-25
+
+- **Run timing:** Production was accepted by Resend at 8:37:23 a.m. CDT. Source publication times were normalized to Central Time. A Manor police-vehicle fatality published at 7:57 a.m. CDT was available before send, but only by about 40 minutes.
+- **Production Top Stories:** Oak Hill Parkway completion; cancellation of the 2026 Lake Austin drawdown; Austin Transit Partnership's cheaper office decision; removal of UT women’s, gender and sexuality studies courses from the core curriculum; local opioid-call data and a cychlorphine warning.
+- **V2 shared Top Stories:** Local opioid-call increase and cychlorphine warning; UT core-curriculum change; Oak Hill Parkway completion; Lake Austin drawdown cancellation; fatal Manor police-vehicle crash. The crash displaced ATP because ATP was already selected by V2 on September 24 and had no verified new development.
+- **V2 next tier:** Circle C's roughly 1,000-unit apartment proposal advancing through related Council actions; Manor ISD's proposed $400 million bond; Shane James's insanity-defense filing.
+- **Material-update audit:** The overdose warning, UT curriculum change, Oak Hill completion, and Lake Austin cancellation were genuine material changes and retained. ATP was validly new to production history but was a non-material repeat in counterfactual V2 history. Big Queer Weekend occurring today was event timing, not material change.
+- **Under the Radar:** The independent search retained KUT's Billman Braille Center feature. Its disability-access, prison-labor, and reentry implications and low likely community visibility independently qualified it; it was not backfilled from rejected Top Stories.
+- **Personalization and events:** Microsoft's game-ad patent did not clear the shared floor because it is an application rather than a deployed product and has little Austin relevance. Rachel Scanlon, the Funniest Person in Austin final, and Big Queer Weekend remain event utility rather than ranked personalized news. No Freshness Veto or Discovery Promotion was used.
+- **Friday wrap-up:** Production's ICE investigation, data-center permit pause, and prison-air-conditioning ruling are a valid but narrow retrospective. The wrap-up was not scored and did not affect the daily verdict because it is not yet specified in V2.
+- **Verdict:** Mixed, leaning V2. Production produced a strong slate and retained four of V2's five leads plus the same qualifying Under the Radar item. V2's improvement is the reader-history correction and the Manor fatality, but that omission carries an unusually short lead-time caveat.
+
+
+### 2026-09-27 — supplementary late-send stress test
+
+- **Run timing:** Production was accepted by Resend at 2:37:12 p.m. CDT, roughly six hours later than recent 8:37 a.m. sends. Timing was evaluated against both the usual morning window and the actual delivery cutoff; only stories available by the actual cutoff could count as production omissions.
+- **Production Top Stories:** Austin-area voter-registration backlog; District 1 candidate Misael Ramos's protest-related arrest and release; Webb Middle School's closure-petition decision window; Wells Branch deaths reclassified as a double homicide with a capital-murder arrest; Manor police-vehicle pedestrian fatality.
+- **V2 shared slate:** Voter-registration backlog; Webb petition window; Ramos arrest and release; Wells Branch double-homicide reclassification. V2 did not force a fifth shared lead when the remaining candidates were repeats, section-specific utility, or materially weaker.
+- **Timing result:** The 9:54 a.m. cold-front forecast was published after the usual morning send but before today's actual send. Production captured it in the dedicated Weather section. No consequential Sunday report published between the usual and actual cutoffs was omitted from production.
+- **Repeat control:** The Manor crash was valid new coverage for production history but was already selected by V2 on September 25 and had no verified material development. It was rejected from the counterfactual V2 slate. The localized county counts and processing urgency made the voter-registration story a material update to V2's September 24 statewide selection.
+- **Material changes retained:** Webb families received a concrete short petition window and additional process details; the Wells Branch case changed from an apparent murder-suicide to a double-homicide investigation with an arrest; COTALAND's previously announced opening was completed.
+- **Personalization:** COTALAND remained an eligible More for You item after the actual opening. The national Reuters/Ipsos AI poll did not clear the 60-point editorial floor despite matching a High preference. Banger's Oktoberfest remained same-day event utility rather than a material news update.
+- **Under the Radar:** Independent official, agenda, specialist, and community searches produced no qualifying new item. The lane remained empty rather than being backfilled.
+- **Overrides and balance:** No Freshness Veto or Discovery Promotion was used. Selection Balance omitted the East Austin individual-homicide candidate from the shared slate because two stronger public-safety/court developments were already present and its wider reader consequence was limited.
+- **Verdict:** Mixed / no clear winner. Production delivered four strong fresh leads, a valid production-history catch-up story, and an accurate late-morning weather update. V2 produced a cleaner counterfactual reader experience by suppressing the Manor repeat and applying the personalization floor, but it found no consequential omission or clearly superior fifth shared lead.
+
 ## Open issues before promotion
 
 | Issue | Evidence | Required resolution |
@@ -131,7 +175,7 @@ This makes the remaining shadow runs a stricter promotion test while preserving 
 | Source verification | AHA was based on a board packet and proposed changes, not an adoption vote | **Resolved as a specification control:** `0.3` requires explicit proposal/adoption status and supporting evidence; continue auditing execution |
 | Under the Radar consistency | Strong independent discoveries sometimes become Top Stories; other days legitimately produce no item | Preserve independent search, single placement, and permission to leave the section empty |
 | Friday wrap-up maturity | 2026-09-18 wrap-up was valid but thin | Keep outside current V2 promotion decision unless separately specified and tested |
-| Promotion threshold | Six runs favor V2, but the sample is still short | Complete daily manual runs through 2026-09-26, then assess errors and regressions as well as win count |
+| Promotion threshold | Nine planned-window runs favor V2 overall; the September 27 supplemental run found no clear winner | Conduct the promotion review using errors and regressions as well as win count, and explicitly account for the missing September 26 run |
 
 ## Promotion-review checklist
 

@@ -1024,7 +1024,7 @@ function adbNativeConfirmPromptHtml_(rawToken) {
           '.confirmNativeCustomizationDevFromUiV1(token);' +
       '});' +
     '})();' +
-    '<\\/script></body></html>';
+    '</scr' + 'ipt></body></html>';
   return HtmlService.createHtmlOutput(html);
 }
 

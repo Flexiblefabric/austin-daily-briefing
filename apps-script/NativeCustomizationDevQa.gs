@@ -144,6 +144,18 @@ function runNativeCustomizationDevUnitTestsV1() {
     adbNativeQaAssert_(!adbNativeConstantTimeEqual_('abc','abd'), 'Unequal strings accepted.');
   });
 
+  record('confirmation HtmlService output has executable client script', function() {
+    const html = adbNativeConfirmPromptHtml_('abcdefghijklmnopqrstuvwxyz1234567890TOKEN').getContent();
+    adbNativeQaAssert_(html.indexOf('</script>') !== -1,
+      'Confirmation HTML is missing a real closing script tag.');
+    adbNativeQaAssert_(html.indexOf('<\\/script>') === -1,
+      'Confirmation HTML contains an escaped closing script tag.');
+    adbNativeQaAssert_(html.indexOf('google.script.run') !== -1,
+      'Confirmation HTML is missing google.script.run.');
+    adbNativeQaAssert_(html.indexOf('confirmNativeCustomizationDevFromUiV1') !== -1,
+      'Confirmation HTML is missing the public confirmation function call.');
+  });
+
   const failed = tests.filter(function(test){ return !test.pass; });
   const report = {
     total: tests.length,

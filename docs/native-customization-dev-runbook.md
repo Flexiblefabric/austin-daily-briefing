@@ -185,3 +185,12 @@ The hidden result iframe now provides a transport-level fallback: once the form-
 The fallback copy deliberately does not claim that the address is subscribed or that an email was definitely sent. It says the request was submitted and that an eligible subscribed address will receive a confirmation link.
 
 Client-side email validation was also tightened to reject obviously malformed domain labels, including labels ending in a hyphen, before submission.
+
+
+### Honeypot/autofill diagnostic refinement
+
+After the iframe-load fallback was deployed, a valid active DEV subscriber submission still produced no new request row and no confirmation email. Because the request did not reach the staging-row creation step, the remaining silent pre-stage paths were narrowed to honeypot, throttling, inactive/unknown subscriber handling, or recent-duplicate suppression.
+
+The original honeypot field used the semantic name `company`, which can be populated by browser autofill even though it is visually hidden. The website now uses the opaque `form_check` field with no business/profile meaning. The DEV endpoint temporarily continues accepting the legacy `company` key during the transition, but only the new field is rendered by the website.
+
+The endpoint also writes privacy-safe console events for silent no-op reasons: `honeypot`, `rate_limited_*`, `unknown_or_inactive`, and `recent_duplicate`. These diagnostics do not log the raw email address, token, or preference payload and remain DEV-only.

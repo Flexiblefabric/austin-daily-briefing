@@ -41,6 +41,8 @@ const ADB_NATIVE_CUSTOMIZE_DEV = Object.freeze({
   SITE_ORIGIN_PROPERTY: 'ADB_NATIVE_CUSTOMIZE_DEV_SITE_ORIGIN',
   SEND_EMAIL_PROPERTY: 'ADB_NATIVE_CUSTOMIZE_DEV_SEND_EMAIL',
   ALLOWLIST_PROPERTY: 'ADB_NATIVE_CUSTOMIZE_DEV_ALLOWLIST',
+  CONFIRM_PAGE_URL_PROPERTY: 'ADB_NATIVE_CUSTOMIZE_DEV_CONFIRM_PAGE_URL',
+  RELAY_SECRET_PROPERTY: 'ADB_NATIVE_CUSTOMIZE_DEV_RELAY_SECRET',
   RESEND_KEY_PROPERTY: 'RESEND_API_KEY',
 
   DEFAULT_SITE_ORIGIN: 'https://austindailybriefing.com',
@@ -189,10 +191,17 @@ function doPost(e) {
     const params = adbNativeNormalizeEventParams_(e);
     const action = String(params.action || 'request').toLowerCase();
 
+    if (action === 'relay_confirm') {
+      const token = String(params.token || '').trim();
+      if (!adbNativeValidateRelaySignatureDev_(token, params.relay_ts, params.relay_sig)) {
+        return adbNativeJsonOutput_({ok:false,status:'forbidden'});
+      }
+      const result = adbNativeConfirmRequestDevV1_(token);
+      return adbNativeJsonOutput_(result);
+    }
+
     if (action === 'confirm') {
-      // Compatibility path for direct POST clients. The HtmlService confirmation
-      // UI uses confirmNativeCustomizationDevFromUiV1() via google.script.run
-      // because HtmlService itself is rendered inside a sandboxed iframe.
+      // Compatibility path retained during controlled DEV migration.
       const result = adbNativeConfirmRequestDevV1_(params.token || '');
       return adbNativeConfirmationResultHtml_(result);
     }
@@ -424,7 +433,7 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
         ADB_NATIVE_CUSTOMIZE_REQUEST_HEADERS, 'Notes', 'Controlled DEV confirmation queued.');
 
       try {
-        const confirmationUrl = webAppUrl + '?action=confirm&token=' + encodeURIComponent(rawToken);
+        const confirmationUrl = adbNativeBuildConfirmationUrlDev_(rawToken, webAppUrl);
         const providerId = adbNativeSendDevVerificationEmail_(
           email, requestId, confirmationUrl, payloadResult.payload
         );
@@ -465,6 +474,58 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
   } finally {
     lock.releaseLock();
   }
+}
+
+function adbNativeJsonOutput_(value) {
+  return ContentService.createTextOutput(JSON.stringify(value || {}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function adbNativeHmacSha256Hex_(value, secret) {
+  const bytes = Utilities.computeHmacSha256Signature(
+    String(value || ''),
+    String(secret || ''),
+    Utilities.Charset.UTF_8
+  );
+  return bytes.map(function(byte) {
+    const normalized = byte < 0 ? byte + 256 : byte;
+    return normalized.toString(16).padStart(2, '0');
+  }).join('');
+}
+
+function adbNativeValidateRelaySignatureDev_(token, timestampRaw, signatureRaw) {
+  const secret = String(PropertiesService.getScriptProperties()
+    .getProperty(ADB_NATIVE_CUSTOMIZE_DEV.RELAY_SECRET_PROPERTY) || '');
+  if (secret.length < 32) return false;
+
+  const timestampText = String(timestampRaw || '').trim();
+  const signature = String(signatureRaw || '').trim().toLowerCase();
+  if (!/^\d{13}$/.test(timestampText) || !/^[a-f0-9]{64}$/.test(signature)) {
+    return false;
+  }
+
+  const timestamp = Number(timestampText);
+  if (!Number.isFinite(timestamp) || Math.abs(Date.now() - timestamp) > 5 * 60 * 1000) {
+    return false;
+  }
+
+  const expected = adbNativeHmacSha256Hex_(timestampText + ':' + String(token || ''), secret);
+  return adbNativeConstantTimeEqual_(expected, signature);
+}
+
+function adbNativeBuildConfirmationUrlDev_(rawToken, webAppUrl) {
+  const configured = String(PropertiesService.getScriptProperties()
+    .getProperty(ADB_NATIVE_CUSTOMIZE_DEV.CONFIRM_PAGE_URL_PROPERTY) || '').trim();
+
+  if (configured) {
+    if (configured !== 'https://austindailybriefing.com/confirm.html') {
+      throw new Error('Invalid DEV confirmation page URL property.');
+    }
+    return configured + '#token=' + encodeURIComponent(String(rawToken || ''));
+  }
+
+  return String(webAppUrl || '') + '?action=confirm&token=' +
+    encodeURIComponent(String(rawToken || ''));
 }
 
 function adbNativeConfirmRequestDevV1_(rawToken) {

@@ -22,8 +22,8 @@ The Worker never sends the raw relay secret to Apps Script. It signs `<timestamp
 3. Run the Apps Script unit tests and deploy a new version of the existing DEV web-app deployment. Keep the deployment ID stable.
 4. Create/deploy this Worker first on its `workers.dev` URL with the two Worker secrets configured.
 5. Test a signed relay request against DEV.
-6. Add the Cloudflare route `austindailybriefing.com/api/dev/customize/confirm*`.
-7. Verify `https://austindailybriefing.com/confirm.html` can reach the same-origin endpoint.
+6. Add the Worker Custom Domain `confirm-api.austindailybriefing.com`. Do not proxy or change the existing apex GitHub Pages DNS record.
+7. Verify `https://austindailybriefing.com/confirm.html` can reach `https://confirm-api.austindailybriefing.com/api/dev/customize/confirm`.
 8. Only after the relay passes should `ADB_NATIVE_CUSTOMIZE_DEV_CONFIRM_PAGE_URL` be set to `https://austindailybriefing.com/confirm.html`. Until then, DEV confirmation emails continue to use the Google Apps Script confirmation page.
 
-Cloudflare Workers Routes are appropriate here because the public site already has an external origin; a path-specific Worker route can intercept only the API path while GitHub Pages continues serving the rest of the site.
+Because the existing apex site is DNS-only GitHub Pages, the relay uses a dedicated Worker Custom Domain instead of proxying the whole site. Cloudflare owns only `confirm-api.austindailybriefing.com`; GitHub Pages continues serving the apex site unchanged.

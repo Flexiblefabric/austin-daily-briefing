@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Confirm Austin Daily Briefing customization changes.">
+  <meta name="theme-color" content="#181818">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>Confirm changes — Austin Daily Briefing</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="masthead-row wrap">
+    <a class="brand-link" href="./" aria-label="Austin Daily Briefing home"><img src="brand/adb-masthead.svg" width="900" height="220" alt="Austin Daily Briefing"></a>
+  </div>
+</header>
+
+<main class="confirm-main" id="main">
+  <section class="confirm-card" aria-labelledby="confirm-title">
+    <p class="eyebrow" id="confirm-kicker">Your briefing</p>
+    <h1 id="confirm-title">Confirm your briefing changes.</h1>
+    <p class="confirm-copy" id="confirm-copy">Nothing changes until you confirm this request. Confirmation links are single-use and expire after 24 hours.</p>
+
+    <div class="confirm-actions" id="confirm-actions">
+      <button class="button confirm-button" id="confirm-button" type="button">Confirm changes</button>
+    </div>
+
+    <div class="confirm-status" id="confirm-status" role="status" aria-live="polite"></div>
+    <p class="confirm-help" id="confirm-help">If you did not request this change, close this page and nothing will be applied.</p>
+  </section>
+</main>
+
+<footer class="site-footer confirm-footer">
+  <div class="wrap">
+    <div class="footer-bottom confirm-footer-bottom">
+      <span>Austin, Texas · An independent experimental project</span>
+      <span><a href="mailto:briefing@austindailybriefing.com">briefing@austindailybriefing.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="confirm-config.js"></script>
+<script src="confirm.js"></script>
+</body>
+</html>

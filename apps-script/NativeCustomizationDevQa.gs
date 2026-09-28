@@ -49,6 +49,10 @@ function validateNativeCustomizationDevV1() {
     allowlistCount: String(props.getProperty(
       ADB_NATIVE_CUSTOMIZE_DEV.ALLOWLIST_PROPERTY) || '')
       .split(',').map(function(v){return v.trim();}).filter(Boolean).length,
+    confirmPageUrl: String(props.getProperty(
+      ADB_NATIVE_CUSTOMIZE_DEV.CONFIRM_PAGE_URL_PROPERTY) || ''),
+    relaySecretConfigured: String(props.getProperty(
+      ADB_NATIVE_CUSTOMIZE_DEV.RELAY_SECRET_PROPERTY) || '').length >= 32,
     productionTouched: false
   };
   Logger.log(JSON.stringify(report));
@@ -156,6 +160,15 @@ function runNativeCustomizationDevUnitTestsV1() {
       adbNativeSha256Hex_('abc') === adbNativeSha256Hex_('abc'),
       'Token hash not deterministic.'
     );
+  });
+
+  record('relay HMAC deterministic and secret-bound', function() {
+    const a = adbNativeHmacSha256Hex_('1700000000000:test-token', 'abcdefghijklmnopqrstuvwxyz123456');
+    const b = adbNativeHmacSha256Hex_('1700000000000:test-token', 'abcdefghijklmnopqrstuvwxyz123456');
+    const c = adbNativeHmacSha256Hex_('1700000000000:test-token', 'abcdefghijklmnopqrstuvwxyz654321');
+    adbNativeQaAssert_(a === b, 'Relay HMAC is not deterministic.');
+    adbNativeQaAssert_(a !== c, 'Relay HMAC is not bound to the secret.');
+    adbNativeQaAssert_(/^[a-f0-9]{64}$/.test(a), 'Relay HMAC is not a SHA-256 hex string.');
   });
 
   record('constant-time helper equal', function() {

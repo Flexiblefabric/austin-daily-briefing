@@ -7,8 +7,9 @@
   const statusBox = document.getElementById('customize-status');
   const resultFrame = document.getElementById('native-customize-result');
   const nonceInput = document.getElementById('customize-client-nonce');
+  const emailInput = document.getElementById('subscriber-email');
 
-  if (!form || !submitButton || !statusBox || !resultFrame || !nonceInput) return;
+  if (!form || !submitButton || !statusBox || !resultFrame || !nonceInput || !emailInput) return;
 
   const endpoint = String(config.endpoint || '').trim();
   const endpointPattern = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
@@ -24,7 +25,9 @@
     }
   }
   let responseTimer = null;
+  let fallbackTimer = null;
   let pendingNonce = '';
+  let submissionPending = false;
 
   function setStatus(kind, message) {
     statusBox.className = 'form-status' + (kind ? ' form-status-' + kind : '');
@@ -42,6 +45,35 @@
     return Array.prototype.map.call(bytes, function (value) {
       return value.toString(16).padStart(2, '0');
     }).join('');
+  }
+
+  function hasValidEmailShape(value) {
+    const email = String(value || '').trim();
+    if (!email || email.length > 254 || /\s/.test(email)) return false;
+    const at = email.lastIndexOf('@');
+    if (at <= 0 || at === email.length - 1) return false;
+    const domain = email.slice(at + 1);
+    const labels = domain.split('.');
+    if (labels.length < 2) return false;
+    return labels.every(function (label) {
+      return /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?$/.test(label);
+    });
+  }
+
+  function finishSubmission(kind, message) {
+    if (responseTimer) {
+      window.clearTimeout(responseTimer);
+      responseTimer = null;
+    }
+    if (fallbackTimer) {
+      window.clearTimeout(fallbackTimer);
+      fallbackTimer = null;
+    }
+    submissionPending = false;
+    setSubmitting(false);
+    pendingNonce = '';
+    nonceInput.value = '';
+    setStatus(kind, message);
   }
 
   function hasRequestedChange() {
@@ -78,6 +110,13 @@
       return;
     }
 
+    if (!hasValidEmailShape(emailInput.value)) {
+      event.preventDefault();
+      setStatus('error', 'Enter a valid email address.');
+      emailInput.focus();
+      return;
+    }
+
     if (!hasRequestedChange()) {
       event.preventDefault();
       setStatus('error', 'Choose at least one setting to change.');
@@ -86,16 +125,26 @@
 
     pendingNonce = createNonce();
     nonceInput.value = pendingNonce;
+    submissionPending = true;
     setSubmitting(true);
     setStatus('notice', 'Submitting your request…');
 
     if (responseTimer) window.clearTimeout(responseTimer);
     responseTimer = window.setTimeout(function () {
-      setSubmitting(false);
-      pendingNonce = '';
-      nonceInput.value = '';
-      setStatus('error', 'We could not confirm that the request was received. Please try again.');
-    }, 15000);
+      finishSubmission('error', 'We could not complete the submission. Please try again.');
+    }, 20000);
+  });
+
+  resultFrame.addEventListener('load', function () {
+    if (!submissionPending) return;
+    if (fallbackTimer) window.clearTimeout(fallbackTimer);
+    fallbackTimer = window.setTimeout(function () {
+      if (!submissionPending) return;
+      finishSubmission(
+        'success',
+        'Request submitted. If that address is connected to Austin Daily Briefing and the request can be processed, we’ll send a confirmation link shortly. Nothing changes until you confirm.'
+      );
+    }, 500);
   });
 
   form.addEventListener('change', function () {
@@ -111,16 +160,8 @@
     if (!data || data.type !== 'adb-native-customize-dev') return;
     if (!pendingNonce || data.client_nonce !== pendingNonce) return;
 
-    if (responseTimer) {
-      window.clearTimeout(responseTimer);
-      responseTimer = null;
-    }
-    setSubmitting(false);
-    pendingNonce = '';
-    nonceInput.value = '';
-
     if (data.ok && data.status === 'accepted') {
-      setStatus(
+      finishSubmission(
         'success',
         'Check your inbox. If that address is connected to Austin Daily Briefing, we’ll send a confirmation link for the requested changes. Nothing changes until the request is confirmed.'
       );
@@ -128,15 +169,15 @@
     }
 
     if (data.status === 'validation_error') {
-      setStatus('error', localValidationMessage(String(data.code || '')));
+      finishSubmission('error', localValidationMessage(String(data.code || '')));
       return;
     }
 
     if (data.status === 'rate_limited') {
-      setStatus('error', 'Please wait a little before trying again.');
+      finishSubmission('error', 'Please wait a little before trying again.');
       return;
     }
 
-    setStatus('error', 'We could not process that request right now. Please try again later.');
+    finishSubmission('error', 'We could not process that request right now. Please try again later.');
   });
 })();

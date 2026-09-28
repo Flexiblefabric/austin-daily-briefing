@@ -33,6 +33,8 @@ const ADB_NATIVE_CUSTOMIZE_DEV = Object.freeze({
 
   REQUEST_SHEET: 'Native Customize Requests',
   VERIFICATION_SHEET: 'Native Verification Queue',
+  DIAGNOSTIC_SHEET: 'Native Customize Diagnostics',
+  BUILD_ID: 'native-customization-dev-diagnostics-v1',
 
   ENABLED_PROPERTY: 'ADB_NATIVE_CUSTOMIZE_DEV_ENABLED',
   WEB_APP_URL_PROPERTY: 'ADB_NATIVE_CUSTOMIZE_DEV_WEB_APP_URL',
@@ -83,6 +85,15 @@ const ADB_NATIVE_CUSTOMIZE_VERIFICATION_HEADERS = Object.freeze([
   'Confirmed At',
   'Applied At',
   'Notes'
+]);
+
+const ADB_NATIVE_CUSTOMIZE_DIAGNOSTIC_HEADERS = Object.freeze([
+  'Created At',
+  'Event',
+  'Reason',
+  'Email Hash Prefix',
+  'Client Nonce Present',
+  'Build ID'
 ]);
 
 const ADB_NATIVE_CUSTOMIZE_INTERESTS = Object.freeze([
@@ -139,7 +150,7 @@ const ADB_NATIVE_CUSTOMIZE_REQUEST_ALLOWED_KEYS = Object.freeze(
 );
 
 /**
- * Creates/validates the two DEV-only native customization sheets.
+ * Creates/validates the DEV-only native customization sheets.
  * Safe to rerun.
  */
 function setupNativeCustomizationDevV1() {
@@ -151,11 +162,16 @@ function setupNativeCustomizationDevV1() {
   const verificationSheet = adbNativeEnsureSheet_(intake,
     ADB_NATIVE_CUSTOMIZE_DEV.VERIFICATION_SHEET,
     ADB_NATIVE_CUSTOMIZE_VERIFICATION_HEADERS);
+  const diagnosticSheet = adbNativeEnsureSheet_(intake,
+    ADB_NATIVE_CUSTOMIZE_DEV.DIAGNOSTIC_SHEET,
+    ADB_NATIVE_CUSTOMIZE_DIAGNOSTIC_HEADERS);
 
   const report = {
     intakeId: ADB_NATIVE_CUSTOMIZE_DEV.DEV_INTAKE_ID,
     requestSheet: requestSheet.getName(),
     verificationSheet: verificationSheet.getName(),
+    diagnosticSheet: diagnosticSheet.getName(),
+    buildId: ADB_NATIVE_CUSTOMIZE_DEV.BUILD_ID,
     productionTouched: false
   };
   Logger.log(JSON.stringify(report));
@@ -282,23 +298,28 @@ function processConfirmedNativeCustomizationDevV1() {
 function adbNativeStageCustomizeRequestDevV1_(e, params) {
   setupNativeCustomizationDevV1();
 
+  const diagnosticEmail = adbNativeNormalizeEmail_(params.email);
+  adbNativeAppendDevDiagnostic_('received', '', diagnosticEmail, params);
+
   if (e && e.postData && Number(e.postData.length || 0) > ADB_NATIVE_CUSTOMIZE_DEV.MAX_POST_BYTES) {
     return adbNativeValidationResult_('request_too_large');
   }
   adbNativeRejectDuplicateOrUnexpectedParams_(e, params);
 
   if (String(params.company || '').trim() || String(params.form_check || '').trim()) {
-    adbNativeLogDevNoop_('honeypot');
+    adbNativeAppendDevDiagnostic_('noop', 'honeypot', diagnosticEmail, params);
     return adbNativeAcceptedResult_();
   }
 
-  const email = adbNativeNormalizeEmail_(params.email);
+  const email = diagnosticEmail;
   if (!adbNativeValidEmail_(email)) {
+    adbNativeAppendDevDiagnostic_('validation_error', 'invalid_email', email, params);
     return adbNativeValidationResult_('invalid_email');
   }
 
   const payloadResult = adbNativeBuildPayload_(params);
   if (!payloadResult.ok) {
+    adbNativeAppendDevDiagnostic_('validation_error', String(payloadResult.code || 'unknown'), email, params);
     return adbNativeValidationResult_(payloadResult.code);
   }
 
@@ -307,7 +328,7 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
   try {
     const throttle = adbNativeCheckThrottle_(email);
     if (!throttle.ok) {
-      adbNativeLogDevNoop_('rate_limited_' + String(throttle.reason || 'unknown'));
+      adbNativeAppendDevDiagnostic_('noop', 'rate_limited_' + String(throttle.reason || 'unknown'), email, params);
       return {
         ok: false,
         status: 'rate_limited',
@@ -317,7 +338,7 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
 
     const subscriber = adbNativeLookupDevSubscriber_(email);
     if (!subscriber) {
-      adbNativeLogDevNoop_('unknown_or_inactive');
+      adbNativeAppendDevDiagnostic_('noop', 'unknown_or_inactive', email, params);
       return adbNativeAcceptedResult_();
     }
 
@@ -328,7 +349,7 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
     const payloadHash = adbNativeSha256Hex_(payloadJson);
 
     if (adbNativeHasRecentDuplicate_(requests, email, payloadHash)) {
-      adbNativeLogDevNoop_('recent_duplicate');
+      adbNativeAppendDevDiagnostic_('noop', 'recent_duplicate', email, params);
       return adbNativeAcceptedResult_();
     }
 
@@ -434,6 +455,12 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
       emailSent: sendEnabled && allowlisted,
       productionTouched: false
     }));
+    adbNativeAppendDevDiagnostic_(
+      'staged',
+      sendEnabled && allowlisted ? 'confirmation_attempted' : 'email_suppressed',
+      email,
+      params
+    );
     return adbNativeAcceptedResult_();
   } finally {
     lock.releaseLock();
@@ -657,12 +684,67 @@ function adbNativeHasRecentDuplicate_(requests, email, payloadHash) {
   });
 }
 
-function adbNativeLogDevNoop_(reason) {
+function adbNativeAppendDevDiagnostic_(eventName, reason, email, params) {
+  const safeEvent = String(eventName || 'unknown').slice(0, 80);
+  const safeReason = String(reason || '').slice(0, 120);
+  const normalizedEmail = adbNativeNormalizeEmail_(email);
+  const emailHashPrefix = normalizedEmail
+    ? adbNativeSha256Hex_(normalizedEmail).slice(0, 12)
+    : '';
+  const noncePresent = !!String((params && params.client_nonce) || '').trim();
+
+  try {
+    const intake = SpreadsheetApp.openById(ADB_NATIVE_CUSTOMIZE_DEV.DEV_INTAKE_ID);
+    const sheet = adbNativeEnsureSheet_(
+      intake,
+      ADB_NATIVE_CUSTOMIZE_DEV.DIAGNOSTIC_SHEET,
+      ADB_NATIVE_CUSTOMIZE_DIAGNOSTIC_HEADERS
+    );
+    sheet.appendRow([
+      new Date().toISOString(),
+      safeEvent,
+      safeReason,
+      emailHashPrefix,
+      noncePresent ? 'TRUE' : 'FALSE',
+      ADB_NATIVE_CUSTOMIZE_DEV.BUILD_ID
+    ]);
+    SpreadsheetApp.flush();
+  } catch (error) {
+    console.error('Native customization DEV diagnostic write failed: ' +
+      String(error && error.message ? error.message : error).slice(0, 300));
+  }
+
   console.log(JSON.stringify({
-    event: 'native_customize_dev_noop',
-    reason: String(reason || 'unknown').slice(0, 80),
+    event: 'native_customize_dev_diagnostic',
+    stage: safeEvent,
+    reason: safeReason,
+    emailHashPrefix: emailHashPrefix,
+    clientNoncePresent: noncePresent,
+    buildId: ADB_NATIVE_CUSTOMIZE_DEV.BUILD_ID,
     productionTouched: false
   }));
+}
+
+function inspectNativeCustomizationDevDiagnosticsV1() {
+  adbNativeCustomizeDevAssertEnabled_();
+  setupNativeCustomizationDevV1();
+
+  const intake = SpreadsheetApp.openById(ADB_NATIVE_CUSTOMIZE_DEV.DEV_INTAKE_ID);
+  const sheet = intake.getSheetByName(ADB_NATIVE_CUSTOMIZE_DEV.DIAGNOSTIC_SHEET);
+  const lastRow = sheet.getLastRow();
+  const firstDataRow = Math.max(2, lastRow - 19);
+  const rowCount = lastRow >= 2 ? lastRow - firstDataRow + 1 : 0;
+  const rows = rowCount
+    ? sheet.getRange(firstDataRow, 1, rowCount, ADB_NATIVE_CUSTOMIZE_DIAGNOSTIC_HEADERS.length)
+        .getDisplayValues()
+    : [];
+  const report = {
+    buildId: ADB_NATIVE_CUSTOMIZE_DEV.BUILD_ID,
+    rows: rows,
+    productionTouched: false
+  };
+  Logger.log(JSON.stringify(report));
+  return report;
 }
 
 function adbNativeCheckThrottle_(email) {

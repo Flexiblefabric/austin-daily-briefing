@@ -239,7 +239,7 @@ p{margin:0 0 18px}
 .confirmation-explainer{background:var(--wash);border-left:4px solid var(--signal);padding:24px 26px;margin:4px 0 30px}
 .confirmation-explainer h2{font-size:30px;margin-bottom:10px}
 .confirmation-explainer p:last-child{margin-bottom:0}
-.form-actions{border-top:1px solid var(--charcoal);padding-top:24px}
+.form-actions{border-top:1px solid var(--charcoal);padding-top:24px;text-align:right}
 .form-actions p{font-size:13px;color:var(--support);margin:9px 0 0}
 .prototype-submit{border:0;cursor:not-allowed;opacity:.82}
 .mobile-current{display:block;padding:11px 12px;color:var(--signal);font:700 13px/1.25 var(--condensed);letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--rule)}
@@ -258,4 +258,5 @@ p{margin:0 0 18px}
   .segmented label:nth-of-type(2),.segmented label:nth-of-type(4){border-right:0}
   .segmented label:nth-of-type(3),.segmented label:nth-of-type(4){border-bottom:0}
   .confirmation-explainer{padding:20px 18px}
+  .form-actions{text-align:center}
 }

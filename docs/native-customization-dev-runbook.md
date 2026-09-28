@@ -174,3 +174,14 @@ Controlled website QA on 2026-09-27 proved that the request itself was accepted 
 ### Browser result relay refinement
 
 A second controlled website submission confirmed the request and email path worked while the ADB page still timed out. The HtmlService result runs inside Google's sandboxed frame hierarchy, so sending to `window.parent` is not sufficient to reach the ADB top-level page reliably. The staged fix now sends the result to `window.top` and binds each browser submission/result pair with a per-request random nonce. The ADB page accepts only HTTPS Apps Script/Googleusercontent result origins and a matching nonce before showing the generic accepted state.
+
+
+### Browser acknowledgment fallback
+
+A fresh Incognito-window test ruled out stale browser assets. The ADB page still remained in the `Submitting…` state even when the cross-origin result relay did not arrive. The browser client therefore no longer treats Apps Script `postMessage` as the only completion signal.
+
+The hidden result iframe now provides a transport-level fallback: once the form-target iframe finishes loading after a submission, the page shows a privacy-preserving generic submitted state if no authenticated `postMessage` result arrives within 500 ms. A matching nonce-bound `postMessage` still takes precedence and can render validation, throttling, or temporary-error states.
+
+The fallback copy deliberately does not claim that the address is subscribed or that an email was definitely sent. It says the request was submitted and that an eligible subscribed address will receive a confirmation link.
+
+Client-side email validation was also tightened to reject obviously malformed domain labels, including labels ending in a hyphen, before submission.

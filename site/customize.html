@@ -59,7 +59,7 @@
 
   <div class="prototype-banner" role="note">
     <div class="wrap">
-      <strong>Design preview.</strong> This staged page does not submit or change subscriber data.
+      <strong>Controlled DEV test.</strong> This page remains unlinked and uses the DEV subscriber system only.
     </div>
   </div>
 
@@ -74,11 +74,16 @@
       </div>
     </aside>
 
-    <form class="customize-form" novalidate>
+    <form class="customize-form" id="native-customize-form" method="post" target="adb-native-customize-result" novalidate>
+      <input type="hidden" name="action" value="request">
+      <div class="form-honeypot" aria-hidden="true">
+        <label for="company">Company</label>
+        <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+      </div>
       <fieldset class="identity-fieldset">
         <legend><span class="form-section-number">00</span> Subscriber</legend>
         <label class="field-label" for="subscriber-email">Email address</label>
-        <input class="text-input" id="subscriber-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com">
+        <input class="text-input" id="subscriber-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
         <p class="field-help">Use the address that receives Austin Daily Briefing.</p>
       </fieldset>
 
@@ -447,9 +452,11 @@
       </div>
 
       <div class="form-actions">
-        <button class="button prototype-submit" type="button" aria-describedby="prototype-submit-note">Submit changes</button>
-        <p id="prototype-submit-note">Prototype only — submission is intentionally disabled.</p>
+        <button class="button customize-submit" id="customize-submit" type="submit" aria-describedby="customize-submit-note">Submit changes</button>
+        <p id="customize-submit-note">We’ll send a confirmation link before applying any changes.</p>
+        <div class="form-status" id="customize-status" role="status" aria-live="polite"></div>
       </div>
+      <iframe class="native-result-frame" id="native-customize-result" name="adb-native-customize-result" title="Customization request result" aria-hidden="true"></iframe>
     </form>
   </div>
 </main>
@@ -465,5 +472,7 @@
     <div class="footer-bottom"><span>Austin, Texas · An independent experimental project</span><span><a href="mailto:briefing@austindailybriefing.com">briefing@austindailybriefing.com</a></span></div>
   </div>
 </footer>
+<script src="customize-config.js"></script>
+<script src="customize.js"></script>
 </body>
 </html>

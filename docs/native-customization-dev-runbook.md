@@ -115,16 +115,31 @@ Before connecting the website prototype:
 
 ## 8. Website connection
 
-Only after backend QA:
+The staged browser client uses:
 
-- add a hidden iframe target to `site/customize.html`;
-- change the prototype button to a real submit button;
-- submit `application/x-www-form-urlencoded` to the DEV web-app URL;
-- include the honeypot field;
-- listen for `postMessage`;
-- accept result messages only from the expected Apps Script / Googleusercontent origin;
-- render the generic accepted state without exposing subscriber existence;
-- keep the page `noindex` and unlinked while in DEV.
+- `site/customize-config.js` for the environment-specific DEV endpoint;
+- a real POST form targeting a hidden iframe;
+- `application/x-www-form-urlencoded` browser submission to the DEV Apps Script `/exec` URL;
+- the existing `company` honeypot;
+- a `postMessage` result listener limited to the hidden result frame and expected Apps Script / Googleusercontent origins;
+- local rendering of generic accepted, validation, throttling, and temporary-error states;
+- no subscriber-existence or saved-preference disclosure;
+- `noindex` and no public navigation link while in DEV.
+
+The committed DEV endpoint remains blank until the operator supplies the exact current Apps Script `/exec` URL. With an empty or invalid endpoint, the browser client disables submission instead of falling back to another target.
+
+Controlled website QA sequence:
+
+1. set the exact current DEV `/exec` URL in `site/customize-config.js`;
+2. build and inspect the site preview;
+3. deploy the unlinked/noindex page;
+4. submit one known allowlisted DEV subscriber request through the website;
+5. verify the page renders the generic accepted state without revealing subscriber status;
+6. verify one new Pending Confirmation request and verification appear in the DEV intake;
+7. confirm through the emailed single-use link;
+8. verify Confirmed state, then run the DEV processor;
+9. verify one application and zero on immediate replay;
+10. exercise invalid email, no-change, duplicate, throttle, honeypot, unknown-email, and malformed/unsupported-field cases before any production promotion.
 
 ## 9. Promotion boundary
 

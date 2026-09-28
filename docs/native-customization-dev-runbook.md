@@ -194,3 +194,14 @@ After the iframe-load fallback was deployed, a valid active DEV subscriber submi
 The original honeypot field used the semantic name `company`, which can be populated by browser autofill even though it is visually hidden. The website now uses the opaque `form_check` field with no business/profile meaning. The DEV endpoint temporarily continues accepting the legacy `company` key during the transition, but only the new field is rendered by the website.
 
 The endpoint also writes privacy-safe console events for silent no-op reasons: `honeypot`, `rate_limited_*`, `unknown_or_inactive`, and `recent_duplicate`. These diagnostics do not log the raw email address, token, or preference payload and remain DEV-only.
+
+
+### Durable DEV diagnostics
+
+The Apps Script Executions view does not reliably expose console output for anonymous web-app `doPost` calls. Do not depend on execution-log visibility for browser QA.
+
+The DEV endpoint now persists privacy-safe diagnostics to a third DEV-only sheet named `Native Customize Diagnostics`. Each browser request records a `received` event with a truncated SHA-256 email hash, whether a client nonce was present, and a build ID. Early exits record a second row with the precise reason, including `honeypot`, `rate_limited_cooldown`, `rate_limited_address_cap`, `unknown_or_inactive`, `recent_duplicate`, or validation errors. Successfully staged requests record `staged`.
+
+No raw email address, raw token, or preference payload is written to this sheet.
+
+After copying the updated Apps Script files into Web Scripts, run `setupNativeCustomizationDevV1()` once to create/validate the diagnostics sheet, run `runNativeCustomizationDevUnitTestsV1()`, and deploy a new web-app version. After the next website submission, the diagnostics sheet can be inspected directly or by running `inspectNativeCustomizationDevDiagnosticsV1()`.

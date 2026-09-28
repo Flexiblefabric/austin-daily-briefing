@@ -1,0 +1,13 @@
+name = "adb-confirmation-relay-dev"
+main = "src/index.js"
+compatibility_date = "2026-09-28"
+workers_dev = true
+
+# Controlled DEV first. Do not add the production route until the relay passes QA.
+# Final DEV route:
+# [[routes]]
+# pattern = "austindailybriefing.com/api/dev/customize/confirm*"
+# zone_name = "austindailybriefing.com"
+
+[secrets]
+required = [ "ADB_APPS_SCRIPT_CONFIRM_URL", "ADB_CONFIRM_RELAY_SECRET" ]

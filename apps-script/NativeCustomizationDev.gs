@@ -950,7 +950,7 @@ function adbNativePostMessageHtml_(result) {
 
   const html = '<!doctype html><meta charset="utf-8"><title>ADB DEV result</title>' +
     '<script>window.parent.postMessage(' + payload + ',' +
-    JSON.stringify(origin) + ');<\/script>' +
+    JSON.stringify(origin) + ');</scr' + 'ipt>' +
     '<p>Request processed. You may close this frame.</p>';
   return HtmlService.createHtmlOutput(html)
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);

@@ -92,6 +92,21 @@ function runNativeCustomizationDevUnitTestsV1() {
     );
   });
 
+  record('diagnostic sheet configuration is DEV-only', function() {
+    adbNativeQaAssert_(
+      ADB_NATIVE_CUSTOMIZE_DEV.DIAGNOSTIC_SHEET === 'Native Customize Diagnostics',
+      'Unexpected diagnostic sheet name.'
+    );
+    adbNativeQaAssert_(
+      ADB_NATIVE_CUSTOMIZE_DIAGNOSTIC_HEADERS.indexOf('Email Hash Prefix') >= 0,
+      'Diagnostic headers are missing hashed-email field.'
+    );
+    adbNativeQaAssert_(
+      ADB_NATIVE_CUSTOMIZE_DIAGNOSTIC_HEADERS.indexOf('Build ID') >= 0,
+      'Diagnostic headers are missing build marker.'
+    );
+  });
+
   record('single interest change builds payload', function() {
     const result = adbNativeBuildPayload_({CIV01:'high'});
     adbNativeQaAssert_(result.ok, 'Payload rejected.');

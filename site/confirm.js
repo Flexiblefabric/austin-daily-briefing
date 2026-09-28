@@ -58,8 +58,12 @@
     return;
   }
 
-  if (!/^\/api\/dev\/customize\/confirm$/.test(endpoint) &&
-      !/^\/api\/customize\/confirm$/.test(endpoint)) {
+  const allowedEndpoints = new Set([
+    'https://confirm-api.austindailybriefing.com/api/dev/customize/confirm',
+    '/api/dev/customize/confirm',
+    '/api/customize/confirm'
+  ]);
+  if (!allowedEndpoints.has(endpoint)) {
     showUnavailable('Confirmation is not configured right now.');
     return;
   }

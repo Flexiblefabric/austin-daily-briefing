@@ -165,3 +165,12 @@ The DEV confirmation page now uses a plain HTML form with `method="post"`, `targ
 Opening the email link remains read-only. The raw token exists only in the email URL and transient confirmation form; it is not written to Sheets or logs.
 
 The unit suite includes a regression check that the generated confirmation page contains an explicit POST, a top-level target, the confirmation action, and a token field, and does not depend on `google.script.run`.
+
+
+### Browser result postMessage regression
+
+Controlled website QA on 2026-09-27 proved that the request itself was accepted and the confirmation email was sent, but the ADB page timed out waiting for the hidden iframe result. The cause matched the earlier HtmlService script-closure defect: the result messenger emitted an escaped `<\\/script>` sequence, so `window.parent.postMessage(...)` did not execute. The DEV endpoint now emits a real closing script tag, and the unit suite verifies both the postMessage call and valid script closure.
+
+### Browser result relay refinement
+
+A second controlled website submission confirmed the request and email path worked while the ADB page still timed out. The HtmlService result runs inside Google's sandboxed frame hierarchy, so sending to `window.parent` is not sufficient to reach the ADB top-level page reliably. The staged fix now sends the result to `window.top` and binds each browser submission/result pair with a per-request random nonce. The ADB page accepts only HTTPS Apps Script/Googleusercontent result origins and a matching nonce before showing the generic accepted state.

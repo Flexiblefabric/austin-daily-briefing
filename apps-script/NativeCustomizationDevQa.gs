@@ -161,6 +161,23 @@ function runNativeCustomizationDevUnitTestsV1() {
       'Confirmation HTML still depends on google.script.run.');
   });
 
+  record('request result HtmlService output relays to top with nonce', function() {
+    const html = adbNativePostMessageHtml_({
+      ok:true,
+      status:'accepted',
+      code:'',
+      message:'accepted'
+    }, '0123456789abcdef0123456789abcdef').getContent();
+    adbNativeQaAssert_(html.indexOf('window.top.postMessage') !== -1,
+      'Result HTML is missing top-level postMessage relay.');
+    adbNativeQaAssert_(html.indexOf('0123456789abcdef0123456789abcdef') !== -1,
+      'Result HTML is missing client nonce.');
+    adbNativeQaAssert_(html.indexOf('</script>') !== -1,
+      'Result HTML is missing a real closing script tag.');
+    adbNativeQaAssert_(html.indexOf('<\\/script>') === -1,
+      'Result HTML contains an escaped closing script tag.');
+  });
+
   const failed = tests.filter(function(test){ return !test.pass; });
   const report = {
     total: tests.length,

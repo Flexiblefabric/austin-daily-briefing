@@ -132,7 +132,7 @@ const ADB_NATIVE_CUSTOMIZE_INTEREST_LABELS = Object.freeze({
 });
 
 const ADB_NATIVE_CUSTOMIZE_REQUEST_ALLOWED_KEYS = Object.freeze(
-  ['action','email','company'].concat(
+  ['action','email','company','client_nonce'].concat(
     ADB_NATIVE_CUSTOMIZE_INTERESTS,
     ADB_NATIVE_CUSTOMIZE_STYLE_FIELDS
   )
@@ -182,7 +182,7 @@ function doPost(e) {
     }
 
     const result = adbNativeStageCustomizeRequestDevV1_(e, params);
-    return adbNativePostMessageHtml_(result);
+    return adbNativePostMessageHtml_(result, params.client_nonce || '');
   } catch (error) {
     console.error('Native customization DEV request failed: ' +
       String(error && error.message ? error.message : error).slice(0, 500));
@@ -936,21 +936,24 @@ function adbNativeValidationResult_(code) {
   };
 }
 
-function adbNativePostMessageHtml_(result) {
+function adbNativePostMessageHtml_(result, clientNonce) {
   const origin = String(PropertiesService.getScriptProperties()
     .getProperty(ADB_NATIVE_CUSTOMIZE_DEV.SITE_ORIGIN_PROPERTY) ||
     ADB_NATIVE_CUSTOMIZE_DEV.DEFAULT_SITE_ORIGIN).trim();
+  const nonce = /^[A-Za-z0-9_-]{16,128}$/.test(String(clientNonce || ''))
+    ? String(clientNonce) : '';
   const payload = JSON.stringify({
     type: 'adb-native-customize-dev',
     ok: !!result.ok,
     status: String(result.status || 'temporary_error'),
     code: String(result.code || ''),
-    message: String(result.message || '')
+    message: String(result.message || ''),
+    client_nonce: nonce
   }).replace(/</g, '\\u003c');
 
   const html = '<!doctype html><meta charset="utf-8"><title>ADB DEV result</title>' +
-    '<script>window.parent.postMessage(' + payload + ',' +
-    JSON.stringify(origin) + ');<\/script>' +
+    '<script>window.top.postMessage(' + payload + ',' +
+    JSON.stringify(origin) + ');</scr' + 'ipt>' +
     '<p>Request processed. You may close this frame.</p>';
   return HtmlService.createHtmlOutput(html)
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);

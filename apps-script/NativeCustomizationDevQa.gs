@@ -85,6 +85,13 @@ function runNativeCustomizationDevUnitTestsV1() {
     adbNativeQaAssert_(!adbNativeValidEmail_('not-an-email'), 'Malformed email accepted.');
   });
 
+  record('autofill-resistant honeypot field is allowed', function() {
+    adbNativeQaAssert_(
+      ADB_NATIVE_CUSTOMIZE_REQUEST_ALLOWED_KEYS.indexOf('form_check') >= 0,
+      'form_check is missing from allowed request keys.'
+    );
+  });
+
   record('single interest change builds payload', function() {
     const result = adbNativeBuildPayload_({CIV01:'high'});
     adbNativeQaAssert_(result.ok, 'Payload rejected.');

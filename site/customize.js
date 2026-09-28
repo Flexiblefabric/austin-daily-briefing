@@ -6,8 +6,9 @@
   const submitButton = document.getElementById('customize-submit');
   const statusBox = document.getElementById('customize-status');
   const resultFrame = document.getElementById('native-customize-result');
+  const nonceInput = document.getElementById('customize-client-nonce');
 
-  if (!form || !submitButton || !statusBox || !resultFrame) return;
+  if (!form || !submitButton || !statusBox || !resultFrame || !nonceInput) return;
 
   const endpoint = String(config.endpoint || '').trim();
   const endpointPattern = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
@@ -16,6 +17,7 @@
     'https://script.googleusercontent.com'
   ]);
   let responseTimer = null;
+  let pendingNonce = '';
 
   function setStatus(kind, message) {
     statusBox.className = 'form-status' + (kind ? ' form-status-' + kind : '');
@@ -25,6 +27,14 @@
   function setSubmitting(isSubmitting) {
     submitButton.disabled = !!isSubmitting;
     submitButton.textContent = isSubmitting ? 'Submitting…' : 'Submit changes';
+  }
+
+  function createNonce() {
+    const bytes = new Uint8Array(16);
+    window.crypto.getRandomValues(bytes);
+    return Array.prototype.map.call(bytes, function (value) {
+      return value.toString(16).padStart(2, '0');
+    }).join('');
   }
 
   function hasRequestedChange() {
@@ -67,12 +77,16 @@
       return;
     }
 
+    pendingNonce = createNonce();
+    nonceInput.value = pendingNonce;
     setSubmitting(true);
     setStatus('notice', 'Submitting your request…');
 
     if (responseTimer) window.clearTimeout(responseTimer);
     responseTimer = window.setTimeout(function () {
       setSubmitting(false);
+    pendingNonce = '';
+    nonceInput.value = '';
       setStatus('error', 'We could not confirm that the request was received. Please try again.');
     }, 15000);
   });
@@ -84,11 +98,11 @@
   });
 
   window.addEventListener('message', function (event) {
-    if (event.source !== resultFrame.contentWindow) return;
     if (!allowedResultOrigins.has(event.origin)) return;
 
     const data = event.data;
     if (!data || data.type !== 'adb-native-customize-dev') return;
+    if (!pendingNonce || data.client_nonce !== pendingNonce) return;
 
     if (responseTimer) {
       window.clearTimeout(responseTimer);

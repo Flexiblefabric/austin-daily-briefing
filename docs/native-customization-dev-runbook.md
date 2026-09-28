@@ -205,3 +205,20 @@ The DEV endpoint now persists privacy-safe diagnostics to a third DEV-only sheet
 No raw email address, raw token, or preference payload is written to this sheet.
 
 After copying the updated Apps Script files into Web Scripts, run `setupNativeCustomizationDevV1()` once to create/validate the diagnostics sheet, run `runNativeCustomizationDevUnitTestsV1()`, and deploy a new web-app version. After the next website submission, the diagnostics sheet can be inspected directly or by running `inspectNativeCustomizationDevDiagnosticsV1()`.
+
+
+### Controlled DEV QA closeout
+
+Controlled browser QA passed after correcting deployment URL drift between the public site configuration and the current Apps Script DEV web-app deployment.
+
+Final passing sequence:
+- live customization page submitted a valid active DEV subscriber request;
+- durable diagnostics recorded `received` and `staged / confirmation_attempted`;
+- request row was created as `Pending Confirmation`;
+- verification row was created and the confirmation email was delivered;
+- confirmation changed the request/verification state to `Confirmed`;
+- first processor run applied exactly one request;
+- immediate second processor run applied zero requests;
+- productionTouched remained false throughout.
+
+The failed tests immediately before this were caused by `site/customize-config.js` still pointing to an older Apps Script deployment ID. The website transport fallback was functioning, but the request was being posted to stale server code. Treat website endpoint / Script-property deployment mismatch as a release-blocking configuration error.

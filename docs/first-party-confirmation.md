@@ -24,9 +24,9 @@ Opening the page does not consume the token. The token is consumed only when the
 
 ### Same-origin relay
 
-The browser POSTs only the token to the same-origin endpoint `/api/dev/customize/confirm`.
+The browser POSTs only the token to the first-party API endpoint `https://confirm-api.austindailybriefing.com/api/dev/customize/confirm`.
 
-A Cloudflare Worker owns only that path. The GitHub Pages origin continues to serve the rest of `austindailybriefing.com`.
+A Cloudflare Worker is the origin for the dedicated `confirm-api.austindailybriefing.com` hostname. The GitHub Pages origin continues to serve `austindailybriefing.com` unchanged and can remain DNS-only.
 
 The Worker validates request method, origin, content type, and token shape. It then signs `<timestamp>:<token>` with HMAC-SHA-256 using `ADB_CONFIRM_RELAY_SECRET` and forwards the token, timestamp, and signature to the current Apps Script DEV `/exec` endpoint.
 
@@ -64,8 +64,8 @@ only after the Worker route and first-party page are validated. When the propert
    - `ADB_APPS_SCRIPT_CONFIRM_URL`
    - `ADB_CONFIRM_RELAY_SECRET`
 7. Confirm a signed relay test reaches the DEV Apps Script endpoint.
-8. Add the Cloudflare route `austindailybriefing.com/api/dev/customize/confirm*`.
-9. Open `https://austindailybriefing.com/confirm.html` directly and verify the missing-token state.
+8. Attach the Worker Custom Domain `confirm-api.austindailybriefing.com`. Cloudflare creates the DNS record and certificate for that subdomain.
+9. Verify a POST to `https://confirm-api.austindailybriefing.com/api/dev/customize/confirm` reaches the Worker, then open `https://austindailybriefing.com/confirm.html` directly and verify the missing-token state.
 10. Set `ADB_NATIVE_CUSTOMIZE_DEV_CONFIRM_PAGE_URL` to the first-party page.
 11. Submit one fresh native customization request.
 12. Verify the confirmation email links to `austindailybriefing.com/confirm.html#token=…`, not `script.google.com`.

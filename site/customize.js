@@ -12,10 +12,17 @@
 
   const endpoint = String(config.endpoint || '').trim();
   const endpointPattern = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
-  const allowedResultOrigins = new Set([
-    'https://script.google.com',
-    'https://script.googleusercontent.com'
-  ]);
+  function isAllowedResultOrigin(origin) {
+    try {
+      const url = new URL(origin);
+      if (url.protocol !== 'https:') return false;
+      return url.hostname === 'script.google.com' ||
+        url.hostname === 'script.googleusercontent.com' ||
+        url.hostname.endsWith('-script.googleusercontent.com');
+    } catch (error) {
+      return false;
+    }
+  }
   let responseTimer = null;
   let pendingNonce = '';
 
@@ -85,8 +92,8 @@
     if (responseTimer) window.clearTimeout(responseTimer);
     responseTimer = window.setTimeout(function () {
       setSubmitting(false);
-    pendingNonce = '';
-    nonceInput.value = '';
+      pendingNonce = '';
+      nonceInput.value = '';
       setStatus('error', 'We could not confirm that the request was received. Please try again.');
     }, 15000);
   });
@@ -98,7 +105,7 @@
   });
 
   window.addEventListener('message', function (event) {
-    if (!allowedResultOrigins.has(event.origin)) return;
+    if (!isAllowedResultOrigin(event.origin)) return;
 
     const data = event.data;
     if (!data || data.type !== 'adb-native-customize-dev') return;
@@ -109,6 +116,8 @@
       responseTimer = null;
     }
     setSubmitting(false);
+    pendingNonce = '';
+    nonceInput.value = '';
 
     if (data.ok && data.status === 'accepted') {
       setStatus(

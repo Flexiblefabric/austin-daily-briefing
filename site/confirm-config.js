@@ -5,5 +5,5 @@
  */
 window.ADB_CONFIRM_CONFIG = Object.freeze({
   environment: 'development',
-  endpoint: '/api/dev/customize/confirm'
+  endpoint: 'https://confirm-api.austindailybriefing.com/api/dev/customize/confirm'
 });

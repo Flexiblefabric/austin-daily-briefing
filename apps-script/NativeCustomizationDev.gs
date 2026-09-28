@@ -132,7 +132,7 @@ const ADB_NATIVE_CUSTOMIZE_INTEREST_LABELS = Object.freeze({
 });
 
 const ADB_NATIVE_CUSTOMIZE_REQUEST_ALLOWED_KEYS = Object.freeze(
-  ['action','email','company','client_nonce'].concat(
+  ['action','email','company','form_check','client_nonce'].concat(
     ADB_NATIVE_CUSTOMIZE_INTERESTS,
     ADB_NATIVE_CUSTOMIZE_STYLE_FIELDS
   )
@@ -287,7 +287,8 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
   }
   adbNativeRejectDuplicateOrUnexpectedParams_(e, params);
 
-  if (String(params.company || '').trim()) {
+  if (String(params.company || '').trim() || String(params.form_check || '').trim()) {
+    adbNativeLogDevNoop_('honeypot');
     return adbNativeAcceptedResult_();
   }
 
@@ -306,6 +307,7 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
   try {
     const throttle = adbNativeCheckThrottle_(email);
     if (!throttle.ok) {
+      adbNativeLogDevNoop_('rate_limited_' + String(throttle.reason || 'unknown'));
       return {
         ok: false,
         status: 'rate_limited',
@@ -315,6 +317,7 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
 
     const subscriber = adbNativeLookupDevSubscriber_(email);
     if (!subscriber) {
+      adbNativeLogDevNoop_('unknown_or_inactive');
       return adbNativeAcceptedResult_();
     }
 
@@ -325,6 +328,7 @@ function adbNativeStageCustomizeRequestDevV1_(e, params) {
     const payloadHash = adbNativeSha256Hex_(payloadJson);
 
     if (adbNativeHasRecentDuplicate_(requests, email, payloadHash)) {
+      adbNativeLogDevNoop_('recent_duplicate');
       return adbNativeAcceptedResult_();
     }
 
@@ -651,6 +655,14 @@ function adbNativeHasRecentDuplicate_(requests, email, payloadHash) {
       created >= cutoff &&
       ['Pending Confirmation','Confirmed','Staged — Email Suppressed'].indexOf(status) >= 0;
   });
+}
+
+function adbNativeLogDevNoop_(reason) {
+  console.log(JSON.stringify({
+    event: 'native_customize_dev_noop',
+    reason: String(reason || 'unknown').slice(0, 80),
+    productionTouched: false
+  }));
 }
 
 function adbNativeCheckThrottle_(email) {

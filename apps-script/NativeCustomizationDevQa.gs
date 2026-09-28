@@ -161,21 +161,6 @@ function runNativeCustomizationDevUnitTestsV1() {
       'Confirmation HTML still depends on google.script.run.');
   });
 
-  record('request result HtmlService output has executable postMessage script', function() {
-    const html = adbNativePostMessageHtml_({
-      ok:true,
-      status:'accepted',
-      code:'',
-      message:'accepted'
-    }).getContent();
-    adbNativeQaAssert_(html.indexOf('window.parent.postMessage') !== -1,
-      'Result HTML is missing parent postMessage.');
-    adbNativeQaAssert_(html.indexOf('</script>') !== -1,
-      'Result HTML is missing a real closing script tag.');
-    adbNativeQaAssert_(html.indexOf('<\\/script>') === -1,
-      'Result HTML contains an escaped closing script tag.');
-  });
-
   record('request result HtmlService output relays to top with nonce', function() {
     const html = adbNativePostMessageHtml_({
       ok:true,

@@ -5,5 +5,5 @@
  */
 window.ADB_NATIVE_CUSTOMIZE_CONFIG = Object.freeze({
   environment: 'development',
-  endpoint: ''
+  endpoint: 'https://script.google.com/macros/s/AKfycbxWQZpO3N03BULr8wMIAnWmSKKcWoW252W7p8EYDJOECsTgYr6GKWHRkUDC9BCZ5jo4/exec'
 });

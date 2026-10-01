@@ -89,3 +89,29 @@ Do not promote to production until all of these pass:
 - exactly-once processor behavior remains unchanged;
 - the Worker route affects only the intended API path;
 - the old Google Form remains available as operator/fallback until FORM-6 is explicitly approved.
+
+
+## Controlled DEV QA result
+
+Status: **Passed**.
+
+The first-party confirmation flow completed end-to-end DEV QA successfully using the dedicated Worker Custom Domain `confirm-api.austindailybriefing.com`.
+
+Verified sequence:
+
+- native customization request staged successfully;
+- confirmation email linked to `https://austindailybriefing.com/confirm.html#token=…` rather than Google Apps Script;
+- the ADB-branded confirmation page loaded without Google UI chrome;
+- the token was handled from the URL fragment and removed from the visible address bar;
+- the browser POST reached `https://confirm-api.austindailybriefing.com/api/dev/customize/confirm`;
+- the Cloudflare Worker validated the request and generated a signed HMAC relay;
+- Apps Script authenticated the relay and reused the existing token-validation transaction;
+- request and verification state changed to `Confirmed`;
+- the processor applied the request exactly once;
+- the immediate replay applied zero requests;
+- the latest DEV request and verification records both reached `Applied`;
+- production data remained untouched.
+
+The earlier API-path failures were caused by configuration issues rather than confirmation logic: first an apex Worker Route could not intercept because the GitHub Pages apex hostname was DNS-only, then the first Custom Domain was accidentally created with a duplicated zone suffix. The final architecture uses a dedicated Worker Custom Domain and leaves the apex GitHub Pages DNS path unchanged.
+
+With this result, the first-party confirmation transport is ready for production-promotion planning under FORM-6. Promotion remains a separate explicit approval step.

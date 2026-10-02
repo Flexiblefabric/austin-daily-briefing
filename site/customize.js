@@ -12,6 +12,10 @@
   if (!form || !submitButton || !statusBox || !resultFrame || !nonceInput || !emailInput) return;
 
   const endpoint = String(config.endpoint || '').trim();
+  const environment = String(config.environment || 'development').trim().toLowerCase();
+  const expectedResultType = environment === 'production'
+    ? 'adb-native-customize-prod'
+    : 'adb-native-customize-dev';
   const endpointPattern = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
   function isAllowedResultOrigin(origin) {
     try {
@@ -157,7 +161,7 @@
     if (!isAllowedResultOrigin(event.origin)) return;
 
     const data = event.data;
-    if (!data || data.type !== 'adb-native-customize-dev') return;
+    if (!data || data.type !== expectedResultType) return;
     if (!pendingNonce || data.client_nonce !== pendingNonce) return;
 
     if (data.ok && data.status === 'accepted') {

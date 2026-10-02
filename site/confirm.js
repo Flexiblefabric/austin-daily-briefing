@@ -11,7 +11,9 @@
 
   if (!button || !title || !copy || !status || !help || !actions) return;
 
-  const endpoint = String(config.endpoint || '').trim();
+  const endpoints = config.endpoints || {};
+  const defaultEnvironment = String(config.defaultEnvironment || 'development').trim().toLowerCase();
+  let endpoint = '';
   let token = '';
 
   function setStatus(kind, message) {
@@ -37,21 +39,28 @@
     setStatus('success', 'Confirmation accepted.');
   }
 
-  function extractToken() {
+  function extractConfirmationContext() {
     const rawHash = window.location.hash ? window.location.hash.slice(1) : '';
     const params = new URLSearchParams(rawHash);
     const candidate = String(params.get('token') || '').trim();
+    const requestedEnvironment = String(params.get('env') || defaultEnvironment)
+      .trim().toLowerCase();
 
-    // Remove the bearer token from the visible address bar immediately.
+    // Remove the bearer token and environment hint from the visible address bar immediately.
     window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
 
     if (!/^[A-Za-z0-9_-]{32,256}$/.test(candidate)) {
-      return '';
+      return {token:'',environment:''};
     }
-    return candidate;
+    if (requestedEnvironment !== 'development' && requestedEnvironment !== 'production') {
+      return {token:'',environment:''};
+    }
+    return {token:candidate,environment:requestedEnvironment};
   }
 
-  token = extractToken();
+  const context = extractConfirmationContext();
+  token = context.token;
+  endpoint = String(endpoints[context.environment] || '').trim();
 
   if (!token) {
     showUnavailable('The confirmation token is missing or malformed.');
@@ -60,8 +69,7 @@
 
   const allowedEndpoints = new Set([
     'https://confirm-api.austindailybriefing.com/api/dev/customize/confirm',
-    '/api/dev/customize/confirm',
-    '/api/customize/confirm'
+    'https://confirm-prod.austindailybriefing.com/api/customize/confirm'
   ]);
   if (!allowedEndpoints.has(endpoint)) {
     showUnavailable('Confirmation is not configured right now.');

@@ -186,13 +186,16 @@ function setupNativeCustomizationProdV1() {
 /**
  * Web-app POST router.
  * action=request -> validate/stage a customization request.
- * action=confirm -> confirm a single-use token; does not apply preferences.
+ * action=relay_confirm -> authenticated Worker relay confirms a single-use token.
+ * No route in this web app applies Profiles or Preferences.
  */
 function doPost(e) {
+  let action = 'request';
+  let params = {};
   try {
     adbNativeCustomizeProdAssertEnabled_();
-    const params = adbNativeNormalizeEventParams_(e);
-    const action = String(params.action || 'request').toLowerCase();
+    params = adbNativeNormalizeEventParams_(e);
+    action = String(params.action || 'request').toLowerCase();
 
     if (action === 'relay_confirm') {
       const token = String(params.token || '').trim();
@@ -202,16 +205,27 @@ function doPost(e) {
       const result = adbNativeConfirmRequestProdV1_(token);
       return adbNativeJsonOutput_(result);
     }
+
+    if (action !== 'request') {
+      return adbNativePostMessageHtml_(
+        adbNativeValidationResult_('invalid_action'),
+        params.client_nonce || ''
+      );
+    }
+
     const result = adbNativeStageCustomizeRequestProdV1_(e, params);
     return adbNativePostMessageHtml_(result, params.client_nonce || '');
   } catch (error) {
     console.error('Native customization production request failed: ' +
       String(error && error.message ? error.message : error).slice(0, 500));
+    if (action === 'relay_confirm') {
+      return adbNativeJsonOutput_({ok:false,status:'temporary_error'});
+    }
     return adbNativePostMessageHtml_({
       ok: false,
       status: 'temporary_error',
       message: 'We could not process that request right now. Please try again later.'
-    });
+    }, params.client_nonce || '');
   }
 }
 

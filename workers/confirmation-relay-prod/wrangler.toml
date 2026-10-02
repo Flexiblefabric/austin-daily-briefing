@@ -1,0 +1,12 @@
+name = "adb-confirmation-relay-prod"
+main = "src/index.js"
+compatibility_date = "2026-10-02"
+workers_dev = true
+
+# Controlled production staging:
+# 1. deploy/test on workers.dev first;
+# 2. then attach Custom Domain confirm-prod.austindailybriefing.com;
+# 3. do not remove or modify the DEV Worker/domain during the controlled production test.
+
+[secrets]
+required = [ "ADB_APPS_SCRIPT_CONFIRM_URL", "ADB_CONFIRM_RELAY_SECRET" ]

@@ -215,18 +215,6 @@ function doPost(e) {
   }
 }
 
-/**
- * Confirmation link landing page.
- * Opening the link does NOT consume the token.
- */
-
-
-/**
- * Applies all Confirmed production customization requests exactly once.
- * Run manually during controlled QA.
- */
-
-
 function adbNativeStageCustomizeRequestProdV1_(e, params) {
   setupNativeCustomizationProdV1();
 
@@ -243,17 +231,16 @@ function adbNativeStageCustomizeRequestProdV1_(e, params) {
     return adbNativeAcceptedResult_();
   }
 
+  const email = diagnosticEmail;
   const mode = adbNativeProdMode_();
   const allowlisted = adbNativeEmailAllowlisted_(email);
   if (mode === 'CONTROLLED' && !allowlisted) {
-    adbNativeAppendProdDiagnostic_('noop', 'controlled_not_allowlisted', diagnosticEmail, params);
+    adbNativeAppendProdDiagnostic_('noop', 'controlled_not_allowlisted', email, params);
     return adbNativeAcceptedResult_();
   }
   if (!adbNativePropertyIsTrue_(ADB_NATIVE_CUSTOMIZE_PROD.SEND_EMAIL_PROPERTY)) {
     throw new Error('Production native confirmation email delivery is disabled.');
   }
-
-  const email = diagnosticEmail;
   if (!adbNativeValidEmail_(email)) {
     adbNativeAppendProdDiagnostic_('validation_error', 'invalid_email', email, params);
     return adbNativeValidationResult_('invalid_email');
@@ -300,7 +287,7 @@ function adbNativeStageCustomizeRequestProdV1_(e, params) {
     const sendEnabled = true;
     const deliveryAllowed = mode === 'LIVE' || allowlisted;
 
-    let status = 'Staged — Email Suppressed';
+    let status = 'Staged';
     let verificationId = '';
     let notes = 'Production confirmation delivery not authorized for this request.';
 
@@ -705,16 +692,16 @@ function adbNativeCheckThrottle_(email) {
   const cache = CacheService.getScriptCache();
   const emailHash = adbNativeSha256Hex_(email).slice(0, 32);
 
-  const cooldownKey = 'ncdev:cool:' + emailHash;
+  const cooldownKey = 'ncprod:cool:' + emailHash;
   if (cache.get(cooldownKey)) return {ok:false,reason:'cooldown'};
 
-  const addressKey = 'ncdev:addr:' + emailHash;
+  const addressKey = 'ncprod:addr:' + emailHash;
   const addressCount = Number(cache.get(addressKey) || '0');
   if (addressCount >= ADB_NATIVE_CUSTOMIZE_PROD.ADDRESS_WINDOW_MAX) {
     return {ok:false,reason:'address_cap'};
   }
 
-  const globalKey = 'ncdev:global';
+  const globalKey = 'ncprod:global';
   const globalCount = Number(cache.get(globalKey) || '0');
   if (globalCount >= ADB_NATIVE_CUSTOMIZE_PROD.GLOBAL_WINDOW_MAX) {
     return {ok:false,reason:'global_cap'};
@@ -736,8 +723,9 @@ function adbNativeEmailAllowlisted_(email) {
 }
 
 function adbNativeSendProdVerificationEmail_(email, requestId, confirmationUrl, payload) {
-  if (!adbNativeEmailAllowlisted_(email)) {
-    throw new Error('production confirmation recipient is not allowlisted.');
+  const mode = adbNativeProdMode_();
+  if (mode === 'CONTROLLED' && !adbNativeEmailAllowlisted_(email)) {
+    throw new Error('Production confirmation recipient is not allowlisted in CONTROLLED mode.');
   }
   const apiKey = String(PropertiesService.getScriptProperties()
     .getProperty(ADB_NATIVE_CUSTOMIZE_PROD.RESEND_KEY_PROPERTY) || '').trim();
@@ -1014,7 +1002,7 @@ function adbNativePostMessageHtml_(result, clientNonce) {
   const nonce = /^[A-Za-z0-9_-]{16,128}$/.test(String(clientNonce || ''))
     ? String(clientNonce) : '';
   const payload = JSON.stringify({
-    type: 'adb-native-customize-dev',
+    type: 'adb-native-customize-prod',
     ok: !!result.ok,
     status: String(result.status || 'temporary_error'),
     code: String(result.code || ''),

@@ -185,17 +185,34 @@ function setupNativeCustomizationProdV1() {
 
 /**
  * Web-app POST router.
- * action=request -> validate/stage a customization request.
- * action=relay_confirm -> authenticated Worker relay confirms a single-use token.
+ * action=relay_probe -> authenticated, non-writing relay readiness check; works while ENABLED=FALSE.
+ * action=request -> validate/stage a customization request; requires ENABLED=TRUE.
+ * action=relay_confirm -> authenticated Worker relay confirms a single-use token; requires ENABLED=TRUE.
  * No route in this web app applies Profiles or Preferences.
  */
 function doPost(e) {
   let action = 'request';
   let params = {};
   try {
-    adbNativeCustomizeProdAssertEnabled_();
     params = adbNativeNormalizeEventParams_(e);
     action = String(params.action || 'request').toLowerCase();
+
+    if (action === 'relay_probe') {
+      adbNativeCustomizeProdAssertTargets_();
+      const nonce = String(params.token || '').trim();
+      if (!/^prod-probe-[A-Za-z0-9_-]{16,128}$/.test(nonce) ||
+          !adbNativeValidateRelaySignatureProd_(nonce, params.relay_ts, params.relay_sig)) {
+        return adbNativeJsonOutput_({ok:false,status:'forbidden'});
+      }
+      return adbNativeJsonOutput_({
+        ok:true,
+        status:'relay_ready',
+        buildId:ADB_NATIVE_CUSTOMIZE_PROD.BUILD_ID,
+        productionWritesPerformed:false
+      });
+    }
+
+    adbNativeCustomizeProdAssertEnabled_();
 
     if (action === 'relay_confirm') {
       const token = String(params.token || '').trim();
@@ -218,7 +235,7 @@ function doPost(e) {
   } catch (error) {
     console.error('Native customization production request failed: ' +
       String(error && error.message ? error.message : error).slice(0, 500));
-    if (action === 'relay_confirm') {
+    if (action === 'relay_probe' || action === 'relay_confirm') {
       return adbNativeJsonOutput_({ok:false,status:'temporary_error'});
     }
     return adbNativePostMessageHtml_({
@@ -228,7 +245,6 @@ function doPost(e) {
     }, params.client_nonce || '');
   }
 }
-
 function adbNativeStageCustomizeRequestProdV1_(e, params) {
   setupNativeCustomizationProdV1();
 

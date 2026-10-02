@@ -158,6 +158,14 @@ function runNativeCustomizationProdUnitTestsV1() {
     adbNativeQaProdAssert_(left !== right, 'Immediate token collision.');
   });
 
+  record('relay probe nonce format is distinct from confirmation tokens', function() {
+    const probe = 'prod-probe-0123456789abcdef0123456789abcdef';
+    adbNativeQaProdAssert_(
+      /^prod-probe-[A-Za-z0-9_-]{16,128}$/.test(probe),
+      'Probe nonce format rejected.'
+    );
+  });
+
   record('relay HMAC is deterministic and secret-bound', function() {
     const left = adbNativeHmacSha256Hex_(
       '1700000000000:test-token',

@@ -74,8 +74,8 @@ Before any controlled production request:
 5. confirm exact production IDs and Environment/Integration Config checks pass;
 6. deploy the production web app;
 7. configure the production relay Worker secrets;
-8. fake-token relay must return `invalid_or_expired`;
-9. attach `confirm-prod.austindailybriefing.com` and verify CORS/preflight;
+8. with `ADB_NATIVE_CUSTOMIZE_PROD_ENABLED=FALSE`, POST to `/api/customize/probe` and require `relay_ready`; this validates Worker → HMAC → Apps Script without creating production native sheets;
+9. attach `confirm-prod.austindailybriefing.com` and verify the probe plus CORS/preflight;
 10. keep the public customization page on DEV / non-production intake.
 
 Production intake currently remains `Processor Mode = GOOGLE ONLY`. That is expected during Gate B.
@@ -89,9 +89,11 @@ Worker secrets:
 - `ADB_APPS_SCRIPT_CONFIRM_URL` = current production native Apps Script /exec URL
 - `ADB_CONFIRM_RELAY_SECRET` = exact production relay secret matching Apps Script
 
-Expected fake-token result through Worker:
+Expected non-writing probe result through Worker while the production endpoint is still disabled:
 
-`{"ok":false,"status":"invalid_or_expired"}`
+`{"ok":true,"status":"relay_ready","productionWritesPerformed":false}`
+
+The probe does not call the production confirmation transaction and does not create production native sheets.
 
 Then attach Worker Custom Domain:
 
@@ -99,7 +101,7 @@ Then attach Worker Custom Domain:
 
 Verify:
 
-- POST fake-token result remains invalid_or_expired;
+- POST `/api/customize/probe` remains `relay_ready`;
 - OPTIONS from `https://austindailybriefing.com` returns allowed origin/method/header;
 - DEV Worker/domain remains unchanged.
 
@@ -109,7 +111,7 @@ This gate is the first intentional native production-data write and requires exp
 
 Preparation:
 
-1. create/validate production Native Customize Requests, Native Verification Queue, and Native Customize Diagnostics sheets by running `setupNativeCustomizationProdV1()`;
+1. after explicit Gate D approval, create/validate production Native Customize Requests, Native Verification Queue, and Native Customize Diagnostics sheets by running `setupNativeCustomizationProdV1()`;
 2. add Integration Config row `Native Customize Controlled Email` with the one approved production test address;
 3. change Integration Config Processor Mode from `GOOGLE ONLY` to `GOOGLE + NATIVE CONTROLLED`;
 4. update the active Production Subscriber Operations scheduler copy from the staged canonical prompt;

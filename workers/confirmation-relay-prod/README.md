@@ -25,8 +25,8 @@ Do not reuse the DEV relay secret.
 
 1. Production Apps Script unit/readiness validation passes.
 2. Deploy Worker to `workers.dev` with production secrets.
-3. Fake-token relay returns `invalid_or_expired`.
-4. Attach Custom Domain `confirm-prod.austindailybriefing.com`.
+3. With the production Apps Script endpoint still disabled, POST to `/api/customize/probe` and require `relay_ready`. This tests the relay without creating production native sheets.
+4. Attach Custom Domain `confirm-prod.austindailybriefing.com` and rerun the probe.
 5. Test CORS/preflight from `https://austindailybriefing.com`.
 6. Only then enable the controlled production confirmation-email path.
 

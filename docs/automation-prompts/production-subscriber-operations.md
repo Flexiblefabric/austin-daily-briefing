@@ -20,10 +20,19 @@ AUTHORITATIVE FILES
 SAFETY GATE
 Before making any write or sending any message, read the intake workbook's Integration Config and confirm:
 - Environment = PRODUCTION
-- Processor Mode = GOOGLE ONLY
+- Processor Mode is one of:
+  - GOOGLE ONLY
+  - GOOGLE + NATIVE CONTROLLED
+  - GOOGLE + NATIVE
 - Production Writes authorizes routine processor writes
 - Delivery Mode is enabled
+If Processor Mode = GOOGLE + NATIVE CONTROLLED, also require a nonblank Native Customize Controlled Email value and process native customization requests only for that normalized address.
 If any check fails, make no writes and send no email. Report the exact mismatch.
+
+Processor Mode behavior:
+- GOOGLE ONLY: preserve the existing Google Forms-only behavior and do not read or mutate Native Customize Requests / Native Verification Queue.
+- GOOGLE + NATIVE CONTROLLED: preserve all Google behavior and additionally process only eligible confirmed native customization requests for the configured controlled email.
+- GOOGLE + NATIVE: preserve all Google behavior and additionally process all eligible confirmed native customization requests.
 
 CORE PROCESSING
 Process unprocessed form responses. The linked Google response tabs do not expose a native Forms response ID. Derive a stable source-row fingerprint using the established production processor formula below, then reconcile it with the ledger by source identity before processing. The ledger's recorded Response Key is authoritative for previously processed rows, including historical rows whose current displayed values no longer reproduce their recorded key. Never fabricate a native Forms ID or treat a row number or timestamp alone as a key.
@@ -57,11 +66,64 @@ The sole retry exception is a previously ledgered request explicitly marked DEFE
 - Preserve existing values when the submitted field is intentionally blank and the production rules say blank means no change.
 - Do not silently create a second subscriber for an existing email.
 
+### NATIVE CUSTOMIZATION PROCESSING
+
+This section applies only when Processor Mode is GOOGLE + NATIVE CONTROLLED or GOOGLE + NATIVE.
+
+Authoritative production-native tabs in the production intake workbook:
+- Native Customize Requests
+- Native Verification Queue
+- Native Customize Diagnostics is operational evidence only; do not use it as an authorization source.
+
+The Apps Script native endpoint may stage and confirm requests, but it must never write Profiles or Preferences directly. This automation remains the sole owner of applying confirmed native customization changes to the production subscriber database.
+
+A native request is eligible to apply only when all of these are true:
+- Request Source = NATIVE_CUSTOMIZE_PROD.
+- Request Status = Confirmed.
+- Request Applied At is blank.
+- Linked Verification ID exists exactly once in Native Verification Queue.
+- Linked verification Status = Confirmed.
+- Linked verification Applied At is blank.
+- Request ID, Verification ID, normalized email, and request/verification linkage agree exactly.
+- The normalized email resolves to exactly one current production subscriber and the request Profile ID equals that subscriber's current Profile ID.
+- Subscriber status is Active or Paused; do not apply customization to Admin Hold or Unsubscribed subscribers.
+- Payload JSON parses to an object containing only the supported 23 interest IDs and/or the three supported style fields.
+- Payload SHA-256 equals SHA-256 of the stable canonical JSON payload recorded by the endpoint.
+- Every interest value is off, normal, or high; every style value is one of the documented production Processor Mapping options; keep_current must not be stored in Payload JSON.
+- In GOOGLE + NATIVE CONTROLLED mode, the normalized email exactly matches Integration Config → Native Customize Controlled Email.
+
+If any identity, linkage, payload, or schema check is ambiguous or fails, do not partially apply that request. Leave it un-applied and report the specific mismatch.
+
+Apply native payloads using the same production semantics as Google Customize:
+- Interests map Off→Preference Off/Score 0; Normal→Normal/1; High→High/2.
+- Update the unique matching Preferences row for Profile ID + Interest ID. If no row exists, append one using the production Preferences schema. If more than one exists, stop the request.
+- Set Preferences Updated to the current operational timestamp when that field exists.
+- Set Preferences Source Submission ID to NATIVE_CUSTOMIZE:<Request ID>.
+- more_for_you_volume maps to Profiles → More for You Volume.
+- summary_style maps to Profiles → Summary Style.
+- why_it_matters_length maps to Profiles → Why It Matters Length.
+- Set Profiles Latest Submission ID to NATIVE_CUSTOMIZE:<Request ID>.
+- Set Profiles Last Preference Update to the current operational timestamp.
+
+Exactly-once rule:
+- Immediately before the first production preference/profile write, re-read the request row, verification row, subscriber row, target profile, and all affected preference rows.
+- Proceed only if request and verification are still Confirmed with blank Applied At and all identity/linkage checks still match.
+- Apply all requested profile/preference changes.
+- Only after those writes succeed, set the native request Status = Applied, Applied At = now, Result = Applied to production profile.
+- Set the linked verification Status = Applied and Applied At = now.
+- If the request or verification is already Applied on re-read, no-op it and count it as already processed.
+- Never send another confirmation email from this processing phase.
+- Never use Native Customize Diagnostics as proof of confirmation or authorization.
+
+Controlled-production safeguard:
+- In GOOGLE + NATIVE CONTROLLED mode, native processing is restricted to the configured control email even if other native rows somehow exist.
+- A native request for any other address must be skipped and reported as outside the controlled-production gate.
+
 WELCOME DELIVERY OWNERSHIP
 The Resend Apps Script queue dispatcher is the sole owner of WELCOME_V1 delivery. This automation must never send a welcome through Gmail or Resend. Apart from creating one new Queued WELCOME_V1 row for an eligible signup, it must not change welcome queue delivery status, Sent At, provider message ID, retry, or error fields. Do not replay, repair, or re-send an existing welcome.
 
 PROCESS ORDER
-Process signup responses, then management responses, then customization responses (including the narrowly eligible deferred retry), then eligible confirmations. Re-read the relevant subscriber, response, ledger, and verification row immediately before each write. For a deferred retry, preserve the cancelled record as audit history, create one fresh verification record and link, send once, and update the existing ledger result to pending confirmation only after successful send. If already reissued or confirmed, skip without duplicate email. Continue past an invalid individual response only when doing so cannot compromise another subscriber; record the row-specific error.
+Process signup responses, then management responses, then Google customization responses (including the narrowly eligible deferred retry), then eligible Google confirmations, then eligible confirmed native customization requests when Processor Mode authorizes native processing. Re-read the relevant subscriber, response, ledger, and verification row immediately before each write. For a deferred retry, preserve the cancelled record as audit history, create one fresh verification record and link, send once, and update the existing ledger result to pending confirmation only after successful send. If already reissued or confirmed, skip without duplicate email. Continue past an invalid individual response only when doing so cannot compromise another subscriber; record the row-specific error.
 
 MONITORING
 Update only the Subscriber Operations monitoring/status row for this run. Do not update or impersonate the Welcome Dispatcher status. Report counts for responses inspected, successfully processed, skipped as already processed, confirmation messages sent, and errors. If there was no eligible work, record a successful zero-work run without generating email.

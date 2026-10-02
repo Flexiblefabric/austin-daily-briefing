@@ -46,7 +46,9 @@ export default {
 
     const origin = request.headers.get('Origin') || '';
 
-    if (url.pathname !== '/api/customize/confirm') {
+    const isConfirm = url.pathname === '/api/customize/confirm';
+    const isProbe = url.pathname === '/api/customize/probe';
+    if (!isConfirm && !isProbe) {
       return json({ok:false,status:'not_found'}, 404, origin);
     }
 
@@ -74,21 +76,33 @@ export default {
       return json({ok:false,status:'forbidden'}, 403, origin);
     }
 
-    const contentType = request.headers.get('Content-Type') || '';
-    if (!contentType.toLowerCase().startsWith('application/json')) {
-      return json({ok:false,status:'invalid_request'}, 400, origin);
-    }
+    let token = '';
+    let action = 'relay_confirm';
 
-    let body;
-    try {
-      body = await request.json();
-    } catch (error) {
-      return json({ok:false,status:'invalid_request'}, 400, origin);
-    }
+    if (isProbe) {
+      const random = crypto.getRandomValues(new Uint8Array(18));
+      const suffix = Array.from(random, function (byte) {
+        return byte.toString(16).padStart(2, '0');
+      }).join('');
+      token = 'prod-probe-' + suffix;
+      action = 'relay_probe';
+    } else {
+      const contentType = request.headers.get('Content-Type') || '';
+      if (!contentType.toLowerCase().startsWith('application/json')) {
+        return json({ok:false,status:'invalid_request'}, 400, origin);
+      }
 
-    const token = String(body && body.token || '').trim();
-    if (!/^[A-Za-z0-9_-]{32,256}$/.test(token)) {
-      return json({ok:false,status:'invalid_or_expired'}, 400, origin);
+      let body;
+      try {
+        body = await request.json();
+      } catch (error) {
+        return json({ok:false,status:'invalid_request'}, 400, origin);
+      }
+
+      token = String(body && body.token || '').trim();
+      if (!/^[A-Za-z0-9_-]{32,256}$/.test(token)) {
+        return json({ok:false,status:'invalid_or_expired'}, 400, origin);
+      }
     }
 
     const upstreamUrl = String(env.ADB_APPS_SCRIPT_CONFIRM_URL || '').trim();
@@ -102,7 +116,7 @@ export default {
     const timestamp = String(Date.now());
     const signature = await sign(relaySecret, timestamp + ':' + token);
     const payload = new URLSearchParams({
-      action: 'relay_confirm',
+      action: action,
       token: token,
       relay_ts: timestamp,
       relay_sig: signature
@@ -132,6 +146,15 @@ export default {
       result = await upstream.json();
     } catch (error) {
       return json({ok:false,status:'temporary_error'}, 502, origin);
+    }
+
+    if (result && result.ok === true && result.status === 'relay_ready') {
+      return json({
+        ok:true,
+        status:'relay_ready',
+        buildId:String(result.buildId || ''),
+        productionWritesPerformed:false
+      }, 200, origin);
     }
 
     if (result && result.ok === true && result.status === 'confirmed') {

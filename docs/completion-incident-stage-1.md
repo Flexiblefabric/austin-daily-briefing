@@ -3,7 +3,7 @@
 **Date:** 2026-09-23  
 **Parent contract:** `ADB-COMPLETION-0.1`  
 **Reusable reconciler:** `ADB-COMPLETION-RECON-0.1`  
-**Lifecycle:** Development / controlled staging  
+**Lifecycle:** Promoted to production 2026-09-23; retained as historical promotion design  
 **Production alerting changed:** No
 
 ## Selected first incident class

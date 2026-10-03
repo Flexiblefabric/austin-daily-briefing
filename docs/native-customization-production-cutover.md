@@ -105,6 +105,21 @@ Verify:
 - OPTIONS from `https://austindailybriefing.com` returns allowed origin/method/header;
 - DEV Worker/domain remains unchanged.
 
+### Gate C result
+
+Status: **Passed**.
+
+Operator-confirmed production relay checks:
+
+- workers.dev probe returned `relay_ready` with `productionWritesPerformed:false`;
+- production Worker Custom Domain `confirm-prod.austindailybriefing.com` resolved and served the Worker;
+- custom-domain `/api/customize/probe` returned `relay_ready`;
+- browser preflight from `https://austindailybriefing.com` passed with the expected CORS policy;
+- production Apps Script remained disabled during validation;
+- no production native intake sheets or subscriber preference writes were required for Gate C.
+
+Gate D is the first intentional production native-intake write and still requires explicit approval immediately before execution.
+
 ## Gate D — controlled production request
 
 This gate is the first intentional native production-data write and requires explicit operator approval immediately before execution.

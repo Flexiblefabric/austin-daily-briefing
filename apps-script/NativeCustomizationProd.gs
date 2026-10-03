@@ -475,7 +475,7 @@ function adbNativeBuildConfirmationUrlProd_(rawToken) {
   if (configured !== 'https://austindailybriefing.com/confirm.html') {
     throw new Error('Missing or invalid production confirmation page URL property.');
   }
-  return configured + '#env=prod&token=' + encodeURIComponent(String(rawToken || ''));
+  return configured + '#env=production&token=' + encodeURIComponent(String(rawToken || ''));
 }
 
 function adbNativeConfirmRequestProdV1_(rawToken) {

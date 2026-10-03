@@ -43,8 +43,13 @@
     const rawHash = window.location.hash ? window.location.hash.slice(1) : '';
     const params = new URLSearchParams(rawHash);
     const candidate = String(params.get('token') || '').trim();
-    const requestedEnvironment = String(params.get('env') || defaultEnvironment)
+    let requestedEnvironment = String(params.get('env') || defaultEnvironment)
       .trim().toLowerCase();
+
+    // Preserve compatibility with the first controlled production email,
+    // which used #env=prod before the canonical value was standardized.
+    if (requestedEnvironment === 'prod') requestedEnvironment = 'production';
+    if (requestedEnvironment === 'dev') requestedEnvironment = 'development';
 
     // Remove the bearer token and environment hint from the visible address bar immediately.
     window.history.replaceState(null, document.title, window.location.pathname + window.location.search);

@@ -1,12 +1,12 @@
 # ADB V2 — More for You calibration
 Date: 2026-10-03 (America/Chicago)  
-Status: Completed editorial calibration; proposed MFY contract for review, not production authorization.  
-Proposed specification: ADB-MFY-CAL-0.1  
+Status: Completed editorial calibration; final MFY values and release timing approved on October 3. Production promotion remains a separate release action.  
+Specification: ADB-MFY-CAL-0.1 (calibration and approved decisions)  
 Weight fingerprint: 25-25-20-10-10-10
 
 ## Decision
 
-Keep the proposed MFY weights. Define the component anchors and strengthen eligibility before changing the total-score floor. Permit evergreen material, favor variety among comparable candidates, and require a content-based explanation for every adjacent-interest match.
+Keep the proposed MFY weights. The user approved a 60-point MFY eligibility threshold, a maximum 10-point displacement for Discovery Promotion, and no additional reader-facing labels at this time. The 10-point allowance does not add points to a candidate's score; the Discovery value component remains capped at 10 as before. Permit evergreen material, favor variety among comparable candidates, and require a content-based explanation for every adjacent-interest match. Ordinary variety uses the approved five-point range, with reader value no more than three points lower.
 
 This is a bounded replay and stress test, not a seventeenth daily shadow run. It does not alter the 16-run evidence record or its verdicts. No production data, delivery, automation, shared-story weights, or canonical shadow prompt was changed.
 
@@ -24,7 +24,7 @@ Three controlled profiles use selected preference patterns. A resembles the prev
 
 For the ranking exercise, assume each item is a first exposure in that test profile's ADB history. That assumption isolates scoring; it is not a claim that real readers have never seen it. A separate repeat test restores known history. This is not a same-day candidate slate, nor a reconstruction of what was available before a particular production send. Sources were inspected on October 3; new resource discoveries are not counted as historical production omissions.
 
-## Proposed rubric and anchors
+## Rubric and anchors
 
 | Component | Maximum | Calibration anchors |
 |---|---:|---|
@@ -119,7 +119,7 @@ Three slots is an experimental capacity, not a proposed change to the production
 
 These are score-passing counts before resource-operation holds and real repeat history. Each of the first three rows includes conditional C06. Removing that hold gives 4/3/4. The counts exclude Off and diagnostic-only cases. The sample contains no positive example in the 60–69 interval, so it cannot discriminate among those three floors. Raising the floor to 75 substantially reduces variety, but this does not prove that 60 is optimal.
 
-Retain 60 provisionally. Add proposed minimum reader value of 15/25 and substance of 5/10. These are guardrails against an additive-score failure, not empirically optimized cutoffs.
+Use the user-approved threshold of 60. The sample does not establish an empirically optimal floor; 60 is the chosen operating threshold. Use the user-approved minimum reader value of 15/25 and substance of 5/10. These are guardrails against an additive-score failure, not empirically optimized cutoffs.
 
 A deliberately constructed failure fixture shows why: [25, 8, 20, 10, 3, 8] totals 74 despite weak reader value and substance. A highly matched, newly announced teaser can otherwise pass by accumulating points elsewhere. It must fail both component minimums. This hypothetical is not a real article, a measured error rate, or another shadow-run result.
 
@@ -129,7 +129,7 @@ A pure enjoyment fixture [23, 18, 12, 3, 7, 6] totals 69 and passes the proposed
 
 ### Variety
 
-Proposed comparable-quality range: within five points of the candidate being displaced, with reader value no more than three points lower and all gates passed. Compare actual content and purpose, not just category labels. A lower score remains visible.
+User-approved comparable-quality range: within five points of the candidate being displaced, with reader value no more than three points lower and all gates passed. Compare actual content and purpose, not just category labels. A lower score remains visible.
 
 A synthetic concentration fixture has three distinct AI articles at 82, 79, and 77, plus an astronomy resource at 75. With three slots and comparable reader value, variety can replace the 77 with 75. It cannot displace the 82 solely for a new category: the gap is seven. Three genuinely different AI stories may still be right when the alternatives are materially weaker.
 
@@ -141,7 +141,9 @@ A two-slot stress test using B starts with astronomy (76) and the restaurant gui
 
 This is an optional demonstration, not a new selected daily slate or proof of reader preference. Ordinary score ordering already selects that feature in the three-slot B example; no promotion label is needed there. Merely adding a different category is Selection Balance, not Discovery Promotion.
 
-Proposed initial displacement limit: five points for Discovery Promotion too, with the same reader-value safeguard. This makes surprise possible near the cutoff without allowing a marginal item to displace a much stronger one. At most one per profile per run; zero is valid. Never override sourcing, Off, repeat, section, floor, or component minimums.
+User-approved Discovery Promotion displacement limit: 10 points. The promoted candidate must score no more than 10 points below the displaced candidate; scores remain unchanged. The approved reader-value safeguard remains no more than three points lower. At most one per profile per run; zero is valid. Never override sourcing, Off, repeat, section, floor, or component minimums. This wider allowance is an explicit editorial choice, not a result established by the original three-point demonstration.
+
+Boundary checks for the approved allowance: an otherwise eligible 70 may replace an 80; a 69 may not replace an 80; a 59 may not replace a 69 because it fails the 60-point floor. All other gates and the distinctive-discovery rationale still apply. These are synthetic boundary checks, not new article evaluations.
 
 ### Repeat control and evergreen
 
@@ -151,9 +153,9 @@ The October 3 AI report has also already appeared in that day's shadow selection
 
 Evergreen resources need an identifiable resource/topic record so a new URL, refreshed date, or expiration of the 14-day lookup window does not manufacture novelty. Preserve the existing history window as the minimum lookup, and maintain a lightweight resource ledger with URL/topic, last actual inclusion, and what changed. A known unchanged resource is not automatically eligible on day 15. Recheck access and content before reuse.
 
-Label evergreen discoveries as resources or explainers, with original age when useful. “New to this briefing” requires history support; do not claim “new to you.” Timeliness remains modest unless there is an independent, verified current reason. Freshness Veto applies only after a real material update passes the repeat gate and is scored.
+Add no new reader-facing labels or badges, including evergreen, resource, discovery, or “Worth exploring” labels. Preserve the existing presentation. Explain the content and its age naturally when needed for accuracy. Keep resource classification and editorial-control labels in the internal audit only. “New to this briefing” requires history support; do not claim “new to you.” Timeliness remains modest unless there is an independent, verified current reason. Freshness Veto applies only after a real material update passes the repeat gate and is scored.
 
-## Proposed execution contract
+## Approved values in the execution contract
 
 1. Discover across enabled interests, including worthwhile evergreen resources. Do not assume every slot needs breaking news.
 2. Verify source content and the promised reader experience. Record uncertainty or an access hold.
@@ -161,10 +163,10 @@ Label evergreen discoveries as resources or explainers, with original age when u
 4. For every adjacent match, write: saved interest → specific source content → reader payoff. No title/category-only connections; no inferred identity, family status, or genre preference.
 5. Display all six components and their sum. Require total at least 60, reader value at least 15, and substance at least 5.
 6. Rank eligible candidates. Apply comparable-quality variety with the documented five-point/three-reader-value tolerance.
-7. Optionally use one Discovery Promotion, preserving scores and explicitly recording the displaced candidate and distinctive benefit. Do not double-label the same move as both balance and promotion.
+7. Optionally use one Discovery Promotion with a maximum 10-point score displacement and the approved three-point reader-value safeguard, preserving scores and internally recording the displaced candidate and distinctive benefit. Do not double-label the same move as both balance and promotion.
 8. Apply Freshness Veto only to a scored material repeat. Ordinary rank displacement is not a veto.
 9. Stop at the configured maximum. Fewer items or no items is acceptable.
-10. Log profile fixture, source/access status, coverage-history basis, match evidence, components, gate decision, and final treatment. On production cutover, use actual published history rather than shadow selections as the reader's history.
+10. Log profile fixture, source/access status, coverage-history basis, match evidence, components, gate decision, and final treatment internally; add no new reader-facing labels. On production cutover, use actual published history rather than shadow selections as the reader's history.
 
 ## Source and access register
 
@@ -187,6 +189,26 @@ All accesses below occurred October 3, 2026. Accessible means content was retrie
 
 ## Limits and release implication
 
-This supports the separate MFY rubric and concrete operating rules as a release candidate. It does not justify promoting production from this exercise alone. The strongest remaining gaps are a verified substantive comedy example, positive borderline examples at 60–69, resource-operation checks for interactive/media candidates, and user judgment of the optional Discovery Promotion.
+This supports the separate MFY rubric and concrete operating rules as a release candidate. It does not justify promoting production from this exercise alone. The strongest remaining gaps are a verified substantive comedy example, positive borderline examples at 60–69, and resource-operation checks for interactive/media candidates. The numerical selection values are now final; remaining validation does not reopen them.
 
 Do not reopen daily shadow testing solely to collect these. They can be resolved in a small focused review of the affected examples. Preserve the shared weights and the original shadow evidence. Any adoption must explicitly reconcile the canonical shadow prompt's shared-score MFY requirement with this separate rubric, then update the relevant production prompt through the project's release process.
+
+## Final decisions and release preparation — October 3
+
+The user confirmed the values as final at 5:13 p.m. America/Chicago:
+
+| Control | Final value |
+|---|---|
+| MFY eligibility threshold | At least 60/100 |
+| Reader-value minimum | At least 15/25 |
+| Substance minimum | At least 5/10 |
+| Ordinary variety displacement | At most 5 total-score points |
+| Discovery Promotion displacement | At most 10 total-score points; at most one per profile/run |
+| Reader-value safeguard for displacement | Replacement no more than 3 reader-value points lower |
+| Additional reader-facing labels | None |
+| Full sample briefing for final validation | Not required |
+| First V2 production edition | The following America/Chicago calendar day after promotion; weekends acceptable |
+
+The displacement allowances do not add points. All sourcing, preference, repeat, section and eligibility gates remain in force.
+
+Release preparation should close the focused evidence gaps, reconcile the canonical V2 and MFY instructions, and validate the complete selection contract without generating a full sample briefing. Record rollback to the previous canonical production prompt and the approved target edition date in the release checklist. Preserve the existing morning schedule. Promotion must not trigger a same-day replacement briefing or duplicate delivery; the first V2 generation is the normal scheduled briefing on the next calendar day. These decisions do not themselves authorize promotion or schedule a task.

@@ -15,13 +15,14 @@ This file is the durable source for the production morning-generation task. The 
 SOURCE RETRIEVAL
 Before production work, read this exact file from current GitHub `main` using the connected GitHub contents API. The raw.githubusercontent.com URL may be consulted, but a cached, stale, or unavailable raw response must not replace the current `main` copy. Require Specification ID ADB-DAILY-PROD-2.0, docs/v2-selection-spec.md with Specification ID ADB-V2-SELECT-1.0, and the supporting standards named in the scheduler prompt. If the current `main` copy or a required standard cannot be verified, stop this attempt and report the specific retrieval failure. Never treat an unverified cached copy as production authorization.
 
-Produce and queue the Austin Daily Briefing each morning from the authorized production subscriber state. Google Forms remain the public intake path during controlled native staging. The Resend Apps Script dispatcher—not this automation—owns external delivery.
+Produce and queue the Austin Daily Briefing each morning from the authorized production subscriber state. Native customization is the public customization path; the Google customization form remains an operator/fallback path during observation. Other intake routes follow the current production configuration. The Resend Apps Script dispatcher—not this automation—owns external delivery.
 
 AUTHORITATIVE DATA
 - Production database: Google Sheet ID 1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0.
 - Production intake reference: Google Sheet ID 1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho.
 - Public website: https://austindailybriefing.com/
-- Customize form: https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform
+- Customize page: https://austindailybriefing.com/customize.html
+- Customize fallback form: https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform
 - Manage form: https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform
 Never query, fetch, synchronize, or write Jotform. Historical Jotform IDs may remain as audit history only. Never read DEV or migration-rehearsal workbooks.
 

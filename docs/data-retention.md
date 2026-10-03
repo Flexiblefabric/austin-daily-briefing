@@ -3,7 +3,8 @@
 **Status:** Approved operational baseline  
 **Effective:** 2026-09-23  
 **Scope:** Subscriber, intake, verification, delivery, backup, and feedback data used by Austin Daily Briefing  
-**Principle:** Keep identifiable data only as long as it has a defined operational, security, audit, or subscriber-service purpose.\n**Security baseline:** [`subscriber-data-security-baseline.md`](subscriber-data-security-baseline.md)
+**Principle:** Keep identifiable data only as long as it has a defined operational, security, audit, or subscriber-service purpose.  
+**Security baseline:** [`subscriber-data-security-baseline.md`](subscriber-data-security-baseline.md)
 
 These rules are designed for the current Google Sheets + Apps Script architecture. They do not require a database migration.
 
@@ -71,6 +72,12 @@ Baseline:
 Deletion of existing backups should occur only after confirming the current production files are healthy and at least one current recovery copy remains.
 
 ## 5. Verification and token data
+
+### Temporary legacy Google Verification Form exception
+
+The approved policy remains that raw verification tokens must not be retained. The legacy Google Verification Form is a known temporary exception because Google Forms writes the submitted token into its response sheet before the processor can consume it. SEC-3 documents this exception in `subscriber-data-minimization-review-2026-09-23.md`.
+
+The native customization path does not use this exception: it receives the token transiently and stores only the hash and scoped verification metadata. Until legacy Google verification is retired or redesigned, historical/raw verification-response rows must be treated as restricted security data and removed or redacted only through a processor-safe, tested procedure.
 
 - Raw verification tokens are never stored.
 - Token-bearing URLs are never stored in Sheets, GitHub, logs, task output, or documentation.

@@ -1,16 +1,18 @@
 # ADB production customization confirmation relay
 
-Status: staged; not deployed.
+Status: deployed and validated for controlled production; public Gate E cutover pending.
 
 This Worker is intentionally separate from the DEV relay.
 
 Controlled production path:
 
-`austindailybriefing.com/confirm.html#env=prod&token=…`
+`austindailybriefing.com/confirm.html#env=production&token=…`
 → `https://confirm-prod.austindailybriefing.com/api/customize/confirm`
 → this Worker
 → signed POST to the production Apps Script native customization endpoint
 → production Native Verification Queue.
+
+Gate C production relay validation passed on the Worker preview and the production custom domain. The relay remains part of the controlled rollout; Google customization remains the public fallback until Gate E.
 
 ## Secrets
 

@@ -38,7 +38,8 @@ Use these states:
 | V2-5 | V2 selection engine | Reconcile registry V2 specification ID with canonical shadow specification | Complete | Registry now tracks `ADB-V2-SHADOW-0.3` |
 | V2-6 | V2 selection engine | Complete shadow evidence log without double-counting recurring discoveries | Complete | Evidence log closed with counterfactual-history controls exercised through 2026-10-03 |
 | V2-7 | V2 selection engine | Conduct formal promotion-readiness review | Ready | Evidence collection is complete; review regressions, controls, source discipline, and promotion risks |
-| V2-8 | V2 selection engine | Build controlled production-promotion plan if review supports promotion | Blocked | V2-7 and explicit promotion approval |
+| V2-8 | V2 selection engine | Build controlled production-promotion plan if review supports promotion | Blocked | V2-7, V2-9, and explicit promotion approval |
+| V2-9 | More for You calibration | Review the proposed separate MFY rubric and bounded calibration evidence in draft PR #54 | Review | Decide whether to adopt the proposed 25-25-20-10-10-10 rubric, eligibility minimums, evergreen-resource rule, variety tolerance, and Discovery Promotion limits; focused gaps remain for positive 60–69 examples, substantive comedy, and interactive/media access checks |
 | WEB-1 | Website | Correct Open Graph/Twitter image references to the active `social-preview.png` asset | Complete | Home, How ADB Works, and What's New now point to the current PNG card |
 | WEB-2 | Website | Close out website-redesign implementation documentation after successful PR #23 deployment | Complete | Implementation record now reflects production promotion and successful Pages deployment |
 | WEB-3 | Website | Promote website design specification status from draft to approved/implemented | Complete | Canonical design spec status reconciled |

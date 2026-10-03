@@ -1,6 +1,6 @@
 # V2 production promotion — October 3, 2026
 
-Status: Authorized cutover; first production-cycle observation pending.
+Status: PROMOTED and scheduler-aligned; first production-cycle observation pending.
 Owner/operator: ADB operator, executed by Codex with explicit user instruction “Let's promote.”
 Authorization: 2026-10-03 17:53 America/Chicago.
 Effective edition: **2026-10-04**, normal **08:00 America/Chicago** generation; weekends permitted.
@@ -27,14 +27,16 @@ Release key: `v2-selection-2026-10-04`. The canonical daily prompt contains the 
 - [x] Carry forward 19 passing editorial reference checks; these are not deployed-engine or delivery tests.
 - [x] Align canonical prompt, selection lifecycle, editorial-system authority, registry, roadmap and archival pointers.
 - [x] Validate generated docs and immutable snapshot; 19 reference boundary checks pass.
-- [ ] Check exact-head CI before merge and rendered live website after Pages deployment.
-- [ ] Merge tested release and align daily scheduler wrapper; read back both IDs, fingerprints, effective date and unchanged schedule.
-- [ ] Verify successful GitHub Pages deployment.
+- [x] Check exact-head CI before merge and rendered live website after Pages deployment.
+- [x] Merge tested release and align daily scheduler wrapper; read back both IDs, fingerprints, effective date and unchanged schedule.
+- [x] Verify successful GitHub Pages deployment.
 - [ ] Observe the October 4 real generation, selection and downstream delivery; record result below.
 
 ## First normal-cycle observation — pending
 
-This is a read-only check after the normal generation and dispatch cycle. Do not generate or resend an edition from this checklist. Review:
+One-time task `ADB V2 First-Cycle Check` is scheduled for 2026-10-04 10:00 America/Chicago (task ID `6ac18b2fdd1081918355cf79689ff2b8`). It temporarily uses the reserve scheduler slot and returns its privacy-safe observation in the originating chat. It is read-only across Sheets, repository, scheduler and delivery; it does not update this record automatically. Reconcile its result here afterward. Successful Google Drive metadata reads confirmed access to both registered production workbooks before scheduling. This check reports late or incomplete generation/delivery as Pending or Unknown; it cannot repair, replay, send or silently mark success.
+
+Do not generate or resend an edition from this checklist. Review:
 1. Morning Briefing attempt, selected stories and compact audit: sources available at cutoff, procedural status, shared scoring, MFY minimums, actual published-history repeat control, independent Under the Radar evidence or empty result, variety limits and Off exclusions.
 2. October 4 notice appears once per eligible profile, with the release key in existing history. HTML/plain text match; no extra edition or repeated announcement.
 3. Exactly one expected daily queue row per eligible profile/run, exact DAILY_BRIEFING_V1, matching history; inspect terminal queue/history and provider evidence for downstream completion, not only generator success.
@@ -70,4 +72,12 @@ For confirmed regression, restore the pre-promotion selection behavior and align
 
 ## Activation evidence
 
-Pending cutover readback in this release. Actual merge revision, scheduler update and deployment result will be recorded after execution. First production delivery is separately pending October 4.
+- Release PR: #61, merged at `220fa38e1eac9da867923327eb179cfa35e42f03` on 2026-10-03.
+- Tested PR head: `821ac9ef2e8f56df76e76debc8e4953a460ac062`; documentation validation and site preview both succeeded before merge.
+- Scheduler activation: **2026-10-03 18:07:49 America/Chicago** (`2026-10-03T23:07:49.361669Z`); enabled state and exact original 08:00 recurrence read back unchanged.
+- Current-main readback verified canonical daily prompt blob `6cb47fb2c67348f8b95e9fd0a3da4b95e5eecdd8`, selection blob `12a2dcacdae62a644caf65995b8f9c96e5c23cf8` and registry blob `de42f2854ca850e9a613a18294cba56d106db413` against the merged release. IDs, both fingerprints and October 4 effective date match the saved scheduler wrapper.
+- Production safety, delivery mode, profile rules, email formatting, source-link presentation, queue/history and monitoring sections compared unchanged. No production briefing or subscriber data was written during cutover.
+- Registry 2026-10-03.3, regenerated internal documents and immutable snapshot passed audit with no warnings. Nineteen editorial reference checks passed; no full sample edition or transport test was run.
+- GitHub Pages deployment `37160754202` and main documentation workflow `37160754174` succeeded. Live What's New, its link to How ADB Works, the updated selection/MFY/repeat explanations and homepage preview were opened and verified. Desktop screenshots showed readable layout with the existing visual design. Mobile browser rendering was not independently re-tested for these copy-only changes; site asset CI passed.
+- Website announcement identifies October 4 as the first edition. Canonical What's New copy is limited to October 4 and profile-deduplicated; it has not been sent early.
+- First production delivery and editorial outcome remain pending the October 4 observation. No rollback indicated by cutover checks.

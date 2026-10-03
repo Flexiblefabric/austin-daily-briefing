@@ -302,6 +302,12 @@ FORM-1 through FORM-4 should carry forward these rules:
 - avoid duplicating email or profile identifiers in new tables unless required by reconciliation or security;
 - do not persist browser/client metadata unless there is a defined anti-abuse need and retention rule.
 
+## Native-path remediation update — 2026-10-03
+
+Controlled production native customization now uses first-party confirmation with hash-only verification storage. The production native path therefore resolves the raw-token persistence finding for native customization.
+
+SEC-3 remains open because the legacy Google Verification Form is still available for the Google-form fallback path and necessarily persists submitted raw tokens in its response sheet. That exception is now explicitly documented in `data-retention.md` and remains a retirement/remediation requirement before SEC-3 can close.
+
 ## 11. SEC-3 status
 
 ### Complete assessment

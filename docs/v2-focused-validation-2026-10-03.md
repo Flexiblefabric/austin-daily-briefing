@@ -63,11 +63,11 @@ Additional specification review:
 | docs/v2-focused-validation-2026-10-03.md | This evidence, integration and rollback record |
 | scripts/validate_v2_rules.py | Reproducible editorial boundary checks |
 
-Baseline daily prompt inspected: ADB-DAILY-PROD-1.3, blob a4f7c252f8c158172e680e42bc95ea10d9aed5c7. The staged copy changes only version/lifecycle metadata, the selection dependency, news/repeat instructions and the additional selection pre-queue check. All operational sections are preserved byte-for-byte, including intake references, safety gates, eligibility, message IDs, DAILY_BRIEFING_V1, rendering, dispatcher ownership, queue/history reconciliation and monitoring.
+Baseline daily prompt inspected: ADB-DAILY-PROD-1.3, blob a4f7c252f8c158172e680e42bc95ea10d9aed5c7. The staged copy changes only version/lifecycle metadata, the selection dependency, news/repeat instructions and the additional selection pre-queue check. Safety gates, eligibility, message IDs, DAILY_BRIEFING_V1, rendering, dispatcher ownership, queue/history reconciliation and monitoring are preserved byte-for-byte. During October 3 merge reconciliation, the staged introduction and Customize destination were updated to match the already-live native customization route, with the Google Form retained explicitly as fallback.
 
-The baseline still references controlled native staging. Another workstream is promoting native intake; do not overwrite its later changes. Re-read current main immediately before activation and apply only the V2 editorial changes to the then-current production prompt. If it differs from this baseline, reconcile and recheck unchanged operational sections before promotion.
+Merge reconciliation confirmed PROJECT_STATE.json marks native customization live and site/index.html links to customize.html. The staged prompt now uses https://austindailybriefing.com/customize.html and retains the existing Google Form fallback. The active 1.3 prompt still contains the earlier wording; this preparation merge does not change that active file. Do not overwrite other workstreams' later changes. Re-read current main immediately before activation and apply only the V2 editorial changes to the then-current production prompt. If it differs from this baseline, reconcile and recheck unchanged operational sections before promotion.
 
-The old shadow prompt stays archived as the historical scoring contract. Add an explicit pointer from the editorial system's V2 relationship section to the promoted selection spec at cutover. Its past MFY/shared-score rules must not remain an active runtime dependency. PR #57's final decision record must be merged or otherwise incorporated before activation; the earlier merged calibration draft still contains superseded five-point discovery language.
+The old shadow prompt stays archived as the historical scoring contract. Add an explicit pointer from the editorial system's V2 relationship section to the promoted selection spec at cutover. Its past MFY/shared-score rules must not remain an active runtime dependency. PR #57 is merged; the approved decision record is incorporated in main. Its final 10-point Discovery Promotion allowance governs this staged package.
 
 ## Promotion checklist
 
@@ -77,7 +77,7 @@ The old shadow prompt stays archived as the historical scoring contract. Add an 
 - [x] Nineteen reference boundary checks passed.
 - [x] Consolidated specification and complete staged production integration prepared.
 - [x] No full sample briefing generated, as requested.
-- [ ] Incorporate PR #57 final decision record and reconcile any intervening main changes.
+- [x] Incorporate PR #57 final decision record and reconcile intervening native-customization changes at preparation merge. Re-read main again at activation.
 - [ ] Obtain approval to activate the exact reconciled production package.
 - [ ] Record promotion time, operator, final source revisions and effective edition date.
 - [ ] Effective edition date = America/Chicago promotion date + one calendar day; weekends allowed.
@@ -101,3 +101,7 @@ Do not delete or replay existing queue/history rows, reuse message IDs, or autom
 ## Readiness
 
 The bounded editorial validation is complete. The package is ready for integration review and promotion preparation; activation is not yet done. Post-promotion delivery validation remains a required observation, not a result claimed by this document.
+
+## Preparation merge reconciliation — 2026-10-03
+
+User authorized merging and reconciling the preparation package. PR #57 was already merged. PR #59's original head passed documentation-registry and site-preview checks. The active production prompt still matches the inspected 1.3 baseline. Native customization reconciliation is limited to the staged prompt's introduction and Customize destination/fallback; no runtime task or active prompt changed. V2-7 and V2-9 are complete; V2-8 has a prepared promotion plan awaiting explicit activation. This is not a promotion date or a claim that tomorrow's edition is running V2.

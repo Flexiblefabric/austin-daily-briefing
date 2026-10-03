@@ -41,6 +41,12 @@ function validateNativeCustomizationProdV1() {
     allowlistCount: String(props.getProperty(
       ADB_NATIVE_CUSTOMIZE_PROD.ALLOWLIST_PROPERTY) || '')
       .split(',').map(function(value){return value.trim();}).filter(Boolean).length,
+    controlledEmailConfigured: adbNativeValidEmail_(
+      adbNativeNormalizeEmail_(String(config['Native Customize Controlled Email'] || ''))
+    ),
+    controlledEmailAllowlisted: adbNativeEmailAllowlisted_(
+      adbNativeNormalizeEmail_(String(config['Native Customize Controlled Email'] || ''))
+    ),
     requestSheetExists: existingSheets.indexOf(ADB_NATIVE_CUSTOMIZE_PROD.REQUEST_SHEET) >= 0,
     verificationSheetExists: existingSheets.indexOf(ADB_NATIVE_CUSTOMIZE_PROD.VERIFICATION_SHEET) >= 0,
     diagnosticSheetExists: existingSheets.indexOf(ADB_NATIVE_CUSTOMIZE_PROD.DIAGNOSTIC_SHEET) >= 0,
@@ -51,8 +57,14 @@ function validateNativeCustomizationProdV1() {
   if (report.mode !== 'CONTROLLED' && report.mode !== 'LIVE' && report.enabled) {
     throw new Error('Enabled production endpoint has invalid mode.');
   }
-  if (report.mode === 'CONTROLLED' && report.enabled && report.allowlistCount < 1) {
-    throw new Error('CONTROLLED production mode requires at least one allowlisted address.');
+  if (report.mode === 'CONTROLLED' && report.enabled) {
+    if (String(report.processorMode).toUpperCase() !== 'GOOGLE + NATIVE CONTROLLED') {
+      throw new Error('CONTROLLED mode requires Processor Mode = GOOGLE + NATIVE CONTROLLED.');
+    }
+    if (report.allowlistCount < 1 || !report.controlledEmailConfigured ||
+        !report.controlledEmailAllowlisted) {
+      throw new Error('CONTROLLED mode requires one valid authorized controlled email.');
+    }
   }
   if (report.mode === 'LIVE' &&
       String(report.processorMode).toUpperCase() !== 'GOOGLE + NATIVE') {

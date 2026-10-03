@@ -1,7 +1,7 @@
 # Austin Daily Briefing Design System
 
 **Version:** 0.1  
-**Status:** Approved design direction; implementation in progress  
+**Status:** Approved and implemented across the current production newsletter, website, brand assets, and primary transactional experiences  
 **Creative principle:** **Serious about the facts. Alive to Austin.**  
 **Canonical path:** `docs/design-system.md`
 
@@ -761,10 +761,10 @@ A formal revision is warranted when changing the brand palette, primary type rol
 | Austin Ahead | Established |
 | GO / WATCH / PLAN taxonomy | Established; mutually exclusive |
 | Friday Austin Ahead expansion | Future specification |
-| Website migration | Pending |
-| Production newsletter migration | Pending |
-| Transactional-email migration | Pending |
-| Social-preview migration | Pending |
+| Website migration | Complete |
+| Production newsletter migration | Complete |
+| Transactional-email migration | Partial — Welcome is migrated; native confirmation uses the ADB-branded first-party flow; legacy fallback confirmation remains |
+| Social-preview migration | Complete |
 
 ## 46. Superseded Source
 

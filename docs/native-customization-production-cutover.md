@@ -8,7 +8,7 @@ Promote the validated native customization flow into production without replacin
 
 Target production flow:
 
-`customize.html → production Apps Script native intake → confirmation email → confirm.html#env=prod&token=… → confirm-prod.austindailybriefing.com → production confirmation relay → production Native Verification Queue → Production Subscriber Operations → Profiles / Preferences`
+`customize.html → production Apps Script native intake → confirmation email → confirm.html#env=production&token=… → confirm-prod.austindailybriefing.com → production confirmation relay → production Native Verification Queue → Production Subscriber Operations → Profiles / Preferences`
 
 The Google customization form remains available as an operator/fallback path through the observation window.
 

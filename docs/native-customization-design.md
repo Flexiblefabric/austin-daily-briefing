@@ -1,7 +1,7 @@
 # Native Customization Page — Product and Security Design
 
-**Status:** Draft design specification  
-**Workstream:** Native subscriber forms / Stage 1  
+**Status:** Approved design; DEV implementation complete; controlled production rollout active  
+**Workstream:** Native subscriber forms / customization rollout  
 **Target public path:** `/customize.html`  
 **Backend constraint:** Preserve the existing Google Sheets + Apps Script subscriber control plane  
 **Current source schema:** `Google Customize Responses` in the production intake workbook

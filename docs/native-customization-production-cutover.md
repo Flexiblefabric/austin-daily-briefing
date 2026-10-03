@@ -1,6 +1,6 @@
 # Native customization production cutover
 
-Status: staging. No production native intake is enabled by this document alone.
+Status: controlled production rollout. Gates A–D are complete; Gate E public cutover is pending. Google customization remains the public route.
 
 ## Objective
 
@@ -139,7 +139,7 @@ Controlled request sequence:
 
 1. submit exactly one native production customization for the approved address using a controlled/manual production endpoint invocation or controlled page configuration;
 2. verify one Pending Confirmation request and one Pending verification;
-3. verify confirmation email links to `https://austindailybriefing.com/confirm.html#env=prod&token=…`;
+3. verify confirmation email links to `https://austindailybriefing.com/confirm.html#env=production&token=…`; the earlier `prod` alias remains compatibility-only;
 4. confirm via the ADB page;
 5. verify request + verification become Confirmed;
 6. run Production Subscriber Operations once;
@@ -166,8 +166,9 @@ Controlled production validation completed successfully:
 - a post-application eligibility check found no remaining eligible copy of the request, demonstrating the exactly-once guard for the controlled request;
 - the native request identifier appears only on the intended P001 preference row and P001 profile metadata;
 - no unrelated subscriber/profile mutation was identified in the controlled verification.
+- a second browser-originated controlled request was intentionally submitted to validate the production page path. It was confirmed but was not intended for application. During the 2026-10-03 reconciliation, the request and linked verification were closed as `Cancelled` without changing subscriber preferences.
 
-The controlled preference change is test state and may be restored separately before or during Gate E.
+The controlled preference change from the first request is test state and may be restored separately before or during Gate E.
 
 ## Gate E — public cutover
 
@@ -178,7 +179,7 @@ Only after Gate D passes:
 - production endpoint mode remains CONTROLLED for a final browser-originated control test if desired;
 - then change Apps Script mode to LIVE;
 - change Integration Config Processor Mode to `GOOGLE + NATIVE`;
-- production confirm links continue to use `#env=prod`;
+- production confirm links use canonical `#env=production`; `prod` remains compatibility-only;
 - Google customization form remains available as fallback/operator path;
 - update any public copy that materially describes the old Google handoff.
 

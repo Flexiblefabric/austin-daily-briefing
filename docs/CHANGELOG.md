@@ -2,6 +2,33 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-03 — Controlled native customization and project-state reconciliation
+
+**Type:** Production architecture reconciliation and controlled-rollout hardening  
+**Components:** native customization, first-party confirmation relay, production safety gates, watchdog, documentation registry  
+**Registry impact:** Yes
+
+Austin Daily Briefing reconciled the repository and production control-plane state after controlled native customization Gates A–D and the later watchdog delivery-contract revision.
+
+### Changes
+
+- Recorded the production native-customization Apps Script endpoint and dedicated Cloudflare confirmation relay as controlled production services; the public Customize route remains on the Google Form pending Gate E.
+- Closed the second browser-originated controlled native request as `Cancelled` without application because it was a control-path test rather than a requested preference mutation.
+- Reconciled production Intake Mode, intake Processor Mode, Release Config, and cutover-state metadata to `GOOGLE + NATIVE CONTROLLED` while preserving live daily briefing and Google subscriber delivery.
+- Advanced the Daily Briefing canonical prompt to `ADB-DAILY-PROD-1.3` and the Production Health Watchdog to `ADB-WATCHDOG-PROD-2.3` so authorized controlled/native subscriber-intake modes do not falsely fail briefing or delivery checks.
+- Preserved Production Subscriber Operations as the sole owner of applying confirmed native payloads to Profiles / Preferences.
+- Reconciled the approved 90-day terminal verification-retention policy and documented the temporary legacy Google Verification Form raw-token exception.
+- Updated the authoritative registry, generated internal documentation, V2 status, native-form lifecycle records, completion-monitoring lifecycle records, design-system implementation status, security documentation, README, and roadmap.
+- Added a coordinated Gate E preflight so public native-customization cutover cannot proceed with mismatched runtime, task, registry, or fallback state.
+
+### Validation
+
+- Current production Daily Briefing, Daily Resend Delivery, Welcome delivery, Subscriber Operations, and Signup Completion status rows were healthy before reconciliation.
+- The second controlled native request and verification were read back as `Cancelled` with no preference application.
+- Production mode metadata was read back consistently as controlled native staging.
+- The three registered active ADB scheduler task IDs and schedules matched live scheduler metadata before wrapper synchronization.
+- V2 evidence collection is complete at 16 comparable runs; promotion remains a separate review and approval decision.
+
 ## 2026-09-23 — Signup completion incident monitoring promotion
 
 **Type:** Development-to-production monitoring promotion  

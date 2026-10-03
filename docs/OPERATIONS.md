@@ -16,7 +16,7 @@
 - **domain_health_check** — available — manual only — `docs/domain-health-check.md`
   - Reporting: compact pass/fail table with a brief explanation for each failure.
   - Form validation: after form changes only.
-- **v2_shadow_review** — review — manual only — `docs/v2-shadow-review-prompt.md`
+- **v2_shadow_review** — retired — manual only — `docs/v2-shadow-review-prompt.md`
   - Reporting: V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation.
 - **completion_observation** — retired — one-time; completed 2026-09-20 — `docs/automation-prompts/end-to-end-completion-observation.md`
 - **task_reconciliation** — available — manual/read-only — `docs/task-reconciliation.md`
@@ -25,6 +25,8 @@
   - Reporting: privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1.
 - **native_customization_cutover** — observation — manual gated rollout — `docs/native-customization-production-cutover.md`
   - Reporting: Gates A–E passed; public native customization is live; Gate F 24-hour production observation is active.
+- **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
+  - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 
 ## Runtime configuration
 

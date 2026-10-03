@@ -1,12 +1,12 @@
 # Austin Daily Briefing — Canonical Automation Prompt
 
 **Specification ID:** `ADB-DAILY-PROD-2.0`
-**Lifecycle:** STAGED release candidate — not active  
+**Lifecycle:** Archived preparation candidate — promoted 2026-10-03  
 **Schedule:** Daily at 08:00 America/Chicago  
 **Scheduler task ID:** `6a91bd2144d081918d9d54d5c14d1175`  
 **Canonical path:** `docs/automation-prompts/austin-daily-briefing.md`
 
-V2 integration candidate prepared 2026-10-03. Stage path: docs/release-candidates/austin-daily-briefing-v2.md. Do not execute this staged copy. After explicit promotion, the canonical path below becomes authoritative starting with the following America/Chicago day's normal edition. Preserve current-main retrieval and the exact daily template contract.
+Historical candidate prepared for PR #59. Do not execute this copy. The promoted and reconciled runtime source is docs/automation-prompts/austin-daily-briefing.md; the selection dependency is docs/v2-selection-spec.md. See docs/v2-promotion-2026-10-03.md.
 
 This file is the durable source for the production morning-generation task. The scheduler copy is disposable. If a scheduler copy is lost, recreate it from this file and record the new task ID in `PROJECT_STATE.json`. Do not store subscriber addresses, administrator addresses, credentials, or tokens in this public repository.
 

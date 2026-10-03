@@ -1,17 +1,17 @@
-# ADB V2 selection — release candidate
+# ADB V2 selection — production contract
 Specification ID: ADB-V2-SELECT-1.0
-Lifecycle: STAGED / NOT ACTIVE
+Lifecycle: ACTIVE — effective edition 2026-10-04
 Shared weight fingerprint: 20-20-15-15-10-10-10
 MFY weight fingerprint: 25-25-20-10-10-10
 Decisions finalized: 2026-10-03, America/Chicago
 
 ## Authority and activation
 
-This is the consolidated V2 selection contract prepared for promotion. It becomes an execution dependency only after explicit promotion, canonical production integration, and scheduler alignment. File presence or merging this preparation package alone does not activate V2. The first V2 edition is the normal briefing on the America/Chicago calendar day following promotion, including weekends.
+This is the active V2 selection contract, promoted with user authorization on 2026-10-03. ADB-DAILY-PROD-2.0 requires this contract from the 2026-10-04 normal 08:00 America/Chicago edition onward. See docs/v2-promotion-2026-10-03.md for the release record.
 
 This contract governs editorial selection only. The active daily production prompt owns environment checks, profile resolution, rendering, queueing, history writes and monitoring. Resend Apps Script remains the delivery owner. Do not change the 08:00 schedule, template ID DAILY_BRIEFING_V1, message ID contract, or subscriber operations for this release.
 
-The historical ADB-V2-SHADOW-0.3 prompt and 16-run log remain evaluation records. Their shared-score requirement for MFY and counterfactual shadow-history rules do not govern promoted production. Use this contract for selection once activated, with the production prompt for operations and the editorial, component and source-link standards for presentation.
+The historical ADB-V2-SHADOW-0.3 prompt and 16-run log remain evaluation records. Their shared-score requirement for MFY and counterfactual shadow-history rules do not govern promoted production. Use this contract for production selection, with the production prompt for operations and the editorial, component and source-link standards for presentation.
 
 ## Research and source eligibility
 

@@ -13,7 +13,7 @@ The three registered active ADB scheduler tasks were re-read from live scheduler
 
 | Registered task | Expected task ID | Live state | Schedule | Canonical specification |
 | --- | --- | --- | --- | --- |
-| Austin Daily Briefing | `6a91bd2144d081918d9d54d5c14d1175` | Enabled | Daily 08:00 America/Chicago | `ADB-DAILY-PROD-1.3` after this reconciliation |
+| Austin Daily Briefing | `6a91bd2144d081918d9d54d5c14d1175` | Enabled | Daily 08:00 America/Chicago | `ADB-DAILY-PROD-2.0`, effective 2026-10-04 |
 | Production Subscriber Operations | `6aa1acbcf17c8191a9a89cc95b433629` | Enabled | Every 6 hours | `ADB-SUBOPS-PROD-1.0` |
 | ADB Production Watchdog | `6aa8401e16a88191ae14ba1b4d6cba6e` | Enabled | Daily 09:30 America/Chicago | `ADB-WATCHDOG-PROD-2.3` after this reconciliation |
 
@@ -29,7 +29,7 @@ Task IDs and schedules matched the registry. Apps Script installed-trigger healt
 
 The global scheduler also contains the expected non-ADB Weekly Movement Plan. One active scheduler slot remains available under the recorded five-slot budget.
 
-The one-time ADB Completion Observation has completed and is disabled. Disabled historical V2 scheduler copies also exist, but V2 is currently Held/Development and the canonical GitHub prompt remains authoritative; those copies are not expected active production tasks.
+The one-time ADB Completion Observation has completed and is disabled. The historical V2 shadow scheduler remains paused and is not an active production task. The daily generation task now owns V2 through its canonical 2.0 prompt and ADB-V2-SELECT-1.0 dependency. See docs/v2-promotion-2026-10-03.md for cutover/readback evidence.
 
 ## Classification rules
 

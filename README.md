@@ -153,9 +153,9 @@ Operational details are documented in [`docs/OPERATIONS.md`](docs/OPERATIONS.md)
 
 Production is live. Development work is kept separate until explicitly promoted through controlled QA and release checks.
 
-The **V2 story-selection engine** has completed its manual, read-only shadow evidence program and is awaiting a separate formal promotion-readiness review. Shadow work does not write to production, queue messages, or change subscriber state.
+The **V2 story-selection engine** is promoted for the October 4, 2026 edition onward. The [production selection contract](docs/v2-selection-spec.md) defines separate shared-news and More for You rubrics, repeat controls, independent Under the Radar discovery, verified evergreen resources and bounded variety. The 16-run shadow program is archived. The [promotion record](docs/v2-promotion-2026-10-03.md) tracks cutover, rollback and first-cycle verification.
 
-The native customization subsystem has passed controlled production Gates A–D. It is not yet the public customization route; Gate E remains a separately controlled promotion step.
+Native customization is the public route after Gates A–E. The Google customization form remains a fallback during Gate F production observation.
 
 Development status and production boundaries should be read from [`PROJECT_STATE.json`](PROJECT_STATE.json) and the relevant runbooks rather than inferred from branch names alone.
 

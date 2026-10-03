@@ -1,6 +1,6 @@
 # V2 focused validation and promotion record
 Date: 2026-10-03, America/Chicago
-Status: Release preparation complete; production activation not performed.
+Status: Focused validation complete; promoted 2026-10-03 for the 2026-10-04 edition. See docs/v2-promotion-2026-10-03.md for current cutover and observation status.
 
 ## Scope and outcome
 
@@ -69,7 +69,7 @@ Merge reconciliation confirmed PROJECT_STATE.json marks native customization liv
 
 The old shadow prompt stays archived as the historical scoring contract. Add an explicit pointer from the editorial system's V2 relationship section to the promoted selection spec at cutover. Its past MFY/shared-score rules must not remain an active runtime dependency. PR #57 is merged; the approved decision record is incorporated in main. Its final 10-point Discovery Promotion allowance governs this staged package.
 
-## Promotion checklist
+## Preparation checklist (historical; completed cutover tracked in promotion record)
 
 - [x] Final numerical values recorded; no more calibration changes requested.
 - [x] Focused substantive-comedy and positive-borderline examples reviewed.
@@ -100,7 +100,7 @@ Do not delete or replay existing queue/history rows, reuse message IDs, or autom
 
 ## Readiness
 
-The bounded editorial validation is complete. The package is ready for integration review and promotion preparation; activation is not yet done. Post-promotion delivery validation remains a required observation, not a result claimed by this document.
+The bounded editorial validation is complete. The package was subsequently promoted with explicit user authorization on 2026-10-03. The dated preparation checklist above preserves its pre-promotion state; docs/v2-promotion-2026-10-03.md is the current cutover record. First-cycle delivery remains pending, not a result claimed by this validation.
 
 ## Preparation merge reconciliation — 2026-10-03
 

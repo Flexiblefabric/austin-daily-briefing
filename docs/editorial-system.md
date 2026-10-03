@@ -468,7 +468,7 @@ Subscriber preferences:
 - May use reasonable adjacent interests when permitted by the active selection specification.
 - Must exclude topics explicitly set to Off.
 
-Personalized content must still meet the applicable sourcing and editorial-quality floor.
+Personalized content must still meet the applicable sourcing and editorial-quality floor. More for You uses its own rubric for interest fit, reader value, new information, timeliness, substance and discovery. Verified evergreen resources are eligible without fabricated urgency. Adjacent recommendations need a concrete connection from saved interest to content to reader benefit; category or title similarity alone is insufficient. Variety never justifies filler or overriding an Off preference.
 
 Do not repeat a Top Story in More for You unless the personalized item offers a genuinely distinct angle.
 
@@ -665,7 +665,7 @@ This document defines editorial intent and reader-facing standards.
 
 ### V2 story-selection specification
 
-`docs/v2-shadow-review-prompt.md` currently governs the detailed V2 scoring model, thresholds, material-change gate, Freshness Veto, Discovery Promotion, Selection Balance mechanics, and shadow-review output while V2 remains in development.
+`docs/v2-selection-spec.md` (`ADB-V2-SELECT-1.0`) governs production selection from the 2026-10-04 edition: separate shared/MFY rubrics, eligibility floors, material-change gate, Freshness Veto, Discovery Promotion and Selection Balance. The shadow prompt and evidence log are historical evaluation records, not production dependencies.
 
 This Editorial System should not silently modify those mechanics.
 

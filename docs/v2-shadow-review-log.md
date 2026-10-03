@@ -1,11 +1,11 @@
 # ADB V2 Shadow Review Evidence Log
 
-**Status:** Evidence collection complete — promotion review pending  
+**Status:** Archived evidence — promotion approved 2026-10-03; first V2 edition 2026-10-04  
 **Canonical scoring contract:** [`docs/v2-shadow-review-prompt.md`](./v2-shadow-review-prompt.md)  
 **Current specification:** `ADB-V2-SHADOW-0.3`  
 **Weight fingerprint:** `20-20-15-15-10-10-10`  
 **Observation window:** Planned window 2026-09-14 through 2026-09-26; supplemental stress tests through 2026-10-03  
-**Decision point:** Final evidence run completed 2026-10-03; formal promotion review is next  
+**Decision point:** Final evidence run and focused validation complete; see [promotion record](./v2-promotion-2026-10-03.md). Historical run findings below are unchanged  
 **Testing pause:** No shadow runs were recorded 2026-09-20 through 2026-09-22 while compute capacity was unavailable; missing days are not evidence for or against V2.
 
 This is the durable comparison record for manual, read-only V2 shadow reviews. Runs through 2026-09-19 used `ADB-V2-SHADOW-0.2`; remaining runs use `ADB-V2-SHADOW-0.3`, which adds counterfactual V2-history continuity and proposal/adoption verification without changing the fixed score weights, eligibility floor, or override definitions. It is deliberately small: one scorecard, one daily record per run, and one open-issues list. It does not replace the canonical prompt and does not authorize production changes.

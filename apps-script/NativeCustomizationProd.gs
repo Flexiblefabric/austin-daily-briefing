@@ -264,9 +264,12 @@ function adbNativeStageCustomizeRequestProdV1_(e, params) {
   const email = diagnosticEmail;
   const mode = adbNativeProdMode_();
   const allowlisted = adbNativeEmailAllowlisted_(email);
-  if (mode === 'CONTROLLED' && !allowlisted) {
-    adbNativeAppendProdDiagnostic_('noop', 'controlled_not_allowlisted', email, params);
-    return adbNativeAcceptedResult_();
+  if (mode === 'CONTROLLED') {
+    const controlledEmail = adbNativeProdControlledEmail_();
+    if (email !== controlledEmail || !allowlisted) {
+      adbNativeAppendProdDiagnostic_('noop', 'controlled_not_authorized', email, params);
+      return adbNativeAcceptedResult_();
+    }
   }
   if (!adbNativePropertyIsTrue_(ADB_NATIVE_CUSTOMIZE_PROD.SEND_EMAIL_PROPERTY)) {
     throw new Error('Production native confirmation email delivery is disabled.');
@@ -683,18 +686,37 @@ function adbNativeProdMode_() {
   if (mode !== 'CONTROLLED' && mode !== 'LIVE') {
     throw new Error('ADB_NATIVE_CUSTOMIZE_PROD_MODE must be CONTROLLED or LIVE.');
   }
-  if (mode === 'LIVE') {
-    const config = adbNativeProdIntegrationConfig_();
-    if (String(config['Processor Mode'] || '').toUpperCase() !== 'GOOGLE + NATIVE') {
-      throw new Error('LIVE native customization requires Processor Mode = GOOGLE + NATIVE.');
+
+  const config = adbNativeProdIntegrationConfig_();
+  const processorMode = String(config['Processor Mode'] || '').toUpperCase();
+
+  if (mode === 'CONTROLLED') {
+    if (processorMode !== 'GOOGLE + NATIVE CONTROLLED') {
+      throw new Error(
+        'CONTROLLED native customization requires Processor Mode = GOOGLE + NATIVE CONTROLLED.'
+      );
     }
-    if (String(config['Production Writes'] || '').indexOf('ENABLED') !== 0) {
-      throw new Error('Production Writes is not enabled.');
-    }
-    if (String(config['Delivery Mode'] || '').toUpperCase() !== 'ENABLED') {
-      throw new Error('Delivery Mode is not enabled.');
+    const controlledEmail = adbNativeNormalizeEmail_(
+      String(config['Native Customize Controlled Email'] || '')
+    );
+    if (!adbNativeValidEmail_(controlledEmail)) {
+      throw new Error('CONTROLLED native customization requires a valid controlled email.');
     }
   }
+
+  if (mode === 'LIVE') {
+    if (processorMode !== 'GOOGLE + NATIVE') {
+      throw new Error('LIVE native customization requires Processor Mode = GOOGLE + NATIVE.');
+    }
+  }
+
+  if (String(config['Production Writes'] || '').indexOf('ENABLED') !== 0) {
+    throw new Error('Production Writes is not enabled.');
+  }
+  if (String(config['Delivery Mode'] || '').toUpperCase() !== 'ENABLED') {
+    throw new Error('Delivery Mode is not enabled.');
+  }
+
   return mode;
 }
 
@@ -716,6 +738,17 @@ function adbNativeProdIntegrationConfig_() {
     throw new Error('Integration Config production database ID mismatch.');
   }
   return out;
+}
+
+function adbNativeProdControlledEmail_() {
+  const config = adbNativeProdIntegrationConfig_();
+  const email = adbNativeNormalizeEmail_(
+    String(config['Native Customize Controlled Email'] || '')
+  );
+  if (!adbNativeValidEmail_(email)) {
+    throw new Error('Native Customize Controlled Email is missing or invalid.');
+  }
+  return email;
 }
 
 function adbNativeCheckThrottle_(email) {
@@ -754,8 +787,12 @@ function adbNativeEmailAllowlisted_(email) {
 
 function adbNativeSendProdVerificationEmail_(email, requestId, confirmationUrl, payload) {
   const mode = adbNativeProdMode_();
-  if (mode === 'CONTROLLED' && !adbNativeEmailAllowlisted_(email)) {
-    throw new Error('Production confirmation recipient is not allowlisted in CONTROLLED mode.');
+  if (mode === 'CONTROLLED') {
+    const controlledEmail = adbNativeProdControlledEmail_();
+    if (adbNativeNormalizeEmail_(email) !== controlledEmail ||
+        !adbNativeEmailAllowlisted_(email)) {
+      throw new Error('Production confirmation recipient is not authorized in CONTROLLED mode.');
+    }
   }
   const apiKey = String(PropertiesService.getScriptProperties()
     .getProperty(ADB_NATIVE_CUSTOMIZE_PROD.RESEND_KEY_PROPERTY) || '').trim();

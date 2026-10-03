@@ -1,7 +1,7 @@
 # Austin Daily Briefing Roadmap
 
 **Status:** Active project backlog  
-**Last reconciled:** 2026-09-23  
+**Last reconciled:** 2026-10-03  
 **Scope:** Cross-project work that is pending, blocked, deferred, or recently completed  
 **Technical state authority:** [`PROJECT_STATE.json`](../PROJECT_STATE.json)
 
@@ -62,10 +62,39 @@ Use these states:
 | FRI-3 | Austin Weekend Explorer | Define discovery sources, selection rules, section anatomy, and length limits | Blocked | FRI-2 |
 | FRI-4 | Austin Weekend Explorer | Decide restrained imagery rules for Friday Explorer | Deferred | After Explorer editorial structure is approved |
 | HOW-1 | How ADB Works | Replace V2-in-development language with the promoted selection model | Blocked | V2 promotion |
+| EDIT-1 | Editorial accountability | Draft a public ADB Editorial Standards / Reader Compact defining accuracy, sourcing, neutrality, evidence, corrections, AI use, personalization boundaries, independence, conflicts, and accountability | Ready | Build from the existing Editorial System, How ADB Works, corrections policy, source standard, and reader-change communication rules; keep it concise and reader-facing |
+| EDIT-2 | Human accountability | Define how the human responsible for ADB is identified publicly, including role language that does not present the operator as a journalist or original reporter | Ready | Preferred framing should distinguish founder/operator responsibility from newsroom credentials and explain the human role in setting standards, reviewing performance, and accepting accountability |
+| EDIT-3 | Editorial independence | Establish a proportionate conflicts-of-interest, funding, sponsorship, donation, and commercial-firewall policy before ADB adopts any material revenue model | Ready | One-person-publication model: disclose or apply additional review where material personal/professional/financial connections exist; editorial selection must remain independent of funding |
+| EDIT-4 | Corrections and evidence | Define public correction-severity levels and an internal reconstructable evidence trail from source → material-change determination → selection rationale → published summary | Ready | Extend—not replace—the existing corrections log, source-link standard, V2 evidence work, and production history |
+| EDIT-5 | Public standards publication | Publish the approved Editorial Standards as a durable versioned website document and integrate it with How ADB Works / What’s New without turning technical governance into reader-facing clutter | Blocked | EDIT-1 through EDIT-4 approved; preserve dated/versioned prior standards when materially revised |
 | COMMS-1 | Product communication | Maintain reader-facing What’s New entries for meaningful releases | Active | Operating practice; no standing daily quota |
 | COMMS-2 | Product communication | Consolidate newsletter notice / website update / Welcome change / dedicated-email decision rules | Complete | `docs/reader-change-communications.md` added |
 | DOC-1 | Documentation | Maintain this roadmap as the canonical cross-project backlog | Active | Reconcile after material project changes |
 | DOC-2 | Repository hygiene | Review stale merged/development branches and document deletion/retention policy | Deferred | Low operational value; do not delete branches automatically |
+
+## Editorial accountability and public standards
+
+ADB should eventually provide readers with a concise public statement of the standards they are entitled to expect from the product. This is distinct from **How ADB Works**, which explains the system and workflow.
+
+The standards should make clear that ADB is an independent, AI-assisted local briefing product rather than an original-reporting newsroom. The human responsible for ADB should be described accurately as the project’s founder/operator (or another deliberately chosen non-journalist role), not as a journalist, reporter, or newsroom professional unless that status later becomes factually true.
+
+The public standard should cover, at minimum:
+
+- factual accuracy and source traceability;
+- neutral treatment of political and contested issues;
+- explicit distinction between proposals, claims, recommendations, and adopted/final actions;
+- visible corrections and a severity model for substantive errors;
+- the boundary between shared editorial coverage and personalization;
+- the role of AI, including that AI output is not itself evidence or a source;
+- human oversight and accountability for the finished product;
+- conflicts of interest and relevant disclosure;
+- independence from sponsors, donors, advertisers, partners, and covered institutions;
+- reader feedback and accountability;
+- versioning, effective dates, and preservation of materially superseded public standards.
+
+A future human-identity disclosure should be transparent without implying professional credentials the operator does not hold. A suitable direction is: ADB is created and operated by a named individual who sets its editorial rules, reviews performance, and is accountable for the product; ADB is not an original-reporting newsroom and the operator does not present himself as a journalist.
+
+This work should draw lessons from established editorial standards without importing newsroom practices that do not fit ADB’s scale or model.
 
 ## Native subscriber forms roadmap
 

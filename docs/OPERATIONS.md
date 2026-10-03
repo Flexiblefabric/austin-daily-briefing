@@ -23,8 +23,8 @@
   - Reporting: exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable.
 - **completion_reconciliation** — development — manual/read-only — `docs/automation-prompts/end-to-end-completion-reconcile.md`
   - Reporting: privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1.
-- **native_customization_cutover** — active — manual gated rollout — `docs/native-customization-production-cutover.md`
-  - Reporting: Gates A–D passed; second browser-originated controlled request cancelled without application; Gate E public cutover remains pending.
+- **native_customization_cutover** — observation — manual gated rollout — `docs/native-customization-production-cutover.md`
+  - Reporting: Gates A–E passed; public native customization is live; Gate F 24-hour production observation is active.
 
 ## Runtime configuration
 

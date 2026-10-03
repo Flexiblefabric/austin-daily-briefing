@@ -2,6 +2,37 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-03 — Native customization public promotion
+
+**Type:** Development-to-production promotion and production routing change  
+**Components:** native customization, first-party confirmation, Cloudflare relay, subscriber operations, public website  
+**Registry impact:** Yes
+
+Austin Daily Briefing promoted the native customization experience to the public production route after controlled production validation.
+
+### Changes
+
+- Promoted the production Apps Script native customization endpoint from controlled-only operation to the live `GOOGLE + NATIVE` intake state.
+- Promoted the first-party confirmation relay at `confirm-prod.austindailybriefing.com` for live production confirmation.
+- Switched the public `customize.html` experience from the DEV endpoint to the production Apps Script endpoint.
+- Removed the Controlled DEV presentation from the public customization page.
+- Retained the Google customization form as an explicit fallback/operator path during the observation window.
+- Preserved Production Subscriber Operations as the sole owner of applying confirmed native customization payloads to Profiles / Preferences.
+- Preserved single-use confirmation, hashed-token storage, relay HMAC validation, and the existing production identity/safety gates.
+- Synchronized the Daily Briefing and Production Health Watchdog scheduler wrappers to their current native-compatible canonical specification IDs before public cutover.
+- Advanced FORM-6 to Gate F observation.
+
+### Validation
+
+- Gates A–D completed before promotion.
+- The first controlled production native request completed Pending → Confirmed → Applied exactly once.
+- A second browser-originated control request was explicitly cancelled without application.
+- Before cutover there were no unintended Pending or Confirmed native production requests.
+- Production database Intake Mode, intake Processor Mode, and Release Config Processor Mode read back as `GOOGLE + NATIVE`.
+- The production cutover state read back as live for Google + native customization and briefing delivery.
+- The public production endpoint and dedicated confirmation relay had already passed signed-relay and CORS validation.
+- The Google customization fallback remains available during Gate F.
+
 ## 2026-10-03 — Controlled native customization and project-state reconciliation
 
 **Type:** Production architecture reconciliation and controlled-rollout hardening  

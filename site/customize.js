@@ -99,7 +99,7 @@
 
   if (!endpointPattern.test(endpoint)) {
     submitButton.disabled = true;
-    setStatus('notice', 'DEV browser submission is not configured yet.');
+    setStatus('notice', 'Customization is temporarily unavailable. Please use the fallback form or try again later.');
     return;
   }
 

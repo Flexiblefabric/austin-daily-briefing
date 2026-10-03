@@ -3,7 +3,7 @@
 > Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.
 
 - Schema version: `1.2`
-- Registry version: `2026-10-03.1`
+- Registry version: `2026-10-03.2`
 - Last reviewed: `2026-10-03`
 - Production status: **live**
 - Public site: https://austindailybriefing.com/
@@ -19,8 +19,8 @@
 - **email_delivery** — live — Resend
 - **reply_routing** — live — Cloudflare Email Routing
 - **website** — live — GitHub Pages
-- **native_customization_intake** — controlled production — Google Apps Script
-- **customization_confirmation_relay** — controlled production — Cloudflare Workers
+- **native_customization_intake** — live — Google Apps Script
+- **customization_confirmation_relay** — live — Cloudflare Workers
 
 ## Automation
 

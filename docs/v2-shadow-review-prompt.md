@@ -2,11 +2,11 @@
 
 **Specification ID:** `ADB-V2-SHADOW-0.3`  
 **Weight fingerprint:** `20-20-15-15-10-10-10`  
-**Status:** Development specification retained for reference; evidence collection complete; promotion review pending  
+**Status:** Archived evaluation specification; production promoted 2026-10-03, effective 2026-10-04  
 **Adopted:** 2026-09-22  
 **Canonical repository path:** `docs/v2-shadow-review-prompt.md`
 
-This file is the authoritative prompt and scoring contract for manual Austin Daily Briefing V2 story-selection shadow reviews. The saved ChatGPT task is an execution copy. If the task prompt, a prior chat, or a run-time interpretation conflicts with this file, this file controls. Do not change scoring weights, thresholds, override meanings, section boundaries, or output requirements during a run. Proposed changes belong in the evaluation notes and require an explicit revision to this file.
+This file preserves the historical scoring contract for the completed manual V2 shadow reviews. Production uses docs/v2-selection-spec.md; do not use the rules below as production instructions. The saved ChatGPT task is an execution copy. If the task prompt, a prior chat, or a run-time interpretation conflicts with this file, this file controls. Do not change scoring weights, thresholds, override meanings, section boundaries, or output requirements during a run. Proposed changes belong in the evaluation notes and require an explicit revision to this file.
 
 ## Execution prompt
 

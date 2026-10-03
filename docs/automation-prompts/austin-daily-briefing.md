@@ -1,27 +1,32 @@
 # Austin Daily Briefing — Canonical Automation Prompt
 
-**Specification ID:** `ADB-DAILY-PROD-1.3`
-**Lifecycle:** Active production  
+**Specification ID:** `ADB-DAILY-PROD-2.0`
+**Lifecycle:** Active — first edition 2026-10-04  
 **Schedule:** Daily at 08:00 America/Chicago  
 **Scheduler task ID:** `6a91bd2144d081918d9d54d5c14d1175`  
 **Canonical path:** `docs/automation-prompts/austin-daily-briefing.md`
 
-2026-09-27 operational correction: current-main retrieval and an exact daily template contract are required before queue writes or success reporting.
+Promoted with user authorization on 2026-10-03 America/Chicago. First effective edition: 2026-10-04 at the normal 08:00 America/Chicago generation cycle. See docs/v2-promotion-2026-10-03.md for release evidence and rollback.
 
 This file is the durable source for the production morning-generation task. The scheduler copy is disposable. If a scheduler copy is lost, recreate it from this file and record the new task ID in `PROJECT_STATE.json`. Do not store subscriber addresses, administrator addresses, credentials, or tokens in this public repository.
 
 ## Execution prompt
 
-SOURCE RETRIEVAL
-Before production work, read this exact file from current GitHub `main` using the connected GitHub contents API. The raw.githubusercontent.com URL may be consulted, but a cached, stale, or unavailable raw response must not replace the current `main` copy. Require Specification ID ADB-DAILY-PROD-1.3 and the supporting standards named in the scheduler prompt. If the current `main` copy or a required standard cannot be verified, stop this attempt and report the specific retrieval failure. Never treat an unverified cached copy as production authorization.
+EFFECTIVE DATE
+Use this version only for edition dates on or after 2026-10-04 America/Chicago. Before that date, stop without research, queue or history writes. Promotion does not authorize an extra edition or regeneration of the promotion-day briefing.
 
-Produce and queue the Austin Daily Briefing each morning from the authorized production subscriber state. Google Forms remain the public intake path during controlled native staging. The Resend Apps Script dispatcher—not this automation—owns external delivery.
+SOURCE RETRIEVAL
+Resolve the current main commit through the GitHub API, then retrieve this prompt and its required standards at that exact commit. Check returned blob identity against that revision when a mutable-ref response appears stale. A stale cached main response must not cause execution against an older contract.
+Before production work, read this exact file from current GitHub `main` using the connected GitHub contents API. The raw.githubusercontent.com URL may be consulted, but a cached, stale, or unavailable raw response must not replace the current `main` copy. Require Specification ID ADB-DAILY-PROD-2.0, docs/v2-selection-spec.md with Specification ID ADB-V2-SELECT-1.0, and the supporting standards named in the scheduler prompt. If the current `main` copy or a required standard cannot be verified, stop this attempt and report the specific retrieval failure. Never treat an unverified cached copy as production authorization.
+
+Produce and queue the Austin Daily Briefing each morning from the authorized production subscriber state. Native customization is the public customization path; the Google customization form remains an operator/fallback path during observation. Other intake routes follow the current production configuration. The Resend Apps Script dispatcher—not this automation—owns external delivery.
 
 AUTHORITATIVE DATA
 - Production database: Google Sheet ID 1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0.
 - Production intake reference: Google Sheet ID 1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho.
 - Public website: https://austindailybriefing.com/
-- Customize form: https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform
+- Customize page: https://austindailybriefing.com/customize.html
+- Customize fallback form: https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform
 - Manage form: https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform
 Never query, fetch, synchronize, or write Jotform. Historical Jotform IDs may remain as audit history only. Never read DEV or migration-rehearsal workbooks.
 
@@ -34,11 +39,12 @@ Generate and queue one edition for every uniquely resolved eligible Active profi
 RECIPIENT AND PROFILE RULES
 Read Subscribers, Profiles, Preferences, Interest Catalog, Settings, Environment, and the previous 14 days of Briefing History. Eligible delivery records are subscribers whose Status is exactly Active and whose linked profile is uniquely resolved. Exclude Admin Hold, Paused, Unsubscribed, unknown, and ambiguous records. Personalize by independent Profile ID, never by delivery email. Read all 23 active topic preferences plus More for You Volume, Summary Style, and Why It Matters Length. Interpret High as strong priority, Normal as include when genuinely useful, and Off as exclude from personalized content. Fewer/Standard/More controls approximate personalized item count; Concise/Standard/Explanatory controls summary depth; Brief/Standard/Detailed controls explanation depth. Use Standard only when no saved style value exists. Generate one version per eligible Profile ID and queue that version for its uniquely resolved Active delivery address.
 
-NEWS AND SOURCE STANDARD
-Search current official/primary sources and credible independent reporting. Prefer Austin, Travis County, and Central Texas primary sources for facts, then Reuters/AP or established local reporting for independent context. Replace inaccessible, stale, blocked, or paywalled sources; never use an inaccessible source as the sole support for a claim. Omit a beat when no trustworthy current item exists. Rank by local impact, freshness, consequence, actionability, and novelty. Normally use no more than two Top Stories from one meeting, agenda, press release, or underlying event. Clearly distinguish Austin-specific items from broader Texas/Central Texas items.
+V2 SELECTION CONTRACT
+Read and follow docs/v2-selection-spec.md (ADB-V2-SELECT-1.0) from current GitHub main before research. Require shared fingerprint 20-20-15-15-10-10-10 and MFY fingerprint 25-25-20-10-10-10. It is authoritative for sourcing eligibility, discovery, scoring, section placement, material change, freshness and selection controls. Stop on a missing or inconsistent contract.
 
-REPEAT CONTROL
-Review at least 14 days of Briefing History before choosing stories, events, or personalized items. Avoid repeats using Normalized Key plus headline/topic similarity. Repeat only for a material development such as a vote, deadline, funding decision, lawsuit, construction phase, new data, hearing, cancellation, or comparable change. State what changed and record Material Update=true.
+Use actual published production history at cutover, never counterfactual shadow selections. Shared items require score >=60. MFY requires score >=60, reader value >=15/25, substance >=5/10, and enabled-interest fit. Ordinary MFY variety allows at most 5 total-score points displacement; one optional Discovery Promotion per profile allows at most 10. Both retain the maximum 3-point reader-value drop and all eligibility gates. Never add promotion bonus points.
+
+Verify actual substantive changes before marking repeats Material Update=true. An already announced hearing, meeting or deadline arriving today is not a material change. Apply Freshness Veto only after a material repeat is scored. Independently search Under the Radar; permit it to be empty. Preserve distinct consequential shared investigations despite broad category overlap. Add no reader-facing scoring, resource or discovery labels. Respect saved volume as a capacity guide and never add filler.
 
 ISSUE STRUCTURE
 Subject: Austin Daily Briefing — [Month Day, Year].
@@ -47,11 +53,13 @@ Follow `docs/editorial-system.md` and `docs/newsletter-component-spec.md` for re
 Use about five shared Top Stories. Featured Top Story is visual hierarchy only and still counts as one of those Top Stories. Under the Radar is an independent discovery lane and may be empty. More for You is the only personalized editorial section and should use the required orientation line `Selected based on your saved interests.` At Standard volume, use roughly 3–5 genuinely useful personalized items and adjust by the saved volume. Austin Ahead appears every standard edition and uses the required orientation line `What to attend, watch, and plan around in the days ahead.` Each Austin Ahead item receives exactly one primary label: GO, WATCH, or PLAN. Labels are mutually exclusive per item, but multiple items in the same edition may share a label. On Friday only, include a This Week in Austin recap of no more than three concise points. Do not add filler or repeat a Top Story in More for You without a genuinely distinct angle.
 
 ACTIVE WHAT'S NEW NOTICE
-Release key: newsletter-redesign-v0-1
-Expires after: 2026-09-28 America/Chicago
-Headline/label context: Austin Daily Briefing has a new look.
-Primary copy: Austin Daily Briefing has a new look. The redesigned briefing uses clearer story hierarchy, a more distinct Why It Matters treatment, Austin Ahead for near-term utility, and easier subscriber controls. The editorial mission has not changed, and no action is required.
-For each eligible profile, include this What's New note only when the current America/Chicago date is on or before 2026-09-28 and that Profile ID has no Briefing History row with Normalized Key=newsletter-redesign-v0-1. If included, append one matching Briefing History row for that profile with Section=What's New, Category=Product Update, Normalized Key=newsletter-redesign-v0-1, Headline=Austin Daily Briefing has a new look, blank Source URL, Material Update=FALSE, Delivery Status=Pending, blank Provider Message ID, and a concise note identifying the reader-facing redesign announcement. Once recorded for that profile, do not repeat it. After the expiry date, omit it even if no prior history row exists.
+Release key: v2-selection-2026-10-04
+Eligible edition date: 2026-10-04 America/Chicago only
+Expires after: 2026-10-04 America/Chicago
+Headline: A sharper briefing, with more to discover.
+Primary copy: Starting today, Austin Daily Briefing uses a refined selection process to give consequential Austin stories closer attention and keep repeat coverage focused on meaningful new information. More for You now puts greater emphasis on useful, varied picks tied to your saved interests, including worthwhile resources that do not depend on a breaking-news hook. Under the Radar remains reserved for important information that is easy to miss. Your preferences still apply, and no action is required.
+Public explanation: https://austindailybriefing.com/whats-new.html#selection-update
+Include the exact primary copy as one compact What's New paragraph, with an optional understated link to the public explanation, in HTML and equivalent plain text. For each eligible profile, include only when the edition date AND current America/Chicago date are 2026-10-04 and that profile has no Briefing History row with Normalized Key=v2-selection-2026-10-04, regardless of delivery status. Do not append or resend an edition just to deliver the notice. If included, append one matching Briefing History row for that exact Run ID and Profile ID with Section=What's New, Category=Product Update, Normalized Key=v2-selection-2026-10-04, Headline=A sharper briefing, with more to discover, Source URL=https://austindailybriefing.com/whats-new.html#selection-update, Material Update=FALSE, Delivery Status=Pending, blank Provider Message ID, and concise Notes identifying the V2 reader announcement. Preserve existing queue/history duplicate checks. After October 4 omit the notice even if no prior notice history exists. No dedicated announcement email.
 
 EMAIL FORMAT
 Generate mobile-safe HTML plus equivalent plain text conforming to `docs/newsletter-component-spec.md` and `docs/source-link-standard.md`. Use the approved durable brand assets from `main`:
@@ -68,6 +76,8 @@ SOURCE-LINK PRESENTATION
 Follow `docs/source-link-standard.md` (`ADB-LINKS-1.0`). For every Top Story, Under the Radar item, More for You item, and sourced Friday recap item, keep the headline unlinked and place visible publisher-named source links after the summary and Why It Matters. Use `Source: [Publisher] →` for each editorial source; repeat the complete label for multiple sources. Do not use generic or document-type-only labels such as `Read more`, `Read the report`, `Read the announcement`, `See the details`, or `Agenda`. Source badges identify source type but never replace publisher attribution. Use `Event details: [Organizer or venue] →` for events and `Forecast: National Weather Service →` for weather. In HTML, make each source link an underlined inline-block with strong contrast, at least 16px text, comfortable vertical padding, and inline CSS. In plain text, use the same label and publisher, followed on the next line by the raw URL. Preserve the same destinations and order in HTML and plain text.
 
 PRE-QUEUE VALIDATION
+Complete the V2 selection contract's internal audit and pre-queue checks, including both score sums, all MFY minimums, actual-history repeat controls, independent Under the Radar provenance, source status, and documented displacement limits. Keep internal scores and control labels out of reader-facing copy.
+
 For each profile verify: subscriber and profile are uniquely eligible and Active; the approved masthead and footer asset URLs are present; no Off topic appears in More for You; saved volume and depth settings are reflected; More for You and Austin Ahead orientation lines are present when those sections render; every Austin Ahead item has exactly one GO/WATCH/PLAN label; What's New appears only when the active release-notice rule qualifies; every source/event link was reviewed; no inaccessible source is sole support; every editorial item has visible publisher attribution; no prohibited generic source label remains; the live Feedback & Corrections destination is used; HTML and plain text contain the same destinations in the same order; repeat rules are satisfied; HTML is intact; plain text contains the same essentials; mobile Weather can stack without squeezing the copy; and the subject is correct. Remove or replace a failing optional item. Abort for a safety-gate or recipient/profile-identity failure.
 
 QUEUE AND HISTORY

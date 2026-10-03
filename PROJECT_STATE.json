@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-03.2",
+  "registry_version": "2026-10-03.3",
   "last_reviewed": "2026-10-03",
   "project": {
     "name": "Austin Daily Briefing",
@@ -108,7 +108,11 @@
       "task_id": "6a91bd2144d081918d9d54d5c14d1175",
       "scheduler_state": "active",
       "prompt_path": "docs/automation-prompts/austin-daily-briefing.md",
-      "specification_id": "ADB-DAILY-PROD-1.3"
+      "specification_id": "ADB-DAILY-PROD-2.0",
+      "selection_specification_id": "ADB-V2-SELECT-1.0",
+      "selection_path": "docs/v2-selection-spec.md",
+      "effective_edition_date": "2026-10-04",
+      "promotion_record": "docs/v2-promotion-2026-10-03.md"
     },
     "welcome_dispatch": {
       "cadence": "hourly",
@@ -149,15 +153,15 @@
       "form_validation": "after form changes only"
     },
     "v2_shadow_review": {
-      "status": "review",
+      "status": "retired",
       "cadence": "manual only",
       "runbook": "docs/v2-shadow-review-prompt.md",
       "specification_id": "ADB-V2-SHADOW-0.3",
       "weight_fingerprint": "20-20-15-15-10-10-10",
-      "task_status": "held — repository only",
+      "task_status": "paused historical scheduler copy; no scheduled runs",
       "production_boundary": "read-only; no queue, delivery, configuration, or data writes",
       "reporting": "V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation",
-      "verification": "16 comparable shadow runs recorded through 2026-10-03; evidence collection complete; formal promotion-readiness review pending"
+      "verification": "16 comparable runs through 2026-10-03; focused validation complete; production promoted for 2026-10-04. Historical shadow rules are not production dependencies."
     },
     "completion_observation": {
       "status": "retired",
@@ -190,6 +194,13 @@
       "runbook": "docs/native-customization-production-cutover.md",
       "reporting": "Gates A–E passed; public native customization is live; Gate F 24-hour production observation is active",
       "verification": "production native intake and first-party confirmation relay are live; Google customization form remains available as fallback during observation"
+    },
+    "v2_production_observation": {
+      "status": "observation",
+      "cadence": "first normal cycle on 2026-10-04",
+      "runbook": "docs/v2-promotion-2026-10-03.md",
+      "reporting": "Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend",
+      "verification": "Pending first production cycle; promotion is not delivery evidence"
     }
   },
   "runtime_properties": [
@@ -304,7 +315,9 @@
     "native_customization_cutover": "docs/native-customization-production-cutover.md",
     "native_customization_design": "docs/native-customization-design.md",
     "subscriber_security_baseline": "docs/subscriber-data-security-baseline.md",
-    "data_retention": "docs/data-retention.md"
+    "data_retention": "docs/data-retention.md",
+    "v2_selection_spec": "docs/v2-selection-spec.md",
+    "v2_promotion": "docs/v2-promotion-2026-10-03.md"
   },
   "governance": {
     "registry_is_authoritative": true,

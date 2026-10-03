@@ -2,6 +2,18 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-03 — V2 story-selection production promotion
+
+**Type:** Development-to-production promotion  
+**Components:** daily generation, editorial selection, website, reader communication  
+**Registry impact:** Yes — 2026-10-03.3
+
+Promoted ADB-DAILY-PROD-2.0 with ADB-V2-SELECT-1.0 for the normal October 4 08:00 America/Chicago edition. Incorporates the approved separate MFY rubric, 60-point threshold, 10-point discovery displacement, freshness/material-change controls, independent Under the Radar search and verified evergreen discovery. No added reader-facing labels or filler.
+
+Updated canonical authority, scheduler contract, lifecycle records, roadmap, generated documentation and immutable snapshot. Updated How ADB Works, public What's New and homepage preview; the next briefing has a date-limited, profile-deduplicated What's New note. Existing delivery, template, queue/history, native customization and Friday behavior remain unchanged.
+
+Validation and exact rollback pair: [V2 promotion record](v2-promotion-2026-10-03.md). First production selection/queue/downstream delivery observation remains pending; promotion is not evidence that an edition has been delivered.
+
 ## 2026-10-03 — Native customization public promotion
 
 **Type:** Development-to-production promotion and production routing change  

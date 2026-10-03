@@ -150,6 +150,25 @@ Controlled request sequence:
 
 Abort Gate D immediately on any identity, schema, environment, linkage, or exactly-once mismatch.
 
+### Gate D result
+
+Status: **Passed**.
+
+Controlled production validation completed successfully:
+
+- exactly one native production request was staged for the authorized controlled profile;
+- the request entered `Pending Confirmation` and the linked verification entered `Pending`;
+- the first-party confirmation email was delivered;
+- an environment-alias defect in the first production confirmation link (`env=prod` vs canonical `production`) was identified before token consumption, fixed in PR #50, and the original single-use token remained valid;
+- confirmation then moved both records to `Confirmed`;
+- the controlled native payload applied one preference change to P001 and updated only that profile's native submission metadata;
+- request and verification then moved to `Applied` with matching application timestamps;
+- a post-application eligibility check found no remaining eligible copy of the request, demonstrating the exactly-once guard for the controlled request;
+- the native request identifier appears only on the intended P001 preference row and P001 profile metadata;
+- no unrelated subscriber/profile mutation was identified in the controlled verification.
+
+The controlled preference change is test state and may be restored separately before or during Gate E.
+
 ## Gate E — public cutover
 
 Only after Gate D passes:

@@ -1,4 +1,7 @@
-# Subscriber Data Security Baseline
+# SUPERSEDED — Subscriber Data Security Baseline
+
+> This document is historical. The approved and authoritative subscriber-data security standard is [`subscriber-data-security-baseline.md`](subscriber-data-security-baseline.md), with retention governed by [`data-retention.md`](data-retention.md). Do not use this file as a current policy source.
+
 
 **Status:** Active baseline  
 **Scope:** Austin Daily Briefing subscriber email addresses, subscription state, preferences, verification records, delivery metadata, and related operational history  

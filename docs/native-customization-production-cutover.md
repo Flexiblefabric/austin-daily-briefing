@@ -172,7 +172,19 @@ The controlled preference change from the first request is test state and may be
 
 ## Gate E — public cutover
 
-Only after Gate D passes:
+### Gate E preflight
+
+Before changing the public Customize route:
+
+- require no unintended Pending or Confirmed controlled native request;
+- align production Intake Mode, intake Processor Mode, and Release Config Processor Mode with the intended rollout state;
+- confirm the canonical Daily Briefing and Production Health Watchdog safety gates permit that authorized intake state;
+- synchronize the active task wrappers to the canonical Daily Briefing and Watchdog specification IDs;
+- reconcile `PROJECT_STATE.json`, generated internal documentation, changelog, and immutable snapshot;
+- preserve Production Subscriber Operations as the only owner that applies confirmed native payloads to Profiles / Preferences;
+- keep the Google customization form available as fallback during observation.
+
+Only after this preflight passes:
 
 - change `customize-config.js` from DEV endpoint to production native endpoint;
 - remove Controlled DEV presentation from `customize.html`;

@@ -2,7 +2,7 @@
 
 **Specification ID:** `ADB-V2-SHADOW-0.3`  
 **Weight fingerprint:** `20-20-15-15-10-10-10`  
-**Status:** Development / manual shadow testing  
+**Status:** Development specification retained for reference; evidence collection complete; promotion review pending  
 **Adopted:** 2026-09-22  
 **Canonical repository path:** `docs/v2-shadow-review-prompt.md`
 

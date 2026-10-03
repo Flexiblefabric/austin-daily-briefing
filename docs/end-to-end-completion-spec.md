@@ -1,7 +1,7 @@
 # End-to-end completion contract
 
 **Specification ID:** `ADB-COMPLETION-0.1`  
-**Status:** Development / read-only design  
+**Status:** Active completion contract; first intake-incomplete incident class promoted, full reconciler remains manual/read-only  
 **Baseline observed:** 2026-09-19  
 **Production writes or alerts enabled:** No
 

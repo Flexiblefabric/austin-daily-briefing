@@ -32,7 +32,7 @@ Use these states:
 | OPS-10 | Monitoring rollout | Integrate approved completion/task reconciliation into existing 09:30 watchdog | Blocked | Completion intake-incomplete class is now integrated; task/trigger reconciliation portion remains blocked by OPS-8 and safe controlled mismatch testing |
 | OPS-11 | Monitoring rollout | Observe first two promoted production cycles and one failure/recovery path | Blocked | OPS-10 |
 | V2-1 | V2 selection engine | Resume and complete shadow evidence collection | Complete | Final evidence run completed 2026-10-03; 16 comparable runs recorded |
-| V2-2 | V2 selection engine | Add counterfactual V2 shadow-history continuity to evaluation | Complete | Added in `ADB-V2-SHADOW-0.3`; remaining runs use V2's own prior shared selections for repeat control |
+| V2-2 | V2 selection engine | Add counterfactual V2 shadow-history continuity to evaluation | Complete | Added in `ADB-V2-SHADOW-0.3`; later 0.3 runs used V2's own prior shared selections for repeat control |
 | V2-3 | V2 selection engine | Tighten proposal/adoption and source-verification language | Complete | `0.3` requires explicit procedural status; scoring model unchanged |
 | V2-4 | V2 selection engine | Align legacy event-section terminology with current Austin Ahead naming | Complete | Canonical shadow prompt now uses Austin Ahead |
 | V2-5 | V2 selection engine | Reconcile registry V2 specification ID with canonical shadow specification | Complete | Registry now tracks `ADB-V2-SHADOW-0.3` |
@@ -42,7 +42,7 @@ Use these states:
 | WEB-1 | Website | Correct Open Graph/Twitter image references to the active `social-preview.png` asset | Complete | Home, How ADB Works, and What's New now point to the current PNG card |
 | WEB-2 | Website | Close out website-redesign implementation documentation after successful PR #23 deployment | Complete | Implementation record now reflects production promotion and successful Pages deployment |
 | WEB-3 | Website | Promote website design specification status from draft to approved/implemented | Complete | Canonical design spec status reconciled |
-| WEB-4 | Website | Record a concise post-fix live-site verification | Review | After WEB-1 deployment |
+| WEB-4 | Website | Record a concise post-fix live-site verification | Review | GitHub Pages deployment is successful; independent live-route probe remains to be recorded |
 | FORM-1 | Native subscriber forms | Define native-form architecture, security model, and migration rules while preserving the Google Sheets + Apps Script control plane | Complete | Architecture/security model implemented in DEV and validated through controlled production Gate D |
 | FORM-2 | Native customization | Design the first-party customization page and map every field to the existing customization intake schema | Complete | Page design approved; browser submission client passed controlled DEV website QA |
 | FORM-3 | Native customization | Build a non-production Apps Script intake endpoint that accepts validated website submissions and writes to the existing customization intake path | Complete | DEV endpoint deployed and controlled request/confirmation/application flow passed |

@@ -1,6 +1,6 @@
 # Austin Daily Briefing — Canonical Automation Prompt
 
-**Specification ID:** `ADB-DAILY-PROD-1.2`
+**Specification ID:** `ADB-DAILY-PROD-1.3`
 **Lifecycle:** Active production  
 **Schedule:** Daily at 08:00 America/Chicago  
 **Scheduler task ID:** `6a91bd2144d081918d9d54d5c14d1175`  
@@ -26,7 +26,7 @@ AUTHORITATIVE DATA
 Never query, fetch, synchronize, or write Jotform. Historical Jotform IDs may remain as audit history only. Never read DEV or migration-rehearsal workbooks.
 
 SAFETY GATES
-Before research, generation, or delivery, require Environment=PRODUCTION, Database ID exactly 1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0, Schema Baseline=GOOGLE-23-1, Intake Mode=GOOGLE ONLY, Production Cutover State explicitly permitting live briefing delivery, and Allow External Delivery=TRUE. Require the intake workbook to identify the same production database and Processor Mode=GOOGLE ONLY. Abort without sending or writing history on any identity, schema, or mode mismatch.
+Before research, generation, or delivery, require Environment=PRODUCTION, Database ID exactly 1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0, Schema Baseline=GOOGLE-23-1, Production Cutover State explicitly permitting live briefing delivery, and Allow External Delivery=TRUE. Require production Intake Mode to be exactly one of GOOGLE ONLY, GOOGLE + NATIVE CONTROLLED, or GOOGLE + NATIVE. Require the intake workbook to identify the same production database and Processor Mode to be the same authorized value. Controlled/native modes change subscriber-intake processing only; they do not change briefing eligibility, queue ownership, or Resend delivery ownership. Abort without sending or writing history on any identity, schema, cutover-state, or unauthorized-mode mismatch.
 
 LIVE RESEND DELIVERY MODE
 Generate and queue one edition for every uniquely resolved eligible Active profile. The Resend Apps Script dispatcher is the sole owner of external delivery. Use Message ID DAILY-LIVE:[Profile ID]:[Run ID]. Never send directly through Gmail or Resend, and never recreate an existing Message ID.

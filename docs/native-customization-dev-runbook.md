@@ -1,6 +1,6 @@
 # Native Customization DEV Runbook
 
-**Status:** Staged  
+**Status:** DEV QA complete; retained as historical/reference runbook  
 **Applies to:** `apps-script/NativeCustomizationDev.gs`, `apps-script/NativeCustomizationDevQa.gs`  
 **Production writes:** Prohibited
 

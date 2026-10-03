@@ -16,13 +16,15 @@
 - **domain_health_check** — available — manual only — `docs/domain-health-check.md`
   - Reporting: compact pass/fail table with a brief explanation for each failure.
   - Form validation: after form changes only.
-- **v2_shadow_review** — development — manual only — `docs/v2-shadow-review-prompt.md`
+- **v2_shadow_review** — review — manual only — `docs/v2-shadow-review-prompt.md`
   - Reporting: V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation.
 - **completion_observation** — retired — one-time; completed 2026-09-20 — `docs/automation-prompts/end-to-end-completion-observation.md`
 - **task_reconciliation** — available — manual/read-only — `docs/task-reconciliation.md`
   - Reporting: exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable.
 - **completion_reconciliation** — development — manual/read-only — `docs/automation-prompts/end-to-end-completion-reconcile.md`
   - Reporting: privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1.
+- **native_customization_cutover** — active — manual gated rollout — `docs/native-customization-production-cutover.md`
+  - Reporting: Gates A–D passed; second browser-originated controlled request cancelled without application; Gate E public cutover remains pending.
 
 ## Runtime configuration
 
@@ -33,6 +35,16 @@
 - `ADB_RESEND_DAILY_MODE` — config — daily dispatcher CONTROLLED/LIVE mode
 - `ADB_RESEND_DAILY_ALLOWLIST` — private_config — controlled daily-delivery allowlist
 - `ADB_SENDER_CHANGE_APPROVAL` — config — manual sender-change announcement approval gate
+- `ADB_NATIVE_CUSTOMIZE_PROD_ENABLED` — config — production native customization endpoint enable gate
+- `ADB_NATIVE_CUSTOMIZE_PROD_MODE` — config — production native customization CONTROLLED/LIVE mode
+- `ADB_NATIVE_CUSTOMIZE_PROD_WEB_APP_URL` — private_config — production native customization Apps Script deployment URL
+- `ADB_NATIVE_CUSTOMIZE_PROD_SITE_ORIGIN` — config — allowed ADB website origin for native customization
+- `ADB_NATIVE_CUSTOMIZE_PROD_SEND_EMAIL` — config — production native confirmation email enable gate
+- `ADB_NATIVE_CUSTOMIZE_PROD_ALLOWLIST` — private_config — controlled production native-customization recipient allowlist
+- `ADB_NATIVE_CUSTOMIZE_PROD_CONFIRM_PAGE_URL` — config — first-party confirmation page URL
+- `ADB_NATIVE_CUSTOMIZE_PROD_RELAY_SECRET` — secret — Apps Script HMAC secret for production confirmation relay
+- `ADB_APPS_SCRIPT_CONFIRM_URL` — secret — Cloudflare Worker secret containing production Apps Script relay target
+- `ADB_CONFIRM_RELAY_SECRET` — secret — Cloudflare Worker HMAC secret matching the production Apps Script relay secret
 
 No runtime property values belong in this repository. Secret and private configuration values remain in their external runtime stores.
 

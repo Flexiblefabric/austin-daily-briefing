@@ -15,11 +15,11 @@ ADB combines important local reporting, official information, community developm
 ADB is live in production.
 
 - Morning briefing generation runs daily at **08:00 America/Chicago**.
-- Subscriber operations run against the Google-only production intake and subscriber system.
+- Google Forms remain the public subscriber intake path. Production Subscriber Operations also supports a controlled native-customization path while Gate E remains pending.
 - Daily briefing and Welcome messages are queued in the production control plane and delivered through **Resend**.
 - Replies to `briefing@austindailybriefing.com` are handled through **Cloudflare Email Routing**.
 - The public website is deployed through **GitHub Pages**.
-- A production health watchdog checks subscriber operations, morning generation, daily Resend delivery, and Welcome queue health.
+- A production health watchdog checks subscriber operations, morning generation, daily Resend delivery, Welcome queue health, and the first promoted signup-completion incident class.
 - The current newsletter identity and redesigned Welcome email are promoted to production.
 
 The production architecture and automation state are summarized in [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), and [`docs/OPERATIONS.md`](docs/OPERATIONS.md).
@@ -60,10 +60,12 @@ ADB is not affiliated with the City of Austin, another government agency, or the
 The production system is intentionally small and modular:
 
 ```text
-Google Forms
-    │
-    ▼
-Google Sheets + Apps Script control plane
+Google Forms ───────────────┐
+                            │
+Controlled native customize ├──► Google Sheets + Apps Script control plane
++ first-party confirmation  │
+                            │
+                            ▼
     ├── subscriber intake and preferences
     ├── briefing queue and history
     └── operational status
@@ -82,9 +84,10 @@ operations            │
                       ▼
               Subscriber inboxes
 
-Replies ──► Cloudflare Email Routing
-Website ──► GitHub Pages
-Health  ──► Production watchdog
+Native confirmation ──► Cloudflare Worker relay ──► production Apps Script
+Replies ───────────────► Cloudflare Email Routing
+Website ───────────────► GitHub Pages
+Health  ───────────────► Production watchdog
 ```
 
 Key boundaries:
@@ -93,6 +96,7 @@ Key boundaries:
 - Apps Script dispatchers own external delivery through Resend.
 - Subscriber operations and editorial generation are separate workflows.
 - Production and development data are distinct.
+- Controlled production native customization is isolated from public rollout; the Google customization form remains the public fallback until Gate E.
 - Secrets and private configuration values are not stored in this repository.
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the generated architecture view.
@@ -102,7 +106,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the generated architectur
 | Path | Purpose |
 | --- | --- |
 | [`PROJECT_STATE.json`](PROJECT_STATE.json) | Authoritative technical registry for current project state |
-| [`apps-script/`](apps-script/) | Production Resend transport plus controlled QA helpers |
+| [`apps-script/`](apps-script/) | Production Resend transport, native-customization endpoints, and controlled QA helpers |
 | [`assets/brand/`](assets/brand/) | Approved production masthead and compact brand assets |
 | [`design/`](design/) | Static newsletter and Welcome reference/QA payloads |
 | [`docs/`](docs/) | Editorial, design, component, operational, release, and governance documentation |
@@ -111,6 +115,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the generated architectur
 | [`docs/snapshots/`](docs/snapshots/) | Immutable point-in-time captures of material technical state |
 | [`scripts/`](scripts/) | Documentation registry and synchronization tooling |
 | [`site/`](site/) | Public static website deployed to GitHub Pages |
+| [`workers/`](workers/) | Cloudflare Worker source for first-party customization confirmation relays |
 | [`.github/workflows/`](.github/workflows/) | Website deployment and documentation validation workflows |
 
 ## Canonical specifications
@@ -148,7 +153,9 @@ Operational details are documented in [`docs/OPERATIONS.md`](docs/OPERATIONS.md)
 
 Production is live. Development work is kept separate until explicitly promoted through controlled QA and release checks.
 
-A major current development track is the **V2 story-selection engine**, which is evaluated through manual, read-only shadow reviews against completed production briefings. Shadow work does not write to production, queue messages, or change subscriber state.
+The **V2 story-selection engine** has completed its manual, read-only shadow evidence program and is awaiting a separate formal promotion-readiness review. Shadow work does not write to production, queue messages, or change subscriber state.
+
+The native customization subsystem has passed controlled production Gates A–D. It is not yet the public customization route; Gate E remains a separately controlled promotion step.
 
 Development status and production boundaries should be read from [`PROJECT_STATE.json`](PROJECT_STATE.json) and the relevant runbooks rather than inferred from branch names alone.
 

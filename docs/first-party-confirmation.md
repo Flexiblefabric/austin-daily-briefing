@@ -1,6 +1,10 @@
 # First-party customization confirmation
 
-Status: controlled DEV implementation.
+Status: DEV implementation complete; controlled production relay deployed; public production cutover pending.
+
+## Current production counterpart
+
+The DEV design below has been carried into the controlled production rollout. Production uses the dedicated `confirm-prod.austindailybriefing.com` relay and the production native Apps Script endpoint. Gate C relay validation and Gate D controlled confirmation passed. Public Customize traffic has not yet been moved to production native intake.
 
 ## Goal
 

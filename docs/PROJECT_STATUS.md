@@ -3,8 +3,8 @@
 > Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.
 
 - Schema version: `1.2`
-- Registry version: `2026-09-23.1`
-- Last reviewed: `2026-09-23`
+- Registry version: `2026-10-03.1`
+- Last reviewed: `2026-10-03`
 - Production status: **live**
 - Public site: https://austindailybriefing.com/
 
@@ -19,6 +19,8 @@
 - **email_delivery** — live — Resend
 - **reply_routing** — live — Cloudflare Email Routing
 - **website** — live — GitHub Pages
+- **native_customization_intake** — controlled production — Google Apps Script
+- **customization_confirmation_relay** — controlled production — Cloudflare Workers
 
 ## Automation
 
@@ -38,5 +40,15 @@
 - `ADB_RESEND_DAILY_MODE` — daily dispatcher CONTROLLED/LIVE mode
 - `ADB_RESEND_DAILY_ALLOWLIST` — controlled daily-delivery allowlist
 - `ADB_SENDER_CHANGE_APPROVAL` — manual sender-change announcement approval gate
+- `ADB_NATIVE_CUSTOMIZE_PROD_ENABLED` — production native customization endpoint enable gate
+- `ADB_NATIVE_CUSTOMIZE_PROD_MODE` — production native customization CONTROLLED/LIVE mode
+- `ADB_NATIVE_CUSTOMIZE_PROD_WEB_APP_URL` — production native customization Apps Script deployment URL
+- `ADB_NATIVE_CUSTOMIZE_PROD_SITE_ORIGIN` — allowed ADB website origin for native customization
+- `ADB_NATIVE_CUSTOMIZE_PROD_SEND_EMAIL` — production native confirmation email enable gate
+- `ADB_NATIVE_CUSTOMIZE_PROD_ALLOWLIST` — controlled production native-customization recipient allowlist
+- `ADB_NATIVE_CUSTOMIZE_PROD_CONFIRM_PAGE_URL` — first-party confirmation page URL
+- `ADB_NATIVE_CUSTOMIZE_PROD_RELAY_SECRET` — Apps Script HMAC secret for production confirmation relay
+- `ADB_APPS_SCRIPT_CONFIRM_URL` — Cloudflare Worker secret containing production Apps Script relay target
+- `ADB_CONFIRM_RELAY_SECRET` — Cloudflare Worker HMAC secret matching the production Apps Script relay secret
 
 Secret and private configuration values are intentionally excluded from the registry and generated documentation.

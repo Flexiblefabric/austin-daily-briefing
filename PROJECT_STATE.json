@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-09-23.1",
-  "last_reviewed": "2026-09-23",
+  "registry_version": "2026-10-03.1",
+  "last_reviewed": "2026-10-03",
   "project": {
     "name": "Austin Daily Briefing",
     "repository": "Flexiblefabric/austin-daily-briefing",
@@ -78,6 +78,18 @@
       "domain": "austindailybriefing.com",
       "workflow_path": ".github/workflows/pages.yml",
       "source_path": "site/"
+    },
+    "native_customization_intake": {
+      "platform": "Google Apps Script",
+      "status": "controlled production",
+      "source_path": "apps-script/NativeCustomizationProd.gs",
+      "public_cutover": "pending Gate E; Google customization form remains the public route"
+    },
+    "customization_confirmation_relay": {
+      "provider": "Cloudflare Workers",
+      "status": "controlled production",
+      "domain": "confirm-prod.austindailybriefing.com",
+      "source_path": "workers/confirmation-relay-prod/"
     }
   },
   "automation": {
@@ -96,7 +108,7 @@
       "task_id": "6a91bd2144d081918d9d54d5c14d1175",
       "scheduler_state": "active",
       "prompt_path": "docs/automation-prompts/austin-daily-briefing.md",
-      "specification_id": "ADB-DAILY-PROD-1.2"
+      "specification_id": "ADB-DAILY-PROD-1.3"
     },
     "welcome_dispatch": {
       "cadence": "hourly",
@@ -122,10 +134,10 @@
       "scheduler_state": "active",
       "task_id": "6aa8401e16a88191ae14ba1b4d6cba6e",
       "prompt_path": "docs/automation-prompts/production-health-watchdog.md",
-      "specification_id": "ADB-WATCHDOG-PROD-2.1",
-      "coverage": "subscriber operations, morning generation, daily Resend delivery, welcome Resend queue health, and staged signup completion intake-incomplete detection",
+      "specification_id": "ADB-WATCHDOG-PROD-2.3",
+      "coverage": "subscriber operations, morning generation, daily Resend delivery, welcome Resend queue health, staged signup completion intake-incomplete detection, and compatibility with controlled/native subscriber-intake modes",
       "alert_transport": "validated Gmail administrator-alert path",
-      "completion_monitoring": "ADB-COMPLETION-PROD-0.1 — intake-incomplete alert class only"
+      "completion_monitoring": "ADB-COMPLETION-PROD-0.1 — intake-incomplete alert class only; other completion findings remain report-only"
     }
   },
   "manual_operations": {
@@ -137,7 +149,7 @@
       "form_validation": "after form changes only"
     },
     "v2_shadow_review": {
-      "status": "development",
+      "status": "review",
       "cadence": "manual only",
       "runbook": "docs/v2-shadow-review-prompt.md",
       "specification_id": "ADB-V2-SHADOW-0.3",
@@ -145,7 +157,7 @@
       "task_status": "held — repository only",
       "production_boundary": "read-only; no queue, delivery, configuration, or data writes",
       "reporting": "V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation",
-      "verification": "canonical prompt preserved in GitHub; no scheduler slot required while held"
+      "verification": "16 comparable shadow runs recorded through 2026-10-03; evidence collection complete; formal promotion-readiness review pending"
     },
     "completion_observation": {
       "status": "retired",
@@ -161,7 +173,7 @@
       "cadence": "manual/read-only",
       "runbook": "docs/task-reconciliation.md",
       "reporting": "exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable",
-      "verification": "manual baseline recorded 2026-09-22; Apps Script trigger state remains separate"
+      "verification": "manual baseline rechecked 2026-10-03; all three registered active ADB task IDs and schedules matched live scheduler metadata; Apps Script trigger state remains separate"
     },
     "completion_reconciliation": {
       "status": "development",
@@ -170,7 +182,14 @@
       "specification_id": "ADB-COMPLETION-RECON-0.1",
       "production_boundary": "read-only; no writes, repairs, sends, alerts, or dispatcher invocation",
       "reporting": "privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1",
-      "verification": "DEV vectors passed 15/15 on 2026-09-22; first production incident class promoted into watchdog 2.1 on 2026-09-23; full reconciler remains manual/read-only"
+      "verification": "DEV vectors passed 15/15 on 2026-09-22; first production incident class remains live in watchdog 2.3; full reconciler remains manual/read-only"
+    },
+    "native_customization_cutover": {
+      "status": "active",
+      "cadence": "manual gated rollout",
+      "runbook": "docs/native-customization-production-cutover.md",
+      "reporting": "Gates A–D passed; second browser-originated controlled request cancelled without application; Gate E public cutover remains pending",
+      "verification": "production native intake and confirmation relay are controlled-only; Google customization form remains public fallback"
     }
   },
   "runtime_properties": [
@@ -208,6 +227,56 @@
       "name": "ADB_SENDER_CHANGE_APPROVAL",
       "sensitivity": "config",
       "purpose": "manual sender-change announcement approval gate"
+    },
+    {
+      "name": "ADB_NATIVE_CUSTOMIZE_PROD_ENABLED",
+      "sensitivity": "config",
+      "purpose": "production native customization endpoint enable gate"
+    },
+    {
+      "name": "ADB_NATIVE_CUSTOMIZE_PROD_MODE",
+      "sensitivity": "config",
+      "purpose": "production native customization CONTROLLED/LIVE mode"
+    },
+    {
+      "name": "ADB_NATIVE_CUSTOMIZE_PROD_WEB_APP_URL",
+      "sensitivity": "private_config",
+      "purpose": "production native customization Apps Script deployment URL"
+    },
+    {
+      "name": "ADB_NATIVE_CUSTOMIZE_PROD_SITE_ORIGIN",
+      "sensitivity": "config",
+      "purpose": "allowed ADB website origin for native customization"
+    },
+    {
+      "name": "ADB_NATIVE_CUSTOMIZE_PROD_SEND_EMAIL",
+      "sensitivity": "config",
+      "purpose": "production native confirmation email enable gate"
+    },
+    {
+      "name": "ADB_NATIVE_CUSTOMIZE_PROD_ALLOWLIST",
+      "sensitivity": "private_config",
+      "purpose": "controlled production native-customization recipient allowlist"
+    },
+    {
+      "name": "ADB_NATIVE_CUSTOMIZE_PROD_CONFIRM_PAGE_URL",
+      "sensitivity": "config",
+      "purpose": "first-party confirmation page URL"
+    },
+    {
+      "name": "ADB_NATIVE_CUSTOMIZE_PROD_RELAY_SECRET",
+      "sensitivity": "secret",
+      "purpose": "Apps Script HMAC secret for production confirmation relay"
+    },
+    {
+      "name": "ADB_APPS_SCRIPT_CONFIRM_URL",
+      "sensitivity": "secret",
+      "purpose": "Cloudflare Worker secret containing production Apps Script relay target"
+    },
+    {
+      "name": "ADB_CONFIRM_RELAY_SECRET",
+      "sensitivity": "secret",
+      "purpose": "Cloudflare Worker HMAC secret matching the production Apps Script relay secret"
     }
   ],
   "documentation": {
@@ -231,7 +300,11 @@
     "completion_observation_result": "docs/end-to-end-completion-observation-result.md",
     "task_reconciliation": "docs/task-reconciliation.md",
     "reader_change_communications": "docs/reader-change-communications.md",
-    "completion_reconciliation_prompt": "docs/automation-prompts/end-to-end-completion-reconcile.md"
+    "completion_reconciliation_prompt": "docs/automation-prompts/end-to-end-completion-reconcile.md",
+    "native_customization_cutover": "docs/native-customization-production-cutover.md",
+    "native_customization_design": "docs/native-customization-design.md",
+    "subscriber_security_baseline": "docs/subscriber-data-security-baseline.md",
+    "data_retention": "docs/data-retention.md"
   },
   "governance": {
     "registry_is_authoritative": true,

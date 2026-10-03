@@ -1,7 +1,11 @@
 # Subscriber Data Security Audit — 2026-09-23
 
 **Scope:** Read-only review of the current Google Drive/Sheets production data plane and documented verification architecture  
-**Result:** No broad Drive access found on production subscriber data. Core operator account protections were manually confirmed. Retention rules are now documented; native-endpoint deployment settings remain a future implementation gate.
+**Result:** No broad Drive access found on production subscriber data. Core operator account protections were manually confirmed. Retention rules were documented. At the time of this audit, native-endpoint deployment settings remained a future implementation gate; that gate was later exercised through controlled DEV and production rollout.
+
+## Historical-status note
+
+This document preserves the 2026-09-23 audit evidence. Native customization subsequently passed DEV QA and controlled production Gates A–D. Current deployment state is governed by `PROJECT_STATE.json`, `subscriber-data-security-baseline.md`, and `native-customization-production-cutover.md`.
 
 ## Verified in this audit
 

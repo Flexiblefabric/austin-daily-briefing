@@ -24,38 +24,38 @@ Use these states:
 | OPS-2 | Completion monitoring | Mark the one-time completion-observation prompt/task lifecycle complete or retired | Complete | Prompt retired; completed task ID recorded in technical registry |
 | OPS-3 | Completion monitoring | Define reusable read-only signup-to-Welcome reconciler state: high-water mark, overlap window, retention, recovery | Complete | Initial implementation uses safer stateless full-scan; future incremental-state rules documented; reusable manual prompt added |
 | OPS-4 | Completion monitoring | Exercise the documented DEV completion test vectors | Complete | 15/15 documented vectors passed in the controlled synthetic DEV harness; mutation guard passed; result recorded in `end-to-end-completion-dev-test-result.md` |
-| OPS-5 | Completion monitoring | Stage the first completion incident class after clean DEV validation | Complete | `Unhealthy — intake incomplete` promoted into `ADB-WATCHDOG-PROD-2.1` after 15/15 DEV vectors, 10/10 alert-policy checks, controlled inbox confirmation, and pre-promotion production baseline review |
-| OPS-6 | Task reconciliation | Reconcile registered active ChatGPT tasks against live scheduler metadata | Complete | 2026-09-22 baseline matches all three registered active ADB tasks |
+| OPS-5 | Completion monitoring | Stage the first completion incident class after clean DEV validation | Complete | `Unhealthy — intake incomplete` originally promoted into `ADB-WATCHDOG-PROD-2.1` after 15/15 DEV vectors, 10/10 alert-policy checks, controlled inbox confirmation, and pre-promotion baseline review; retained in current `ADB-WATCHDOG-PROD-2.3` |
+| OPS-6 | Task reconciliation | Reconcile registered active ChatGPT tasks against live scheduler metadata | Complete | Rechecked 2026-10-03; all three registered active ADB task IDs and schedules matched live scheduler metadata |
 | OPS-7 | Task reconciliation | Define scheduler latency/unavailable-metadata handling and reusable reconciliation report | Complete | Runbook defines health/Unknown behavior, existing component tolerances, and next-run metadata limits |
 | OPS-8 | Task reconciliation | Verify installed Apps Script welcome/daily dispatcher triggers and define trigger-health evidence | Blocked | Requires Apps Script runtime/trigger visibility; queue history alone is insufficient |
 | OPS-9 | Task reconciliation | Test missing/disabled/mismatched task and trigger scenarios without disrupting production | Blocked | OPS-7 and a safe controlled test method |
 | OPS-10 | Monitoring rollout | Integrate approved completion/task reconciliation into existing 09:30 watchdog | Blocked | Completion intake-incomplete class is now integrated; task/trigger reconciliation portion remains blocked by OPS-8 and safe controlled mismatch testing |
 | OPS-11 | Monitoring rollout | Observe first two promoted production cycles and one failure/recovery path | Blocked | OPS-10 |
-| V2-1 | V2 selection engine | Resume shadow runs through the planned 2026-09-26 decision point | Blocked | Compute availability; next testing resumes when credits return |
+| V2-1 | V2 selection engine | Resume and complete shadow evidence collection | Complete | Final evidence run completed 2026-10-03; 16 comparable runs recorded |
 | V2-2 | V2 selection engine | Add counterfactual V2 shadow-history continuity to evaluation | Complete | Added in `ADB-V2-SHADOW-0.3`; remaining runs use V2's own prior shared selections for repeat control |
 | V2-3 | V2 selection engine | Tighten proposal/adoption and source-verification language | Complete | `0.3` requires explicit procedural status; scoring model unchanged |
 | V2-4 | V2 selection engine | Align legacy event-section terminology with current Austin Ahead naming | Complete | Canonical shadow prompt now uses Austin Ahead |
 | V2-5 | V2 selection engine | Reconcile registry V2 specification ID with canonical shadow specification | Complete | Registry now tracks `ADB-V2-SHADOW-0.3` |
-| V2-6 | V2 selection engine | Complete shadow evidence log without double-counting recurring discoveries | Blocked | V2-1 |
-| V2-7 | V2 selection engine | Conduct formal promotion-readiness review | Blocked | Complete observation window through 2026-09-26 |
+| V2-6 | V2 selection engine | Complete shadow evidence log without double-counting recurring discoveries | Complete | Evidence log closed with counterfactual-history controls exercised through 2026-10-03 |
+| V2-7 | V2 selection engine | Conduct formal promotion-readiness review | Ready | Evidence collection is complete; review regressions, controls, source discipline, and promotion risks |
 | V2-8 | V2 selection engine | Build controlled production-promotion plan if review supports promotion | Blocked | V2-7 and explicit promotion approval |
 | WEB-1 | Website | Correct Open Graph/Twitter image references to the active `social-preview.png` asset | Complete | Home, How ADB Works, and What's New now point to the current PNG card |
 | WEB-2 | Website | Close out website-redesign implementation documentation after successful PR #23 deployment | Complete | Implementation record now reflects production promotion and successful Pages deployment |
 | WEB-3 | Website | Promote website design specification status from draft to approved/implemented | Complete | Canonical design spec status reconciled |
 | WEB-4 | Website | Record a concise post-fix live-site verification | Review | After WEB-1 deployment |
-| FORM-1 | Native subscriber forms | Define native-form architecture, security model, and migration rules while preserving the Google Sheets + Apps Script control plane | Active | Design work can proceed now; no production writes yet |
+| FORM-1 | Native subscriber forms | Define native-form architecture, security model, and migration rules while preserving the Google Sheets + Apps Script control plane | Complete | Architecture/security model implemented in DEV and validated through controlled production Gate D |
 | FORM-2 | Native customization | Design the first-party customization page and map every field to the existing customization intake schema | Complete | Page design approved; browser submission client passed controlled DEV website QA |
 | FORM-3 | Native customization | Build a non-production Apps Script intake endpoint that accepts validated website submissions and writes to the existing customization intake path | Complete | DEV endpoint deployed and controlled request/confirmation/application flow passed |
 | FORM-4 | Native customization | Add subscriber verification for preference changes using single-use, scoped confirmation links and hashed tokens | Complete | DEV hashed-token confirmation, 24-hour expiry, single-use behavior, and exactly-once application path passed controlled QA |
 | FORM-5 | Native customization | Run DEV parity/idempotency/security tests against the existing processor before any production cutover | Complete | End-to-end website submission, confirmation, exactly-once application, immediate replay no-op, and DEV diagnostics passed controlled QA. Root cause of prior failures was stale website endpoint pointing to an older Apps Script deployment |
-| FORM-6 | Native customization | Promote the native customization page while retaining the Google Form as an operator/fallback path | Active | Gates A–D passed. Controlled production request completed Pending → Confirmed → Applied with exactly-once verification. Next: Gate E public cutover while retaining Google Form fallback |
+| FORM-6 | Native customization | Promote the native customization page while retaining the Google Form as an operator/fallback path | Active | Gates A–D passed; control-only second request closed without application; controlled/native safety gates reconciled. Next: complete Gate E preflight, then public cutover with Google Form fallback |
 | FORM-7 | Native signup | Design and implement first-party signup while preserving the existing consent, subscriber creation, and Welcome queue workflow | Deferred | Complete native customization rollout first |
 | FORM-8 | Native feedback | Design and implement first-party feedback/corrections intake with current retention and privacy rules | Deferred | After signup or when operational capacity allows |
 | FORM-9 | Native management | Design authenticated pause/resume/reset/unsubscribe flows using signed or single-use verification rather than email-only identity | Deferred | Security model proven in customization/signup |
 | FORM-10 | Native forms | Decide whether and when public Google Forms can be retired; retain background/fallback forms until native flows have sustained production evidence | Deferred | Successful rollout of preceding native forms |
 | SEC-1 | Subscriber data security | Document data classification, access-control baseline, retention, incident-response, and periodic access review for subscriber email/preference data | Complete | Approved `docs/subscriber-data-security-baseline.md`; `docs/data-retention.md` remains the sole authoritative retention schedule; SEC-2 audits live controls against this baseline |
 | SEC-2 | Subscriber data security | Audit production Drive/Sheet sharing, folder inheritance, editor rights, account MFA, Apps Script access, and external collaborators | Complete | Live Drive/Sheet/backup/site checks passed; remaining provider ACL inventories were owner-confirmed with no unexpected editors or members |
-| SEC-3 | Subscriber data security | Minimize stored subscriber data and identify preference fields that could reveal sensitive characteristics; avoid collecting unnecessary sensitive data | Active | Assessment documented in `subscriber-data-minimization-review-2026-09-23.md`; raw verification-token persistence is an action-required remediation coordinated with FORM-4 |
+| SEC-3 | Subscriber data security | Minimize stored subscriber data and identify preference fields that could reveal sensitive characteristics; avoid collecting unnecessary sensitive data | Active | Native customization now uses hash-only token storage; legacy Google Verification Form raw-token persistence remains the documented temporary exception |
 | SEC-4 | Subscriber data security | Define breach-response and notification decision path, including vendor incidents and Texas-law review | Ready | SEC-1 |
 | FRI-1 | Friday edition | Define the purpose and anatomy of the improved Friday weekly recap | Ready | Keep separate from V2 promotion |
 | FRI-2 | Austin Weekend Explorer | Define Weekend Explorer as the richer Friday utility layer and its relationship to Austin Ahead | Ready | Product-design work |
@@ -221,7 +221,8 @@ Only after native flows have stable production evidence:
 - Repository README replaced with current project-level orientation.
 - Canonical Editorial System, Design System, Newsletter Component Specification, and Source-Link Standard established.
 - Documentation registry, generated status/architecture/operations docs, changelog, and immutable snapshots established.
-- V2 shadow evidence log formalized through the 2026-09-19 run.\n- Completion-monitoring DEV vector gate passed 15/15 with a no-mutation synthetic harness.
+- V2 shadow evidence log completed through the 2026-10-03 final evidence run.
+- Completion-monitoring DEV vector gate passed 15/15 with a no-mutation synthetic harness.
 
 ## Deliberately deferred ideas
 

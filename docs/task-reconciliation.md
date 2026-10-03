@@ -1,11 +1,23 @@
 # Scheduled-task reconciliation
 
-**Status:** Current manual baseline recorded 2026-09-22  
+**Status:** Current manual baseline rechecked 2026-10-03  
 **Scope:** ChatGPT scheduler tasks registered by Austin Daily Briefing  
 **Mode:** Read-only  
 **Apps Script trigger state:** Not covered by this baseline
 
 This runbook compares the authoritative scheduler registrations in `PROJECT_STATE.json` with live scheduler metadata. It is intentionally separate from content/delivery health: a task can exist on schedule while its downstream operation is unhealthy, and healthy historical queue rows do not prove a trigger still exists.
+
+## 2026-10-03 baseline
+
+The three registered active ADB scheduler tasks were re-read from live scheduler metadata during the project-state reconciliation.
+
+| Registered task | Expected task ID | Live state | Schedule | Canonical specification |
+| --- | --- | --- | --- | --- |
+| Austin Daily Briefing | `6a91bd2144d081918d9d54d5c14d1175` | Enabled | Daily 08:00 America/Chicago | `ADB-DAILY-PROD-1.3` after this reconciliation |
+| Production Subscriber Operations | `6aa1acbcf17c8191a9a89cc95b433629` | Enabled | Every 6 hours | `ADB-SUBOPS-PROD-1.0` |
+| ADB Production Watchdog | `6aa8401e16a88191ae14ba1b4d6cba6e` | Enabled | Daily 09:30 America/Chicago | `ADB-WATCHDOG-PROD-2.3` after this reconciliation |
+
+Task IDs and schedules matched the registry. Apps Script installed-trigger health remains outside this evidence surface and stays separately blocked.
 
 ## 2026-09-22 baseline
 

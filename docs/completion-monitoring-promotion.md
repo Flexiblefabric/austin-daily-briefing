@@ -1,7 +1,8 @@
 # Completion monitoring promotion — intake-incomplete alert
 
 **Date:** 2026-09-23  
-**Production watchdog:** `ADB-WATCHDOG-PROD-2.1`  
+**Production watchdog at promotion:** `ADB-WATCHDOG-PROD-2.1`  
+**Current watchdog note:** the same promoted incident class remains active in `ADB-WATCHDOG-PROD-2.3`; later watchdog revisions did not expand its alert eligibility.  
 **Completion monitoring version:** `ADB-COMPLETION-PROD-0.1`  
 **Promoted incident class:** `Unhealthy — intake incomplete`
 

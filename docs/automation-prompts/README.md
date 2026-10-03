@@ -31,9 +31,9 @@ ADB reserves scheduler capacity deliberately. Production Daily Briefing, Product
 
 ## Registered prompts
 
-- [Austin Daily Briefing](austin-daily-briefing.md) — active
-- [Production Subscriber Operations](production-subscriber-operations.md) — active
-- [Production Health Watchdog](production-health-watchdog.md) — active after recreation
+- [Austin Daily Briefing](austin-daily-briefing.md) — active (`ADB-DAILY-PROD-1.3`)
+- [Production Subscriber Operations](production-subscriber-operations.md) — active (`ADB-SUBOPS-PROD-1.0`)
+- [Production Health Watchdog](production-health-watchdog.md) — active (`ADB-WATCHDOG-PROD-2.3`)
 - [End-to-end Completion Observation](end-to-end-completion-observation.md) — retired; one-time observation completed 2026-09-20
 - [End-to-end Completion Reconciliation](end-to-end-completion-reconcile.md) — development/manual read-only
 - [V2 Shadow Review](../v2-shadow-review-prompt.md) — development/manual

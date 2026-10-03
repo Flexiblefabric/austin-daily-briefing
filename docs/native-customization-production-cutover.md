@@ -197,6 +197,26 @@ Only after this preflight passes:
 
 LIVE mode in `NativeCustomizationProd.gs` fails closed unless Processor Mode is exactly `GOOGLE + NATIVE`.
 
+### Gate E result
+
+Status: **Passed — public cutover authorized**.
+
+Preflight and promotion evidence:
+
+- no unintended Pending or Confirmed native production request remained before cutover;
+- production database Intake Mode, intake Processor Mode, and Release Config Processor Mode were aligned to `GOOGLE + NATIVE`;
+- production cutover state permitted live native customization and briefing delivery;
+- current Daily Briefing and Production Health Watchdog canonical specifications permit authorized native intake modes;
+- active scheduler wrappers were synchronized to the current canonical Daily Briefing and Watchdog specification IDs;
+- Production Subscriber Operations remains the sole owner that applies confirmed native payloads to Profiles / Preferences;
+- public `customize.html` was switched from the DEV endpoint to the production native endpoint;
+- Controlled DEV presentation was removed;
+- the Google customization form remains available as a fallback during observation;
+- production confirmation uses the first-party ADB page and production Cloudflare relay;
+- P001 controlled-test preference state was intentionally left as the successful Gate D result.
+
+Gate F begins immediately after public deployment and requires at least 24 hours plus one normal Subscriber Operations cycle.
+
 ## Gate F — observation
 
 Minimum observation: 24 hours and at least one normal Subscriber Operations cycle after public cutover.

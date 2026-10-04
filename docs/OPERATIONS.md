@@ -28,7 +28,7 @@
 - **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-c-dev.md`
-  - Reporting: FORM-7 Gates A/B complete; Gate C mocked parity passed and controlled DEV fixtures are prepared; add the repository processor source to the DEV Apps Script project and run processNativeSignupDevV1 twice for live mutation + replay verification.
+  - Reporting: FORM-7 Gates A/B complete. Gate C live DEV run partially passed: new signup, Active no-op and Paused no-op passed; re-subscribe exposed duplicate-header parsing of legacy Preferences. Parser fix merged in PR #76 and a fresh re-subscribe retest is staged; update DEV Apps Script processor to build v1.1 and run processNativeSignupDevV1 twice.
 
 ## Runtime configuration
 

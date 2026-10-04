@@ -5,6 +5,7 @@
  * Never place the key in Sheets or source code.
  */
 const ADB_RESEND = Object.freeze({
+  BUILD: 'resend-transport-form7-v1',
   ENDPOINT: 'https://api.resend.com/emails',
   FROM: 'Austin Daily Briefing <briefing@austindailybriefing.com>',
   REPLY_TO: 'briefing@austindailybriefing.com',
@@ -37,6 +38,26 @@ const ADB_RESEND = Object.freeze({
  *   idempotencyKey?: string, tags?: Object<string,string>}} message
  * @return {{id: string, statusCode: number}}
  */
+function getAdbResendRuntimeStatusV1() {
+  const props = PropertiesService.getScriptProperties();
+  const database = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_DATABASE_ID);
+  const intake = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_INTAKE_ID);
+  const state = adbValidateResendDeliveryGates_(database, intake);
+
+  return {
+    build: ADB_RESEND.BUILD,
+    databaseTarget: ADB_RESEND.PRODUCTION_DATABASE_ID,
+    intakeTarget: ADB_RESEND.PRODUCTION_INTAKE_ID,
+    supportedIntakeModes: ADB_RESEND.SUPPORTED_INTAKE_MODES.slice(),
+    currentIntakeMode: String(state.env['Intake Mode'] || '').trim(),
+    currentProcessorMode: String(state.cfg['Processor Mode'] || '').trim(),
+    welcomeDeliveryMode: String(state.cfg['Welcome Delivery Mode'] || '').trim(),
+    scriptWelcomeMode: String(props.getProperty(ADB_RESEND.WELCOME_MODE_PROPERTY) || 'CONTROLLED').trim().toUpperCase(),
+    scriptDailyMode: String(props.getProperty(ADB_RESEND.DAILY_MODE_PROPERTY) || 'CONTROLLED').trim().toUpperCase(),
+    welcomeCopy: 'state-neutral-v1'
+  };
+}
+
 function adbSendEmailViaResend_(message) {
   const apiKey = PropertiesService.getScriptProperties()
     .getProperty(ADB_RESEND.API_KEY_PROPERTY);

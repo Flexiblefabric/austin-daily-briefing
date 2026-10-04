@@ -833,6 +833,8 @@ Direct, specific, and non-defensive.
 
 ## 22. Friday Recap Component
 
+**Staged successor:** [FRI-1 narrative synthesis](friday-synthesis-spec.md) records the approved target definition. The interim rules below remain active until validation and explicit promotion; defining the successor alone does not activate it.
+
 **Conditional on Friday.**
 
 ### Current form

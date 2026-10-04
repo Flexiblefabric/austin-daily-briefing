@@ -71,3 +71,7 @@ Do not use generic or document-type-only labels for editorial sources, including
 Before queueing an edition, verify that every Top Story, Under the Radar item, More for You item, and Friday recap item with a claim has at least one visible publisher-named source link. Verify that weather and event links use their functional labels. HTML and plain text must contain the same destinations in the same order.
 
 Controlled QA must cover Gmail, Outlook/Hotmail, Yahoo, and a narrow mobile viewport. Proton is optional and was excluded from the initial production-release test scope. Check visible attribution, wrapping, tap behavior, contrast, URL parity, and that no source label is stranded from its link.
+
+## Staged Friday synthesis
+
+The [FRI-1 specification](friday-synthesis-spec.md) defines consolidated source areas with full internal evidence for the future Friday narrative. It remains staged. Reconcile this standard and verify HTML/plain-text parity during FRI-6 before activating that treatment; current production requirements above remain in force.

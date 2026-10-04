@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-03.3",
-  "last_reviewed": "2026-10-03",
+  "registry_version": "2026-10-04.1",
+  "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
     "repository": "Flexiblefabric/austin-daily-briefing",
@@ -317,7 +317,11 @@
     "subscriber_security_baseline": "docs/subscriber-data-security-baseline.md",
     "data_retention": "docs/data-retention.md",
     "v2_selection_spec": "docs/v2-selection-spec.md",
-    "v2_promotion": "docs/v2-promotion-2026-10-03.md"
+    "v2_promotion": "docs/v2-promotion-2026-10-03.md",
+    "friday_synthesis_spec": "docs/friday-synthesis-spec.md",
+    "friday_synthesis_validation": "docs/friday-synthesis-validation.md",
+    "friday_synthesis_evidence_log": "docs/friday-synthesis-evidence-log.md",
+    "friday_synthesis_evidence_schema": "docs/friday-synthesis-evidence.schema.json"
   },
   "governance": {
     "registry_is_authoritative": true,

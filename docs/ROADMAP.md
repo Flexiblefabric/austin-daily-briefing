@@ -1,7 +1,7 @@
 # Austin Daily Briefing Roadmap
 
 **Status:** Active project backlog  
-**Last reconciled:** 2026-10-03  
+**Last reconciled:** 2026-10-04\
 **Scope:** Cross-project work that is pending, blocked, deferred, or recently completed  
 **Technical state authority:** [`PROJECT_STATE.json`](../PROJECT_STATE.json)
 
@@ -59,10 +59,14 @@ Use these states:
 | SEC-2 | Subscriber data security | Audit production Drive/Sheet sharing, folder inheritance, editor rights, account MFA, Apps Script access, and external collaborators | Complete | Live Drive/Sheet/backup/site checks passed; remaining provider ACL inventories were owner-confirmed with no unexpected editors or members |
 | SEC-3 | Subscriber data security | Minimize stored subscriber data and identify preference fields that could reveal sensitive characteristics; avoid collecting unnecessary sensitive data | Active | Native customization now uses hash-only token storage; legacy Google Verification Form raw-token persistence remains the documented temporary exception |
 | SEC-4 | Subscriber data security | Define breach-response and notification decision path, including vendor incidents and Texas-law review | Ready | SEC-1 |
-| FRI-1 | Friday edition | Define the purpose and anatomy of the improved Friday weekly recap | Ready | Keep separate from V2 promotion |
+| FRI-1 | Friday edition | Define the purpose and anatomy of the improved Friday weekly recap | Complete | Approved staged [narrative synthesis specification](friday-synthesis-spec.md); production remains interim pending FRI-5 through FRI-7 |
 | FRI-2 | Austin Weekend Explorer | Define Weekend Explorer as the richer Friday utility layer and its relationship to Austin Ahead | Ready | Product-design work |
 | FRI-3 | Austin Weekend Explorer | Define discovery sources, selection rules, section anatomy, and length limits | Blocked | FRI-2 |
 | FRI-4 | Austin Weekend Explorer | Decide restrained imagery rules for Friday Explorer | Deferred | After Explorer editorial structure is approved |
+| FRI-5 | Friday validation | Build frozen synthetic weeks from current V2-standard daily output and run the detailed editorial-risk scorecard | Ready | [Validation plan](friday-synthesis-validation.md): quiet, dominant-story, fragmented and bounded risk variants; keep generation and evaluation separate; [evidence log](friday-synthesis-evidence-log.md) initialized with no runs |
+| FRI-6 | Friday integration | Stage narrative rendering, consolidated sources, section order and canonical prompt/spec reconciliation | Blocked | FRI-5 findings; measure full-edition reading burden and complete controlled email QA |
+| FRI-7 | Friday promotion | Review evidence and explicitly promote the reconciled Friday synthesis package | Blocked | FRI-5 and FRI-6; confirm provisional score thresholds and record activation/rollback; preparation merge is not promotion |
+| FRI-8 | Friday observation | Record human review of the first four promoted Friday editions, then maintain the separate evidence log | Blocked | FRI-7; four reviewed editions required, with material issues resolved rather than closed by elapsed time |
 | HOW-1 | How ADB Works | Replace V2-in-development language with the promoted selection model | Complete | Updated stable selection, MFY and repeat explanations; public What's New and homepage announcement dated 2026-10-03, effective 2026-10-04 |
 | EDIT-1 | Editorial accountability | Draft a public ADB Editorial Standards / Reader Compact defining accuracy, sourcing, neutrality, evidence, corrections, AI use, personalization boundaries, independence, conflicts, and accountability | Ready | Build from the existing Editorial System, How ADB Works, corrections policy, source standard, and reader-change communication rules; keep it concise and reader-facing |
 | EDIT-2 | Human accountability | Define how the human responsible for ADB is identified publicly, including role language that does not present the operator as a journalist or original reporter | Ready | Preferred framing should distinguish founder/operator responsibility from newsroom credentials and explain the human role in setting standards, reviewing performance, and accepting accountability |

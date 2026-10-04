@@ -27,11 +27,19 @@ The deployment itself must be performed in the Google Apps Script interface beca
 
 The endpoint source itself hard-fails if its configured workbook identity is changed to either production workbook ID.
 
+## DEV deployment record
+
+Dedicated FORM-7 Gate B DEV web-app endpoint:
+
+`https://script.google.com/macros/s/AKfycbzx2Ktealkm7PnFf1aXCcrZOzmffG7KBUE3NUsVA-pxsaq0lLkzn-O9F_Ajruov5v1l/exec`
+
+This is distinct from the production native-customization deployment and remains development-only.
+
 ## Repository connection
 
 After deployment:
 
-1. Set `site/signup-config.js` `endpoint` to the dedicated DEV web-app URL.
+1. Set `site/signup-config.js` `endpoint` to the dedicated DEV web-app URL. **Completed 2026-10-04.**
 2. Keep `environment: 'development'`.
 3. Do not add `signup.html` to public navigation or the sitemap.
 4. Run the site-preview CI checks.

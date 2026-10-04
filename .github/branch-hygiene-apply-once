@@ -1,0 +1,5 @@
+# One-time DOC-2 branch hygiene apply marker
+#
+# Added for the 2026-10-04 closeout merge. The branch-hygiene workflow watches
+# this path only so that this merge performs one final guarded apply pass.
+# Do not modify this file to trigger routine cleanup; future cleanup is manual.

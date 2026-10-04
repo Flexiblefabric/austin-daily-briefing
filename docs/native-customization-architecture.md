@@ -1,11 +1,11 @@
 # Native Customization — Intake Architecture
 
-**Status:** Implemented in DEV and controlled production; public Gate E cutover pending  
+**Status:** Production implementation complete; FORM-6 closed 2026-10-04  
 **Goal:** Keep the public page on austindailybriefing.com while using the existing Google Sheets + Apps Script control plane.
 
 ## Current production state
 
-The architecture below has passed DEV QA and controlled production Gates A–D. Production native intake and the dedicated confirmation relay are available only in controlled mode. The public Customize links still use the Google Form, and `site/customize.html` remains non-public/noindex until Gate E.
+The architecture below passed DEV QA, controlled production, public cutover and production observation. The native Customize page is the public primary route, the production native intake and dedicated confirmation relay are live, and the Google customization form remains available only as an operator/reader fallback pending FORM-10.
 
 ## Chosen pattern
 

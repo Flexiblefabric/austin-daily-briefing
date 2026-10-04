@@ -27,8 +27,8 @@
   - Reporting: Gates A–F passed; Gate G closeout recorded 2026-10-04; public native customization is live with Google fallback retained pending FORM-10.
 - **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
-- **native_signup_development** — development — manual gated rollout — `docs/native-signup-design.md`
-  - Reporting: FORM-7 Gate A approved; Gate B DEV page/client, isolated Apps Script intake source, request/diagnostic schema and CI guardrails staged; dedicated DEV deployment and controlled browser/intake QA remain.
+- **native_signup_development** — development — manual gated rollout — `docs/native-signup-dev-deployment.md`
+  - Reporting: FORM-7 Gate A complete; Gate B source/schema/CI and executable mocked-runtime QA implemented; dedicated DEV Apps Script deployment and controlled browser/intake QA remain.
 
 ## Runtime configuration
 

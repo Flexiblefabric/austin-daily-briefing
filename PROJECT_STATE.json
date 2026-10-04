@@ -216,7 +216,7 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D D1/D2/D4 pass and D5 read-only preflight is a partial pass. Remaining blockers are D3 separate disabled production web app, production Resend runtime parity, explicit watchdog re-enable/disposition, and one operator-owned mutating controlled-test address.",
+      "reporting": "FORM-7 Gates A–C complete. Gate D D1/D2/D4 pass and D5 read-only preflight is a partial pass. Remaining blockers are D3 separate disabled production web app, production Resend runtime parity, explicit watchdog re-enable/disposition, and one operator-owned mutating controlled-test address",
       "verification": "Read-only Gate D preflight confirmed Native Signup Mode remains DISABLED, controlled email blank, production Native Signup Requests/Diagnostics header-only, shared Intake/Processor Mode = GOOGLE + NATIVE, Subscriber Operations enabled on ADB-SUBOPS-PROD-1.1, and watchdog prompt synchronized to ADB-WATCHDOG-PROD-2.4 but scheduler disabled. Repository runtime status probes added for native-signup endpoint and Resend transport. No production mutation occurred."
     }
   },

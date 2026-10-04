@@ -1,6 +1,6 @@
 # Native Signup — Design and Rollout Baseline
 
-**Status:** FORM-7 Active — Gates A/B complete; Gate C processor parity active  
+**Status:** FORM-7 Active — Gates A–C complete; Gate D controlled-production staging active  
 **Started:** 2026-10-04  
 **Production boundary:** No native signup production writes or public cutover are authorized by this document.
 
@@ -138,4 +138,6 @@ Detailed processor state transitions are defined in `docs/native-signup-processo
 
 Gate B passed on 2026-10-04. Repository runtime QA and the corrected live DEV smoke verified staging, validation, replay suppression, honeypot behavior, and the DEV-only production boundary. See `docs/native-signup-gate-b-result.md`.
 
-Gate C now owns subscriber-state resolution, new subscriber creation, re-subscription, preference preservation, deterministic Welcome queue ownership, and partial-write/retry protection.
+Gate C passed subscriber-state resolution, new subscriber creation, re-subscription, preference preservation, deterministic Welcome queue ownership, and replay protection. Durable result: `docs/native-signup-gate-c-result.md`.
+
+Gate D is staged in `docs/native-signup-gate-d.md`. Production activation is intentionally blocked until the compatibility matrix is fully PASS and the production endpoint/runtime, processor prompt, monitoring, and controlled identity are installed together.

@@ -27,8 +27,8 @@
   - Reporting: Gates A–F passed; Gate G closeout recorded 2026-10-04; public native customization is live with Google fallback retained pending FORM-10.
 - **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
-- **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-c-dev.md`
-  - Reporting: FORM-7 Gates A–C complete; Gate C live DEV passed new signup, Active no-op, Paused no-op, re-subscribe preference preservation, exactly-one Welcome queue ownership and replay. Return-safe WELCOME_V1 copy is staged in repository source; Gate D controlled-production preflight and runtime synchronization are next.
+- **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
+  - Reporting: FORM-7 Gates A–C complete. Gate D repository staging includes the production endpoint, processing contract, compatibility matrix, and completion-monitoring extension. Production activation is blocked until sheets/config, runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and a controlled address are all PASS.
 
 ## Runtime configuration
 
@@ -49,6 +49,10 @@
 - `ADB_NATIVE_CUSTOMIZE_PROD_RELAY_SECRET` — secret — Apps Script HMAC secret for production confirmation relay
 - `ADB_APPS_SCRIPT_CONFIRM_URL` — secret — Cloudflare Worker secret containing production Apps Script relay target
 - `ADB_CONFIRM_RELAY_SECRET` — secret — Cloudflare Worker HMAC secret matching the production Apps Script relay secret
+- `ADB_NATIVE_SIGNUP_PROD_ENABLED` — config — production native signup endpoint enable gate
+- `ADB_NATIVE_SIGNUP_PROD_MODE` — config — production native signup CONTROLLED/LIVE mode
+- `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` — private_config — controlled production native-signup address allowlist
+- `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN` — config — allowed ADB website origin for native signup
 
 No runtime property values belong in this repository. Secret and private configuration values remain in their external runtime stores.
 

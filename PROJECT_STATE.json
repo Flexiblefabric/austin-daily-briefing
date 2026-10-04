@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.9",
+  "registry_version": "2026-10-04.10",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -90,6 +90,13 @@
       "status": "live",
       "domain": "confirm-prod.austindailybriefing.com",
       "source_path": "workers/confirmation-relay-prod/"
+    },
+    "native_signup_intake": {
+      "status": "staging",
+      "provider": "Google Apps Script",
+      "environment": "production endpoint source staged; runtime not deployed",
+      "source_path": "apps-script/NativeSignupProd.gs",
+      "public_cutover": "not authorized; public signup remains Google Form through Gate D"
     }
   },
   "automation": {
@@ -205,9 +212,9 @@
     "native_signup_development": {
       "status": "development",
       "cadence": "manual gated rollout",
-      "runbook": "docs/native-signup-gate-c-dev.md",
-      "reporting": "FORM-7 Gates A–C complete; Gate C live DEV passed new signup, Active no-op, Paused no-op, re-subscribe preference preservation, exactly-one Welcome queue ownership and replay. Return-safe WELCOME_V1 copy is staged in repository source; Gate D controlled-production preflight and runtime synchronization are next",
-      "verification": "Gate C PASS: parser-corrected re-subscribe changed the existing subscriber to Active, preserved PDEV004 and all 23 historical preferences, created exactly one re-subscribe Signup Action and one queued WELCOME_V1, and the immediate second run processed zero rows. New/Active/Paused cases also passed. No production writes occurred."
+      "runbook": "docs/native-signup-gate-d.md",
+      "reporting": "FORM-7 Gates A–C complete. Gate D repository staging includes the production endpoint, processing contract, compatibility matrix, and completion-monitoring extension. Production activation is blocked until sheets/config, runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and a controlled address are all PASS",
+      "verification": "No Gate D production mutation has occurred. Shared production Intake/Processor Mode remains GOOGLE + NATIVE; FORM-7 introduces no new shared mode. Public signup remains the Google Form."
     }
   },
   "runtime_properties": [
@@ -295,6 +302,26 @@
       "name": "ADB_CONFIRM_RELAY_SECRET",
       "sensitivity": "secret",
       "purpose": "Cloudflare Worker HMAC secret matching the production Apps Script relay secret"
+    },
+    {
+      "name": "ADB_NATIVE_SIGNUP_PROD_ENABLED",
+      "sensitivity": "config",
+      "purpose": "production native signup endpoint enable gate"
+    },
+    {
+      "name": "ADB_NATIVE_SIGNUP_PROD_MODE",
+      "sensitivity": "config",
+      "purpose": "production native signup CONTROLLED/LIVE mode"
+    },
+    {
+      "name": "ADB_NATIVE_SIGNUP_PROD_ALLOWLIST",
+      "sensitivity": "private_config",
+      "purpose": "controlled production native-signup address allowlist"
+    },
+    {
+      "name": "ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN",
+      "sensitivity": "config",
+      "purpose": "allowed ADB website origin for native signup"
     }
   ],
   "documentation": {
@@ -334,7 +361,11 @@
     "native_signup_dev_deployment": "docs/native-signup-dev-deployment.md",
     "native_signup_gate_b_result": "docs/native-signup-gate-b-result.md",
     "native_signup_gate_c_dev": "docs/native-signup-gate-c-dev.md",
-    "native_signup_gate_c_result": "docs/native-signup-gate-c-result.md"
+    "native_signup_gate_c_result": "docs/native-signup-gate-c-result.md",
+    "native_signup_gate_d": "docs/native-signup-gate-d.md",
+    "native_signup_production_processing": "docs/native-signup-production-processing.md",
+    "native_signup_gate_d_compatibility": "docs/native-signup-gate-d-compatibility.md",
+    "native_signup_completion_monitoring": "docs/native-signup-completion-monitoring.md"
   },
   "governance": {
     "registry_is_authoritative": true,

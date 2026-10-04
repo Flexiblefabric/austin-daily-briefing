@@ -92,4 +92,4 @@ This contract does not alter the current production subscriber processor. Produc
 
 The repository-controlled DEV implementation is `apps-script/NativeSignupDevProcessor.gs`. It is isolated to the DEV database/intake IDs, requires the `GOOGLE-23-1` schema baseline, sets mutating requests to `Processing` before subscriber writes, and fails closed rather than automatically repairing ambiguous partial state. The processor never sends Welcome mail; it may only append a `Queued` `WELCOME_V1` row.
 
-Executable parity coverage is in `tests/native-signup-processor-dev.test.js`. Live DEV mutation is not authorized until that suite passes on the implementation branch.
+Executable parity coverage is in `tests/native-signup-processor-dev.test.js`. The mocked parity suite passed in PR #73 on 2026-10-04. Live DEV execution now follows `docs/native-signup-gate-c-dev.md`; production mutation remains unauthorized.

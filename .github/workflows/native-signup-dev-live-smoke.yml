@@ -1,0 +1,74 @@
+name: Native signup DEV live smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/native-signup-dev-live-smoke-once"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exercise dedicated DEV web app
+        env:
+          ENDPOINT: https://script.google.com/macros/s/AKfycbzx2Ktealkm7PnFf1aXCcrZOzmffG7KBUE3NUsVA-pxsaq0lLkzn-O9F_Ajruov5v1l/exec
+        shell: python
+        run: |
+          import os
+          import urllib.parse
+          import urllib.request
+
+          endpoint = os.environ["ENDPOINT"]
+          email = "adb-native-signup-gateb-20261004@example.com"
+
+          def post(params):
+              data = urllib.parse.urlencode(params).encode("utf-8")
+              req = urllib.request.Request(endpoint, data=data, method="POST")
+              with urllib.request.urlopen(req, timeout=30) as resp:
+                  body = resp.read().decode("utf-8", errors="replace")
+                  if resp.status != 200:
+                      raise SystemExit(f"HTTP {resp.status}: {body[:500]}")
+                  return body
+
+          def require(body, *parts):
+              for part in parts:
+                  if part not in body:
+                      raise SystemExit(f"Expected {part!r} in response: {body[:1000]}")
+
+          nonce_a = "11111111111111111111111111111111"
+          nonce_b = "22222222222222222222222222222222"
+
+          valid = {
+              "action": "request",
+              "source": "website",
+              "email": email,
+              "consent": "yes",
+              "client_nonce": nonce_a,
+              "form_check": "",
+          }
+
+          first = post(valid)
+          require(first, '"ok":true', '"status":"accepted"', nonce_a)
+
+          replay = post(valid)
+          require(replay, '"ok":true', '"status":"accepted"', nonce_a)
+
+          equivalent = dict(valid, client_nonce=nonce_b)
+          recent = post(equivalent)
+          require(recent, '"ok":true', '"status":"accepted"', nonce_b)
+
+          invalid = post(dict(valid, email="not-an-email", client_nonce="33333333333333333333333333333333"))
+          require(invalid, '"status":"validation_error"', '"code":"invalid_email"')
+
+          no_consent = post(dict(valid, consent="", client_nonce="44444444444444444444444444444444"))
+          require(no_consent, '"status":"validation_error"', '"code":"consent_required"')
+
+          honeypot = post(dict(valid, email="bot@example.com", form_check="filled", client_nonce="55555555555555555555555555555555"))
+          require(honeypot, '"ok":true', '"status":"accepted"')
+
+          print("Native signup DEV live smoke passed.")

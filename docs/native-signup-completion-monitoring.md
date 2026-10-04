@@ -36,6 +36,7 @@ Treat these as expected terminal request outcomes:
 - `resubscribed` — requires one existing/re-activated subscriber/profile, preserved preference cardinality, one Signup Action, and one eligible Welcome;
 - `existing_active_noop` — Closed; no Welcome entitlement from this request;
 - `paused_requires_manage` — Closed; no Welcome entitlement from this request;
+- `admin_hold_noop` — Closed; administrative hold preserved and no Welcome entitlement;
 - controlled/non-authorized endpoint no-op — no staged request exists and therefore no completion journey exists;
 - `Error` / `Processing` — operational review path; never authorize repair or resend from monitoring.
 
@@ -56,7 +57,7 @@ For `new_subscriber` and `resubscribed`:
 - preserve the existing queue-age, Failed, Sent-without-provider, duplicate, and provider-ID rules;
 - never send/retry/repair from the watchdog or reconciler.
 
-For Active/Paused no-op results, the absence of a Welcome is correct.
+For Active/Paused/Admin Hold no-op results, the absence of a Welcome is correct.
 
 ## Privacy
 
@@ -74,6 +75,6 @@ Before Gate D activation:
 - update `docs/automation-prompts/end-to-end-completion-reconcile.md`;
 - update `docs/automation-prompts/production-health-watchdog.md`;
 - preserve the currently promoted alert class unless separately approved;
-- add native completion test vectors for new signup, re-subscribe, Active no-op, Paused no-op, Staged timeout, Processing partial state, duplicate Welcome, and replay.
+- add native completion test vectors for new signup, re-subscribe, Active no-op, Paused no-op, Admin Hold no-op, Staged timeout, Processing partial state, duplicate Welcome, and replay.
 
 Until those changes pass controlled tests, Gate D compatibility remains FAIL for monitoring.

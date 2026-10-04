@@ -97,6 +97,18 @@ Terminal no-op:
 
 Resume remains an explicit Manage action.
 
+### Existing Admin Hold subscriber
+
+Terminal no-op:
+
+- preserve Admin Hold status;
+- preserve profile/preferences;
+- create no Signup Action;
+- create no Welcome;
+- mark request `Processed / admin_hold_noop`.
+
+A signup request must never clear or bypass an administrative hold. Only an explicit operator action may change Admin Hold.
+
 ### Existing Unsubscribed subscriber
 
 Fresh affirmative signup consent is explicit re-subscription:
@@ -154,6 +166,7 @@ Subscriber Operations must add native-signup counts to its run result without im
 - re-subscribed;
 - Active no-op;
 - Paused no-op;
+- Admin Hold no-op;
 - skipped outside controlled gate;
 - native signup errors.
 

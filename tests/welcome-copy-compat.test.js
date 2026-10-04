@@ -9,6 +9,9 @@ assert(source.includes("Personalized sections use the interests and reading sett
 assert(source.includes("If you’re new, your interests start at Normal with standard reading settings."));
 assert(!source.includes("YOUR STARTING SETTINGS"));
 assert(!source.includes("subscribers begin with all interest categories set to Normal"));
+assert(source.includes('function validateForm7GateDTransportCompatibilityV1()'));
+assert(source.includes("deliveryInvoked: false"));
+assert(source.includes("writes: false"));
 
 const plainMatches = (source.match(/Personalized sections use the interests and reading settings saved to your profile\./g) || []).length;
 assert.strictEqual(plainMatches, 2, 'Welcome compatibility copy should appear once in plain text and once in HTML.');

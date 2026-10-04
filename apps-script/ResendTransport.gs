@@ -711,8 +711,8 @@ function adbWelcomePlainText_() {
     'Short.\nMost briefings take 5–7 minutes to read. Most editions begin with about five Top Stories. Key facts come first, and source links are always provided.\n\n' +
     'Personalized.\nMore for You is built from the topics you choose and the level of detail you want. The briefing adjusts to match.\n\n' +
     'Austin-first.\nThe shared briefing stays focused on Austin and developments consequential to the immediate area. Personalized items may reach beyond Austin when that context matches your selected interests.\n\n' +
-    'YOUR STARTING SETTINGS\n\n' +
-    'Everyone receives the shared Top Stories. For personalized sections, subscribers begin with all interest categories set to Normal and standard reading settings. Most people adjust this within the first week.\n\n' +
+    'YOUR SETTINGS\n\n' +
+    'Everyone receives the shared Top Stories. Personalized sections use the interests and reading settings saved to your profile. If you’re new, your interests start at Normal with standard reading settings. You can change these anytime.\n\n' +
     'CUSTOMIZE MY BRIEFING\n\n' +
     'Choose your topics and reading style. It takes about 30 seconds, and you can change it anytime.\n\n' +
     'Customize my briefing\n' + ADB_RESEND.CUSTOMIZE_URL + '\n\n' +
@@ -750,8 +750,8 @@ function adbWelcomeHtml_() {
     '<p style="margin:0;font-size:16px;line-height:1.58;color:#2a2926;"><strong>Austin-first.</strong> The shared briefing stays focused on Austin and developments consequential to the immediate area. Personalized items may reach beyond Austin when that context matches your selected interests.</p></div>' +
 
     '<div class="section" style="padding:32px 0;border-bottom:1px solid #dedad1;">' +
-    '<div style="margin:0 0 12px;color:#8f1717;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;">YOUR STARTING SETTINGS</div>' +
-    '<div style="padding:18px;border:1px solid #dedad1;background:#fffefa;"><p style="margin:0;font-size:16px;line-height:1.58;color:#2a2926;">Everyone receives the shared Top Stories. For personalized sections, subscribers begin with all interest categories set to Normal and standard reading settings. Most people adjust this within the first week.</p></div></div>' +
+    '<div style="margin:0 0 12px;color:#8f1717;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;">YOUR SETTINGS</div>' +
+    '<div style="padding:18px;border:1px solid #dedad1;background:#fffefa;"><p style="margin:0;font-size:16px;line-height:1.58;color:#2a2926;">Everyone receives the shared Top Stories. Personalized sections use the interests and reading settings saved to your profile. If you’re new, your interests start at Normal with standard reading settings. You can change these anytime.</p></div></div>' +
 
     '<div class="section" style="padding:32px 0;border-bottom:1px solid #dedad1;">' +
     '<div style="margin:0 0 10px;color:#8f1717;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;">CUSTOMIZE MY BRIEFING</div>' +

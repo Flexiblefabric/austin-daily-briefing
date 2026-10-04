@@ -1,5 +1,7 @@
 # Native Signup — Completion Monitoring Extension
 
+**Specification ID:** `ADB-NATIVE-SIGNUP-MONITOR-0.1`  
+
 **Status:** FORM-7 Gate D staging contract  
 **Purpose:** Extend existing signup-to-Welcome monitoring without weakening or replacing Google signup monitoring.
 

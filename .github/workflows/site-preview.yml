@@ -66,6 +66,7 @@ jobs:
           node --check --input-type=commonjs < apps-script/NativeSignupDev.gs
           node --check --input-type=commonjs < apps-script/NativeSignupDevQa.gs
           node --check --input-type=commonjs < apps-script/NativeSignupDevProcessor.gs
+          node --check --input-type=commonjs < apps-script/NativeSignupProd.gs
 
       - name: Run native signup DEV runtime QA
         run: node tests/native-signup-dev.test.js
@@ -75,6 +76,9 @@ jobs:
 
       - name: Run Welcome copy compatibility QA
         run: node tests/welcome-copy-compat.test.js
+
+      - name: Run native signup Gate D production endpoint QA
+        run: node tests/native-signup-prod.test.js
 
       - name: Verify native signup DEV guardrails
         shell: python

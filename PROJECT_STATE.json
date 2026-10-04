@@ -213,7 +213,7 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D repository staging includes the production endpoint, processing contract, compatibility matrix, and completion-monitoring extension. Production activation is blocked until sheets/config, runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and a controlled address are all PASS.",
+      "reporting": "FORM-7 Gates A–C complete. Gate D repository staging includes the production endpoint, processing contract, compatibility matrix, and completion-monitoring extension. Production activation is blocked until sheets/config, runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and a controlled address are all PASS",
       "verification": "No Gate D production mutation has occurred. Shared production Intake/Processor Mode remains GOOGLE + NATIVE; FORM-7 introduces no new shared mode. Public signup remains the Google Form."
     }
   },

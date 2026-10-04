@@ -93,3 +93,9 @@ Gate B passes only when:
 - the deployment URL recorded in `signup-config.js` is the dedicated DEV web-app URL.
 
 After Gate B passes, proceed to Gate C processor parity using `docs/native-signup-processor-contract.md`.
+
+## Automated live-smoke support
+
+The repository includes `.github/workflows/native-signup-dev-live-smoke.yml`. The one-time marker `.github/native-signup-dev-live-smoke-once` authorizes a single post-merge run against the dedicated DEV endpoint. The workflow uses only synthetic addresses and tests valid staging, same-nonce replay, rapid equivalent replay, invalid email, missing consent, and honeypot behavior. Routine repository changes do not trigger it; future rechecks use manual `workflow_dispatch`.
+
+After the one-time run, inspect the DEV `Native Signup Requests` and `Native Signup Diagnostics` tables directly and confirm that only the expected DEV rows were written.

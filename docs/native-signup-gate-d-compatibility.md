@@ -92,3 +92,23 @@ Post-merge live scheduler metadata was verified on 2026-10-04:
 No schedule was changed. No task was enabled or disabled as part of FORM-7 synchronization.
 
 Therefore D4 prompt parity is complete, but Gate D production activation remains blocked by the watchdog's disabled operational state in addition to D3/runtime parity and controlled-test requirements.
+
+## D5 read-only preflight — 2026-10-04
+
+Current executable-consumer result:
+
+- production schema/config: **PASS — inert**;
+- Subscriber Operations canonical + scheduler prompt parity: **PASS**;
+- native-signup endpoint repository source: **PASS**;
+- native-signup endpoint runtime/deployment: **UNKNOWN / not yet installed**;
+- Resend repository compatibility + return-safe Welcome copy: **PASS**;
+- Resend production runtime parity: **UNKNOWN**;
+- watchdog prompt parity: **PASS**;
+- watchdog operational state: **BLOCKED — disabled**;
+- public website isolation: **PASS — Google signup remains public; native signup remains DEV/noindex/unlinked**;
+- Admin Hold safety fixture: **PASS — available**;
+- controlled mutating identity: **UNKNOWN — not yet selected**.
+
+The production Integration Config remains `Native Signup Mode = DISABLED` with blank controlled email, and both native-signup production sheets remain header-only.
+
+Runtime parity must use the repository status probes documented in `docs/native-signup-gate-d-runtime-preflight.md`. No dispatcher invocation is required merely to prove source/config parity.

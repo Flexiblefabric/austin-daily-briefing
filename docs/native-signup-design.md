@@ -1,6 +1,6 @@
 # Native Signup — Design and Rollout Baseline
 
-**Status:** FORM-7 Active — Phase 1 design baseline  
+**Status:** FORM-7 Active — Gate A complete; Gate B implementation staged  
 **Started:** 2026-10-04  
 **Production boundary:** No native signup production writes or public cutover are authorized by this document.
 
@@ -106,8 +106,30 @@ Observe normal production cycles for duplicate creation, queue ownership, Welcom
 
 After a clean observation, mark FORM-7 Complete, leave Google-form retirement to FORM-10, reconcile registry/roadmap/changelog/snapshot, and record final production verification.
 
-## Immediate next implementation step
+## Current Gate B implementation state
 
-Build Gate A/B DEV artifacts only: site/signup.html in non-public DEV posture, a dedicated native-signup DEV Apps Script endpoint, DEV request table/schema, and idempotency/abuse-control tests.
+Staged artifacts:
 
-No production routing or subscriber writes are authorized yet.
+- `site/signup.html`, `site/signup.js`, and `site/signup-config.js` in noindex/unlinked DEV posture;
+- `apps-script/NativeSignupDev.gs` isolated to the DEV intake workbook;
+- `apps-script/NativeSignupDevQa.gs` for non-production structural/unit checks;
+- DEV `Native Signup Requests` and `Native Signup Diagnostics` tables;
+- CI guards that keep the preview unlinked, the endpoint configuration in development mode, and the DEV Apps Script source behind explicit production-ID refusal checks.
+
+Next step: deploy the dedicated DEV Apps Script web app, place its deployment URL only in the DEV browser config, and run controlled browser/intake tests for validation, honeypot, rate limiting, same-nonce replay and rapid equivalent submissions. No production routing or subscriber writes are authorized yet.
+
+## Gate A decisions — approved 2026-10-04
+
+- **Consent:** single-step signup; valid email plus affirmative consent is sufficient. No double opt-in is added in FORM-7.
+- **Unified signup/re-subscribe page:** the reader-facing form never asks whether the address is new or returning and never exposes historical subscriber state.
+- **Active subscriber:** no-op; no duplicate subscriber and no additional Welcome.
+- **Paused subscriber:** no-op; resume remains an explicit Manage action.
+- **Unsubscribed subscriber:** fresh affirmative consent reactivates the existing subscriber/profile. Existing preferences are preserved and one deterministic Welcome is queued.
+- **Browser response:** warm but generic; a valid accepted submission receives the same response regardless of backend subscriber state.
+- **Request identity:** immutable server Request ID + browser Client Nonce + deterministic SHA-256 Response Key.
+- **Abuse controls:** reuse native-customization DEV defaults: 60-second address cooldown, five attempts per address per six hours, 60 accepted requests globally per hour and a 10-minute equivalent-request duplicate window.
+- **Transport:** reuse ordinary form POST → hidden iframe → minimal postMessage result; do not reopen the Apps Script CORS design.
+- **DEV posture:** use the eventual signup.html route with noindex/nofollow, no primary-navigation links and a DEV-only endpoint.
+- **Data minimization:** dedicated Native Signup Requests and Native Signup Diagnostics tables; store only data necessary for intake, idempotency, processing and privacy-safe diagnostics.
+
+Detailed processor state transitions are defined in `docs/native-signup-processor-contract.md`.

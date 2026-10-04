@@ -206,7 +206,7 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-c-dev.md",
-      "reporting": "FORM-7 Gates A/B complete. Gate C live DEV run partially passed: new signup, Active no-op and Paused no-op passed; re-subscribe exposed duplicate-header parsing of legacy Preferences. Parser fix merged in PR #76 and a fresh re-subscribe retest is staged; update DEV Apps Script processor to build v1.1 and run processNativeSignupDevV1 twice.",
+      "reporting": "FORM-7 Gates A/B complete. Gate C live DEV run partially passed: new signup, Active no-op and Paused no-op passed; re-subscribe exposed duplicate-header parsing of legacy Preferences. Parser fix merged in PR #76 and a fresh re-subscribe retest is staged; update DEV Apps Script processor to build v1.1 and run processNativeSignupDevV1 twice",
       "verification": "First live Gate C execution produced one new Active subscriber with 23 Normal preferences and one queued WELCOME_V1, preserved existing Active and Paused identities as no-ops, and created no replay duplicates on the second run. Re-subscribe failed closed before mutation because duplicate Profile ID headers caused legacy preference rows to parse incorrectly. The parser now preserves the first canonical duplicate header; regression QA passed in PR #76. Production was not touched."
     }
   },

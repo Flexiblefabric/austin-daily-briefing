@@ -2,6 +2,33 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-04 — Native signup Gate D production task contracts staged disabled
+
+**Type:** Production automation and monitoring contract update  
+**Components:** Subscriber Operations, signup completion reconciliation, production health watchdog, native signup  
+**Registry impact:** Yes — 2026-10-04.12
+
+FORM-7 Gate D integrated native-signup semantics into the canonical production task contracts while the production feature gate remains `Native Signup Mode = DISABLED`.
+
+### Changes
+
+- Advanced Subscriber Operations to `ADB-SUBOPS-PROD-1.1`.
+- Advanced the completion contract to `ADB-COMPLETION-0.2`.
+- Advanced the manual completion reconciler to `ADB-COMPLETION-RECON-0.2`.
+- Advanced the production watchdog to `ADB-WATCHDOG-PROD-2.4`.
+- Versioned native production-processing and monitoring contracts as `ADB-NATIVE-SIGNUP-PROD-0.1` and `ADB-NATIVE-SIGNUP-MONITOR-0.1`.
+- Added feature-gated native new-signup, re-subscribe, Active/Paused/Admin Hold no-op, deterministic Welcome, partial-state and completion-monitoring rules.
+- Preserved the existing promoted alert policy: only `Unhealthy — intake incomplete` remains alert-enabled.
+- Preserved the existing shared `GOOGLE + NATIVE` production mode; FORM-7 adds no new shared Intake/Processor Mode.
+- Scheduler-copy synchronization is required immediately after merge; repository merge alone does not establish scheduler parity.
+
+### Safety state
+
+- Production `Native Signup Mode` remains `DISABLED`.
+- Production Native Signup Requests/Diagnostics remain empty.
+- Public signup remains the Google Form.
+- No native signup production request or subscriber mutation is authorized by this change.
+
 ## 2026-10-04 — Native signup Gate D inert production schema
 
 **Type:** Production data-storage and configuration staging  

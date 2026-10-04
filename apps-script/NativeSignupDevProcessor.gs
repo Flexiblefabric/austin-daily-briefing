@@ -14,7 +14,7 @@
  */
 
 const ADB_NATIVE_SIGNUP_PROCESSOR_DEV = Object.freeze({
-  BUILD: 'native-signup-processor-dev-v1',
+  BUILD: 'native-signup-processor-dev-v1.1',
   DEV_DATABASE_ID: '1rl5GTOvuBSHyFK1r9CqI_6Z5gAwtgsTQnQQf9VCMeyM',
   DEV_INTAKE_ID: '1TiSgmFxij8p3wKnt_skTFXQvAOEuR2wI5c6V8Jq_Yyw',
   PROD_DATABASE_ID: '1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0',
@@ -408,7 +408,9 @@ function adbNsProcRows_(sheet) {
     headers: headers,
     rows: values.slice(1).map(function(row, index) {
       const out = headers.reduce(function(obj, header, col) {
-        obj[header] = row[col];
+        if (!Object.prototype.hasOwnProperty.call(obj, header)) {
+          obj[header] = row[col];
+        }
         return obj;
       }, {});
       out.__rowNumber = index + 2;

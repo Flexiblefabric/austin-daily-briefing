@@ -1,6 +1,6 @@
 # Native customization production cutover
 
-Status: controlled production rollout. Gates A–D are complete; Gate E public cutover is pending. Google customization remains the public route.
+Status: public production rollout. Gates A–E are complete; Gate F observation is active. Google customization remains available as fallback during observation.
 
 ## Objective
 
@@ -182,7 +182,11 @@ Before changing the public Customize route:
 - synchronize the active task wrappers to the canonical Daily Briefing and Watchdog specification IDs;
 - reconcile `PROJECT_STATE.json`, generated internal documentation, changelog, and immutable snapshot;
 - preserve Production Subscriber Operations as the only owner that applies confirmed native payloads to Profiles / Preferences;
-- keep the Google customization form available as fallback during observation.
+- keep the Google customization form available as fallback during observation;
+- complete the mandatory [Production change compatibility checklist](production-change-compatibility-checklist.md), including executable downstream consumers and manually deployed runtime parity;
+- for this cutover specifically, verify both Resend dispatch validators accept the proposed Intake Mode / Processor Mode combination before changing production from `GOOGLE ONLY`.
+
+Any FAIL or UNKNOWN compatibility result blocks Gate E even when the canonical Daily Briefing and Watchdog prompts accept the proposed state.
 
 Only after this preflight passes:
 
@@ -214,6 +218,12 @@ Preflight and promotion evidence:
 - the Google customization form remains available as a fallback during observation;
 - production confirmation uses the first-party ADB page and production Cloudflare relay;
 - P001 controlled-test preference state was intentionally left as the successful Gate D result.
+
+### Post-cutover corrective finding — 2026-10-04
+
+The original Gate E preflight was incomplete by the current compatibility standard. It verified the canonical Daily Briefing and Watchdog contracts but did not inspect the executable Resend transport validators. Production was changed to `GOOGLE + NATIVE` while `adbValidateDailyDeliveryGates_` and `adbValidateWelcomeDeliveryGates_` still required `GOOGLE ONLY`. As a result, the October 4 briefing generated and queued successfully but the daily dispatcher aborted before Resend handoff.
+
+The transport validators were corrected to accept the authorized intake modes while requiring the intake workbook Processor Mode to match the production database Intake Mode. Future major cutovers must complete the production compatibility checklist before promotion, including manually deployed Apps Script parity.
 
 Gate F begins immediately after public deployment and requires at least 24 hours plus one normal Subscriber Operations cycle.
 

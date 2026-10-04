@@ -90,7 +90,7 @@ Resolve current subscriber state immediately before mutation:
 - No matching subscriber: create exactly one Active subscriber/profile, initialize all 23 active interests to Normal/1, use standard initial reading settings, append one Signup Action with Submission ID NATIVE:SIGNUP:<Response Key>, and append one Queued WELCOME_V1 with Message ID WELCOME-NATIVE:<Response Key>.
 - Active: terminal no-op; preserve all records; mark request Processed / existing_active_noop; no Signup Action and no Welcome.
 - Paused: terminal no-op; preserve Paused status and all records; mark request Processed / paused_requires_manage; no Signup Action and no Welcome.
-- Admin Hold: terminal no-op; preserve Admin Hold and all records; mark request Processed / admin_hold_noop; no Signup Action and no Welcome. A signup request must never clear an administrative hold.
+- Admin Hold: terminal no-op; preserve Admin Hold and all records; mark request Processed / admin_hold_noop; no Signup Action and no Welcome. A signup request must never clear or bypass an administrative hold.
 - Unsubscribed: explicit re-subscription from fresh affirmative consent; reactivate the existing subscriber, preserve the existing Profile ID, all preference rows and reading settings, append one Signup Action with Subscriber Result Reactivated, and append exactly one Queued WELCOME_V1.
 - Any other or ambiguous state: make no mutation and report the exact mismatch.
 

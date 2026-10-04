@@ -9,7 +9,7 @@
 - **welcome_dispatch** — live — hourly — `dispatchQueuedWelcomeMessagesViaResendV1`
 - **daily_dispatch** — live — hourly — `dispatchQueuedDailyBriefingsViaResendV1`
 - **documentation_sync** — live — on PROJECT_STATE.json or generator changes to main — `python scripts/docs_sync.py update`
-- **production_health_watchdog** — live — 09:30 America/Chicago
+- **production_health_watchdog** — paused — 09:30 America/Chicago
 
 ## Manual operational checks
 
@@ -28,7 +28,7 @@
 - **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
-  - Reporting: FORM-7 Gates A–C complete. Gate D D1 repository staging and D2 inert schema/config are complete; D4 canonical Subscriber Operations, completion, and watchdog contracts are integrated in repository with Native Signup Mode still DISABLED. Scheduler-copy synchronization after merge, D3 separate disabled production endpoint deployment, Apps Script runtime parity, and controlled-test identity remain.
+  - Reporting: FORM-7 Gates A–C complete. Gate D D1/D2 complete and D4 canonical contracts plus scheduler prompt copies are synchronized. Subscriber Operations is enabled on ADB-SUBOPS-PROD-1.1; watchdog prompt is synchronized to ADB-WATCHDOG-PROD-2.4 but its scheduler remains disabled. D3 separate disabled production endpoint deployment, Apps Script runtime parity, watchdog operational state, and controlled-test identity remain.
 
 ## Runtime configuration
 

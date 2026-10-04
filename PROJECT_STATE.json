@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.11",
+  "registry_version": "2026-10-04.12",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -104,10 +104,11 @@
     "subscriber_processor": {
       "cadence": "every 6 hours",
       "status": "live",
-      "verification": "manual/external",
+      "verification": "canonical source upgraded for feature-gated native signup; scheduler copy synchronization pending after merge",
       "task_id": "6aa1acbcf17c8191a9a89cc95b433629",
       "scheduler_state": "active",
-      "prompt_path": "docs/automation-prompts/production-subscriber-operations.md"
+      "prompt_path": "docs/automation-prompts/production-subscriber-operations.md",
+      "specification_id": "ADB-SUBOPS-PROD-1.1"
     },
     "daily_generation": {
       "cadence": "08:00 America/Chicago",
@@ -146,10 +147,10 @@
       "scheduler_state": "active",
       "task_id": "6aa8401e16a88191ae14ba1b4d6cba6e",
       "prompt_path": "docs/automation-prompts/production-health-watchdog.md",
-      "specification_id": "ADB-WATCHDOG-PROD-2.3",
-      "coverage": "subscriber operations, morning generation, daily Resend delivery, welcome Resend queue health, staged signup completion intake-incomplete detection, and compatibility with controlled/native subscriber-intake modes",
+      "specification_id": "ADB-WATCHDOG-PROD-2.4",
+      "coverage": "subscriber operations, morning generation, daily Resend delivery, welcome Resend queue health, Google plus feature-gated native signup completion intake-incomplete detection, and compatibility with controlled/native subscriber-intake modes",
       "alert_transport": "validated Gmail administrator-alert path",
-      "completion_monitoring": "ADB-COMPLETION-PROD-0.1 — intake-incomplete alert class only; other completion findings remain report-only"
+      "completion_monitoring": "ADB-COMPLETION-PROD-0.1 alert policy; contracts ADB-COMPLETION-0.2 / ADB-COMPLETION-RECON-0.2 add native journeys while only intake-incomplete remains alert-enabled"
     }
   },
   "manual_operations": {
@@ -191,10 +192,10 @@
       "status": "development",
       "cadence": "manual/read-only",
       "runbook": "docs/automation-prompts/end-to-end-completion-reconcile.md",
-      "specification_id": "ADB-COMPLETION-RECON-0.1",
+      "specification_id": "ADB-COMPLETION-RECON-0.2",
       "production_boundary": "read-only; no writes, repairs, sends, alerts, or dispatcher invocation",
-      "reporting": "privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1",
-      "verification": "DEV vectors passed 15/15 on 2026-09-22; first production incident class remains live in watchdog 2.3; full reconciler remains manual/read-only"
+      "reporting": "privacy-safe full-scan Google plus feature-gated native signup-to-Welcome classification using ADB-COMPLETION-0.2",
+      "verification": "Google completion vectors remain established; FORM-7 adds native new/re-subscribe/no-op/pending/partial/duplicate vectors. Native Signup Mode DISABLED preserves prior Google-only behavior."
     },
     "native_customization_cutover": {
       "status": "complete",
@@ -214,8 +215,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D D1 repository staging and D2 inert production schema/config are complete. Native Signup Requests/Diagnostics exist empty, Native Signup Mode is DISABLED, controlled email is blank, shared Intake/Processor Mode remains GOOGLE + NATIVE, and a fresh pre-D2 production intake backup was created. D3/D4 runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and a controlled address remain",
-      "verification": "D2 verified read-back: production Native Signup Requests and Native Signup Diagnostics contain headers only; Integration Config has Native Signup Mode=DISABLED and blank Native Signup Controlled Email; production Intake Mode and Processor Mode remain GOOGLE + NATIVE. Backup ID 1iJ4i4bRmgs0PwQd-k_g8i3Z374QWLexekmab7d5Acl8. No native signup request or subscriber mutation occurred."
+      "reporting": "FORM-7 Gates A–C complete. Gate D D1 repository staging and D2 inert schema/config are complete; D4 canonical Subscriber Operations, completion, and watchdog contracts are integrated in repository with Native Signup Mode still DISABLED. Scheduler-copy synchronization after merge, D3 separate disabled production endpoint deployment, Apps Script runtime parity, and controlled-test identity remain",
+      "verification": "D4 repository compatibility is PASS: ADB-SUBOPS-PROD-1.1, ADB-COMPLETION-0.2, ADB-COMPLETION-RECON-0.2, ADB-WATCHDOG-PROD-2.4, ADB-NATIVE-SIGNUP-PROD-0.1, and ADB-NATIVE-SIGNUP-MONITOR-0.1 agree on DISABLED gating, deterministic native IDs, Admin Hold no-op, and unchanged alert policy. Scheduler/runtime parity remains pending; production Native Signup Mode is DISABLED."
     }
   },
   "runtime_properties": [

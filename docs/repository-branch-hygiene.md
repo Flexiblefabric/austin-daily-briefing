@@ -58,9 +58,9 @@ Their presence does not mean their content should be restored. Much of it appear
 
 `.github/workflows/branch-hygiene.yml` implements the policy.
 
-On the pull request that introduces or changes the workflow, it performs a dry-run audit only. On the initial merge of the workflow to `main`, it applies the safe cleanup. After that, it is intended for manual use through `workflow_dispatch`; routine repository changes do not trigger branch deletion.
+Pull-request runs perform a dry-run audit only. The 2026-10-04 DOC-2 closeout uses the one-time `.github/branch-hygiene-apply-once` marker to authorize one final guarded apply pass on `main`. After that marker is merged, routine repository and workflow changes do not trigger branch deletion.
 
-Manual runs default to dry-run. Applying deletion requires the explicit `apply=true` workflow input.
+Future cleanup is manual through `workflow_dispatch`. Manual runs default to dry-run. Applying deletion requires the explicit `apply=true` workflow input.
 
 The workflow never deletes `main`, protected branches, open-PR branches, or the explicit reconciliation-retention set above.
 

@@ -1,0 +1,88 @@
+name: Manual domain health check
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/domain-health-manual.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify live ADB routes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          canonical="https://austindailybriefing.com/"
+          old_customize="https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform"
+
+          check_entry() {
+            local label="$1"
+            local url="$2"
+            local meta
+            meta="$(curl -sS -L --max-time 30 -o /tmp/adb-entry.html -w '%{http_code}|%{url_effective}|%{ssl_verify_result}|%{num_redirects}' "$url")"
+            IFS='|' read -r code final ssl redirects <<< "$meta"
+            echo "$label: code=$code final=$final redirects=$redirects ssl_verify=$ssl"
+            test "$code" = "200"
+            test "$ssl" = "0"
+            test "$final" = "$canonical"
+          }
+
+          check_route() {
+            local path="$1"
+            local meta
+            meta="$(curl -sS --max-time 30 -o /tmp/adb-route -w '%{http_code}|%{content_type}|%{ssl_verify_result}' "${canonical}${path}")"
+            IFS='|' read -r code type ssl <<< "$meta"
+            echo "/$path: code=$code type=$type ssl_verify=$ssl"
+            test "$code" = "200"
+            test "$ssl" = "0"
+          }
+
+          check_entry "primary https" "https://austindailybriefing.com/"
+          check_entry "http redirect" "http://austindailybriefing.com/"
+          check_entry "www redirect" "https://www.austindailybriefing.com/"
+          check_entry "legacy github pages redirect" "https://flexiblefabric.github.io/austin-daily-briefing/"
+
+          for path in             ""             "customize.html"             "how-it-works.html"             "whats-new.html"             "corrections.html"             "privacy.html"             "terms.html"             "social-preview.png"             "robots.txt"             "sitemap.xml"; do
+            check_route "$path"
+          done
+
+          home="$(curl -sS --max-time 30 "$canonical")"
+          grep -Fq '<link rel="canonical" href="https://austindailybriefing.com/">' <<< "$home"
+          grep -Fq '<meta property="og:url" content="https://austindailybriefing.com/">' <<< "$home"
+          native_count="$(grep -o 'href="customize.html"' <<< "$home" | wc -l | tr -d ' ')"
+          test "$native_count" -ge 3
+          ! grep -Fq "$old_customize" <<< "$home"
+
+          for page in how-it-works.html whats-new.html corrections.html privacy.html terms.html; do
+            html="$(curl -sS --max-time 30 "${canonical}${page}")"
+            grep -Fq 'href="customize.html"' <<< "$html"
+            ! grep -Fq "$old_customize" <<< "$html"
+          done
+
+          customize="$(curl -sS --max-time 30 "${canonical}customize.html")"
+          grep -Fq 'customize-config.js' <<< "$customize"
+          grep -Fq 'customize.js' <<< "$customize"
+          grep -Fq "$old_customize" <<< "$customize"
+          grep -Fq 'Open the Google customization form' <<< "$customize"
+
+          robots="$(curl -sS --max-time 30 "${canonical}robots.txt")"
+          grep -Fq 'Sitemap: https://austindailybriefing.com/sitemap.xml' <<< "$robots"
+
+          sitemap="$(curl -sS --max-time 30 "${canonical}sitemap.xml")"
+          grep -Fq 'https://austindailybriefing.com/' <<< "$sitemap"
+
+          {
+            echo "## ADB live-site verification"
+            echo
+            echo "- All four public entry points resolved successfully to the canonical HTTPS homepage."
+            echo "- Core public routes and assets returned HTTP 200 with successful TLS verification."
+            echo "- Homepage canonical and Open Graph URLs point to the custom domain."
+            echo "- Public Customize links point to customize.html; the legacy Google customization form remains only as the explicit fallback on customize.html."
+            echo "- robots.txt references the custom-domain sitemap."
+          } >> "$GITHUB_STEP_SUMMARY"

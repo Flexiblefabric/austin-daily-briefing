@@ -1,6 +1,6 @@
 # Austin Daily Briefing — Manual Domain Health Check
 
-Use this runbook only when a domain check is requested. It is not a scheduled task.
+Use this runbook only when a domain check is requested. It is not a scheduled task. The reusable GitHub Actions implementation is `.github/workflows/domain-health-manual.yml`; it is manual-only after its initial addition and should not be converted into a scheduled monitor.
 
 ## Address scope
 

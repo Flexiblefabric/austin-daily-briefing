@@ -81,3 +81,23 @@ Promotion required:
 - No subscriber, queue, email-delivery, or personalization behavior changed.
 
 The redesign is complete. Future Friday Explorer modules, general editorial imagery, analytics, and archive/CMS work remain separate roadmap items or deferred ideas.
+
+
+## Post-fix live-site verification — 2026-10-04
+
+WEB-4 was closed after an independent live-site probe from a GitHub-hosted runner, following the native customization public-link correction in PR #60.
+
+Evidence:
+
+- workflow: `.github/workflows/domain-health-manual.yml`
+- verification run: GitHub Actions run `37200449953`
+- result: **passed**
+- all four public entry points resolved to `https://austindailybriefing.com/` with HTTP 200 at the final destination and successful TLS verification;
+- the HTTP, `www`, and legacy `flexiblefabric.github.io/austin-daily-briefing/` entry points each redirected to the canonical HTTPS homepage;
+- Home, Customize, How ADB Works, What’s New, Corrections, Privacy, Terms, `social-preview.png`, `robots.txt`, and `sitemap.xml` all returned HTTP 200;
+- the homepage canonical and Open Graph URLs point to the custom domain;
+- public Customize links point to `customize.html`;
+- the legacy Google customization form remains only as the explicit fallback link on `customize.html`;
+- `robots.txt` points to the custom-domain sitemap.
+
+This verification satisfies the post-fix live-route check and closes WEB-4.

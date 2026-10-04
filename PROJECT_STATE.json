@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.4",
+  "registry_version": "2026-10-04.5",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -206,8 +206,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-dev-deployment.md",
-      "reporting": "FORM-7 Gate A complete; Gate B source/schema/CI and executable mocked-runtime QA implemented; dedicated DEV Apps Script deployment and controlled browser/intake QA remain",
-      "verification": "Production signup remains on the Google Form. Native signup preview remains noindex and unlinked, the endpoint config is intentionally blank, runtime QA covers staging/validation/deduplication/rate-limit and production-ID refusal paths, and no native signup production writes are authorized."
+      "reporting": "FORM-7 Gate A complete; Gate B source/schema/CI/runtime QA implemented and dedicated DEV Apps Script web app connected; controlled live browser/intake QA remains before Gate C",
+      "verification": "Production signup remains on the Google Form. Native signup preview remains noindex and unlinked. The dedicated DEV endpoint is configured in site/signup-config.js and is distinct from the production native-customization endpoint. No native signup production writes are authorized."
     }
   },
   "runtime_properties": [

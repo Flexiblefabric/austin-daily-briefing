@@ -703,6 +703,47 @@ function adbKeyValueSheet_(sheet) {
   }, {});
 }
 
+function validateForm7GateDTransportCompatibilityV1() {
+  const database = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_DATABASE_ID);
+  const intake = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_INTAKE_ID);
+  const state = adbValidateResendDeliveryGates_(database, intake);
+
+  const nativeSignupMode = String(
+    state.cfg['Native Signup Mode'] || 'DISABLED'
+  ).trim().toUpperCase();
+  if (['DISABLED','CONTROLLED','LIVE'].indexOf(nativeSignupMode) < 0) {
+    throw new Error('Unsupported Native Signup Mode for Gate D compatibility.');
+  }
+
+  const plain = adbWelcomePlainText_();
+  const html = adbWelcomeHtml_();
+  const requiredCopy = 'Personalized sections use the interests and reading settings saved to your profile.';
+  const newSubscriberCopy = 'If you’re new, your interests start at Normal with standard reading settings.';
+  const obsoleteCopy = 'subscribers begin with all interest categories set to Normal';
+
+  if (plain.indexOf(requiredCopy) < 0 || html.indexOf(requiredCopy) < 0) {
+    throw new Error('Gate D Welcome copy is not return-safe in both renderers.');
+  }
+  if (plain.indexOf(newSubscriberCopy) < 0 || html.indexOf(newSubscriberCopy) < 0) {
+    throw new Error('Gate D Welcome copy is missing the new-subscriber qualifier.');
+  }
+  if (plain.indexOf(obsoleteCopy) >= 0 || html.indexOf(obsoleteCopy) >= 0) {
+    throw new Error('Gate D Welcome copy still contains the obsolete all-subscribers-start-Normal claim.');
+  }
+
+  const report = {
+    transport: 'Resend',
+    intakeMode: state.env['Intake Mode'],
+    processorMode: state.cfg['Processor Mode'],
+    nativeSignupMode: nativeSignupMode,
+    welcomeCopy: 'RETURN_SAFE',
+    deliveryInvoked: false,
+    writes: false
+  };
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
 function adbWelcomePlainText_() {
   return 'AUSTIN DAILY BRIEFING\n\n' +
     'WELCOME TO THE AUSTIN DAILY BRIEFING\n\n' +

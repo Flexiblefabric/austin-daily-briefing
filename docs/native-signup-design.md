@@ -116,7 +116,7 @@ Staged artifacts:
 - DEV `Native Signup Requests` and `Native Signup Diagnostics` tables;
 - CI guards that keep the preview unlinked, the endpoint configuration in development mode, and the DEV Apps Script source behind explicit production-ID refusal checks.
 
-Next step: deploy the dedicated DEV Apps Script web app, place its deployment URL only in the DEV browser config, and run controlled browser/intake tests for validation, honeypot, rate limiting, same-nonce replay and rapid equivalent submissions. No production routing or subscriber writes are authorized yet.
+Repository runtime QA now exercises the actual DEV Apps Script source under a mocked Apps Script runtime for valid staging, validation failure, honeypot no-op, same-nonce replay, recent-equivalent suppression, cooldown handling and production-ID refusal. The remaining Gate B dependency is the dedicated DEV web-app deployment and controlled browser/intake QA described in `docs/native-signup-dev-deployment.md`. No production routing or subscriber writes are authorized yet.
 
 ## Gate A decisions — approved 2026-10-04
 

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.5",
+  "registry_version": "2026-10-04.6",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -205,9 +205,9 @@
     "native_signup_development": {
       "status": "development",
       "cadence": "manual gated rollout",
-      "runbook": "docs/native-signup-dev-deployment.md",
-      "reporting": "FORM-7 Gate A complete; Gate B source/schema/CI/runtime QA implemented and dedicated DEV Apps Script web app connected; one-time synthetic live smoke and DEV Sheet verification remain before Gate C",
-      "verification": "Production signup remains on the Google Form. Native signup preview remains noindex and unlinked. The dedicated DEV endpoint is configured in site/signup-config.js and is distinct from the production native-customization endpoint. No native signup production writes are authorized."
+      "runbook": "docs/native-signup-gate-c-dev.md",
+      "reporting": "FORM-7 Gates A/B complete; Gate C mocked processor parity passed; controlled live DEV fixture preparation and one manual processNativeSignupDevV1 execution remain",
+      "verification": "Gate B PASS on live DEV intake. Gate C repository parity suite passed new signup, Active no-op, Paused no-op, re-subscribe preference preservation, replay/idempotency, ambiguous identity, partial-state fail-closed, invalid-consent and production-ID guard cases. No live Gate C subscriber mutation or production write has been authorized."
     }
   },
   "runtime_properties": [
@@ -331,7 +331,9 @@
     "friday_synthesis_evidence_schema": "docs/friday-synthesis-evidence.schema.json",
     "native_signup_design": "docs/native-signup-design.md",
     "native_signup_processor_contract": "docs/native-signup-processor-contract.md",
-    "native_signup_dev_deployment": "docs/native-signup-dev-deployment.md"
+    "native_signup_dev_deployment": "docs/native-signup-dev-deployment.md",
+    "native_signup_gate_b_result": "docs/native-signup-gate-b-result.md",
+    "native_signup_gate_c_dev": "docs/native-signup-gate-c-dev.md"
   },
   "governance": {
     "registry_is_authoritative": true,

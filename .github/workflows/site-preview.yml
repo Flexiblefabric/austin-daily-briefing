@@ -65,9 +65,13 @@ jobs:
           node --check site/signup.js
           node --check --input-type=commonjs < apps-script/NativeSignupDev.gs
           node --check --input-type=commonjs < apps-script/NativeSignupDevQa.gs
+          node --check --input-type=commonjs < apps-script/NativeSignupDevProcessor.gs
 
       - name: Run native signup DEV runtime QA
         run: node tests/native-signup-dev.test.js
+
+      - name: Run native signup Gate C processor parity QA
+        run: node tests/native-signup-processor-dev.test.js
 
       - name: Verify native signup DEV guardrails
         shell: python

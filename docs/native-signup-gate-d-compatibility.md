@@ -92,3 +92,13 @@ Post-merge live scheduler metadata was verified on 2026-10-04:
 No schedule was changed. No task was enabled or disabled as part of FORM-7 synchronization.
 
 Therefore D4 prompt parity is complete, but Gate D production activation remains blocked by the watchdog's disabled operational state in addition to D3/runtime parity and controlled-test requirements.
+
+
+## Runtime parity helpers
+
+Two read-only functions are available for D3/D5 manual runtime proof:
+
+- `validateNativeSignupProdPreflightV1` in `apps-script/NativeSignupProd.gs` validates the separate production endpoint project while it is disabled and before any allowlist is configured.
+- `validateForm7GateDTransportCompatibilityV1` in `apps-script/ResendTransport.gs` validates existing shared modes and confirms the installed Welcome renderer is return-safe without invoking Resend or writing Sheets.
+
+A successful repository test is not a substitute for running these functions in the actual installed Apps Script projects.

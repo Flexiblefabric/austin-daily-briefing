@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Development preview for Austin Daily Briefing signup.">
+  <meta name="theme-color" content="#181818">
+  <title>Get the Briefing — Austin Daily Briefing</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="masthead-row wrap">
+    <a class="brand-link" href="./" aria-label="Austin Daily Briefing home"><img src="brand/adb-masthead.svg" width="900" height="220" alt="Austin Daily Briefing"></a>
+  </div>
+  <div class="nav-shell">
+    <nav class="desktop-nav wrap" aria-label="Main navigation">
+      <div class="nav-primary">
+        <a class="nav-link" href="how-it-works.html">How ADB Works</a>
+        <a class="nav-link" href="whats-new.html">What’s New</a>
+        <a class="nav-link" href="./#sample">See a Sample</a>
+      </div>
+      <div class="nav-actions">
+        <a class="nav-action" href="customize.html">Customize</a>
+        <a class="nav-action" href="https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform" target="_blank" rel="noopener noreferrer">Manage</a>
+        <span class="nav-action" aria-current="page">Get the Briefing</span>
+      </div>
+    </nav>
+    <div class="mobile-nav wrap">
+      <div class="mobile-nav-bar">
+        <span class="button" aria-current="page">Get the Briefing</span>
+        <details class="mobile-menu">
+          <summary class="menu-summary">Menu</summary>
+          <nav class="mobile-menu-panel" aria-label="Mobile navigation">
+            <a href="how-it-works.html">How ADB Works</a>
+            <a href="whats-new.html">What’s New</a>
+            <a href="./#sample">See a Sample</a>
+            <a href="customize.html">Customize</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform" target="_blank" rel="noopener noreferrer">Manage</a>
+            <a href="corrections.html">Corrections</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+          </nav>
+        </details>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="customize-main" id="main">
+  <header class="customize-header wrap">
+    <p class="eyebrow">Development preview</p>
+    <h1>Get Austin in your inbox.</h1>
+    <p class="lede">One concise briefing each morning. Join with your email, then customize anytime.</p>
+  </header>
+
+  <div class="customize-layout wrap">
+    <aside class="customize-aside">
+      <p class="section-label">What happens next</p>
+      <p>New and returning subscribers use the same form. ADB handles the account state privately.</p>
+      <p>Subscriptions begin with active topics at Normal. Your existing settings stay with your profile if you return.</p>
+      <div class="security-note">
+        <strong>We keep the form minimal.</strong>
+        <p>Signup collects only the email and consent needed to provide the briefing.</p>
+      </div>
+      <p class="field-help">This page is still in development. <a href="https://docs.google.com/forms/d/e/1FAIpQLSfoDFw2mnESsjLPCJkBBhmSnxSl0P7tc7t19bUFq1bbE0BSaA/viewform" target="_blank" rel="noopener noreferrer">Use the current signup form</a>.</p>
+    </aside>
+
+    <form class="customize-form" id="native-signup-form" method="post" target="adb-native-signup-result" novalidate>
+      <input type="hidden" name="action" value="request">
+      <input type="hidden" name="source" value="website">
+      <input type="hidden" id="signup-client-nonce" name="client_nonce" value="">
+      <div class="form-honeypot" aria-hidden="true">
+        <label for="signup-form-check">Leave this field blank</label>
+        <input id="signup-form-check" name="form_check" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      </div>
+
+      <fieldset class="identity-fieldset">
+        <legend><span class="form-section-number">01</span> Join</legend>
+
+        <label class="field-label" for="signup-email">Email address</label>
+        <input class="text-input" id="signup-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
+        <p class="field-help">Use the address where you want to receive Austin Daily Briefing.</p>
+
+        <label class="signup-consent" for="signup-consent">
+          <input id="signup-consent" name="consent" type="checkbox" value="yes" required>
+          <span>Yes — send me Austin Daily Briefing.</span>
+        </label>
+      </fieldset>
+
+      <div class="form-actions">
+        <button class="button customize-submit" id="signup-submit" type="submit">Get the briefing</button>
+      </div>
+      <div class="form-status" id="signup-status" role="status" aria-live="polite"></div>
+    </form>
+
+    <iframe id="adb-native-signup-result" name="adb-native-signup-result" title="Signup submission result" hidden></iframe>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-main">
+      <div class="footer-brand-cell"><img class="footer-mark" src="brand/adb-mark-reversed.svg" width="256" height="256" alt="ADB"></div>
+      <div class="footer-links"><p class="footer-heading">Product</p><a href="./">Home</a><a href="how-it-works.html">How ADB Works</a><a href="whats-new.html">What’s New</a></div>
+      <div class="footer-links"><p class="footer-heading">Subscriber</p><a href="customize.html">Customize</a><a href="https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform" target="_blank" rel="noopener noreferrer">Manage</a><a href="https://docs.google.com/forms/d/e/1FAIpQLSc_0-djww4qboFaEn9k-nEponrCBBqz-MCB81sOUtLjVsOZ7w/viewform" target="_blank" rel="noopener noreferrer">Feedback</a></div>
+      <div class="footer-links"><p class="footer-heading">Trust</p><a href="corrections.html">Corrections</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+    </div>
+    <div class="footer-bottom"><span>Austin, Texas · An independent experimental project</span><span><a href="mailto:briefing@austindailybriefing.com">briefing@austindailybriefing.com</a></span></div>
+  </div>
+</footer>
+
+<script src="signup-config.js"></script>
+<script src="signup.js"></script>
+</body>
+</html>

@@ -522,6 +522,8 @@ A future Friday edition will expand Austin Ahead into a distinct Friday section.
 
 ## 20. Friday Recap
 
+**Staged successor:** [FRI-1 narrative synthesis](friday-synthesis-spec.md) records the approved target definition. The interim rules below remain active until validation and explicit promotion; defining the successor alone does not activate it.
+
 Until a dedicated Friday product is specified, Friday editions may include a concise `This Week in Austin` recap of no more than three meaningful developments.
 
 The recap should explain the arc of the week rather than repeat five days of headlines.

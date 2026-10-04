@@ -130,6 +130,7 @@ The project uses separate specifications for editorial meaning, visual identity,
 - [**Production Subscriber Operations**](docs/automation-prompts/production-subscriber-operations.md) — canonical signup, management, customization, and confirmation processing rules.
 - [**Production Health Watchdog**](docs/automation-prompts/production-health-watchdog.md) — production monitoring rules.
 - [**Technical Changelog**](docs/CHANGELOG.md) — material production changes, newest first.
+- [**Friday Narrative Synthesis**](docs/friday-synthesis-spec.md) — approved staged product definition, with [validation scorecard](docs/friday-synthesis-validation.md) and [separate evidence log](docs/friday-synthesis-evidence-log.md); not yet active in production.
 - [**Project Roadmap**](docs/ROADMAP.md) — pending, blocked, deferred, and recently completed cross-project work.
 
 When specifications overlap, use the narrower canonical document for its domain rather than treating this README as an implementation specification.

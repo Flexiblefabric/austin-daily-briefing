@@ -1,6 +1,6 @@
 # Native Signup — Design and Rollout Baseline
 
-**Status:** FORM-7 Active — Phase 1 design baseline  
+**Status:** FORM-7 Active — Gate A complete; Gate B implementation staged  
 **Started:** 2026-10-04  
 **Production boundary:** No native signup production writes or public cutover are authorized by this document.
 
@@ -106,11 +106,17 @@ Observe normal production cycles for duplicate creation, queue ownership, Welcom
 
 After a clean observation, mark FORM-7 Complete, leave Google-form retirement to FORM-10, reconcile registry/roadmap/changelog/snapshot, and record final production verification.
 
-## Immediate next implementation step
+## Current Gate B implementation state
 
-Build Gate A/B DEV artifacts only: site/signup.html in non-public DEV posture, a dedicated native-signup DEV Apps Script endpoint, DEV request table/schema, and idempotency/abuse-control tests.
+Staged artifacts:
 
-No production routing or subscriber writes are authorized yet.
+- `site/signup.html`, `site/signup.js`, and `site/signup-config.js` in noindex/unlinked DEV posture;
+- `apps-script/NativeSignupDev.gs` isolated to the DEV intake workbook;
+- `apps-script/NativeSignupDevQa.gs` for non-production structural/unit checks;
+- DEV `Native Signup Requests` and `Native Signup Diagnostics` tables;
+- CI guards that keep the preview unlinked, the endpoint configuration in development mode, and the DEV Apps Script source behind explicit production-ID refusal checks.
+
+Next step: deploy the dedicated DEV Apps Script web app, place its deployment URL only in the DEV browser config, and run controlled browser/intake tests for validation, honeypot, rate limiting, same-nonce replay and rapid equivalent submissions. No production routing or subscriber writes are authorized yet.
 
 ## Gate A decisions — approved 2026-10-04
 

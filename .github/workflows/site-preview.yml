@@ -66,6 +66,9 @@ jobs:
           node --check --input-type=commonjs < apps-script/NativeSignupDev.gs
           node --check --input-type=commonjs < apps-script/NativeSignupDevQa.gs
 
+      - name: Run native signup DEV runtime QA
+        run: node tests/native-signup-dev.test.js
+
       - name: Verify native signup DEV guardrails
         shell: python
         run: |

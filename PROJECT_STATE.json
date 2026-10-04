@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.7",
+  "registry_version": "2026-10-04.8",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -206,8 +206,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-c-dev.md",
-      "reporting": "FORM-7 Gates A/B complete; Gate C mocked parity passed and controlled DEV fixtures are prepared; add the repository processor source to the DEV Apps Script project and run processNativeSignupDevV1 twice for live mutation + replay verification",
-      "verification": "Gate B PASS on live DEV intake. Gate C repository parity passed. Controlled DEV fixtures now cover new, Active, Paused and Unsubscribed states; prior Gate B smoke requests are terminal intake-only records. No Gate C processor execution or production write has occurred yet."
+      "reporting": "FORM-7 Gates A/B complete. Gate C live DEV run partially passed: new signup, Active no-op and Paused no-op passed; re-subscribe exposed duplicate-header parsing of legacy Preferences. Parser fix merged in PR #76 and a fresh re-subscribe retest is staged; update DEV Apps Script processor to build v1.1 and run processNativeSignupDevV1 twice.",
+      "verification": "First live Gate C execution produced one new Active subscriber with 23 Normal preferences and one queued WELCOME_V1, preserved existing Active and Paused identities as no-ops, and created no replay duplicates on the second run. Re-subscribe failed closed before mutation because duplicate Profile ID headers caused legacy preference rows to parse incorrectly. The parser now preserves the first canonical duplicate header; regression QA passed in PR #76. Production was not touched."
     }
   },
   "runtime_properties": [

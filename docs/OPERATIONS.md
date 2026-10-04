@@ -28,7 +28,7 @@
 - **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
-  - Reporting: FORM-7 Gates A–C complete. Gate D D1/D2 complete and D4 canonical contracts plus scheduler prompt copies are synchronized. Subscriber Operations is enabled on ADB-SUBOPS-PROD-1.1; watchdog prompt is synchronized to ADB-WATCHDOG-PROD-2.4 but its scheduler remains disabled. D3 separate disabled production endpoint deployment, Apps Script runtime parity, watchdog operational state, and controlled-test identity remain.
+  - Reporting: FORM-7 Gates A–C complete. Gate D D1/D2/D4 pass and D5 read-only preflight is a partial pass. Remaining blockers are D3 separate disabled production web app, production Resend runtime parity, explicit watchdog re-enable/disposition, and one operator-owned mutating controlled-test address.
 
 ## Runtime configuration
 

@@ -73,6 +73,9 @@ jobs:
       - name: Run native signup Gate C processor parity QA
         run: node tests/native-signup-processor-dev.test.js
 
+      - name: Run Welcome copy compatibility QA
+        run: node tests/welcome-copy-compat.test.js
+
       - name: Verify native signup DEV guardrails
         shell: python
         run: |

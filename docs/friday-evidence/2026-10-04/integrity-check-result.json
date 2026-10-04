@@ -1,0 +1,24 @@
+{
+  "schema": "Draft 2020-12 validated",
+  "active_base_fixtures": 3,
+  "omission_variant_fixtures": 1,
+  "base_daily_outputs": 15,
+  "evaluation_records_checked": 4,
+  "integrity_errors": [],
+  "negative_integrity_checks": [
+    "Tampered input digest",
+    "Wrong weighted points",
+    "Wrong total",
+    "Missing logged source",
+    "Unknown prior publication",
+    "Unknown development",
+    "Unexplained context exception",
+    "Unblinded high-score pass",
+    "Hard fail cannot remain incomplete",
+    "Omission with residual narrative",
+    "Consolidated source-label mismatch",
+    "False source timing"
+  ],
+  "editorial_promotion_passes": 0,
+  "limitations": "These checks validate evidence consistency. They do not assess prose truth, inference or independent role separation. W118 editorial failure is preserved, not repaired by structural validation."
+}

@@ -1,7 +1,7 @@
 # Friday synthesis — validation plan and scorecard
 
 **Validation ID:** `ADB-FRI-VALIDATE-1.0`\
-**Status:** Test design prepared; scenario construction and editorial runs pending\
+**Status:** Frozen fixtures and exploratory review prepared; independent editorial runs pending\
 **Product contract:** [ADB-FRI-SYNTH-1.0](friday-synthesis-spec.md)\
 **Weights:** 20–15–15–10–10–10–10–5–5 = 100
 
@@ -67,3 +67,7 @@ Before seeking promotion:
 - Obtain explicit promotion approval; record the effective edition and reconcile the technical registry and release documentation. No promotion is implied by merging this preparation package.
 
 After promotion, log each of the first four Friday editions and Anthony's review, including omitted sections and reasons. A skipped/missing edition is not a reviewed edition. A material failure cannot be marked complete merely because four weeks elapsed: record correction or rollback disposition and unresolved issues. Continue lightweight evidence logging after observation; no new standing automation is introduced here.
+
+## Execution evidence
+
+The [2026-10-04 initial package](friday-evidence/2026-10-04/README.md) freezes the three base weeks plus an omission variant and preserves same-context exploratory output. Those trials are excluded from promotion evidence. Independent passes and the editorial challenge matrix remain pending; integrity-check success is not an editorial pass.

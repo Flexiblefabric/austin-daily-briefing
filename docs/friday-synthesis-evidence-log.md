@@ -1,6 +1,6 @@
 # Friday synthesis evidence log
 
-**Status:** Initialized 2026-10-04; no synthesis tests executed; not promoted\
+**Status:** FRI-5 active 2026-10-04; exploratory trials recorded; independent validation pending; not promoted\
 **Product:** [ADB-FRI-SYNTH-1.0](friday-synthesis-spec.md)\
 **Rubric:** [ADB-FRI-VALIDATE-1.0](friday-synthesis-validation.md)\
 **Record schema:** [friday-synthesis-evidence.schema.json](friday-synthesis-evidence.schema.json)
@@ -11,11 +11,11 @@ This is the separate permanent index for Friday validation and subsequent editor
 
 | Scenario | V2 input packet | Synthesis attempts | Disposition |
 | --- | --- | --- | --- |
-| Quiet | Not built | None | Pending |
-| Dominant story | Not built | None | Pending |
-| Fragmented | Not built | None | Pending |
+| Quiet | W031 frozen | W031-exploratory-01 | Incomplete — same-context only |
+| Dominant story | W075 frozen; rejected construction W074 retained | W075-exploratory-01 | Incomplete — same-context only |
+| Fragmented | W118 frozen | W118-exploratory-01; corrected assessment -02 | Fail — unsupported implication; same-context review |
 
-The validation plan also requires bounded risk variants, including a no-qualifying-arc omission case. None has run. The four-Friday human-review period begins only after explicit promotion; no dates or approvals are prefilled.
+The no-arc W032 input variant is frozen. The [eleven editorial challenge cases](friday-evidence/2026-10-04/reviewer-challenge-matrix.md) are defined but have not been independently run. See the [initial evidence package](friday-evidence/2026-10-04/README.md) for pinned inputs and limitations. The four-Friday human-review period begins only after explicit promotion; no dates or approvals are prefilled.
 
 ## Record procedure
 
@@ -29,7 +29,16 @@ The JSON schema checks record shape and provisional candidate-pass bounds. Evalu
 
 ## Attempt index
 
-No attempts recorded. On execution use: run ID, scenario, immutable record path, total score, hard-fail result, human review, disposition, and superseded attempt.
+Scores below are same-context diagnostic judgments, not independent performance measurements or promotion passes. Human review has not occurred.
+
+| Run / immutable record | Scenario | Score | Hard-fail finding | Human review | Disposition / supersession |
+| --- | --- | ---: | --- | --- | --- |
+| [W031-exploratory-01](friday-evidence/2026-10-04/W031-exploratory-01.json) | Quiet | 93.75 | None found in self-review | Pending | Incomplete; lacks separation |
+| [W075-exploratory-01](friday-evidence/2026-10-04/W075-exploratory-01.json) | Dominant | 91.25 | None found in self-review | Pending | Incomplete; lacks separation |
+| [W118-exploratory-01](friday-evidence/2026-10-04/W118-exploratory-01.json) | Fragmented | 86.25 | Initial self-review missed an unsupported implication | Pending | Incomplete; superseded by -02 |
+| [W118-exploratory-02](friday-evidence/2026-10-04/W118-exploratory-02.json) | Fragmented | 73.75 | Source silence treated as evidence of unspecified earlier patient planning | Pending | Fail; same prose, corrected assessment of -01 |
+
+Four records passed [schema and integrity checks](friday-evidence/2026-10-04/integrity-check-result.json); this includes a valid record of an editorial failure. Twelve corrupted-record checks passed. No editorial promotion pass is claimed.
 
 ## Four-Friday observation
 

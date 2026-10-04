@@ -1,0 +1,347 @@
+{
+  "schema_version": "1.0",
+  "run_id": "W075-exploratory-01",
+  "supersedes_run_id": null,
+  "mode": "synthetic",
+  "scenario": "dominant",
+  "variant": "same-context exploratory baseline",
+  "recorded_at": "2026-10-04T13:04:58.172387-05:00",
+  "week": {
+    "start": "2026-10-05",
+    "end": "2026-10-09",
+    "cutoff": "2026-10-09T08:00:00-05:00",
+    "timezone": "America/Chicago"
+  },
+  "versions": {
+    "repository_commit": "c0ef0fcf01d913661bf135d571c1ea723250deb2",
+    "v2_spec": "ADB-V2-SELECT-1.0",
+    "daily_prompt": "ADB-DAILY-PROD-2.0",
+    "friday_spec": "ADB-FRI-SYNTH-1.0",
+    "rubric": "ADB-FRI-VALIDATE-1.0"
+  },
+  "inputs": {
+    "weekly_packet": {
+      "path": "docs/friday-evidence/2026-10-04/W075/packet.json",
+      "sha256": "ea8ca35fdef3a38905993f6c8009a8e00e829976c1fdb1bce9ee98f47b3a5302"
+    },
+    "daily_v2_outputs": [
+      {
+        "path": "docs/friday-evidence/2026-10-04/W075/daily-v2.json",
+        "sha256": "52e927444ab979f160f19d221918e644c453dc59dc37ebe502d2d3c5d61f2938"
+      }
+    ],
+    "history_seed": {
+      "path": "docs/friday-evidence/2026-10-04/W075/history.json",
+      "sha256": "febca7194c5e6a36bbcd8645d9dbbb1670f4133b0c3a20fc18d7b60aa450556e"
+    },
+    "synthesis_prompt": {
+      "path": "docs/friday-evidence/2026-10-04/synthesis-instructions.txt",
+      "sha256": "5a8a2c5e9ff897a8eb4e15a4f8faf0e584659a984deaf99eac0254cc067bdbac"
+    },
+    "reviewer_key": {
+      "path": "docs/friday-evidence/2026-10-04/W075/reviewer-key.json",
+      "sha256": "3d65db21b41e2bcbb06b7d540007c26673a489fbca09787bb88de4cd0e451aaf"
+    }
+  },
+  "separation": {
+    "constructor": "Codex, current conversation",
+    "synthesizer": "Codex, same conversation",
+    "evaluator": "Codex, same conversation",
+    "method": "Inputs were frozen before prose; prose was saved before scorecard. Constructor knowledge remained in context. This is not a blind or independent evaluation.",
+    "key_withheld": false,
+    "limitations": [
+      "Same-context authorship and scoring; excluded from promotion evidence."
+    ]
+  },
+  "output": {
+    "section_included": true,
+    "omission_reason": null,
+    "opening": "The repair-grant proposal ended the week with approval for a smaller pilot and a condition on any expansion. The $12 million draft introduced Monday had become a $4 million program limited to two service areas. That vote settled the authorization; residents still had no open application process at the Friday cutoff.",
+    "arcs": [
+      {
+        "arc_id": "A1",
+        "heading": null,
+        "text": "The narrower design first appeared in a staff revision. At the hearing that followed, speakers disagreed about the two-area boundary, and no vote was taken. Thursday’s 7–4 vote adopted the pilot and required an evaluation before expansion. Those are the documented decisions; the hearing record does not tell us how Austin residents as a whole viewed them.\n\nAn appropriation detail not included in ADB’s daily summaries also changes how the headline figure should be read. Of the $4 million, $600,000 is reserved for administration, leaving $3.4 million for grants. That distinction matters to the amount available for repairs, even though the adopted program’s total remains $4 million.\n\nApproval therefore leaves the next practical question with the application process. The adopted resolution did not open it. By the Friday cutoff, there was still no announced launch date in the available implementation bulletin. The week produced an authorized, limited pilot with a review requirement; it did not yet establish when a household could apply."
+      }
+    ],
+    "exact_recap": "THIS WEEK IN AUSTIN\n\nThe repair-grant proposal ended the week with approval for a smaller pilot and a condition on any expansion. The $12 million draft introduced Monday had become a $4 million program limited to two service areas. That vote settled the authorization; residents still had no open application process at the Friday cutoff.\n\nThe narrower design first appeared in a staff revision. At the hearing that followed, speakers disagreed about the two-area boundary, and no vote was taken. Thursday’s 7–4 vote adopted the pilot and required an evaluation before expansion. Those are the documented decisions; the hearing record does not tell us how Austin residents as a whole viewed them.\n\nAn appropriation detail not included in ADB’s daily summaries also changes how the headline figure should be read. Of the $4 million, $600,000 is reserved for administration, leaving $3.4 million for grants. That distinction matters to the amount available for repairs, even though the adopted program’s total remains $4 million.\n\nApproval therefore leaves the next practical question with the application process. The adopted resolution did not open it. By the Friday cutoff, there was still no announced launch date in the available implementation bulletin. The week produced an authorized, limited pilot with a review requirement; it did not yet establish when a household could apply.\n\nSources: Synthetic recovery grant draft [S01]; Synthetic staff revision [S03]; Synthetic hearing record [S04]; Synthetic adopted resolution [S05]; Synthetic implementation bulletin [S06]; Synthetic appropriation appendix [S07]",
+    "word_count": 213,
+    "full_edition_word_count": null,
+    "reading_time_method": "Body and arc headings counted by whitespace; section label and source labels excluded. Full-edition burden not measured."
+  },
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic recovery grant draft",
+      "locator": "docs/friday-evidence/2026-10-04/W075/sources.json#S01",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "access_time": "2026-10-04T13:04:58.172387-05:00",
+      "access_status": "fixture_read",
+      "supporting_note": "A draft proposes a $12 million home-repair grant program. Eligibility rules and funding remain unapproved.",
+      "used_for": [
+        "opening-claims"
+      ]
+    },
+    {
+      "source_id": "S03",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic staff revision",
+      "locator": "docs/friday-evidence/2026-10-04/W075/sources.json#S03",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "access_time": "2026-10-04T13:04:58.172387-05:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Staff revise the draft to a $4 million pilot in two service areas. The revision remains a recommendation, not an adopted program.",
+      "used_for": [
+        "opening-claims",
+        "A1-claims"
+      ]
+    },
+    {
+      "source_id": "S04",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic hearing record",
+      "locator": "docs/friday-evidence/2026-10-04/W075/sources.json#S04",
+      "publication_time": "2026-10-07T07:00:00-05:00",
+      "access_time": "2026-10-04T13:04:58.172387-05:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Speakers at a hearing disagree over limiting the pilot to two service areas. No vote occurs. The record does not measure wider resident opinion.",
+      "used_for": [
+        "A1-claims"
+      ]
+    },
+    {
+      "source_id": "S05",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic adopted resolution",
+      "locator": "docs/friday-evidence/2026-10-04/W075/sources.json#S05",
+      "publication_time": "2026-10-08T07:00:00-05:00",
+      "access_time": "2026-10-04T13:04:58.172387-05:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Council adopts a $4 million two-area pilot by a 7–4 vote. The adopted version requires an evaluation before expansion. Adoption does not open applications.",
+      "used_for": [
+        "opening-claims",
+        "A1-claims"
+      ]
+    },
+    {
+      "source_id": "S06",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic implementation bulletin",
+      "locator": "docs/friday-evidence/2026-10-04/W075/sources.json#S06",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "access_time": "2026-10-04T13:04:58.172387-05:00",
+      "access_status": "fixture_read",
+      "supporting_note": "The agency says application instructions and a launch date will be issued later. No applications are open and no money has been disbursed. The bulletin does not estimate the number of households served.",
+      "used_for": [
+        "A1-claims"
+      ]
+    },
+    {
+      "source_id": "S07",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic appropriation appendix",
+      "locator": "docs/friday-evidence/2026-10-04/W075/sources.json#S07",
+      "publication_time": "2026-10-09T07:45:00-05:00",
+      "access_time": "2026-10-04T13:04:58.172387-05:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Of the adopted $4 million, $600,000 is reserved for administration; $3.4 million is available for grants.",
+      "used_for": [
+        "budget-context"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "opening-claims",
+      "location": "opening",
+      "text": "The repair-grant proposal ended the week with approval for a smaller pilot and a condition on any expansion. The $12 million draft introduced Monday had become a $4 million program limited to two service areas. That vote settled the authorization; residents still had no open application process at the Friday cutoff.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D04"
+      ],
+      "source_ids": [
+        "S01",
+        "S03",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03",
+        "C05"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "One proposal progresses through draft, revision and adoption. The opening states procedural change, not a broader pattern.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Preserved where material in the exact prose; reviewed only in the same construction context."
+    },
+    {
+      "claim_id": "A1-claims",
+      "location": "A1",
+      "text": "The narrower design first appeared in a staff revision. At the hearing that followed, speakers disagreed about the two-area boundary, and no vote was taken. Thursday’s 7–4 vote adopted the pilot and required an evaluation before expansion. Those are the documented decisions; the hearing record does not tell us how Austin residents as a whole viewed them.\n\nAn appropriation detail not included in ADB’s daily summaries also changes how the headline figure should be read. Of the $4 million, $600,000 is reserved for administration, leaving $3.4 million for grants. That distinction matters to the amount available for repairs, even though the adopted program’s total remains $4 million.\n\nApproval therefore leaves the next practical question with the application process. The adopted resolution did not open it. By the Friday cutoff, there was still no announced launch date in the available implementation bulletin. The week produced an authorized, limited pilot with a review requirement; it did not yet establish when a household could apply.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D02",
+        "D03",
+        "D04",
+        "D05"
+      ],
+      "source_ids": [
+        "S03",
+        "S04",
+        "S05",
+        "S06"
+      ],
+      "prior_shared_coverage_refs": [
+        "C03",
+        "C04",
+        "C05"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The same proposal and adopted resolution connect the narrative; no causal claim about why members voted.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Preserved where material in the exact prose; reviewed only in the same construction context."
+    },
+    {
+      "claim_id": "budget-context",
+      "location": "A1",
+      "text": "An appropriation detail not included in ADB’s daily summaries also changes how the headline figure should be read. Of the $4 million, $600,000 is reserved for administration, leaving $3.4 million for grants. That distinction matters to the amount available for repairs, even though the adopted program’s total remains $4 million.",
+      "kind": "fact",
+      "development_ids": [
+        "D06"
+      ],
+      "source_ids": [
+        "S07"
+      ],
+      "prior_shared_coverage_refs": [],
+      "context_exception": "changes_understanding",
+      "exception_reason": "Separates total appropriation from money available for grants; omitting the split could imply the full $4 million funds repairs.",
+      "new_context_disclosure": "An appropriation detail not included in ADB’s daily summaries",
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Exact appropriation amounts, not a projection of recipients or benefits."
+    }
+  ],
+  "displayed_source_groups": [
+    {
+      "group_id": "sources-A1",
+      "supports_locations": [
+        "opening",
+        "A1"
+      ],
+      "source_ids": [
+        "S01",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "labels": [
+        "Synthetic recovery grant draft",
+        "Synthetic staff revision",
+        "Synthetic hearing record",
+        "Synthetic adopted resolution",
+        "Synthetic implementation bulletin",
+        "Synthetic appropriation appendix"
+      ]
+    }
+  ],
+  "scorecard": {
+    "factual_fidelity": {
+      "weight": 20,
+      "rating": 4,
+      "points": 20.0,
+      "reason": "Draft, revision, 7–4 adoption and budget split match the sources; no post-cutoff launch is used."
+    },
+    "narrative_usefulness": {
+      "weight": 15,
+      "rating": 3,
+      "points": 11.25,
+      "reason": "Continuous arc connects scope, money and access. The closing restates the opening and could be tighter."
+    },
+    "unsupported_inference_control": {
+      "weight": 15,
+      "rating": 4,
+      "points": 15.0,
+      "reason": "No motive or wider resident consensus is inferred from the hearing."
+    },
+    "source_traceability": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "S01 and S03–S07 logged; S06 corroboration is not misrepresented as a published new item."
+    },
+    "pattern_causation_discipline": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "S02 is a duplicate account of D01 and supplies no second development."
+    },
+    "material_uncertainty": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "Adopted versus available is material; no general unresolved disclaimer added."
+    },
+    "no_filler": {
+      "weight": 10,
+      "rating": 3,
+      "points": 7.5,
+      "reason": "Final sentence repeats the opening; some shortening would improve discipline."
+    },
+    "voice_restraint": {
+      "weight": 5,
+      "rating": 3,
+      "points": 3.75,
+      "reason": "Measured; the explicit opinion-sampling caveat is accurate but slightly didactic."
+    },
+    "structure_readability": {
+      "weight": 5,
+      "rating": 3,
+      "points": 3.75,
+      "reason": "One continuous arc and consolidated sources work; no full-edition rendering or timing test."
+    }
+  },
+  "total_score": 91.25,
+  "hard_fail_checks": {
+    "fabricated_fact": {
+      "result": "clear",
+      "reason": "No fabricated source-level fact found in this same-context review; wording caveats remain in the scorecard."
+    },
+    "material_unsupported_conclusion": {
+      "result": "clear",
+      "reason": "No material unsupported conclusion found; stylistic and scope weaknesses noted separately."
+    },
+    "unsupported_causation": {
+      "result": "clear",
+      "reason": "Connections remain within documented arcs; no cross-arc cause asserted."
+    },
+    "false_pattern": {
+      "result": "clear",
+      "reason": "No claim of a general citywide trend or public consensus."
+    },
+    "unlogged_source": {
+      "result": "clear",
+      "reason": "Every source ID used in claims and visible source groups is in this record."
+    },
+    "invalid_new_context": {
+      "result": "clear",
+      "reason": "Only W075 introduces a substantive uncovered budget detail, with explicit disclosure and exception rationale; no biography, anecdote or post-cutoff fact used."
+    }
+  },
+  "disposition": "incomplete",
+  "human_review": null,
+  "limitations": [
+    "Exploratory self-evaluation only. The numerical score is not an independent result or a promotion pass.",
+    "No live-source verification, production V2 execution, transport check or full-edition rendering.",
+    "Paragraph-level claim mapping groups multiple facts; independent review must assess each material assertion."
+  ],
+  "next_action": "Run blind synthesis from the frozen packet in a fresh context, then separate evaluation. Preserve this exploratory attempt unchanged."
+}

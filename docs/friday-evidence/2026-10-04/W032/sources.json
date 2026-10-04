@@ -1,0 +1,100 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "fixture_id": "W032",
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access memo",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "development_id": "D01",
+      "topic_key": "document-access",
+      "facts": [
+        "A municipal benefits desk will test appointment-free document checks on Wednesday at one service center.",
+        "The trial adds no evening hours and changes no eligibility rules."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S04",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic bridge maintenance notice",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "development_id": "D04",
+      "topic_key": "D04",
+      "facts": [
+        "Repairs to a small pedestrian bridge are complete and the bridge has reopened.",
+        "This is a separate maintenance project with no documented relationship to the benefits desk."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S05",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic parking order",
+      "publication_time": "2026-10-08T07:00:00-05:00",
+      "development_id": "D05",
+      "topic_key": "D05",
+      "facts": [
+        "One residential block receives an adopted accessible-parking designation, effective immediately."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S06",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic neighborhood digest",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D04",
+      "topic_key": "D04",
+      "facts": [
+        "The pedestrian bridge reopened Tuesday."
+      ],
+      "limits": "A retelling of S04; no new development.",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S07",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic hearing reminder",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D06",
+      "topic_key": "park-hearing",
+      "facts": [
+        "A previously announced October 12 park hearing remains scheduled."
+      ],
+      "limits": "Calendar reminder only.",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S08",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic housing proposal status",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D07",
+      "topic_key": "housing-proposal",
+      "facts": [
+        "The housing proposal described on September 25 has no revision or vote.",
+        "The decision-making council remains on its previously announced recess through October 12."
+      ],
+      "limits": "No new information.",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S09",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic neighborhood newsletter",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D08",
+      "topic_key": "D08",
+      "facts": [
+        "A retired volunteer recalls helping at the original benefits desk ten years ago."
+      ],
+      "limits": "No change to access, current operations, or interpretation of the trial.",
+      "access_status": "fixture_read"
+    }
+  ]
+}

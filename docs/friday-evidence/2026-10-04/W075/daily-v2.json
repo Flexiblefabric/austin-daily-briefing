@@ -1,0 +1,433 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "fixture_id": "W075",
+  "v2_spec": "ADB-V2-SELECT-1.0",
+  "shared_fingerprint": [
+    20,
+    20,
+    15,
+    15,
+    10,
+    10,
+    10
+  ],
+  "scope": "Shared editorial extracts authored from closed synthetic sources. MFY, weather, full-edition rendering and transport are outside this fixture.",
+  "days": [
+    {
+      "date": "2026-10-05",
+      "selection_cutoff": "2026-10-05T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-05T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C01",
+          "day": 5,
+          "source_ids": [
+            "S01"
+          ],
+          "headline": "Repair grants proposed",
+          "summary": "A $12 million draft repair-grant program awaits approval; eligibility is unsettled.",
+          "components": {
+            "local_impact": 17,
+            "consequence": 17,
+            "new_information": 13,
+            "austin_relevance": 15,
+            "timeliness": 8,
+            "public_interest": 10,
+            "discovery": 3
+          },
+          "base_score": 83,
+          "score_rationale": {
+            "local_impact": "Housing repairs affect residents in the specified scope.",
+            "consequence": "Substantial proposed spending, not enacted.",
+            "new_information": "Incremental procedural or design change as stated in exact_material_change.",
+            "austin_relevance": "Local public program.",
+            "timeliness": "Current decision or access information.",
+            "public_interest": "Public spending and program access.",
+            "discovery": "Official public record; no broad underreporting claim."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "repair-grants",
+          "development_ids": [
+            "D01"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C01"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C01",
+          "headline": "Repair grants proposed",
+          "text": "A $12 million draft repair-grant program awaits approval; eligibility is unsettled.",
+          "source_ids": [
+            "S01"
+          ],
+          "development_ids": [
+            "D01"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-06",
+      "selection_cutoff": "2026-10-06T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-06T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C02",
+          "day": 6,
+          "source_ids": [
+            "S02"
+          ],
+          "headline": "Another account of repair draft",
+          "summary": "Same draft repeated.",
+          "components": null,
+          "base_score": null,
+          "score_rationale": {
+            "gate": "Second publication is not a second development."
+          },
+          "prior_coverage_refs": [
+            "C01"
+          ],
+          "material_update": false,
+          "exact_material_change": null,
+          "disposition": "rejected_unchanged",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        },
+        {
+          "candidate_id": "C03",
+          "day": 6,
+          "source_ids": [
+            "S03"
+          ],
+          "headline": "Staff recommend smaller repair pilot",
+          "summary": "Staff replace the $12 million draft with a proposed $4 million pilot covering two service areas; no adoption yet.",
+          "components": {
+            "local_impact": 16,
+            "consequence": 17,
+            "new_information": 13,
+            "austin_relevance": 15,
+            "timeliness": 8,
+            "public_interest": 10,
+            "discovery": 3
+          },
+          "base_score": 82,
+          "score_rationale": {
+            "local_impact": "Housing repairs affect residents in the specified scope.",
+            "consequence": "Reduced proposed scope.",
+            "new_information": "Incremental procedural or design change as stated in exact_material_change.",
+            "austin_relevance": "Local public program.",
+            "timeliness": "Current decision or access information.",
+            "public_interest": "Public spending and program access.",
+            "discovery": "Official public record; no broad underreporting claim."
+          },
+          "prior_coverage_refs": [
+            "C01"
+          ],
+          "material_update": true,
+          "exact_material_change": "Recommendation shrinks to a $4 million two-area pilot.",
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "repair-grants",
+          "development_ids": [
+            "D02"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C03"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C03",
+          "headline": "Staff recommend smaller repair pilot",
+          "text": "Staff replace the $12 million draft with a proposed $4 million pilot covering two service areas; no adoption yet.",
+          "source_ids": [
+            "S03"
+          ],
+          "development_ids": [
+            "D02"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-07",
+      "selection_cutoff": "2026-10-07T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-07T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C04",
+          "day": 7,
+          "source_ids": [
+            "S04"
+          ],
+          "headline": "Hearing reveals disagreement over pilot boundaries",
+          "summary": "Speakers disagreed about the two-area limit; no vote occurred, and their views do not measure citywide opinion.",
+          "components": {
+            "local_impact": 14,
+            "consequence": 12,
+            "new_information": 10,
+            "austin_relevance": 15,
+            "timeliness": 7,
+            "public_interest": 10,
+            "discovery": 3
+          },
+          "base_score": 71,
+          "score_rationale": {
+            "local_impact": "Housing repairs affect residents in the specified scope.",
+            "consequence": "Documented hearing disagreement; no decision.",
+            "new_information": "Incremental procedural or design change as stated in exact_material_change.",
+            "austin_relevance": "Local public program.",
+            "timeliness": "Current decision or access information.",
+            "public_interest": "Public spending and program access.",
+            "discovery": "Official public record; no broad underreporting claim."
+          },
+          "prior_coverage_refs": [
+            "C03"
+          ],
+          "material_update": true,
+          "exact_material_change": "Hearing occurred with conflicting testimony and no vote.",
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "repair-grants",
+          "development_ids": [
+            "D03"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C04"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C04",
+          "headline": "Hearing reveals disagreement over pilot boundaries",
+          "text": "Speakers disagreed about the two-area limit; no vote occurred, and their views do not measure citywide opinion.",
+          "source_ids": [
+            "S04"
+          ],
+          "development_ids": [
+            "D03"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-08",
+      "selection_cutoff": "2026-10-08T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-08T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C05",
+          "day": 8,
+          "source_ids": [
+            "S05"
+          ],
+          "headline": "Limited repair pilot adopted",
+          "summary": "A 7–4 vote adopts a $4 million two-area pilot, with evaluation required before expansion. Applications are not open.",
+          "components": {
+            "local_impact": 17,
+            "consequence": 18,
+            "new_information": 14,
+            "austin_relevance": 15,
+            "timeliness": 9,
+            "public_interest": 10,
+            "discovery": 3
+          },
+          "base_score": 86,
+          "score_rationale": {
+            "local_impact": "Housing repairs affect residents in the specified scope.",
+            "consequence": "Actual authorization replaces draft.",
+            "new_information": "Incremental procedural or design change as stated in exact_material_change.",
+            "austin_relevance": "Local public program.",
+            "timeliness": "Current decision or access information.",
+            "public_interest": "Public spending and program access.",
+            "discovery": "Official public record; no broad underreporting claim."
+          },
+          "prior_coverage_refs": [
+            "C01",
+            "C03",
+            "C04"
+          ],
+          "material_update": true,
+          "exact_material_change": "Council adopts pilot and evaluation condition by 7–4.",
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "repair-grants",
+          "development_ids": [
+            "D04"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C05"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C05",
+          "headline": "Limited repair pilot adopted",
+          "text": "A 7–4 vote adopts a $4 million two-area pilot, with evaluation required before expansion. Applications are not open.",
+          "source_ids": [
+            "S05"
+          ],
+          "development_ids": [
+            "D04"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-09",
+      "selection_cutoff": "2026-10-09T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-09T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C06",
+          "day": 9,
+          "source_ids": [
+            "S06"
+          ],
+          "headline": "Pilot approved; application launch still ahead",
+          "summary": "The agency confirms that instructions and a launch date will come later. Applications remain closed and no funds have been disbursed.",
+          "components": null,
+          "base_score": null,
+          "score_rationale": {
+            "gate": "The implementation bulletin confirms the already-published closed-application state; no substantive new authorization or access change. Reject before scoring."
+          },
+          "prior_coverage_refs": [
+            "C05"
+          ],
+          "material_update": false,
+          "exact_material_change": null,
+          "disposition": "rejected_unchanged",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        },
+        {
+          "candidate_id": "C07",
+          "day": 9,
+          "source_ids": [
+            "S07"
+          ],
+          "headline": "Allocation appendix available after daily selection freeze",
+          "summary": "The appropriation divides $4 million into $600,000 administration and $3.4 million grants.",
+          "components": null,
+          "base_score": null,
+          "score_rationale": {
+            "gate": "Available at 07:45 after the 07:30 simulated daily selection freeze; eligible only for separately justified Friday context."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "available_context",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        },
+        {
+          "candidate_id": "C08",
+          "day": 9,
+          "source_ids": [
+            "S08"
+          ],
+          "headline": "Director biography",
+          "summary": "Prior employment in another city.",
+          "components": null,
+          "base_score": null,
+          "score_rationale": {
+            "gate": "Biographical aside supplies no substantial weekly understanding."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "available_context",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        },
+        {
+          "candidate_id": "C09",
+          "day": 9,
+          "source_ids": [
+            "S09"
+          ],
+          "headline": "Afternoon launch report",
+          "summary": "Applications opened at noon.",
+          "components": null,
+          "base_score": null,
+          "score_rationale": {
+            "gate": "Published after Friday 08:00 cutoff; exclude."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "excluded_after_cutoff",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        }
+      ],
+      "selected_ids": [],
+      "daily_shared_output": [],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    }
+  ]
+}

@@ -63,8 +63,8 @@ jobs:
       - name: Validate native signup DEV syntax
         run: |
           node --check site/signup.js
-          node --check apps-script/NativeSignupDev.gs
-          node --check apps-script/NativeSignupDevQa.gs
+          node --check --input-type=commonjs < apps-script/NativeSignupDev.gs
+          node --check --input-type=commonjs < apps-script/NativeSignupDevQa.gs
 
       - name: Verify native signup DEV guardrails
         shell: python

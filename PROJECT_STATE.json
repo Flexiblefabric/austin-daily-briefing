@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.1",
+  "registry_version": "2026-10-04.2",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -83,7 +83,7 @@
       "platform": "Google Apps Script",
       "status": "live",
       "source_path": "apps-script/NativeCustomizationProd.gs",
-      "public_cutover": "Gate E promoted; native customization page is public and the Google customization form remains available as fallback during observation"
+      "public_cutover": "Gates A–F closed; native customization is public and the Google customization form remains available as operator/fallback pending FORM-10"
     },
     "customization_confirmation_relay": {
       "provider": "Cloudflare Workers",
@@ -189,11 +189,11 @@
       "verification": "DEV vectors passed 15/15 on 2026-09-22; first production incident class remains live in watchdog 2.3; full reconciler remains manual/read-only"
     },
     "native_customization_cutover": {
-      "status": "observation",
-      "cadence": "manual gated rollout",
+      "status": "complete",
+      "cadence": "completed gated rollout",
       "runbook": "docs/native-customization-production-cutover.md",
-      "reporting": "Gates A–E passed; public native customization is live; Gate F 24-hour production observation is active",
-      "verification": "production native intake and first-party confirmation relay are live; Google customization form remains available as fallback during observation"
+      "reporting": "Gates A–F passed; Gate G closeout recorded 2026-10-04; public native customization is live with Google fallback retained pending FORM-10",
+      "verification": "Operator authorized Gate F closeout after clean production observation and the 2026-10-04 09:03 CT Subscriber Operations cycle completed Healthy with zero errors and no pending or confirmed native customization requests. The previously documented 24-hour elapsed-time minimum was closed early by operator direction; this record does not claim that a full 24 hours elapsed."
     },
     "v2_production_observation": {
       "status": "observation",
@@ -201,6 +201,13 @@
       "runbook": "docs/v2-promotion-2026-10-03.md",
       "reporting": "Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend",
       "verification": "Pending first production cycle; promotion is not delivery evidence"
+    },
+    "native_signup_development": {
+      "status": "development",
+      "cadence": "manual gated rollout",
+      "runbook": "docs/native-signup-design.md",
+      "reporting": "FORM-7 active; parity-first design baseline established and Gate A/B DEV implementation is next",
+      "verification": "Production signup remains on the Google Form; native signup has no production writes or public route"
     }
   },
   "runtime_properties": [
@@ -321,7 +328,8 @@
     "friday_synthesis_spec": "docs/friday-synthesis-spec.md",
     "friday_synthesis_validation": "docs/friday-synthesis-validation.md",
     "friday_synthesis_evidence_log": "docs/friday-synthesis-evidence-log.md",
-    "friday_synthesis_evidence_schema": "docs/friday-synthesis-evidence.schema.json"
+    "friday_synthesis_evidence_schema": "docs/friday-synthesis-evidence.schema.json",
+    "native_signup_design": "docs/native-signup-design.md"
   },
   "governance": {
     "registry_is_authoritative": true,

@@ -157,3 +157,15 @@ The canonical repository contracts have been upgraded while Native Signup Mode r
 All native behavior is feature-gated. With production Native Signup Mode still DISABLED, Subscriber Operations must not read/mutate Native Signup Requests and the watchdog/reconciler must preserve prior Google-only completion behavior.
 
 After repository merge, synchronize the active Subscriber Operations and watchdog scheduler copies to the new exact Specification IDs before considering D4 complete. Do not enable Native Signup Mode during that synchronization.
+
+
+## D4 scheduler synchronization — COMPLETE
+
+The canonical contract merge was followed immediately by scheduler-copy synchronization:
+
+- Subscriber Operations is enabled and requires `ADB-SUBOPS-PROD-1.1`.
+- Watchdog scheduler copy requires `ADB-WATCHDOG-PROD-2.4`.
+
+The watchdog itself is currently disabled. This state predated the FORM-7 synchronization and was preserved rather than changed implicitly. Gate D controlled-production activation remains blocked until the watchdog is explicitly re-enabled or the project approves another monitoring disposition.
+
+Native Signup Mode remains `DISABLED`; the D4 synchronization processed no native signup rows.

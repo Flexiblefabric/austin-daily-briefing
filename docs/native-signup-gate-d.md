@@ -1,0 +1,123 @@
+# Native Signup — Gate D Controlled Production
+
+**Status:** Staging  
+**Public signup:** remains Google Form  
+**Native signup production mode:** must remain DISABLED until preflight completes
+
+## Architecture decision
+
+FORM-7 Gate D reuses the existing shared production modes `GOOGLE + NATIVE CONTROLLED` / `GOOGLE + NATIVE`; it does not add a new shared intake mode. Native signup gets a separate feature gate:
+
+- Integration Config → `Native Signup Mode`;
+- Integration Config → `Native Signup Controlled Email`;
+- Script Property → `ADB_NATIVE_SIGNUP_PROD_ENABLED`;
+- Script Property → `ADB_NATIVE_SIGNUP_PROD_MODE`;
+- Script Property → `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST`;
+- Script Property → `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN`.
+
+This allows native customization to remain LIVE while native signup is tested in CONTROLLED mode.
+
+## Staging sequence
+
+### D1 — repository staging
+
+- production endpoint source: `apps-script/NativeSignupProd.gs`;
+- endpoint QA: `tests/native-signup-prod.test.js`;
+- production processor contract: `docs/native-signup-production-processing.md`;
+- Welcome renderer compatibility test remains required;
+- production-change compatibility matrix must be completed before enabling the endpoint.
+
+### D2 — production schema/config preparation
+
+Only after repository checks pass:
+
+1. create `Native Signup Requests` with the exact Gate B/C schema;
+2. create `Native Signup Diagnostics` with the exact Gate B/C schema;
+3. add Integration Config row `Native Signup Mode = DISABLED`;
+4. add Integration Config row `Native Signup Controlled Email` blank;
+5. verify current shared Processor Mode and database Intake Mode remain unchanged;
+6. create a fresh production workbook backup if the project backup policy requires one for the schema write.
+
+At this point the feature is installed but inert.
+
+### D3 — separate production web app
+
+Create a **separate Apps Script project/deployment** for native signup production intake. Do not add a second `doPost` to the existing native-customization Apps Script project.
+
+Install the exact current `apps-script/NativeSignupProd.gs`.
+
+Initial Script Properties:
+
+- `ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE`;
+- `ADB_NATIVE_SIGNUP_PROD_MODE=CONTROLLED`;
+- `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` blank;
+- `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN=https://austindailybriefing.com`.
+
+Deploy a versioned web app and record its `/exec` URL in project documentation. Do not point the public website at it yet.
+
+### D4 — processor integration
+
+Integrate `docs/native-signup-production-processing.md` into the canonical Subscriber Operations prompt without changing Google or native-customization semantics.
+
+Until `Native Signup Mode` is CONTROLLED/LIVE, the live six-hour task must ignore native signup sheets.
+
+Synchronize the active scheduler copy only after the repository prompt merge and exact Specification ID check are reconciled.
+
+### D5 — executable compatibility preflight
+
+Complete `docs/production-change-compatibility-checklist.md`.
+
+Required consumers:
+
+- production Subscriber Operations;
+- Welcome Resend dispatcher;
+- Daily Resend dispatcher;
+- signup-completion/watchdog logic;
+- website signup client;
+- production native-signup Apps Script endpoint.
+
+FAIL or UNKNOWN blocks enabling controlled native signup.
+
+### D6 — controlled identity
+
+Choose one controlled address owned by the operator and decide the intended test state:
+
+- new subscriber, or
+- deliberately prepared Unsubscribed test identity.
+
+Do not use an ordinary reader account for a destructive state transition.
+
+Set:
+
+- `Native Signup Controlled Email` to that normalized address;
+- endpoint allowlist to the same address;
+- `Native Signup Mode = CONTROLLED`;
+- `ADB_NATIVE_SIGNUP_PROD_ENABLED=TRUE`;
+- `ADB_NATIVE_SIGNUP_PROD_MODE=CONTROLLED`.
+
+The public website still remains on the Google signup route. Submit only through a controlled test page/request.
+
+### D7 — verify and replay
+
+Verify:
+
+- one staged native request;
+- one authorized subscriber-state transition;
+- exactly one Signup Action when mutation occurs;
+- exactly one Queued Welcome when mutation occurs;
+- dispatcher sends exactly once;
+- provider ID recorded;
+- second processor/dispatcher pass creates/sends zero duplicates;
+- non-allowlisted synthetic request produces generic no-op and no staged request.
+
+### D8 — Gate D closeout
+
+Record evidence and return the endpoint to a safe controlled/inert state until Gate E promotion is explicitly approved.
+
+Gate E will separately decide:
+
+- production endpoint LIVE mode;
+- public `signup.html` configuration;
+- navigation/CTA cutover;
+- Google signup fallback retention;
+- production observation window.

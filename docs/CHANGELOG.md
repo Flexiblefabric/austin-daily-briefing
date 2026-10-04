@@ -2,6 +2,26 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-04 — Transport compatibility release gate
+
+**Type:** Production corrective control  
+**Components:** Resend dispatch, native customization cutover, release governance  
+**Registry impact:** No
+
+The first production cycle after the native-customization promotion exposed a downstream compatibility gap: production Intake Mode and Processor Mode were correctly changed to `GOOGLE + NATIVE`, while the executable daily and welcome Resend validators still required `GOOGLE ONLY`. Morning generation succeeded, but daily delivery stopped before provider handoff.
+
+### Corrective changes
+
+- Updated the Resend transport validators to accept the authorized production intake modes while requiring Processor Mode to match Intake Mode.
+- Added a reusable production-change compatibility checklist for configuration, routing, ownership, transport, and shared safety-gate changes.
+- Made executable downstream-consumer inspection mandatory; prompt/document compatibility alone is insufficient.
+- Added manual-runtime parity as a release requirement for Apps Script and other manually deployed code.
+- Added an explicit Resend preflight covering both daily and welcome dispatcher validation.
+- Retrofitted the native-customization Gate E record with the missed compatibility check and corrective precedent.
+- Added roadmap item OPS-12 as a completed release-governance control.
+
+A FAIL or UNKNOWN compatibility result now blocks promotion.
+
 ## 2026-10-03 — V2 story-selection production promotion
 
 **Type:** Development-to-production promotion  

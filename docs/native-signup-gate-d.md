@@ -53,6 +53,8 @@ Initial Script Properties:
 - `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` blank;
 - `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN=https://austindailybriefing.com`.
 
+Before deployment, run `validateNativeSignupProdPreflightV1` from the Apps Script editor. It must return a report showing the endpoint disabled, mode CONTROLLED, no allowlist, Native Signup Mode DISABLED, zero native request/diagnostic rows, and no subscriber mutation. This function is read-only apart from header verification through the already-installed sheets.
+
 Deploy a versioned web app and record its `/exec` URL in project documentation. Do not point the public website at it yet.
 
 ### D4 — processor integration
@@ -77,6 +79,8 @@ Required consumers:
 - production native-signup Apps Script endpoint.
 
 FAIL or UNKNOWN blocks enabling controlled native signup.
+
+After synchronizing the production Apps Script copy of `apps-script/ResendTransport.gs`, run `validateForm7GateDTransportCompatibilityV1`. It must report the existing shared Intake/Processor mode, the current Native Signup Mode, `welcomeCopy: RETURN_SAFE`, `deliveryInvoked: false`, and `writes: false`. The validator does not send email or mutate Sheets.
 
 ### D6 — controlled identity
 

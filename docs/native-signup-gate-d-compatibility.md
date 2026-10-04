@@ -11,10 +11,10 @@ This matrix applies the project-wide production-change compatibility checklist t
 | Shared Intake Mode / Processor Mode | Welcome Resend dispatcher | Production Apps Script | Accepts `GOOGLE ONLY`, `GOOGLE + NATIVE CONTROLLED`, `GOOGLE + NATIVE` | PASS (repository) / UNKNOWN (runtime parity) | `apps-script/ResendTransport.gs` accepts all three values. Before Gate D activation, manually installed runtime must be synchronized from approved main and rechecked. |
 | Shared Intake Mode / Processor Mode | Daily Resend dispatcher | Production Apps Script | Same three accepted values | PASS (repository) / UNKNOWN (runtime parity) | Same validator as Welcome. No new shared mode will be introduced by FORM-7. Runtime parity still required. |
 | Native signup request intake | Native signup production endpoint | Separate production Apps Script web app | CONTROLLED/LIVE feature gate, exact production IDs, DEV refusal, minimal staging only | PASS (repository) / UNKNOWN (runtime) | `apps-script/NativeSignupProd.gs` plus `tests/native-signup-prod.test.js`. Dedicated production deployment does not yet exist. |
-| Native signup subscriber mutation | Production Subscriber Operations | ChatGPT scheduled task using canonical prompt | Canonical `ADB-SUBOPS-PROD-1.1` contains feature-gated Native Signup processing and Admin Hold protection | PASS (repository) / UNKNOWN (scheduler parity) | Cross-contract CI covers DISABLED no-read behavior and deterministic IDs. Synchronize the active scheduler copy immediately after merge. |
+| Native signup subscriber mutation | Production Subscriber Operations | ChatGPT scheduled task using canonical prompt | Canonical and scheduler copy both require `ADB-SUBOPS-PROD-1.1`; task enabled | PASS | Live scheduler metadata verified after merge; Native Signup Mode remains DISABLED. |
 | Native signup feature gate | Production Integration Config | Production intake workbook | `Native Signup Mode = DISABLED`; controlled email blank; shared Processor Mode still `GOOGLE + NATIVE` | PASS — inert install | D2 read-back verified exact values. Activation still blocked until controlled email and runtime gates are deliberately armed. |
 | Native signup request storage | Production intake workbook | Google Sheets | Native Signup Requests / Diagnostics installed with exact approved headers and no data rows | PASS — inert install | D2 read-back verified both tables are empty except headers. |
-| Signup-to-Welcome monitoring | 09:30 production watchdog | ChatGPT scheduled task | Canonical `ADB-WATCHDOG-PROD-2.4` feature-gates native journeys; only the existing intake-incomplete alert class remains promoted | PASS (repository) / UNKNOWN (scheduler parity) | Cross-contract CI verifies DISABLED Google-only behavior, native deterministic joins, and unchanged alert policy. Synchronize active scheduler copy after merge. |
+| Signup-to-Welcome monitoring | 09:30 production watchdog | ChatGPT scheduled task | Canonical and scheduler copy both require `ADB-WATCHDOG-PROD-2.4`, but scheduler is currently disabled | BLOCKED — prompt parity PASS, operational state disabled | Prompt parity verified after merge; Gate D controlled activation requires explicit watchdog re-enable or another approved monitoring decision. |
 | Manual completion reconciler | Development/manual canonical prompt | Repository prompt | `ADB-COMPLETION-RECON-0.2` supports Google + feature-gated native journeys | PASS (repository) | Native Signup Mode DISABLED preserves prior Google-only scan behavior. |
 | Welcome message content | Welcome renderer | Repository source / production Apps Script runtime | Repository copy is state-neutral for new + returning subscribers | PASS (repository) / UNKNOWN (runtime parity) | CI test passes. Production Apps Script must be synchronized before controlled Welcome delivery. |
 | Website signup browser | GitHub Pages | `site/signup.html`, `signup.js`, `signup-config.js` | DEV endpoint only; noindex/unlinked | PASS for non-public staging | Keep DEV config during Gate D. Controlled production testing must use an isolated test invocation or non-public config; public CTA remains Google Form until Gate E. |
@@ -80,3 +80,15 @@ The cross-contract CI gate requires:
 - Resend transport still accepts the existing `GOOGLE + NATIVE` mode.
 
 Scheduler-copy parity remains UNKNOWN until the active Subscriber Operations and watchdog tasks are synchronized after merge.
+
+
+## D4 scheduler synchronization
+
+Post-merge live scheduler metadata was verified on 2026-10-04:
+
+- Production Subscriber Operations task `6aa1acbcf17c8191a9a89cc95b433629` is enabled and now requires `ADB-SUBOPS-PROD-1.1`.
+- ADB Production Watchdog task `6aa8401e16a88191ae14ba1b4d6cba6e` now requires `ADB-WATCHDOG-PROD-2.4`, but the task was already disabled and that state was deliberately preserved.
+
+No schedule was changed. No task was enabled or disabled as part of FORM-7 synchronization.
+
+Therefore D4 prompt parity is complete, but Gate D production activation remains blocked by the watchdog's disabled operational state in addition to D3/runtime parity and controlled-test requirements.

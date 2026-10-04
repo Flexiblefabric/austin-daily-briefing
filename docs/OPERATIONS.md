@@ -28,7 +28,7 @@
 - **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
-  - Reporting: FORM-7 Gates A–C complete. Gate D repository staging includes the production endpoint, processing contract, compatibility matrix, and completion-monitoring extension. Production activation is blocked until sheets/config, runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and a controlled address are all PASS.
+  - Reporting: FORM-7 Gates A–C complete. Gate D D1 repository staging and D2 inert production schema/config are complete. Native Signup Requests/Diagnostics exist empty, Native Signup Mode is DISABLED, controlled email is blank, shared Intake/Processor Mode remains GOOGLE + NATIVE, and a fresh pre-D2 production intake backup was created. D3/D4 runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and a controlled address remain.
 
 ## Runtime configuration
 

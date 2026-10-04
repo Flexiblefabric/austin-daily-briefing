@@ -80,6 +80,9 @@ jobs:
       - name: Run native signup Gate D production endpoint QA
         run: node tests/native-signup-prod.test.js
 
+      - name: Run FORM-7 Gate D prompt compatibility QA
+        run: node tests/native-signup-gate-d-prompts.test.js
+
       - name: Verify native signup DEV guardrails
         shell: python
         run: |

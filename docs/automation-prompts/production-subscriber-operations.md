@@ -1,6 +1,6 @@
 # Production Subscriber Operations — Canonical Automation Prompt
 
-**Specification ID:** `ADB-SUBOPS-PROD-1.0`  
+**Specification ID:** `ADB-SUBOPS-PROD-1.1`  
 **Lifecycle:** Active production  
 **Schedule:** Every 6 hours  
 **Scheduler task ID:** `6aa1acbcf17c8191a9a89cc95b433629`  
@@ -16,6 +16,7 @@ AUTHORITATIVE FILES
 - Production subscriber database: Google Sheet ID 1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0
 - Production intake workbook: Google Sheet ID 1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho
 - Use only the production forms, tabs, links, configuration, and data in those workbooks.
+- Native signup production contract: `docs/native-signup-production-processing.md`; require Specification ID `ADB-NATIVE-SIGNUP-PROD-0.1` when Native Signup Mode is CONTROLLED or LIVE.
 
 SAFETY GATE
 Before making any write or sending any message, read the intake workbook's Integration Config and confirm:
@@ -27,12 +28,22 @@ Before making any write or sending any message, read the intake workbook's Integ
 - Production Writes authorizes routine processor writes
 - Delivery Mode is enabled
 If Processor Mode = GOOGLE + NATIVE CONTROLLED, also require a nonblank Native Customize Controlled Email value and process native customization requests only for that normalized address.
+Read Integration Config → Native Signup Mode. If absent or blank, treat it as DISABLED. It must be DISABLED, CONTROLLED, or LIVE.
+- If Native Signup Mode = CONTROLLED, require a valid nonblank Native Signup Controlled Email.
+- If Native Signup Mode is CONTROLLED or LIVE, require Processor Mode to be native-capable: GOOGLE + NATIVE CONTROLLED or GOOGLE + NATIVE.
+- Native Signup Mode never changes the shared Processor Mode and must not restrict the already-live native customization path.
 If any check fails, make no writes and send no email. Report the exact mismatch.
 
 Processor Mode behavior:
 - GOOGLE ONLY: preserve the existing Google Forms-only behavior and do not read or mutate Native Customize Requests / Native Verification Queue.
 - GOOGLE + NATIVE CONTROLLED: preserve all Google behavior and additionally process only eligible confirmed native customization requests for the configured controlled email.
 - GOOGLE + NATIVE: preserve all Google behavior and additionally process all eligible confirmed native customization requests.
+
+Native Signup Mode behavior:
+- DISABLED: do not read or mutate Native Signup Requests / Native Signup Diagnostics.
+- CONTROLLED: process only eligible Staged native signup requests for Integration Config → Native Signup Controlled Email; skip all other native signup rows as outside the controlled gate.
+- LIVE: process all eligible Staged native signup requests.
+- Native Signup Diagnostics is operational evidence only and never authorizes subscriber mutation.
 
 CORE PROCESSING
 Process unprocessed form responses. The linked Google response tabs do not expose a native Forms response ID. Derive a stable source-row fingerprint using the established production processor formula below, then reconcile it with the ledger by source identity before processing. The ledger's recorded Response Key is authoritative for previously processed rows, including historical rows whose current displayed values no longer reproduce their recorded key. Never fabricate a native Forms ID or treat a row number or timestamp alone as a key.
@@ -52,6 +63,47 @@ The sole retry exception is a previously ledgered request explicitly marked DEFE
 - Queue exactly one WELCOME_V1 row in Outbound Messages with a deterministic Message ID.
 - Do not send the welcome message.
 - Mark the signup response processed only after all authorized database writes and the queue row succeed.
+
+### NATIVE SIGNUP PROCESSING
+
+This section applies only when Native Signup Mode is CONTROLLED or LIVE. Read and require the current main copy of `docs/native-signup-production-processing.md` with Specification ID `ADB-NATIVE-SIGNUP-PROD-0.1`.
+
+Authoritative production-native tab:
+- Native Signup Requests
+- Native Signup Diagnostics is operational evidence only; do not use it as authorization.
+
+The native signup Apps Script endpoint may validate and stage requests, but it must never create/reactivate subscribers, mutate Profiles/Preferences, create Signup Actions, create Welcome rows, or send Welcome mail. This automation remains the sole owner of production subscriber mutation and Welcome queue creation.
+
+Eligibility for a native request:
+- Status = Staged.
+- Source = NATIVE_SIGNUP_PROD.
+- Request ID matches NSPROD-<UUID>.
+- Response Key is a 43-character URL-safe SHA-256 identifier.
+- Email is normalized and valid.
+- Consent = Yes.
+- Request ID occurs exactly once.
+- No existing Signup Action uses NATIVE:SIGNUP:<Response Key>.
+- No existing Outbound Messages row uses WELCOME-NATIVE:<Response Key>.
+- In CONTROLLED mode, normalized email exactly equals Native Signup Controlled Email.
+
+Resolve current subscriber state immediately before mutation:
+- No matching subscriber: create exactly one Active subscriber/profile, initialize all 23 active interests to Normal/1, use standard initial reading settings, append one Signup Action with Submission ID NATIVE:SIGNUP:<Response Key>, and append one Queued WELCOME_V1 with Message ID WELCOME-NATIVE:<Response Key>.
+- Active: terminal no-op; preserve all records; mark request Processed / existing_active_noop; no Signup Action and no Welcome.
+- Paused: terminal no-op; preserve Paused status and all records; mark request Processed / paused_requires_manage; no Signup Action and no Welcome.
+- Admin Hold: terminal no-op; preserve Admin Hold and all records; mark request Processed / admin_hold_noop; no Signup Action and no Welcome. A signup request must never clear or bypass an administrative hold.
+- Unsubscribed: explicit re-subscription from fresh affirmative consent; reactivate the existing subscriber, preserve the existing Profile ID, all preference rows and reading settings, append one Signup Action with Subscriber Result Reactivated, and append exactly one Queued WELCOME_V1.
+- Any other or ambiguous state: make no mutation and report the exact mismatch.
+
+Crash/idempotency boundary:
+- For new signup or re-subscribe, re-read the request, subscriber identity, profile, preferences, deterministic Signup Action ID and deterministic Welcome ID immediately before the first write.
+- If a deterministic Signup Action or Welcome already exists while the request is still Staged, stop that request as partial/ambiguous state; do not auto-repair.
+- Set request Status = Processing before the first subscriber-database mutation.
+- Perform authorized writes; flush; only then set request Status = Processed with the documented result.
+- A later run that finds Processing is fail-closed and requires operator reconciliation.
+- Active/Paused/Admin Hold no-op cases may move directly from Staged to Processed because they make no subscriber mutation.
+- Production Preferences contains duplicate Profile ID headers; when reading rows, preserve the first occurrence of a duplicate header and never allow a later duplicate column to overwrite the canonical first value.
+
+Welcome ownership remains unchanged: queue only. Do not send, retry, or alter provider/delivery fields.
 
 2. MANAGEMENT
 - Treat pause, resume, unsubscribe, and ownership-sensitive changes as protected operations.
@@ -123,10 +175,10 @@ WELCOME DELIVERY OWNERSHIP
 The Resend Apps Script queue dispatcher is the sole owner of WELCOME_V1 delivery. This automation must never send a welcome through Gmail or Resend. Apart from creating one new Queued WELCOME_V1 row for an eligible signup, it must not change welcome queue delivery status, Sent At, provider message ID, retry, or error fields. Do not replay, repair, or re-send an existing welcome.
 
 PROCESS ORDER
-Process signup responses, then management responses, then Google customization responses (including the narrowly eligible deferred retry), then eligible Google confirmations, then eligible confirmed native customization requests when Processor Mode authorizes native processing. Re-read the relevant subscriber, response, ledger, and verification row immediately before each write. For a deferred retry, preserve the cancelled record as audit history, create one fresh verification record and link, send once, and update the existing ledger result to pending confirmation only after successful send. If already reissued or confirmed, skip without duplicate email. Continue past an invalid individual response only when doing so cannot compromise another subscriber; record the row-specific error.
+Process Google Signup responses first, then eligible Native Signup requests when Native Signup Mode authorizes them, then management responses, then Google customization responses (including the narrowly eligible deferred retry), then eligible Google confirmations, then eligible confirmed native customization requests when Processor Mode authorizes native customization. Re-read the relevant subscriber, response, ledger, and verification row immediately before each write. For a deferred retry, preserve the cancelled record as audit history, create one fresh verification record and link, send once, and update the existing ledger result to pending confirmation only after successful send. If already reissued or confirmed, skip without duplicate email. Continue past an invalid individual response only when doing so cannot compromise another subscriber; record the row-specific error.
 
 MONITORING
-Update only the Subscriber Operations monitoring/status row for this run. Do not update or impersonate the Welcome Dispatcher status. Report counts for responses inspected, successfully processed, skipped as already processed, confirmation messages sent, and errors. If there was no eligible work, record a successful zero-work run without generating email.
+Update only the Subscriber Operations monitoring/status row for this run. Do not update or impersonate the Welcome Dispatcher status. Preserve the existing aggregate Google/native-customization counts and additionally report native signup inspected, new subscribers, re-subscribed, Active no-op, Paused no-op, Admin Hold no-op, skipped outside controlled gate, and native signup errors. If there was no eligible work, record a successful zero-work run without generating email.
 
 BOUNDARIES
 - Do not modify editorial briefing content or send the daily briefing.

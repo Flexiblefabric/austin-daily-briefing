@@ -22,13 +22,13 @@
 - **task_reconciliation** — available — manual/read-only — `docs/task-reconciliation.md`
   - Reporting: exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable.
 - **completion_reconciliation** — development — manual/read-only — `docs/automation-prompts/end-to-end-completion-reconcile.md`
-  - Reporting: privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1.
+  - Reporting: privacy-safe full-scan Google plus feature-gated native signup-to-Welcome classification using ADB-COMPLETION-0.2.
 - **native_customization_cutover** — complete — completed gated rollout — `docs/native-customization-production-cutover.md`
   - Reporting: Gates A–F passed; Gate G closeout recorded 2026-10-04; public native customization is live with Google fallback retained pending FORM-10.
 - **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
-  - Reporting: FORM-7 Gates A–C complete. Gate D D1 repository staging and D2 inert production schema/config are complete. Native Signup Requests/Diagnostics exist empty, Native Signup Mode is DISABLED, controlled email is blank, shared Intake/Processor Mode remains GOOGLE + NATIVE, and a fresh pre-D2 production intake backup was created. D3/D4 runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and a controlled address remain.
+  - Reporting: FORM-7 Gates A–C complete. Gate D D1 repository staging and D2 inert schema/config are complete; D4 canonical Subscriber Operations, completion, and watchdog contracts are integrated in repository with Native Signup Mode still DISABLED. Scheduler-copy synchronization after merge, D3 separate disabled production endpoint deployment, Apps Script runtime parity, and controlled-test identity remain.
 
 ## Runtime configuration
 

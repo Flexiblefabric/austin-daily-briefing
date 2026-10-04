@@ -11,11 +11,11 @@ This matrix applies the project-wide production-change compatibility checklist t
 | Shared Intake Mode / Processor Mode | Welcome Resend dispatcher | Production Apps Script | Accepts `GOOGLE ONLY`, `GOOGLE + NATIVE CONTROLLED`, `GOOGLE + NATIVE` | PASS (repository) / UNKNOWN (runtime parity) | `apps-script/ResendTransport.gs` accepts all three values. Before Gate D activation, manually installed runtime must be synchronized from approved main and rechecked. |
 | Shared Intake Mode / Processor Mode | Daily Resend dispatcher | Production Apps Script | Same three accepted values | PASS (repository) / UNKNOWN (runtime parity) | Same validator as Welcome. No new shared mode will be introduced by FORM-7. Runtime parity still required. |
 | Native signup request intake | Native signup production endpoint | Separate production Apps Script web app | CONTROLLED/LIVE feature gate, exact production IDs, DEV refusal, minimal staging only | PASS (repository) / UNKNOWN (runtime) | `apps-script/NativeSignupProd.gs` plus `tests/native-signup-prod.test.js`. Dedicated production deployment does not yet exist. |
-| Native signup subscriber mutation | Production Subscriber Operations | ChatGPT scheduled task using canonical prompt | Current canonical prompt has no Native Signup Requests section | FAIL | Integrate `docs/native-signup-production-processing.md` into canonical Subscriber Operations prompt, preserve Google/native-customization behavior, merge, then synchronize scheduler copy. |
+| Native signup subscriber mutation | Production Subscriber Operations | ChatGPT scheduled task using canonical prompt | Canonical `ADB-SUBOPS-PROD-1.1` contains feature-gated Native Signup processing and Admin Hold protection | PASS (repository) / UNKNOWN (scheduler parity) | Cross-contract CI covers DISABLED no-read behavior and deterministic IDs. Synchronize the active scheduler copy immediately after merge. |
 | Native signup feature gate | Production Integration Config | Production intake workbook | `Native Signup Mode = DISABLED`; controlled email blank; shared Processor Mode still `GOOGLE + NATIVE` | PASS — inert install | D2 read-back verified exact values. Activation still blocked until controlled email and runtime gates are deliberately armed. |
 | Native signup request storage | Production intake workbook | Google Sheets | Native Signup Requests / Diagnostics installed with exact approved headers and no data rows | PASS — inert install | D2 read-back verified both tables are empty except headers. |
-| Signup-to-Welcome monitoring | 09:30 production watchdog | ChatGPT scheduled task | Current Signup Completion scan reads Google Signup Responses + Google Intake Ledger only | FAIL | Extend completion scan to include eligible Native Signup Requests and native deterministic Signup Action/Welcome IDs when Native Signup Mode is CONTROLLED/LIVE. No alert broadening without explicit decision. |
-| Manual completion reconciler | Development/manual canonical prompt | Repository prompt | Current reconciler scans Google signup responses only | FAIL | Extend reusable read-only reconciliation contract to native journeys before Gate D evidence review. |
+| Signup-to-Welcome monitoring | 09:30 production watchdog | ChatGPT scheduled task | Canonical `ADB-WATCHDOG-PROD-2.4` feature-gates native journeys; only the existing intake-incomplete alert class remains promoted | PASS (repository) / UNKNOWN (scheduler parity) | Cross-contract CI verifies DISABLED Google-only behavior, native deterministic joins, and unchanged alert policy. Synchronize active scheduler copy after merge. |
+| Manual completion reconciler | Development/manual canonical prompt | Repository prompt | `ADB-COMPLETION-RECON-0.2` supports Google + feature-gated native journeys | PASS (repository) | Native Signup Mode DISABLED preserves prior Google-only scan behavior. |
 | Welcome message content | Welcome renderer | Repository source / production Apps Script runtime | Repository copy is state-neutral for new + returning subscribers | PASS (repository) / UNKNOWN (runtime parity) | CI test passes. Production Apps Script must be synchronized before controlled Welcome delivery. |
 | Website signup browser | GitHub Pages | `site/signup.html`, `signup.js`, `signup-config.js` | DEV endpoint only; noindex/unlinked | PASS for non-public staging | Keep DEV config during Gate D. Controlled production testing must use an isolated test invocation or non-public config; public CTA remains Google Form until Gate E. |
 | Welcome queue ownership | Subscriber Operations + Welcome dispatcher | Prompt + Apps Script | Processor may queue; dispatcher alone sends | PASS by contract / UNKNOWN until prompt integration | Gate C proved ownership in DEV. Production prompt integration and runtime parity still required. |
@@ -57,3 +57,26 @@ Verified new disabled state:
 - Native Signup Diagnostics = headers only.
 
 No native signup runtime is deployed and no processor/monitoring prompt consumes the new tables yet. Those remain blocking FAIL/UNKNOWN items above.
+
+
+## D4 repository compatibility evidence
+
+Repository contracts now agree on the same feature gate and ownership model:
+
+- Subscriber Operations: `ADB-SUBOPS-PROD-1.1`;
+- completion contract: `ADB-COMPLETION-0.2`;
+- manual reconciler: `ADB-COMPLETION-RECON-0.2`;
+- production watchdog: `ADB-WATCHDOG-PROD-2.4`;
+- native production processing: `ADB-NATIVE-SIGNUP-PROD-0.1`;
+- native monitoring extension: `ADB-NATIVE-SIGNUP-MONITOR-0.1`.
+
+The cross-contract CI gate requires:
+
+- Native Signup Mode DISABLED means no Native Signup Requests processing/reconciliation;
+- deterministic native Signup Action and Welcome identities agree across processor and monitoring;
+- Admin Hold is a terminal no-op and cannot be cleared by signup;
+- the production watchdog does not broaden the promoted alert class;
+- no new shared Intake Mode or Processor Mode is introduced;
+- Resend transport still accepts the existing `GOOGLE + NATIVE` mode.
+
+Scheduler-copy parity remains UNKNOWN until the active Subscriber Operations and watchdog tasks are synchronized after merge.

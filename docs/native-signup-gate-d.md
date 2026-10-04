@@ -143,3 +143,17 @@ Production intake changes:
 Read-back confirmed the two new tabs contain headers only. No request was staged and no subscriber/profile/preference/Signup Action/Outbound Message record was changed.
 
 D3/D4 remain blocked on runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and controlled-address selection.
+
+
+## D4 repository integration — READY FOR MERGE
+
+The canonical repository contracts have been upgraded while Native Signup Mode remains `DISABLED`:
+
+- Subscriber Operations → `ADB-SUBOPS-PROD-1.1`;
+- completion contract → `ADB-COMPLETION-0.2`;
+- manual reconciler → `ADB-COMPLETION-RECON-0.2`;
+- production watchdog → `ADB-WATCHDOG-PROD-2.4`.
+
+All native behavior is feature-gated. With production Native Signup Mode still DISABLED, Subscriber Operations must not read/mutate Native Signup Requests and the watchdog/reconciler must preserve prior Google-only completion behavior.
+
+After repository merge, synchronize the active Subscriber Operations and watchdog scheduler copies to the new exact Specification IDs before considering D4 complete. Do not enable Native Signup Mode during that synchronization.

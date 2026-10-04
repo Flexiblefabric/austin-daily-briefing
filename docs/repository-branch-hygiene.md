@@ -58,8 +58,21 @@ Their presence does not mean their content should be restored. Much of it appear
 
 `.github/workflows/branch-hygiene.yml` implements the policy.
 
-On the pull request that introduces or changes the workflow, it performs a dry-run audit only. On the initial merge of the workflow to `main`, it applies the safe cleanup. After that, it is intended for manual use through `workflow_dispatch`; routine repository changes do not trigger branch deletion.
+Pull-request runs perform a dry-run audit only. The 2026-10-04 DOC-2 closeout uses the one-time `.github/branch-hygiene-apply-once` marker to authorize one final guarded apply pass on `main`. After that marker is merged, routine repository and workflow changes do not trigger branch deletion.
 
-Manual runs default to dry-run. Applying deletion requires the explicit `apply=true` workflow input.
+Future cleanup is manual through `workflow_dispatch`. Manual runs default to dry-run. Applying deletion requires the explicit `apply=true` workflow input.
 
 The workflow never deletes `main`, protected branches, open-PR branches, or the explicit reconciliation-retention set above.
+
+
+## Cleanup result — 2026-10-04
+
+The guarded apply run completed successfully in GitHub Actions run `37201727084`.
+
+- Safe candidates at apply time: **57**.
+- Deleted: **57**.
+- The extra candidate beyond the 56-branch baseline was the DOC-2 implementation branch itself after PR #64 merged.
+- Remaining branches: **7 total** — `main` plus the six reconciliation retains listed above.
+- No protected branch, open-PR branch, or reconciliation-retained branch was deleted.
+
+DOC-2 is complete. Future branch cleanup should use the same workflow in manual dry-run mode first and apply deletion only after reviewing the candidate set.

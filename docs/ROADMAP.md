@@ -76,7 +76,7 @@ Use these states:
 | COMMS-1 | Product communication | Maintain reader-facing What’s New entries for meaningful releases | Active | Operating practice; no standing daily quota |
 | COMMS-2 | Product communication | Consolidate newsletter notice / website update / Welcome change / dedicated-email decision rules | Complete | `docs/reader-change-communications.md` added |
 | DOC-1 | Documentation | Maintain this roadmap as the canonical cross-project backlog | Active | Reconcile after material project changes |
-| DOC-2 | Repository hygiene | Review stale merged/development branches and document deletion/retention policy | Active | Baseline audit complete: 56 branches safe for guarded deletion, 6 retained for reconciliation; policy and controlled cleanup workflow staged in `docs/repository-branch-hygiene.md` |
+| DOC-2 | Repository hygiene | Review stale merged/development branches and document deletion/retention policy | Complete | Guarded cleanup deleted 57 branches on 2026-10-04; repository now has `main` plus 6 reconciliation retains; policy and manual workflow documented in `docs/repository-branch-hygiene.md` |
 
 ## Editorial accountability and public standards
 

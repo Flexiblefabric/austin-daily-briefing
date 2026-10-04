@@ -80,12 +80,12 @@ FAIL or UNKNOWN blocks enabling controlled native signup.
 
 ### D6 — controlled identity
 
-Choose one controlled address owned by the operator and decide the intended test state:
+Use a two-step controlled identity sequence:
 
-- new subscriber, or
-- deliberately prepared Unsubscribed test identity.
+1. **Safety no-op:** the existing production QA profile on Admin Hold may be used first to prove endpoint → processor routing while confirming the hold cannot be bypassed and no Welcome is created.
+2. **Mutating case:** choose one operator-owned address that is either a new subscriber or a deliberately prepared Unsubscribed test identity.
 
-Do not use an ordinary reader account for a destructive state transition.
+Do not use an ordinary reader account for a destructive state transition. The Admin Hold safety test does not satisfy the mutating Gate D pass criterion by itself.
 
 Set:
 

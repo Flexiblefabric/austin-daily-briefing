@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.5",
+  "registry_version": "2026-10-04.6",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -206,8 +206,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-dev-deployment.md",
-      "reporting": "FORM-7 Gate A complete; Gate B source/schema/CI/runtime QA implemented and dedicated DEV Apps Script web app connected; one-time synthetic live smoke and DEV Sheet verification remain before Gate C",
-      "verification": "Production signup remains on the Google Form. Native signup preview remains noindex and unlinked. The dedicated DEV endpoint is configured in site/signup-config.js and is distinct from the production native-customization endpoint. No native signup production writes are authorized."
+      "reporting": "FORM-7 Gates A/B complete; Gate C repository-controlled DEV processor and executable parity harness staged; mocked parity QA must pass before live DEV subscriber mutation",
+      "verification": "Gate B PASS: corrected live DEV smoke staged exactly one valid request and recorded same-nonce no-op, recent-equivalent no-op, invalid-email rejection, missing-consent rejection, and honeypot no-op. Production signup remains on Google Form and no native signup production writes are authorized."
     }
   },
   "runtime_properties": [
@@ -331,7 +331,8 @@
     "friday_synthesis_evidence_schema": "docs/friday-synthesis-evidence.schema.json",
     "native_signup_design": "docs/native-signup-design.md",
     "native_signup_processor_contract": "docs/native-signup-processor-contract.md",
-    "native_signup_dev_deployment": "docs/native-signup-dev-deployment.md"
+    "native_signup_dev_deployment": "docs/native-signup-dev-deployment.md",
+    "native_signup_gate_b_result": "docs/native-signup-gate-b-result.md"
   },
   "governance": {
     "registry_is_authoritative": true,

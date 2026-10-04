@@ -370,4 +370,25 @@ function findRow(book, name, column, value) {
   assert.throws(() => context.adbNsProcAssertDevBoundary_(), /refuses production workbook IDs/);
 })();
 
+(function legacyPreferenceDuplicateHeaderUsesCanonicalFirstColumn() {
+  const savedPrefs = interestIds.map((id, i) => [
+    'PDEV004', id, i % 2 === 0 ? 'High' : 'Normal',
+    i % 2 === 0 ? 2 : 1,
+    'legacy', 'legacy-source', ''
+  ]);
+  const {context, db, intake} = makeRuntime({
+    email:'legacy-returning@example.com',
+    subscribers:[['legacy-returning@example.com','Unsubscribed','old','old','Existing subscriber','PDEV004','legacy-returning@example.com','OK']],
+    profiles:[['PDEV004','Active','legacy-returning@example.com','old-submission','https://docs.google.com/forms/d/e/DEV/viewform','old','Existing profile','More','Explanatory','Brief']],
+    preferences:savedPrefs
+  });
+  const before = JSON.stringify(rows(db,'Preferences').slice(1).filter(row => row[0] === 'PDEV004'));
+  const summary = context.processNativeSignupDevV1();
+  assert.strictEqual(summary.resubscribed, 1);
+  assert.strictEqual(findRow(db,'Subscribers','Email','legacy-returning@example.com')[1], 'Active');
+  const after = JSON.stringify(rows(db,'Preferences').slice(1).filter(row => row[0] === 'PDEV004'));
+  assert.strictEqual(after, before);
+  assert.strictEqual(rows(intake,'Native Signup Requests')[1][9], 'resubscribed');
+})();
+
 console.log('Native signup Gate C DEV processor parity QA passed.');

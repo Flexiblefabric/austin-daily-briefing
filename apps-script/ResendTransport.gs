@@ -631,11 +631,11 @@ function adbValidateDailyDeliveryGates_(database, intake) {
   if (env.Environment !== 'PRODUCTION') throw new Error('Production environment mismatch.');
   if (env['Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Production database identity mismatch.');
   if (env['Schema Baseline'] !== 'GOOGLE-23-1') throw new Error('Production schema mismatch.');
-  if (env['Intake Mode'] !== 'GOOGLE ONLY') throw new Error('Production intake mode mismatch.');
+  if (['GOOGLE ONLY', 'GOOGLE + NATIVE CONTROLLED', 'GOOGLE + NATIVE'].indexOf(env['Intake Mode']) < 0) throw new Error('Production intake mode mismatch.');
   if (env['Allow External Delivery'] !== 'TRUE') throw new Error('Production external delivery is not enabled.');
   if (cfg.Environment !== 'PRODUCTION') throw new Error('Production intake identity mismatch.');
   if (cfg['Operational Production Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Configured database identity mismatch.');
-  if (cfg['Processor Mode'] !== 'GOOGLE ONLY') throw new Error('Processor mode mismatch.');
+  if (cfg['Processor Mode'] !== env['Intake Mode']) throw new Error('Processor mode mismatch.');
   if (cfg['Delivery Mode'] !== 'ENABLED') throw new Error('Production delivery gate is not enabled.');
 }
 
@@ -671,11 +671,11 @@ function adbValidateWelcomeDeliveryGates_(database, intake) {
   if (env.Environment !== 'PRODUCTION') throw new Error('Production environment mismatch.');
   if (env['Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Production database identity mismatch.');
   if (env['Schema Baseline'] !== 'GOOGLE-23-1') throw new Error('Production schema mismatch.');
-  if (env['Intake Mode'] !== 'GOOGLE ONLY') throw new Error('Production intake mode mismatch.');
+  if (['GOOGLE ONLY', 'GOOGLE + NATIVE CONTROLLED', 'GOOGLE + NATIVE'].indexOf(env['Intake Mode']) < 0) throw new Error('Production intake mode mismatch.');
   if (env['Allow External Delivery'] !== 'TRUE') throw new Error('Production external delivery is not enabled.');
   if (cfg.Environment !== 'PRODUCTION') throw new Error('Production intake identity mismatch.');
   if (cfg['Operational Production Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Configured database identity mismatch.');
-  if (cfg['Processor Mode'] !== 'GOOGLE ONLY') throw new Error('Processor mode mismatch.');
+  if (cfg['Processor Mode'] !== env['Intake Mode']) throw new Error('Processor mode mismatch.');
   if (cfg['Delivery Mode'] !== 'ENABLED' || cfg['Welcome Delivery Mode'] !== 'ENABLED') {
     throw new Error('Production welcome delivery gates are not enabled.');
   }

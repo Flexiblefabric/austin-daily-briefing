@@ -85,3 +85,9 @@ The first controlled live Gate C run passed new-subscriber, existing Active, exi
 Investigation showed that the DEV `Preferences` sheet contains two columns named `Profile ID`. Historical rows populate the canonical first column while the later duplicate may be blank. The original generic row parser allowed the later blank duplicate to overwrite the first value. PR #76 changes duplicate-header handling so the first occurrence wins and adds a regression fixture matching the live legacy row shape.
 
 The original failed re-subscribe request remains preserved as evidence. A fresh re-subscribe retest request is staged against the same Unsubscribed DEV profile. Before running it, replace the Apps Script copy of `NativeSignupDevProcessor.gs` with repository build `native-signup-processor-dev-v1.1`, then run `processNativeSignupDevV1` twice. The first run should process only the fresh retest; the second should create no additional changes.
+
+## Gate C closeout — PASS
+
+The parser-corrected re-subscribe retest completed successfully on 2026-10-04. The existing Unsubscribed subscriber became Active while retaining Profile ID `PDEV004` and all 23 historical preference rows. Exactly one re-subscribe Signup Action and one deterministic Queued `WELCOME_V1` were created. The immediate replay run processed zero rows and created no duplicates.
+
+Gate C is complete. Durable evidence is recorded in `docs/native-signup-gate-c-result.md`.

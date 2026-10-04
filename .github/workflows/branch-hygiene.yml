@@ -1,0 +1,166 @@
+name: Repository branch hygiene
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/branch-hygiene.yml"
+      - "docs/repository-branch-hygiene.md"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/branch-hygiene.yml"
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Delete branches that pass all safety checks"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  branch-hygiene:
+    runs-on: ubuntu-latest
+    env:
+      APPLY: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.apply) }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Audit and clean merged branches
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          token = os.environ["GH_TOKEN"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          apply_changes = os.environ.get("APPLY", "false").lower() == "true"
+
+          retained = {
+              "design-system-v0-1",
+              "native-customization-security-stage-v1",
+              "native-forms-roadmap-v1",
+              "newsletter-identity-redesign",
+              "ops/completion-intake-alert-stage",
+              "sec/subscriber-data-security-baseline",
+          }
+
+          def request(path, method="GET"):
+              url = "https://api.github.com" + path
+              req = urllib.request.Request(
+                  url,
+                  method=method,
+                  headers={
+                      "Authorization": f"Bearer {token}",
+                      "Accept": "application/vnd.github+json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                      "User-Agent": "adb-branch-hygiene",
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as response:
+                      body = response.read().decode("utf-8")
+                      return json.loads(body) if body else None
+              except urllib.error.HTTPError as exc:
+                  detail = exc.read().decode("utf-8", errors="replace")
+                  raise RuntimeError(f"{method} {path} failed: {exc.code} {detail}") from exc
+
+          def paged(path):
+              items = []
+              page = 1
+              separator = "&" if "?" in path else "?"
+              while True:
+                  batch = request(f"{path}{separator}per_page=100&page={page}")
+                  if not batch:
+                      return items
+                  items.extend(batch)
+                  if len(batch) < 100:
+                      return items
+                  page += 1
+
+          branches = paged(f"/repos/{repo}/branches?")
+          closed_prs = paged(f"/repos/{repo}/pulls?state=closed")
+          open_prs = paged(f"/repos/{repo}/pulls?state=open")
+
+          merged_heads = {
+              (pr["head"]["ref"], pr["head"]["sha"])
+              for pr in closed_prs
+              if pr.get("merged_at") and pr.get("head")
+          }
+          open_heads = {
+              pr["head"]["ref"]
+              for pr in open_prs
+              if pr.get("head")
+          }
+
+          candidates = []
+          skipped = []
+
+          for branch in branches:
+              name = branch["name"]
+              tip = branch["commit"]["sha"]
+
+              if name == "main":
+                  skipped.append((name, "permanent branch"))
+                  continue
+              if branch.get("protected"):
+                  skipped.append((name, "protected"))
+                  continue
+              if name in open_heads:
+                  skipped.append((name, "open pull request"))
+                  continue
+              if name in retained:
+                  skipped.append((name, "retained for reconciliation"))
+                  continue
+
+              reason = None
+              if (name, tip) in merged_heads:
+                  reason = "tip matches merged PR head"
+              else:
+                  encoded = urllib.parse.quote(name, safe="")
+                  comparison = request(f"/repos/{repo}/compare/main...{encoded}")
+                  if comparison.get("ahead_by") == 0:
+                      reason = "zero commits ahead of main"
+
+              if reason:
+                  candidates.append((name, tip, reason))
+              else:
+                  skipped.append((name, "unique or unresolved history"))
+
+          print(f"Mode: {'APPLY' if apply_changes else 'DRY RUN'}")
+          print(f"Safe deletion candidates: {len(candidates)}")
+          for name, tip, reason in candidates:
+              print(f"  DELETE {name} @ {tip[:12]} — {reason}")
+
+          print(f"Retained/skipped branches: {len(skipped) - 1}")
+          for name, reason in skipped:
+              if name != "main":
+                  print(f"  KEEP   {name} — {reason}")
+
+          deleted = []
+          if apply_changes:
+              for name, tip, reason in candidates:
+                  encoded = urllib.parse.quote(name, safe="")
+                  request(f"/repos/{repo}/git/refs/heads/{encoded}", method="DELETE")
+                  deleted.append(name)
+                  print(f"Deleted {name}")
+
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary_path:
+              with open(summary_path, "a", encoding="utf-8") as summary:
+                  summary.write("## Repository branch hygiene\n\n")
+                  summary.write(f"- Mode: **{'apply' if apply_changes else 'dry run'}**\n")
+                  summary.write(f"- Safe candidates: **{len(candidates)}**\n")
+                  summary.write(f"- Deleted: **{len(deleted)}**\n")
+                  summary.write(f"- Explicit reconciliation retains: **{len(retained)}**\n")
+                  if deleted:
+                      summary.write("\nDeleted branches:\n")
+                      for name in deleted:
+                          summary.write(f"- `{name}`\n")
+          PY

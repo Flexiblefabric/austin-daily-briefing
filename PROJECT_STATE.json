@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.8",
+  "registry_version": "2026-10-04.9",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -206,8 +206,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-c-dev.md",
-      "reporting": "FORM-7 Gates A/B complete. Gate C live DEV run partially passed: new signup, Active no-op and Paused no-op passed; re-subscribe exposed duplicate-header parsing of legacy Preferences. Parser fix merged in PR #76 and a fresh re-subscribe retest is staged; update DEV Apps Script processor to build v1.1 and run processNativeSignupDevV1 twice",
-      "verification": "First live Gate C execution produced one new Active subscriber with 23 Normal preferences and one queued WELCOME_V1, preserved existing Active and Paused identities as no-ops, and created no replay duplicates on the second run. Re-subscribe failed closed before mutation because duplicate Profile ID headers caused legacy preference rows to parse incorrectly. The parser now preserves the first canonical duplicate header; regression QA passed in PR #76. Production was not touched."
+      "reporting": "FORM-7 Gates A–C complete; Gate C live DEV passed new signup, Active no-op, Paused no-op, re-subscribe preference preservation, exactly-one Welcome queue ownership and replay. Return-safe WELCOME_V1 copy is staged in repository source; Gate D controlled-production preflight and runtime synchronization are next",
+      "verification": "Gate C PASS: parser-corrected re-subscribe changed the existing subscriber to Active, preserved PDEV004 and all 23 historical preferences, created exactly one re-subscribe Signup Action and one queued WELCOME_V1, and the immediate second run processed zero rows. New/Active/Paused cases also passed. No production writes occurred."
     }
   },
   "runtime_properties": [
@@ -333,7 +333,8 @@
     "native_signup_processor_contract": "docs/native-signup-processor-contract.md",
     "native_signup_dev_deployment": "docs/native-signup-dev-deployment.md",
     "native_signup_gate_b_result": "docs/native-signup-gate-b-result.md",
-    "native_signup_gate_c_dev": "docs/native-signup-gate-c-dev.md"
+    "native_signup_gate_c_dev": "docs/native-signup-gate-c-dev.md",
+    "native_signup_gate_c_result": "docs/native-signup-gate-c-result.md"
   },
   "governance": {
     "registry_is_authoritative": true,

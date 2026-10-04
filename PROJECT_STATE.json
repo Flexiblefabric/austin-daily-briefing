@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.6",
+  "registry_version": "2026-10-04.7",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -206,8 +206,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-c-dev.md",
-      "reporting": "FORM-7 Gates A/B complete; Gate C mocked processor parity passed; controlled live DEV fixture preparation and one manual processNativeSignupDevV1 execution remain",
-      "verification": "Gate B PASS on live DEV intake. Gate C repository parity suite passed new signup, Active no-op, Paused no-op, re-subscribe preference preservation, replay/idempotency, ambiguous identity, partial-state fail-closed, invalid-consent and production-ID guard cases. No live Gate C subscriber mutation or production write has been authorized."
+      "reporting": "FORM-7 Gates A/B complete; Gate C mocked parity passed and controlled DEV fixtures are prepared; add the repository processor source to the DEV Apps Script project and run processNativeSignupDevV1 twice for live mutation + replay verification",
+      "verification": "Gate B PASS on live DEV intake. Gate C repository parity passed. Controlled DEV fixtures now cover new, Active, Paused and Unsubscribed states; prior Gate B smoke requests are terminal intake-only records. No Gate C processor execution or production write has occurred yet."
     }
   },
   "runtime_properties": [

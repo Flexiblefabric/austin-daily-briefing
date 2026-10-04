@@ -270,3 +270,26 @@ If production native intake must be stopped:
 7. record rollback in changelog/snapshot if public production cutover had occurred.
 
 Rollback does not require disabling the production relay Worker; an invalid/expired token remains non-mutating when the production endpoint is disabled.
+
+## Gate F / Gate G closeout — 2026-10-04
+
+**Result:** Gate F accepted as passing by operator direction; FORM-6 closed.
+
+Final read-only evidence recorded before closeout:
+
+- the normal 2026-10-04 09:03 CT Subscriber Operations cycle reported Healthy;
+- that cycle inspected the current Google/native intake set, processed zero new work, skipped only already-processed or terminal items, sent zero confirmation messages and recorded zero errors;
+- no Native Customize Requests were Pending or Confirmed at the closeout check;
+- the public native customization route and Google fallback had already passed the independent WEB-4 live-site verification.
+
+Timing governance note: Gate E public promotion was recorded on 2026-10-03 at approximately 17:20 CT. The originally documented 24-hour elapsed-time minimum therefore had not fully elapsed when the operator explicitly directed Gate F to be marked passing on 2026-10-04. This closeout records that direction as an explicit governance exception and does not claim that a full 24 hours elapsed.
+
+Gate G actions completed in repository state:
+
+- FORM-6 marked Complete;
+- Google customization fallback retained pending the later FORM-10 retirement decision;
+- PROJECT_STATE reconciled;
+- technical changelog updated;
+- immutable registry snapshot added;
+- generated Status / Architecture / Operations documentation reconciled;
+- FORM-7 opened as the next native-forms workstream.

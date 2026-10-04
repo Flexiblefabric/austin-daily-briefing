@@ -2,6 +2,29 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-04 — Native customization closeout and native signup start
+
+**Type:** Production rollout closeout and development workstream start  
+**Components:** native customization, subscriber operations, native signup, documentation registry  
+**Registry impact:** Yes — 2026-10-04.2
+
+FORM-6 was closed after operator acceptance of Gate F and final read-only reconciliation. The public native customization path remains live, the Google customization form remains available as fallback pending FORM-10, and FORM-7 native signup is now Active.
+
+### Closeout evidence
+
+- The 2026-10-04 09:03 CT Subscriber Operations cycle reported Healthy with zero errors.
+- No Native Customize Requests were Pending or Confirmed at the closeout check.
+- WEB-4 independently verified the public native Customize route and fallback behavior.
+- The operator explicitly directed Gate F to be marked passing and FORM-6 complete.
+- The original 24-hour elapsed-time criterion had not fully elapsed at the time of that direction; the closeout records this as an explicit governance exception rather than claiming a full 24-hour observation.
+
+### FORM-7 start
+
+- Added a parity-first native-signup design baseline.
+- Preserved the current required email + affirmative-consent semantics.
+- Preserved Production Subscriber Operations as the sole subscriber/profile creation owner.
+- Preserved exactly-one WELCOME_V1 queue creation and the Resend Welcome dispatcher as sole delivery owner.
+- Production signup remains on the Google Form while Gate A/B DEV artifacts are built and tested.
 ## 2026-10-04 — Transport compatibility release gate
 
 **Type:** Production corrective control  

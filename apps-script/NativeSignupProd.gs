@@ -77,6 +77,84 @@ function setupNativeSignupProdV1() {
   };
 }
 
+function validateNativeSignupProdPreflightV1() {
+  adbSignupProdAssertTargets_();
+
+  const props = PropertiesService.getScriptProperties();
+  const enabled = String(
+    props.getProperty(ADB_NATIVE_SIGNUP_PROD.ENABLED_PROPERTY) || ''
+  ).trim().toUpperCase();
+  const runtimeMode = String(
+    props.getProperty(ADB_NATIVE_SIGNUP_PROD.MODE_PROPERTY) || ''
+  ).trim().toUpperCase();
+  const allowlist = String(
+    props.getProperty(ADB_NATIVE_SIGNUP_PROD.ALLOWLIST_PROPERTY) || ''
+  ).trim();
+  const origin = String(
+    props.getProperty(ADB_NATIVE_SIGNUP_PROD.SITE_ORIGIN_PROPERTY) || ''
+  ).trim();
+
+  if (enabled !== 'FALSE') {
+    throw new Error('Gate D preflight requires ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE.');
+  }
+  if (runtimeMode !== 'CONTROLLED') {
+    throw new Error('Gate D preflight requires ADB_NATIVE_SIGNUP_PROD_MODE=CONTROLLED.');
+  }
+  if (allowlist) {
+    throw new Error('Gate D preflight requires an empty native-signup allowlist.');
+  }
+  if (origin !== ADB_NATIVE_SIGNUP_PROD.DEFAULT_SITE_ORIGIN) {
+    throw new Error('Gate D preflight site origin mismatch.');
+  }
+
+  const cfg = adbSignupProdIntegrationConfig_();
+  if (String(cfg['Native Signup Mode'] || '').trim().toUpperCase() !== 'DISABLED') {
+    throw new Error('Gate D preflight requires Native Signup Mode = DISABLED.');
+  }
+  if (String(cfg['Native Signup Controlled Email'] || '').trim()) {
+    throw new Error('Gate D preflight requires blank Native Signup Controlled Email.');
+  }
+
+  const processorMode = String(cfg['Processor Mode'] || '').trim().toUpperCase();
+  if (['GOOGLE + NATIVE CONTROLLED','GOOGLE + NATIVE'].indexOf(processorMode) < 0) {
+    throw new Error('Gate D preflight requires a native-capable shared Processor Mode.');
+  }
+
+  const intake = SpreadsheetApp.openById(ADB_NATIVE_SIGNUP_PROD.PROD_INTAKE_ID);
+  const requestSheet = adbSignupProdEnsureSheet_(
+    intake,
+    ADB_NATIVE_SIGNUP_PROD.REQUEST_SHEET,
+    ADB_NATIVE_SIGNUP_PROD_REQUEST_HEADERS
+  );
+  const diagnosticSheet = adbSignupProdEnsureSheet_(
+    intake,
+    ADB_NATIVE_SIGNUP_PROD.DIAGNOSTIC_SHEET,
+    ADB_NATIVE_SIGNUP_PROD_DIAGNOSTIC_HEADERS
+  );
+
+  if (adbSignupProdRows_(requestSheet).rows.length !== 0) {
+    throw new Error('Gate D preflight requires an empty Native Signup Requests table.');
+  }
+  if (adbSignupProdRows_(diagnosticSheet).rows.length !== 0) {
+    throw new Error('Gate D preflight requires an empty Native Signup Diagnostics table.');
+  }
+
+  const report = {
+    build: ADB_NATIVE_SIGNUP_PROD.BUILD,
+    endpointEnabled: false,
+    endpointMode: 'CONTROLLED',
+    allowlistConfigured: false,
+    nativeSignupMode: 'DISABLED',
+    processorMode: processorMode,
+    requestRows: 0,
+    diagnosticRows: 0,
+    siteOrigin: ADB_NATIVE_SIGNUP_PROD.DEFAULT_SITE_ORIGIN,
+    subscriberMutation: false
+  };
+  console.log(JSON.stringify(report));
+  return report;
+}
+
 function doPost(e) {
   adbSignupProdAssertEnabled_();
 

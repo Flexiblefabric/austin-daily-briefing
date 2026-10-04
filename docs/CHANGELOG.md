@@ -21,6 +21,8 @@ FORM-7 Gate D integrated native-signup semantics into the canonical production t
 - Preserved the existing promoted alert policy: only `Unhealthy — intake incomplete` remains alert-enabled.
 - Preserved the existing shared `GOOGLE + NATIVE` production mode; FORM-7 adds no new shared Intake/Processor Mode.
 - Scheduler-copy synchronization is required immediately after merge; repository merge alone does not establish scheduler parity.
+- Post-merge synchronization completed: Subscriber Operations now requires `ADB-SUBOPS-PROD-1.1`; the watchdog copy now requires `ADB-WATCHDOG-PROD-2.4`.
+- Subscriber Operations remains enabled. The watchdog was already disabled and that state was preserved; it remains a Gate D activation blocker.
 
 ### Safety state
 

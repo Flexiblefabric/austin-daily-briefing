@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.12",
+  "registry_version": "2026-10-04.13",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -104,7 +104,7 @@
     "subscriber_processor": {
       "cadence": "every 6 hours",
       "status": "live",
-      "verification": "canonical source upgraded for feature-gated native signup; scheduler copy synchronization pending after merge",
+      "verification": "scheduler copy synchronized 2026-10-04 to ADB-SUBOPS-PROD-1.1; enabled; Native Signup Mode remains DISABLED",
       "task_id": "6aa1acbcf17c8191a9a89cc95b433629",
       "scheduler_state": "active",
       "prompt_path": "docs/automation-prompts/production-subscriber-operations.md",
@@ -143,14 +143,15 @@
     },
     "production_health_watchdog": {
       "cadence": "09:30 America/Chicago",
-      "status": "live",
-      "scheduler_state": "active",
+      "status": "paused",
+      "scheduler_state": "disabled",
       "task_id": "6aa8401e16a88191ae14ba1b4d6cba6e",
       "prompt_path": "docs/automation-prompts/production-health-watchdog.md",
       "specification_id": "ADB-WATCHDOG-PROD-2.4",
       "coverage": "subscriber operations, morning generation, daily Resend delivery, welcome Resend queue health, Google plus feature-gated native signup completion intake-incomplete detection, and compatibility with controlled/native subscriber-intake modes",
       "alert_transport": "validated Gmail administrator-alert path",
-      "completion_monitoring": "ADB-COMPLETION-PROD-0.1 alert policy; contracts ADB-COMPLETION-0.2 / ADB-COMPLETION-RECON-0.2 add native journeys while only intake-incomplete remains alert-enabled"
+      "completion_monitoring": "ADB-COMPLETION-PROD-0.1 alert policy; contracts ADB-COMPLETION-0.2 / ADB-COMPLETION-RECON-0.2 add native journeys while only intake-incomplete remains alert-enabled",
+      "verification": "scheduler copy synchronized 2026-10-04 to ADB-WATCHDOG-PROD-2.4 while preserving pre-existing disabled state; must be explicitly re-enabled before Gate D controlled-production monitoring can pass"
     }
   },
   "manual_operations": {
@@ -215,8 +216,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D D1 repository staging and D2 inert schema/config are complete; D4 canonical Subscriber Operations, completion, and watchdog contracts are integrated in repository with Native Signup Mode still DISABLED. Scheduler-copy synchronization after merge, D3 separate disabled production endpoint deployment, Apps Script runtime parity, and controlled-test identity remain",
-      "verification": "D4 repository compatibility is PASS: ADB-SUBOPS-PROD-1.1, ADB-COMPLETION-0.2, ADB-COMPLETION-RECON-0.2, ADB-WATCHDOG-PROD-2.4, ADB-NATIVE-SIGNUP-PROD-0.1, and ADB-NATIVE-SIGNUP-MONITOR-0.1 agree on DISABLED gating, deterministic native IDs, Admin Hold no-op, and unchanged alert policy. Scheduler/runtime parity remains pending; production Native Signup Mode is DISABLED."
+      "reporting": "FORM-7 Gates A–C complete. Gate D D1/D2 complete and D4 canonical contracts plus scheduler prompt copies are synchronized. Subscriber Operations is enabled on ADB-SUBOPS-PROD-1.1; watchdog prompt is synchronized to ADB-WATCHDOG-PROD-2.4 but its scheduler remains disabled. D3 separate disabled production endpoint deployment, Apps Script runtime parity, watchdog operational state, and controlled-test identity remain",
+      "verification": "D4 scheduler parity verified by live task metadata on 2026-10-04. Subscriber Operations task 6aa1acbcf17c8191a9a89cc95b433629 requires ADB-SUBOPS-PROD-1.1 and remains enabled. Watchdog task 6aa8401e16a88191ae14ba1b4d6cba6e requires ADB-WATCHDOG-PROD-2.4 but is disabled; this is recorded as a Gate D activation blocker, not silently changed. Native Signup Mode remains DISABLED."
     }
   },
   "runtime_properties": [

@@ -1,3 +1,3 @@
-FORM-7 Gate B one-time live-smoke trigger.
-Do not modify this file for routine work.
-Future rechecks should use workflow_dispatch.
+FORM-7 Gate B controlled live-smoke trigger — second pass.
+First pass proved the endpoint staged one valid DEV request; raw HTTP response assertions were invalid because Apps Script wraps HtmlService output.
+This marker change authorizes one corrected synthetic smoke on main. Do not modify for routine work.

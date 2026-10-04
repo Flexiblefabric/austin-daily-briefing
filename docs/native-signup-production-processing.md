@@ -1,5 +1,7 @@
 # Native Signup — Production Processing Contract
 
+**Specification ID:** `ADB-NATIVE-SIGNUP-PROD-0.1`  
+
 **Status:** FORM-7 Gate D staging  
 **Production mutation:** Not authorized by this document alone
 

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.3",
+  "registry_version": "2026-10-04.4",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -205,9 +205,9 @@
     "native_signup_development": {
       "status": "development",
       "cadence": "manual gated rollout",
-      "runbook": "docs/native-signup-design.md",
-      "reporting": "FORM-7 Gate A approved; Gate B DEV page/client, isolated Apps Script intake source, request/diagnostic schema and CI guardrails staged; dedicated DEV deployment and controlled browser/intake QA remain",
-      "verification": "Production signup remains on the Google Form. Native signup preview is noindex and unlinked, browser endpoint config is intentionally blank until the dedicated DEV Apps Script deployment is created, and no native signup production writes are authorized."
+      "runbook": "docs/native-signup-dev-deployment.md",
+      "reporting": "FORM-7 Gate A complete; Gate B source/schema/CI and executable mocked-runtime QA implemented; dedicated DEV Apps Script deployment and controlled browser/intake QA remain",
+      "verification": "Production signup remains on the Google Form. Native signup preview remains noindex and unlinked, the endpoint config is intentionally blank, runtime QA covers staging/validation/deduplication/rate-limit and production-ID refusal paths, and no native signup production writes are authorized."
     }
   },
   "runtime_properties": [
@@ -330,7 +330,8 @@
     "friday_synthesis_evidence_log": "docs/friday-synthesis-evidence-log.md",
     "friday_synthesis_evidence_schema": "docs/friday-synthesis-evidence.schema.json",
     "native_signup_design": "docs/native-signup-design.md",
-    "native_signup_processor_contract": "docs/native-signup-processor-contract.md"
+    "native_signup_processor_contract": "docs/native-signup-processor-contract.md",
+    "native_signup_dev_deployment": "docs/native-signup-dev-deployment.md"
   },
   "governance": {
     "registry_is_authoritative": true,

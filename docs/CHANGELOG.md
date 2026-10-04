@@ -2,6 +2,32 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-04 — Native signup Gate D inert production schema
+
+**Type:** Production data-storage and configuration staging  
+**Components:** production intake workbook, native signup, documentation registry  
+**Registry impact:** Yes — 2026-10-04.11
+
+FORM-7 Gate D installed the production native-signup storage/configuration boundary in a disabled state. No native signup runtime or processor integration was enabled.
+
+### Changes
+
+- Created empty production `Native Signup Requests` and `Native Signup Diagnostics` tabs with the approved Gate B/C schemas.
+- Added `Native Signup Mode = DISABLED`.
+- Added blank `Native Signup Controlled Email`.
+- Preserved production `Intake Mode = GOOGLE + NATIVE`.
+- Preserved production `Processor Mode = GOOGLE + NATIVE`.
+- Created a fresh private production-intake backup immediately before the schema write.
+- Public signup remains on the Google Form.
+
+### Validation
+
+- Both new production tabs were read back with headers only.
+- Native Signup Mode was read back as DISABLED.
+- Native Signup Controlled Email was read back blank.
+- Shared Intake/Processor modes were read back unchanged.
+- No native signup request, subscriber/profile/preference mutation, Signup Action, or Welcome queue record was created.
+
 ## 2026-10-04 — Native customization closeout and native signup start
 
 **Type:** Production rollout closeout and development workstream start  

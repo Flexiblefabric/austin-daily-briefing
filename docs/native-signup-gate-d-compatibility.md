@@ -12,8 +12,8 @@ This matrix applies the project-wide production-change compatibility checklist t
 | Shared Intake Mode / Processor Mode | Daily Resend dispatcher | Production Apps Script | Same three accepted values | PASS (repository) / UNKNOWN (runtime parity) | Same validator as Welcome. No new shared mode will be introduced by FORM-7. Runtime parity still required. |
 | Native signup request intake | Native signup production endpoint | Separate production Apps Script web app | CONTROLLED/LIVE feature gate, exact production IDs, DEV refusal, minimal staging only | PASS (repository) / UNKNOWN (runtime) | `apps-script/NativeSignupProd.gs` plus `tests/native-signup-prod.test.js`. Dedicated production deployment does not yet exist. |
 | Native signup subscriber mutation | Production Subscriber Operations | ChatGPT scheduled task using canonical prompt | Current canonical prompt has no Native Signup Requests section | FAIL | Integrate `docs/native-signup-production-processing.md` into canonical Subscriber Operations prompt, preserve Google/native-customization behavior, merge, then synchronize scheduler copy. |
-| Native signup feature gate | Production Integration Config | Production intake workbook | `Native Signup Mode` / `Native Signup Controlled Email` absent | FAIL | Add rows initially as DISABLED / blank after repository staging passes. Shared Processor Mode remains unchanged. |
-| Native signup request storage | Production intake workbook | Google Sheets | Native Signup Requests / Diagnostics absent | FAIL | Create exact schema after staging checks pass. Empty schema only; no subscriber mutation. |
+| Native signup feature gate | Production Integration Config | Production intake workbook | `Native Signup Mode = DISABLED`; controlled email blank; shared Processor Mode still `GOOGLE + NATIVE` | PASS — inert install | D2 read-back verified exact values. Activation still blocked until controlled email and runtime gates are deliberately armed. |
+| Native signup request storage | Production intake workbook | Google Sheets | Native Signup Requests / Diagnostics installed with exact approved headers and no data rows | PASS — inert install | D2 read-back verified both tables are empty except headers. |
 | Signup-to-Welcome monitoring | 09:30 production watchdog | ChatGPT scheduled task | Current Signup Completion scan reads Google Signup Responses + Google Intake Ledger only | FAIL | Extend completion scan to include eligible Native Signup Requests and native deterministic Signup Action/Welcome IDs when Native Signup Mode is CONTROLLED/LIVE. No alert broadening without explicit decision. |
 | Manual completion reconciler | Development/manual canonical prompt | Repository prompt | Current reconciler scans Google signup responses only | FAIL | Extend reusable read-only reconciliation contract to native journeys before Gate D evidence review. |
 | Welcome message content | Welcome renderer | Repository source / production Apps Script runtime | Repository copy is state-neutral for new + returning subscribers | PASS (repository) / UNKNOWN (runtime parity) | CI test passes. Production Apps Script must be synchronized before controlled Welcome delivery. |
@@ -38,3 +38,22 @@ Controlled Gate D production activation is prohibited until all of the following
 ## No-mode-change decision
 
 FORM-7 does **not** introduce a new `Intake Mode` or `Processor Mode`. Production remains on its existing native-capable shared mode. Native signup is independently gated by `Native Signup Mode`, which prevents a controlled signup rollout from restricting the already-live native customization path.
+
+
+## D2 evidence
+
+The inert production schema/config installation completed on 2026-10-04 after a fresh private backup of the production intake workbook.
+
+Verified unchanged shared state:
+
+- production Intake Mode = `GOOGLE + NATIVE`;
+- production Processor Mode = `GOOGLE + NATIVE`.
+
+Verified new disabled state:
+
+- Native Signup Mode = `DISABLED`;
+- Native Signup Controlled Email = blank;
+- Native Signup Requests = headers only;
+- Native Signup Diagnostics = headers only.
+
+No native signup runtime is deployed and no processor/monitoring prompt consumes the new tables yet. Those remain blocking FAIL/UNKNOWN items above.

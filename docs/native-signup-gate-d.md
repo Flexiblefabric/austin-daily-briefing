@@ -80,12 +80,12 @@ FAIL or UNKNOWN blocks enabling controlled native signup.
 
 ### D6 — controlled identity
 
-Choose one controlled address owned by the operator and decide the intended test state:
+Use a two-step controlled identity sequence:
 
-- new subscriber, or
-- deliberately prepared Unsubscribed test identity.
+1. **Safety no-op:** the existing production QA profile on Admin Hold may be used first to prove endpoint → processor routing while confirming the hold cannot be bypassed and no Welcome is created.
+2. **Mutating case:** choose one operator-owned address that is either a new subscriber or a deliberately prepared Unsubscribed test identity.
 
-Do not use an ordinary reader account for a destructive state transition.
+Do not use an ordinary reader account for a destructive state transition. The Admin Hold safety test does not satisfy the mutating Gate D pass criterion by itself.
 
 Set:
 
@@ -121,3 +121,25 @@ Gate E will separately decide:
 - navigation/CTA cutover;
 - Google signup fallback retention;
 - production observation window.
+
+
+## D2 result — COMPLETE
+
+Completed 2026-10-04 with the feature inert.
+
+Before the production intake schema change, a fresh private copy of the production intake workbook was created in the same restricted production folder:
+
+- backup ID: `1iJ4i4bRmgs0PwQd-k_g8i3Z374QWLexekmab7d5Acl8`.
+
+Production intake changes:
+
+- created empty `Native Signup Requests` with the approved 11-column schema;
+- created empty `Native Signup Diagnostics` with the approved 9-column schema;
+- added `Native Signup Mode = DISABLED`;
+- added blank `Native Signup Controlled Email`;
+- preserved shared production `Intake Mode = GOOGLE + NATIVE`;
+- preserved shared production `Processor Mode = GOOGLE + NATIVE`.
+
+Read-back confirmed the two new tabs contain headers only. No request was staged and no subscriber/profile/preference/Signup Action/Outbound Message record was changed.
+
+D3/D4 remain blocked on runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and controlled-address selection.

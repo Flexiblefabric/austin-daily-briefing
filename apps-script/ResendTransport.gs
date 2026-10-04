@@ -16,6 +16,7 @@ const ADB_RESEND = Object.freeze({
   DAILY_ALLOWLIST_PROPERTY: 'ADB_RESEND_DAILY_ALLOWLIST',
   DAILY_TEMPLATE_ID: 'DAILY_BRIEFING_V1',
   DAILY_MAX_BODY_CHARS: 45000,
+  SUPPORTED_INTAKE_MODES: Object.freeze(['GOOGLE ONLY', 'GOOGLE + NATIVE CONTROLLED', 'GOOGLE + NATIVE']),
   PRODUCTION_DATABASE_ID: '1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0',
   PRODUCTION_INTAKE_ID: '1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho',
   CUSTOMIZE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform',
@@ -626,17 +627,7 @@ function adbRemoveDailyTriggers_() {
 }
 
 function adbValidateDailyDeliveryGates_(database, intake) {
-  const env = adbKeyValueSheet_(database.getSheetByName('Environment'));
-  const cfg = adbKeyValueSheet_(intake.getSheetByName('Integration Config'));
-  if (env.Environment !== 'PRODUCTION') throw new Error('Production environment mismatch.');
-  if (env['Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Production database identity mismatch.');
-  if (env['Schema Baseline'] !== 'GOOGLE-23-1') throw new Error('Production schema mismatch.');
-  if (['GOOGLE ONLY', 'GOOGLE + NATIVE CONTROLLED', 'GOOGLE + NATIVE'].indexOf(env['Intake Mode']) < 0) throw new Error('Production intake mode mismatch.');
-  if (env['Allow External Delivery'] !== 'TRUE') throw new Error('Production external delivery is not enabled.');
-  if (cfg.Environment !== 'PRODUCTION') throw new Error('Production intake identity mismatch.');
-  if (cfg['Operational Production Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Configured database identity mismatch.');
-  if (cfg['Processor Mode'] !== env['Intake Mode']) throw new Error('Processor mode mismatch.');
-  if (cfg['Delivery Mode'] !== 'ENABLED') throw new Error('Production delivery gate is not enabled.');
+  adbValidateResendDeliveryGates_(database, intake);
 }
 
 function adbRowsWithSheetRows_(sheet) {
@@ -666,19 +657,29 @@ function adbHeaderColumns_(headers) {
 }
 
 function adbValidateWelcomeDeliveryGates_(database, intake) {
+  const state = adbValidateResendDeliveryGates_(database, intake);
+  if (state.cfg['Welcome Delivery Mode'] !== 'ENABLED') {
+    throw new Error('Production welcome delivery gate is not enabled.');
+  }
+}
+
+function adbValidateResendDeliveryGates_(database, intake) {
   const env = adbKeyValueSheet_(database.getSheetByName('Environment'));
   const cfg = adbKeyValueSheet_(intake.getSheetByName('Integration Config'));
   if (env.Environment !== 'PRODUCTION') throw new Error('Production environment mismatch.');
   if (env['Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Production database identity mismatch.');
   if (env['Schema Baseline'] !== 'GOOGLE-23-1') throw new Error('Production schema mismatch.');
-  if (['GOOGLE ONLY', 'GOOGLE + NATIVE CONTROLLED', 'GOOGLE + NATIVE'].indexOf(env['Intake Mode']) < 0) throw new Error('Production intake mode mismatch.');
+  if (ADB_RESEND.SUPPORTED_INTAKE_MODES.indexOf(env['Intake Mode']) < 0) {
+    throw new Error('Production intake mode mismatch.');
+  }
   if (env['Allow External Delivery'] !== 'TRUE') throw new Error('Production external delivery is not enabled.');
   if (cfg.Environment !== 'PRODUCTION') throw new Error('Production intake identity mismatch.');
-  if (cfg['Operational Production Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) throw new Error('Configured database identity mismatch.');
-  if (cfg['Processor Mode'] !== env['Intake Mode']) throw new Error('Processor mode mismatch.');
-  if (cfg['Delivery Mode'] !== 'ENABLED' || cfg['Welcome Delivery Mode'] !== 'ENABLED') {
-    throw new Error('Production welcome delivery gates are not enabled.');
+  if (cfg['Operational Production Database ID'] !== ADB_RESEND.PRODUCTION_DATABASE_ID) {
+    throw new Error('Configured database identity mismatch.');
   }
+  if (cfg['Processor Mode'] !== env['Intake Mode']) throw new Error('Processor mode mismatch.');
+  if (cfg['Delivery Mode'] !== 'ENABLED') throw new Error('Production delivery gate is not enabled.');
+  return {env: env, cfg: cfg};
 }
 
 function adbRowsByHeader_(sheet) {

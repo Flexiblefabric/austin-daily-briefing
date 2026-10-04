@@ -56,6 +56,30 @@ const ADB_NATIVE_SIGNUP_PROD_DIAGNOSTIC_HEADERS = Object.freeze([
   'Source','Build','Notes'
 ]);
 
+function getNativeSignupProdRuntimeStatusV1() {
+  adbSignupProdAssertTargets_();
+  const props = PropertiesService.getScriptProperties();
+  const config = adbSignupProdIntegrationConfig_();
+  const enabledRaw = String(props.getProperty(ADB_NATIVE_SIGNUP_PROD.ENABLED_PROPERTY) || '').trim().toUpperCase();
+  const modeRaw = String(props.getProperty(ADB_NATIVE_SIGNUP_PROD.MODE_PROPERTY) || '').trim().toUpperCase();
+  const allowlist = String(props.getProperty(ADB_NATIVE_SIGNUP_PROD.ALLOWLIST_PROPERTY) || '')
+    .split(',').map(function(value) { return value.trim().toLowerCase(); }).filter(Boolean);
+  const siteOrigin = String(props.getProperty(ADB_NATIVE_SIGNUP_PROD.SITE_ORIGIN_PROPERTY) || '').trim();
+
+  return {
+    build: ADB_NATIVE_SIGNUP_PROD.BUILD,
+    intakeTarget: ADB_NATIVE_SIGNUP_PROD.PROD_INTAKE_ID,
+    databaseTarget: ADB_NATIVE_SIGNUP_PROD.PROD_DATABASE_ID,
+    enabled: enabledRaw === 'TRUE',
+    mode: modeRaw || 'UNSET',
+    allowlistConfigured: allowlist.length > 0,
+    siteOrigin: siteOrigin || 'UNSET',
+    integrationNativeSignupMode: String(config['Native Signup Mode'] || '').trim() || 'DISABLED',
+    integrationControlledEmailConfigured: !!String(config['Native Signup Controlled Email'] || '').trim(),
+    sharedProcessorMode: String(config['Processor Mode'] || '').trim()
+  };
+}
+
 function setupNativeSignupProdV1() {
   adbSignupProdAssertTargets_();
   const intake = SpreadsheetApp.openById(ADB_NATIVE_SIGNUP_PROD.PROD_INTAKE_ID);

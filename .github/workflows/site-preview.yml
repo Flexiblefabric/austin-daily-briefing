@@ -77,6 +77,9 @@ jobs:
       - name: Run Welcome copy compatibility QA
         run: node tests/welcome-copy-compat.test.js
 
+      - name: Run FORM-7 Gate D runtime fingerprint QA
+        run: node tests/native-signup-gate-d-runtime.test.js
+
       - name: Run native signup Gate D production endpoint QA
         run: node tests/native-signup-prod.test.js
 

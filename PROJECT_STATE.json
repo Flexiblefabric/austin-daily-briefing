@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.13",
+  "registry_version": "2026-10-04.14",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -216,8 +216,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D D1/D2 complete and D4 canonical contracts plus scheduler prompt copies are synchronized. Subscriber Operations is enabled on ADB-SUBOPS-PROD-1.1; watchdog prompt is synchronized to ADB-WATCHDOG-PROD-2.4 but its scheduler remains disabled. D3 separate disabled production endpoint deployment, Apps Script runtime parity, watchdog operational state, and controlled-test identity remain",
-      "verification": "D4 scheduler parity verified by live task metadata on 2026-10-04. Subscriber Operations task 6aa1acbcf17c8191a9a89cc95b433629 requires ADB-SUBOPS-PROD-1.1 and remains enabled. Watchdog task 6aa8401e16a88191ae14ba1b4d6cba6e requires ADB-WATCHDOG-PROD-2.4 but is disabled; this is recorded as a Gate D activation blocker, not silently changed. Native Signup Mode remains DISABLED."
+      "reporting": "FORM-7 Gates A–C complete. Gate D D1/D2/D4 pass and D5 read-only preflight is a partial pass. Remaining blockers are D3 separate disabled production web app, production Resend runtime parity, explicit watchdog re-enable/disposition, and one operator-owned mutating controlled-test address",
+      "verification": "Read-only Gate D preflight confirmed Native Signup Mode remains DISABLED, controlled email blank, production Native Signup Requests/Diagnostics header-only, shared Intake/Processor Mode = GOOGLE + NATIVE, Subscriber Operations enabled on ADB-SUBOPS-PROD-1.1, and watchdog prompt synchronized to ADB-WATCHDOG-PROD-2.4 but scheduler disabled. Repository runtime status probes added for native-signup endpoint and Resend transport. No production mutation occurred."
     }
   },
   "runtime_properties": [
@@ -368,7 +368,8 @@
     "native_signup_gate_d": "docs/native-signup-gate-d.md",
     "native_signup_production_processing": "docs/native-signup-production-processing.md",
     "native_signup_gate_d_compatibility": "docs/native-signup-gate-d-compatibility.md",
-    "native_signup_completion_monitoring": "docs/native-signup-completion-monitoring.md"
+    "native_signup_completion_monitoring": "docs/native-signup-completion-monitoring.md",
+    "native_signup_gate_d_runtime_preflight": "docs/native-signup-gate-d-runtime-preflight.md"
   },
   "governance": {
     "registry_is_authoritative": true,

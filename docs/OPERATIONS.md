@@ -25,10 +25,10 @@
   - Reporting: privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1.
 - **native_customization_cutover** — complete — completed gated rollout — `docs/native-customization-production-cutover.md`
   - Reporting: Gates A–F passed; Gate G closeout recorded 2026-10-04; public native customization is live with Google fallback retained pending FORM-10.
-- **native_signup_development** — development — manual gated rollout — `docs/native-signup-design.md`
-  - Reporting: FORM-7 active; parity-first design baseline established and Gate A/B DEV implementation is next.
 - **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
+- **native_signup_development** — development — manual gated rollout — `docs/native-signup-design.md`
+  - Reporting: FORM-7 active; parity-first design baseline established and Gate A/B DEV implementation is next.
 
 ## Runtime configuration
 

@@ -3,7 +3,7 @@
 > Generated from `PROJECT_STATE.json`. Do not edit this generated document directly.
 
 - Schema version: `1.2`
-- Registry version: `2026-10-04.9`
+- Registry version: `2026-10-04.10`
 - Last reviewed: `2026-10-04`
 - Production status: **live**
 - Public site: https://austindailybriefing.com/
@@ -21,6 +21,7 @@
 - **website** — live — GitHub Pages
 - **native_customization_intake** — live — Google Apps Script
 - **customization_confirmation_relay** — live — Cloudflare Workers
+- **native_signup_intake** — staging — Google Apps Script
 
 ## Automation
 
@@ -50,5 +51,9 @@
 - `ADB_NATIVE_CUSTOMIZE_PROD_RELAY_SECRET` — Apps Script HMAC secret for production confirmation relay
 - `ADB_APPS_SCRIPT_CONFIRM_URL` — Cloudflare Worker secret containing production Apps Script relay target
 - `ADB_CONFIRM_RELAY_SECRET` — Cloudflare Worker HMAC secret matching the production Apps Script relay secret
+- `ADB_NATIVE_SIGNUP_PROD_ENABLED` — production native signup endpoint enable gate
+- `ADB_NATIVE_SIGNUP_PROD_MODE` — production native signup CONTROLLED/LIVE mode
+- `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` — controlled production native-signup address allowlist
+- `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN` — allowed ADB website origin for native signup
 
 Secret and private configuration values are intentionally excluded from the registry and generated documentation.

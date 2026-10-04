@@ -71,3 +71,9 @@ Verify the Welcome rows remain `Queued`. Do not invoke the dispatcher as part of
 ## Pass criteria
 
 Gate C passes only when repository parity and live DEV readback agree on the state transitions above, no duplicate identity is created, saved preferences survive re-subscription unchanged, exactly one Welcome is queued for new/re-subscribed identities, and production remains untouched.
+
+## Fixture readiness — 2026-10-04
+
+The controlled DEV fixture set is prepared and verified. It contains exactly one intentional case each for new signup, existing Active, existing Paused and existing Unsubscribed/re-subscribe behavior. The Paused fixture includes one coherent profile and all 23 active-interest preference rows. Earlier Gate B smoke requests are marked terminal intake-only and will not be processed as subscribers.
+
+For live replay verification, run `processNativeSignupDevV1` **twice**. The first run should process the four Gate C requests. The second run should perform no additional subscriber/profile/preference/action/Welcome mutations.

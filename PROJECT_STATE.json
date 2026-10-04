@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.10",
+  "registry_version": "2026-10-04.11",
   "last_reviewed": "2026-10-04",
   "project": {
     "name": "Austin Daily Briefing",
@@ -94,9 +94,10 @@
     "native_signup_intake": {
       "status": "staging",
       "provider": "Google Apps Script",
-      "environment": "production endpoint source staged; runtime not deployed",
+      "environment": "production request/diagnostic schema installed; runtime not deployed; Native Signup Mode remains DISABLED",
       "source_path": "apps-script/NativeSignupProd.gs",
-      "public_cutover": "not authorized; public signup remains Google Form through Gate D"
+      "public_cutover": "not authorized; public signup remains Google Form through Gate D",
+      "pre_d2_backup_id": "1iJ4i4bRmgs0PwQd-k_g8i3Z374QWLexekmab7d5Acl8"
     }
   },
   "automation": {
@@ -213,8 +214,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D repository staging includes the production endpoint, processing contract, compatibility matrix, and completion-monitoring extension. Production activation is blocked until sheets/config, runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and a controlled address are all PASS",
-      "verification": "No Gate D production mutation has occurred. Shared production Intake/Processor Mode remains GOOGLE + NATIVE; FORM-7 introduces no new shared mode. Public signup remains the Google Form."
+      "reporting": "FORM-7 Gates A–C complete. Gate D D1 repository staging and D2 inert production schema/config are complete. Native Signup Requests/Diagnostics exist empty, Native Signup Mode is DISABLED, controlled email is blank, shared Intake/Processor Mode remains GOOGLE + NATIVE, and a fresh pre-D2 production intake backup was created. D3/D4 runtime deployment, canonical Subscriber Operations integration, monitoring integration, runtime parity, and a controlled address remain",
+      "verification": "D2 verified read-back: production Native Signup Requests and Native Signup Diagnostics contain headers only; Integration Config has Native Signup Mode=DISABLED and blank Native Signup Controlled Email; production Intake Mode and Processor Mode remain GOOGLE + NATIVE. Backup ID 1iJ4i4bRmgs0PwQd-k_g8i3Z374QWLexekmab7d5Acl8. No native signup request or subscriber mutation occurred."
     }
   },
   "runtime_properties": [

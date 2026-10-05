@@ -53,6 +53,8 @@ Initial Script Properties:
 - `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` blank;
 - `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN=https://austindailybriefing.com`.
 
+Before deployment, run `getNativeSignupProdRuntimeStatusV1` for readback and `validateNativeSignupProdPreflightV1` for fail-closed enforcement. The validator must pass only with the endpoint disabled, runtime mode CONTROLLED, blank allowlist, exact site origin, Native Signup Mode DISABLED, blank controlled email, native-capable shared Processor Mode, and empty native request/diagnostic tables.
+
 Deploy a versioned web app and record its `/exec` URL in project documentation. Do not point the public website at it yet.
 
 ### D4 — processor integration
@@ -77,6 +79,8 @@ Required consumers:
 - production native-signup Apps Script endpoint.
 
 FAIL or UNKNOWN blocks enabling controlled native signup.
+
+After synchronizing the current repository copy of `apps-script/ResendTransport.gs`, run `getAdbResendRuntimeStatusV1` for readback and `validateForm7GateDTransportCompatibilityV1` for fail-closed compatibility enforcement. The validator must confirm the shared native-capable mode, valid Native Signup Mode, return-safe Welcome copy in both renderers, and `deliveryInvoked: false` / `writes: false`.
 
 ### D6 — controlled identity
 

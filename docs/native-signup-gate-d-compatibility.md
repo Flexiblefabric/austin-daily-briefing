@@ -87,11 +87,11 @@ Scheduler-copy parity remains UNKNOWN until the active Subscriber Operations and
 Post-merge live scheduler metadata was verified on 2026-10-04:
 
 - Production Subscriber Operations task `6aa1acbcf17c8191a9a89cc95b433629` is enabled and now requires `ADB-SUBOPS-PROD-1.1`.
-- ADB Production Watchdog task `6aa8401e16a88191ae14ba1b4d6cba6e` now requires `ADB-WATCHDOG-PROD-2.4`, but the task was already disabled and that state was deliberately preserved.
+- At the October 4 synchronization check, ADB Production Watchdog task `6aa8401e16a88191ae14ba1b4d6cba6e` required `ADB-WATCHDOG-PROD-2.4` and was disabled; October 5 live readback confirms the same task enabled on the unchanged 09:30 America/Chicago schedule.
 
 No schedule was changed. No task was enabled or disabled as part of FORM-7 synchronization.
 
-Therefore D4 prompt parity is complete, but Gate D production activation remains blocked by the watchdog's disabled operational state in addition to D3/runtime parity and controlled-test requirements.
+Therefore D4 prompt parity is complete and the later October 5 watchdog readback resolves the operational-state blocker. D3/runtime parity and controlled-test requirements remain.
 
 ## D5 read-only preflight — 2026-10-04
 
@@ -104,7 +104,7 @@ Current executable-consumer result:
 - Resend repository compatibility + return-safe Welcome copy: **PASS**;
 - Resend production runtime parity: **UNKNOWN**;
 - watchdog prompt parity: **PASS**;
-- watchdog operational state: **BLOCKED — disabled**;
+- watchdog operational state: **PASS — enabled/current-day monitoring verified October 5**;
 - public website isolation: **PASS — Google signup remains public; native signup remains DEV/noindex/unlinked**;
 - Admin Hold safety fixture: **PASS — available**;
 - controlled mutating identity: **UNKNOWN — not yet selected**.

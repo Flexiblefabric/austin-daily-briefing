@@ -2,6 +2,18 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-05 — V2 observation and watchdog state reconciliation
+
+**Type:** Operational evidence and documentation reconciliation  
+**Registry impact:** Yes — 2026-10-05.1
+
+- Recorded October 4/5 V2 reviews in the promotion record: provider acceptance for 12 editions each; October 5 generation and delivery monitoring Healthy; launch notice not repeated.
+- Reconciled the already-enabled production watchdog and retained its current contract/schedule. No scheduler or runtime behavior was changed.
+- Kept V2-10 open for editorial audit/fit/prominence gaps; provider acceptance does not prove inbox delivery.
+- Recorded operator clarification: late generation missed the initial hourly dispatcher pass.
+- Corrected only 12 voter-registration Briefing History Notes cells to separate new extended-hours information from deadline timing; scores and delivery evidence retained.
+- Regenerated internal technical documentation from the updated registry.
+
 ## 2026-10-04 — Native signup Gate D production task contracts staged disabled
 
 **Type:** Production automation and monitoring contract update  

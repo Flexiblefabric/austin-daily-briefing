@@ -1,6 +1,6 @@
 # V2 production promotion — October 3, 2026
 
-Status: PROMOTED and scheduler-aligned; first production-cycle observation pending.
+Status: PROMOTED and scheduler-aligned; October 4 and October 5 operational observations recorded. V2-10 remains open for editorial evidence gaps.
 Owner/operator: ADB operator, executed by Codex with explicit user instruction “Let's promote.”
 Authorization: 2026-10-03 17:53 America/Chicago.
 Effective edition: **2026-10-04**, normal **08:00 America/Chicago** generation; weekends permitted.
@@ -30,11 +30,11 @@ Release key: `v2-selection-2026-10-04`. The canonical daily prompt contains the 
 - [x] Check exact-head CI before merge and rendered live website after Pages deployment.
 - [x] Merge tested release and align daily scheduler wrapper; read back both IDs, fingerprints, effective date and unchanged schedule.
 - [x] Verify successful GitHub Pages deployment.
-- [ ] Observe the October 4 real generation, selection and downstream delivery; record result below.
+- [x] Observe the October 4 real generation, selection and downstream provider acceptance; results and remaining limits recorded below.
 
-## First normal-cycle observation — pending
+## Normal-cycle observations — October 4 and October 5
 
-One-time task `ADB V2 First-Cycle Check` is scheduled for 2026-10-04 10:00 America/Chicago (task ID `6ac18b2fdd1081918355cf79689ff2b8`). It temporarily uses the reserve scheduler slot and returns its privacy-safe observation in the originating chat. It is read-only across Sheets, repository, scheduler and delivery; it does not update this record automatically. Reconcile its result here afterward. Successful Google Drive metadata reads confirmed access to both registered production workbooks before scheduling. This check reports late or incomplete generation/delivery as Pending or Unknown; it cannot repair, replay, send or silently mark success.
+One-time task `ADB V2 First-Cycle Check` is scheduled for 2026-10-04 10:00 America/Chicago (task ID `6ac18b2fdd1081918355cf79689ff2b8`). It temporarily uses the reserve scheduler slot and returns its privacy-safe observation in the originating chat. Both reviews were read-only across Sheets, repository, scheduler and delivery and did not update this record automatically. Their results are reconciled here on 2026-10-05 with operator authorization. Successful Google Drive metadata reads confirmed access to both registered production workbooks before scheduling. This check reports late or incomplete generation/delivery as Pending or Unknown; it cannot repair, replay, send or silently mark success.
 
 Do not generate or resend an edition from this checklist. Review:
 1. Morning Briefing attempt, selected stories and compact audit: sources available at cutoff, procedural status, shared scoring, MFY minimums, actual published-history repeat control, independent Under the Radar evidence or empty result, variety limits and Off exclusions.
@@ -42,6 +42,29 @@ Do not generate or resend an edition from this checklist. Review:
 3. Exactly one expected daily queue row per eligible profile/run, exact DAILY_BRIEFING_V1, matching history; inspect terminal queue/history and provider evidence for downstream completion, not only generator success.
 4. Production watchdog and native-customization operation remain unaffected. Report unknown evidence as unknown. No raw subscriber identities or payloads in repository records.
 5. Record pass/fail, exceptions and rollback decision here; V2-10 remains open until observed. No observation success is claimed at promotion.
+
+
+### Observed results, reconciled 2026-10-05
+
+| Check | October 4 | October 5 |
+| --- | --- | --- |
+| Contract/scheduler alignment | ADB-DAILY-PROD-2.0; ADB-V2-SELECT-1.0; approved fingerprints | Same active contracts and unchanged 08:00 schedule |
+| Generation/queue | 12 editions queued at 08:22 CT; correct template | 12 editions queued at 08:16 CT; correct template |
+| Downstream completion | 12 Sent queue rows and 166 matching Sent history rows; distinct provider IDs; accepted 09:41–09:42 CT | 12 Sent queue rows and 157 matching Sent history rows; distinct matching provider IDs; accepted by 09:37 CT |
+| Published score arithmetic/gates | 118 scored entries passed | 121 scored entries passed: 72 shared/UTR and 49 MFY |
+| Preferences | No Off-topic MFY found | No Off-topic MFY; 11 Standard profiles had four items and one More profile had five |
+| Launch notice | Exact approved copy once per edition, matching history | October 4-only notice absent; no repeated release key |
+| Monitoring | Morning Briefing monitoring-write failure; Daily Resend Delivery Not Run; watchdog disabled | Morning Briefing and Daily Resend Delivery Healthy; watchdog enabled with current-day run |
+
+These counts repeat the reviewed production evidence without subscriber identifiers. Sent means provider acceptance; the reviews did not inspect provider delivery events and cannot certify inbox delivery. October 5 published notes report no displacement controls used, but no rejected candidate slate is retained to reconstruct ranking independently.
+
+**Timing clarification (operator, 2026-10-05):** Generation completed after the initial hourly dispatcher pass, so the dispatcher missed the initial queue and accepted messages on a later pass. The 08:22/08:16 queue timestamps are retained as late generation. Do not infer generation start time from scheduler last_run_time: it does not reconcile with the sheet's recorded timestamps. This clarification is not an independent Apps Script execution-log inspection. October 4 additionally had the documented transport compatibility incident; October 5 queue/history now confirms recovery.
+
+**History annotation correction (operator-authorized, 2026-10-05):** Updated only the Notes field of the 12 October 5 voter-registration entries. The September 30 county notice's midnight registration option is the stated new-information basis; the calendar reaching the October 5 deadline is event timing, not material change. The September 22 personalized reminder is separate from shared-news repeat history. Preserve existing published scores, TRUE material-update flags, timestamps and delivery evidence. Source: https://tax-office.traviscountytx.gov/about-us/newsroom/2026/272-voter-registration-ends-monday-for-nov-3-election. This is an audit-note correction, not a replacement edition.
+
+**Remaining V2-10 evidence:** explicit generation cutoff, source publication/update timestamps and rejected-candidate slate; October 4 BookSpring specific MFY fit; Under the Radar prominence/overlooked-fact evidence for both days. Published score arithmetic is a pass, not proof of every substantive eligibility decision. Keep the editorial observation open; do not renew the shadow series or claim full release closeout.
+
+**Rollback decision:** no rollback indicated by these operational observations. Recovering monitoring and provider acceptance do not close the editorial evidence gaps.
 
 ## Exact pre-promotion rollback pair
 
@@ -80,4 +103,4 @@ For confirmed regression, restore the pre-promotion selection behavior and align
 - Registry 2026-10-03.3, regenerated internal documents and immutable snapshot passed audit with no warnings. Nineteen editorial reference checks passed; no full sample edition or transport test was run.
 - GitHub Pages deployment `37160754202` and main documentation workflow `37160754174` succeeded. Live What's New, its link to How ADB Works, the updated selection/MFY/repeat explanations and homepage preview were opened and verified. Desktop screenshots showed readable layout with the existing visual design. Mobile browser rendering was not independently re-tested for these copy-only changes; site asset CI passed.
 - Website announcement identifies October 4 as the first edition. Canonical What's New copy is limited to October 4 and profile-deduplicated; it has not been sent early.
-- First production delivery and editorial outcome remain pending the October 4 observation. No rollback indicated by cutover checks.
+- Production provider acceptance for October 4 and October 5 is verified below; inbox delivery remains unknown without provider delivery-event evidence. No rollback indicated; editorial evidence gaps remain open.

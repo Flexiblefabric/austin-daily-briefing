@@ -33,7 +33,7 @@ ADB reserves scheduler capacity deliberately. Production Daily Briefing, Product
 
 - [Austin Daily Briefing](austin-daily-briefing.md) — active (`ADB-DAILY-PROD-2.0`)
 - [Production Subscriber Operations](production-subscriber-operations.md) — active (`ADB-SUBOPS-PROD-1.1`)
-- [Production Health Watchdog](production-health-watchdog.md) — canonical active contract (`ADB-WATCHDOG-PROD-2.4`); scheduler currently disabled
+- [Production Health Watchdog](production-health-watchdog.md) — canonical active contract (`ADB-WATCHDOG-PROD-2.4`); scheduler enabled and current-day run verified 2026-10-05
 - [End-to-end Completion Observation](end-to-end-completion-observation.md) — retired; one-time observation completed 2026-09-20
 - [End-to-end Completion Reconciliation](end-to-end-completion-reconcile.md) — development/manual read-only (`ADB-COMPLETION-RECON-0.2`)
 - [V2 Selection](../v2-selection-spec.md) — active production dependency (`ADB-V2-SELECT-1.0`), effective 2026-10-04

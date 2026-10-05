@@ -28,7 +28,7 @@
 - **v2_production_observation** — observation — October 4 first cycle and October 5 one-time follow-up completed — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
-  - Reporting: FORM-7 Gates A–C complete. Gate D D1/D2/D4 pass and D5 read-only preflight is a partial pass. Remaining blockers are D3 separate disabled production web app, production Resend runtime parity, one operator-owned mutating controlled-test address.
+  - Reporting: FORM-7 Gates A–C complete. Gate D endpoint runtime preflight and production Resend transport compatibility now pass. Remaining items before controlled mutation are recording the production native-signup /exec URL and selecting one operator-owned mutating controlled-test address.
 
 ## Runtime configuration
 

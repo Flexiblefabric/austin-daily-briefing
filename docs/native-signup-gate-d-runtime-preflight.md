@@ -43,6 +43,8 @@ PASS:
 
 ## Runtime evidence still required
 
+The status functions provide readback; the validators fail closed when Gate D safety assumptions are not satisfied. Both forms of evidence are required.
+
 ### 1. Separate production native-signup web app
 
 Create a separate Apps Script project containing the exact current `apps-script/NativeSignupProd.gs`.
@@ -54,7 +56,7 @@ Initial Script Properties:
 - `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` blank
 - `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN=https://austindailybriefing.com`
 
-Run `setupNativeSignupProdV1`, then run `getNativeSignupProdRuntimeStatusV1`.
+Run `setupNativeSignupProdV1`, then run `getNativeSignupProdRuntimeStatusV1` and `validateNativeSignupProdPreflightV1`.
 
 Expected pre-activation status:
 
@@ -74,7 +76,7 @@ Then deploy a versioned web app and record its `/exec` URL. Do not point the pub
 
 Replace the live production Apps Script copy of `ResendTransport.gs` with the exact current repository `main` copy.
 
-Run `getAdbResendRuntimeStatusV1` only. Do not invoke a dispatcher during parity verification.
+Run `getAdbResendRuntimeStatusV1` and `validateForm7GateDTransportCompatibilityV1` only. Do not invoke a dispatcher during parity verification.
 
 Expected status:
 

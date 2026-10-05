@@ -90,3 +90,7 @@ Before this check becomes part of production monitoring, validate without intent
 - missing Apps Script trigger through a non-production runtime fixture.
 
 The preferred eventual production home is the existing 09:30 watchdog, not a new scheduler slot.
+
+## October 5, 2026 reconciliation
+
+Live readback confirmed the registered Daily Briefing and Subscriber Operations tasks enabled on their current canonical contracts, and the existing watchdog enabled on ADB-WATCHDOG-PROD-2.4 with its unchanged daily 09:30 America/Chicago schedule. Current-day watchdog execution and Healthy generation/daily-delivery monitoring were observed. This supersedes the intervening October 4 disabled-state finding; no task was changed in this documentation reconciliation. Scheduler next_run_time is unavailable and last_run_time must not be interpreted as generation start time. The observed sheet queue times were 08:22 CT on October 4 and 08:16 CT on October 5. See docs/v2-promotion-2026-10-03.md for provider acceptance and remaining editorial gaps.

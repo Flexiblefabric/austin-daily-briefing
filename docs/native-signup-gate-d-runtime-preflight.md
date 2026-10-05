@@ -116,3 +116,7 @@ D1, D2 and D4 are complete. D5 repository/data checks pass, but activation is bl
 4. mutating controlled-test address not yet selected.
 
 Native Signup Mode must remain `DISABLED` until all four blockers are resolved and the compatibility matrix contains no FAIL/UNKNOWN for executable consumers.
+
+## October 5 watchdog reconciliation
+
+The disabled-watchdog findings above describe the October 4 preflight. Live scheduler readback on October 5 confirms the existing task is enabled on ADB-WATCHDOG-PROD-2.4 with the unchanged 09:30 America/Chicago schedule and current-day monitoring evidence. The watchdog disabled-state blocker is resolved; this reconciliation did not change tasks. Native Signup Mode remains DISABLED and the separate endpoint, transport runtime parity and mutating controlled-test identity requirements remain open. This update does not authorize Gate D activation.

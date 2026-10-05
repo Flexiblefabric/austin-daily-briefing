@@ -9,7 +9,7 @@
 - **welcome_dispatch** — live — hourly — `dispatchQueuedWelcomeMessagesViaResendV1`
 - **daily_dispatch** — live — hourly — `dispatchQueuedDailyBriefingsViaResendV1`
 - **documentation_sync** — live — on PROJECT_STATE.json or generator changes to main — `python scripts/docs_sync.py update`
-- **production_health_watchdog** — paused — 09:30 America/Chicago
+- **production_health_watchdog** — live — 09:30 America/Chicago
 
 ## Manual operational checks
 
@@ -25,10 +25,10 @@
   - Reporting: privacy-safe full-scan Google plus feature-gated native signup-to-Welcome classification using ADB-COMPLETION-0.2.
 - **native_customization_cutover** — complete — completed gated rollout — `docs/native-customization-production-cutover.md`
   - Reporting: Gates A–F passed; Gate G closeout recorded 2026-10-04; public native customization is live with Google fallback retained pending FORM-10.
-- **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
+- **v2_production_observation** — observation — October 4 first cycle and October 5 one-time follow-up completed — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
-  - Reporting: FORM-7 Gates A–C complete. Gate D D1/D2/D4 pass and D5 read-only preflight is a partial pass. Remaining blockers are D3 separate disabled production web app, production Resend runtime parity, explicit watchdog re-enable/disposition, and one operator-owned mutating controlled-test address.
+  - Reporting: FORM-7 Gates A–C complete. Gate D D1/D2/D4 pass and D5 read-only preflight is a partial pass. Remaining blockers are D3 separate disabled production web app, production Resend runtime parity, one operator-owned mutating controlled-test address.
 
 ## Runtime configuration
 

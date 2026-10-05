@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.14",
-  "last_reviewed": "2026-10-04",
+  "registry_version": "2026-10-05.1",
+  "last_reviewed": "2026-10-05",
   "project": {
     "name": "Austin Daily Briefing",
     "repository": "Flexiblefabric/austin-daily-briefing",
@@ -113,7 +113,7 @@
     "daily_generation": {
       "cadence": "08:00 America/Chicago",
       "status": "live",
-      "verification": "manual/external",
+      "verification": "October 4 and 5 V2 cycles observed with ADB-DAILY-PROD-2.0 and ADB-V2-SELECT-1.0; 12 editions each, provider acceptance reconciled. Queue timestamps 08:22 and 08:16 CT were late; operator confirms late generation missed the initial hourly dispatcher pass.",
       "task_id": "6a91bd2144d081918d9d54d5c14d1175",
       "scheduler_state": "active",
       "prompt_path": "docs/automation-prompts/austin-daily-briefing.md",
@@ -143,15 +143,15 @@
     },
     "production_health_watchdog": {
       "cadence": "09:30 America/Chicago",
-      "status": "paused",
-      "scheduler_state": "disabled",
+      "status": "live",
+      "scheduler_state": "active",
       "task_id": "6aa8401e16a88191ae14ba1b4d6cba6e",
       "prompt_path": "docs/automation-prompts/production-health-watchdog.md",
       "specification_id": "ADB-WATCHDOG-PROD-2.4",
       "coverage": "subscriber operations, morning generation, daily Resend delivery, welcome Resend queue health, Google plus feature-gated native signup completion intake-incomplete detection, and compatibility with controlled/native subscriber-intake modes",
       "alert_transport": "validated Gmail administrator-alert path",
       "completion_monitoring": "ADB-COMPLETION-PROD-0.1 alert policy; contracts ADB-COMPLETION-0.2 / ADB-COMPLETION-RECON-0.2 add native journeys while only intake-incomplete remains alert-enabled",
-      "verification": "scheduler copy synchronized 2026-10-04 to ADB-WATCHDOG-PROD-2.4 while preserving pre-existing disabled state; must be explicitly re-enabled before Gate D controlled-production monitoring can pass"
+      "verification": "Read back enabled on 2026-10-05 with ADB-WATCHDOG-PROD-2.4 and unchanged daily 09:30 America/Chicago schedule; current-date run and Healthy configuration/daily delivery monitoring observed. This reconciliation did not alter the scheduler."
     }
   },
   "manual_operations": {
@@ -187,7 +187,7 @@
       "cadence": "manual/read-only",
       "runbook": "docs/task-reconciliation.md",
       "reporting": "exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable",
-      "verification": "manual baseline rechecked 2026-10-03; all three registered active ADB task IDs and schedules matched live scheduler metadata; Apps Script trigger state remains separate"
+      "verification": "2026-10-05 live metadata confirms registered Daily Briefing and Subscriber Operations enabled and watchdog enabled on ADB-WATCHDOG-PROD-2.4 at unchanged 09:30 daily schedule. next_run_time unavailable; Apps Script trigger inspection is separate."
     },
     "completion_reconciliation": {
       "status": "development",
@@ -207,17 +207,17 @@
     },
     "v2_production_observation": {
       "status": "observation",
-      "cadence": "first normal cycle on 2026-10-04",
+      "cadence": "October 4 first cycle and October 5 one-time follow-up completed",
       "runbook": "docs/v2-promotion-2026-10-03.md",
       "reporting": "Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend",
-      "verification": "Pending first production cycle; promotion is not delivery evidence"
+      "verification": "Both production reviews completed; Oct. 4: 12 editions/166 history rows accepted 09:41–09:42 CT; Oct. 5: 12 editions/157 history rows accepted 09:37 CT; launch notice only Oct. 4; Oct. 5 generation/delivery monitoring Healthy. Inbox delivery events unknown. V2-10 remains open for generation-cutoff/rejected-candidate evidence, MFY fit and Under the Radar prominence evidence; see promotion record."
     },
     "native_signup_development": {
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D D1/D2/D4 pass and D5 read-only preflight is a partial pass. Remaining blockers are D3 separate disabled production web app, production Resend runtime parity, explicit watchdog re-enable/disposition, and one operator-owned mutating controlled-test address",
-      "verification": "Read-only Gate D preflight confirmed Native Signup Mode remains DISABLED, controlled email blank, production Native Signup Requests/Diagnostics header-only, shared Intake/Processor Mode = GOOGLE + NATIVE, Subscriber Operations enabled on ADB-SUBOPS-PROD-1.1, and watchdog prompt synchronized to ADB-WATCHDOG-PROD-2.4 but scheduler disabled. Repository runtime status probes added for native-signup endpoint and Resend transport. No production mutation occurred."
+      "reporting": "FORM-7 Gates A–C complete. Gate D D1/D2/D4 pass and D5 read-only preflight is a partial pass. Remaining blockers are D3 separate disabled production web app, production Resend runtime parity, one operator-owned mutating controlled-test address",
+      "verification": "Read-only Gate D preflight confirmed Native Signup Mode remains DISABLED, controlled email blank, production Native Signup Requests/Diagnostics header-only, shared Intake/Processor Mode = GOOGLE + NATIVE, Subscriber Operations enabled on ADB-SUBOPS-PROD-1.1, and watchdog prompt synchronized to ADB-WATCHDOG-PROD-2.4 but scheduler disabled. Repository runtime status probes added for native-signup endpoint and Resend transport. No production mutation occurred. Follow-up 2026-10-05: watchdog is enabled with current-day operational evidence; its disabled-state blocker is resolved. Other Gate D blockers remain."
     }
   },
   "runtime_properties": [

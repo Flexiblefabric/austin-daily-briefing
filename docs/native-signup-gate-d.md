@@ -184,3 +184,7 @@ Repository source now exposes harmless runtime status probes:
 These allow D3/D5 runtime parity to be demonstrated without sending mail or mutating subscriber state. Exact manual install/parity steps and current blockers are recorded in `docs/native-signup-gate-d-runtime-preflight.md`.
 
 Controlled activation remains blocked until the separate production endpoint is deployed disabled, Resend runtime parity passes, watchdog monitoring is explicitly restored or otherwise dispositioned, and a mutating operator-owned controlled address is selected.
+
+## October 5 watchdog reconciliation
+
+The disabled-watchdog findings above describe the October 4 preflight. Live scheduler readback on October 5 confirms the existing task is enabled on ADB-WATCHDOG-PROD-2.4 with the unchanged 09:30 America/Chicago schedule and current-day monitoring evidence. The watchdog disabled-state blocker is resolved; this reconciliation did not change tasks. Native Signup Mode remains DISABLED and the separate endpoint, transport runtime parity and mutating controlled-test identity requirements remain open. This update does not authorize Gate D activation.

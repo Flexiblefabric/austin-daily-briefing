@@ -53,6 +53,8 @@ Initial Script Properties:
 - `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` blank;
 - `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN=https://austindailybriefing.com`.
 
+Before deployment, run `getNativeSignupProdRuntimeStatusV1` for readback and `validateNativeSignupProdPreflightV1` for fail-closed enforcement. The validator must pass only with the endpoint disabled, runtime mode CONTROLLED, blank allowlist, exact site origin, Native Signup Mode DISABLED, blank controlled email, native-capable shared Processor Mode, and empty native request/diagnostic tables.
+
 Deploy a versioned web app and record its `/exec` URL in project documentation. Do not point the public website at it yet.
 
 ### D4 — processor integration
@@ -77,6 +79,8 @@ Required consumers:
 - production native-signup Apps Script endpoint.
 
 FAIL or UNKNOWN blocks enabling controlled native signup.
+
+After synchronizing the current repository copy of `apps-script/ResendTransport.gs`, run `getAdbResendRuntimeStatusV1` for readback and `validateForm7GateDTransportCompatibilityV1` for fail-closed compatibility enforcement. The validator must confirm the shared native-capable mode, valid Native Signup Mode, return-safe Welcome copy in both renderers, and `deliveryInvoked: false` / `writes: false`.
 
 ### D6 — controlled identity
 
@@ -166,7 +170,7 @@ The canonical contract merge was followed immediately by scheduler-copy synchron
 - Subscriber Operations is enabled and requires `ADB-SUBOPS-PROD-1.1`.
 - Watchdog scheduler copy requires `ADB-WATCHDOG-PROD-2.4`.
 
-The watchdog itself is currently disabled. This state predated the FORM-7 synchronization and was preserved rather than changed implicitly. Gate D controlled-production activation remains blocked until the watchdog is explicitly re-enabled or the project approves another monitoring disposition.
+At the October 4 D4 synchronization check, the watchdog was disabled. That historical state was preserved rather than changed implicitly. October 5 live readback later confirmed the existing watchdog enabled on `ADB-WATCHDOG-PROD-2.4` with its unchanged 09:30 America/Chicago schedule.
 
 Native Signup Mode remains `DISABLED`; the D4 synchronization processed no native signup rows.
 
@@ -174,7 +178,7 @@ Native Signup Mode remains `DISABLED`; the D4 synchronization processed no nativ
 
 A live read-only preflight on 2026-10-04 confirmed D2 remains inert and D4 Subscriber Operations prompt parity remains intact. Production Native Signup Mode is still `DISABLED`, both native-signup production tables are header-only, shared Intake/Processor Mode remains `GOOGLE + NATIVE`, and the retained Admin Hold QA profile is available for the safety no-op.
 
-Live scheduler metadata also confirmed the watchdog task has the correct `ADB-WATCHDOG-PROD-2.4` prompt but is disabled. The canonical watchdog metadata has been corrected to match that live state.
+At the October 4 preflight, live scheduler metadata confirmed the watchdog task had the correct `ADB-WATCHDOG-PROD-2.4` prompt but was disabled. October 5 reconciliation subsequently confirmed it enabled; the October 4 finding remains historical evidence only.
 
 Repository source now exposes harmless runtime status probes:
 
@@ -183,7 +187,7 @@ Repository source now exposes harmless runtime status probes:
 
 These allow D3/D5 runtime parity to be demonstrated without sending mail or mutating subscriber state. Exact manual install/parity steps and current blockers are recorded in `docs/native-signup-gate-d-runtime-preflight.md`.
 
-Controlled activation remains blocked until the separate production endpoint is deployed disabled, Resend runtime parity passes, watchdog monitoring is explicitly restored or otherwise dispositioned, and a mutating operator-owned controlled address is selected.
+Controlled activation remains blocked until the separate production endpoint is deployed disabled, Resend runtime parity passes, and a mutating operator-owned controlled address is selected.
 
 ## October 5 watchdog reconciliation
 

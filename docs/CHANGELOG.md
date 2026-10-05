@@ -2,6 +2,14 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-05 — FORM-7 Gate D PR reconciliation
+
+**Type:** Development safeguard reconciliation  
+**Components:** native signup Gate D endpoint, Resend transport, watchdog-state documentation  
+**Registry impact:** No — authoritative registry already reflected the October 5 watchdog reconciliation
+
+Reconciled overlapping Gate D work from PRs #84, #85 and #86. The stricter disabled-state endpoint preflight validator and non-sending Resend compatibility validator from open PR #84 were retained on current main alongside the runtime status probes introduced by #85. Gate D documentation now treats the October 4 disabled watchdog state as historical and the October 5 enabled/current-day state as current. No production runtime was deployed and Native Signup Mode remains DISABLED.
+
 ## 2026-10-05 — V2 observation and watchdog state reconciliation
 
 **Type:** Operational evidence and documentation reconciliation  

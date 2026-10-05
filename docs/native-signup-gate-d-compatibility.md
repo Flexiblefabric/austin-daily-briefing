@@ -10,13 +10,13 @@ This matrix applies the project-wide production-change compatibility checklist t
 | --- | --- | --- | --- | --- | --- |
 | Shared Intake Mode / Processor Mode | Welcome Resend dispatcher | Production Apps Script | Accepts `GOOGLE ONLY`, `GOOGLE + NATIVE CONTROLLED`, `GOOGLE + NATIVE` | PASS (repository) / UNKNOWN (runtime parity) | `apps-script/ResendTransport.gs` accepts all three values. Before Gate D activation, manually installed runtime must be synchronized from approved main and rechecked. |
 | Shared Intake Mode / Processor Mode | Daily Resend dispatcher | Production Apps Script | Same three accepted values | PASS (repository) / UNKNOWN (runtime parity) | Same validator as Welcome. No new shared mode will be introduced by FORM-7. Runtime parity still required. |
-| Native signup request intake | Native signup production endpoint | Separate production Apps Script web app | CONTROLLED/LIVE feature gate, exact production IDs, DEV refusal, minimal staging only | PASS (repository) / UNKNOWN (runtime) | `apps-script/NativeSignupProd.gs` plus `tests/native-signup-prod.test.js`. Dedicated production deployment does not yet exist. |
+| Native signup request intake | Native signup production endpoint | Separate production Apps Script web app | CONTROLLED/LIVE feature gate, exact production IDs, DEV refusal, minimal staging only | PASS (repository) / UNKNOWN (runtime) | `apps-script/NativeSignupProd.gs` plus `tests/native-signup-prod.test.js`; runtime readback uses `getNativeSignupProdRuntimeStatusV1` and fail-closed preflight uses `validateNativeSignupProdPreflightV1`. Dedicated production deployment does not yet exist. |
 | Native signup subscriber mutation | Production Subscriber Operations | ChatGPT scheduled task using canonical prompt | Canonical and scheduler copy both require `ADB-SUBOPS-PROD-1.1`; task enabled | PASS | Live scheduler metadata verified after merge; Native Signup Mode remains DISABLED. |
 | Native signup feature gate | Production Integration Config | Production intake workbook | `Native Signup Mode = DISABLED`; controlled email blank; shared Processor Mode still `GOOGLE + NATIVE` | PASS — inert install | D2 read-back verified exact values. Activation still blocked until controlled email and runtime gates are deliberately armed. |
 | Native signup request storage | Production intake workbook | Google Sheets | Native Signup Requests / Diagnostics installed with exact approved headers and no data rows | PASS — inert install | D2 read-back verified both tables are empty except headers. |
 | Signup-to-Welcome monitoring | 09:30 production watchdog | ChatGPT scheduled task | Canonical and scheduler copy require `ADB-WATCHDOG-PROD-2.4`; scheduler enabled/current-day run verified October 5 | PASS — prompt parity and enabled operational state | October 5 follow-up resolves the October 4 disabled-state blocker; other native controlled-production evidence remains separately gated. |
 | Manual completion reconciler | Development/manual canonical prompt | Repository prompt | `ADB-COMPLETION-RECON-0.2` supports Google + feature-gated native journeys | PASS (repository) | Native Signup Mode DISABLED preserves prior Google-only scan behavior. |
-| Welcome message content | Welcome renderer | Repository source / production Apps Script runtime | Repository copy is state-neutral for new + returning subscribers | PASS (repository) / UNKNOWN (runtime parity) | CI test passes. Production Apps Script must be synchronized before controlled Welcome delivery. |
+| Welcome message content | Welcome renderer | Repository source / production Apps Script runtime | Repository copy is state-neutral for new + returning subscribers | PASS (repository) / UNKNOWN (runtime parity) | CI test passes. Runtime readback uses `getAdbResendRuntimeStatusV1`; fail-closed compatibility uses `validateForm7GateDTransportCompatibilityV1`. Production Apps Script must be synchronized before controlled Welcome delivery. |
 | Website signup browser | GitHub Pages | `site/signup.html`, `signup.js`, `signup-config.js` | DEV endpoint only; noindex/unlinked | PASS for non-public staging | Keep DEV config during Gate D. Controlled production testing must use an isolated test invocation or non-public config; public CTA remains Google Form until Gate E. |
 | Welcome queue ownership | Subscriber Operations + Welcome dispatcher | Prompt + Apps Script | Processor may queue; dispatcher alone sends | PASS by contract / UNKNOWN until prompt integration | Gate C proved ownership in DEV. Production prompt integration and runtime parity still required. |
 | Daily briefing delivery independence | Daily generator + dispatcher | Scheduler + Apps Script | Native signup must not change generation or queue ownership | PASS by design / UNKNOWN runtime parity | Shared mode remains unchanged; production compatibility check still requires exact runtime source parity. |
@@ -87,11 +87,11 @@ Scheduler-copy parity remains UNKNOWN until the active Subscriber Operations and
 Post-merge live scheduler metadata was verified on 2026-10-04:
 
 - Production Subscriber Operations task `6aa1acbcf17c8191a9a89cc95b433629` is enabled and now requires `ADB-SUBOPS-PROD-1.1`.
-- ADB Production Watchdog task `6aa8401e16a88191ae14ba1b4d6cba6e` now requires `ADB-WATCHDOG-PROD-2.4`, but the task was already disabled and that state was deliberately preserved.
+- At the October 4 synchronization check, ADB Production Watchdog task `6aa8401e16a88191ae14ba1b4d6cba6e` required `ADB-WATCHDOG-PROD-2.4` and was disabled; October 5 live readback confirms the same task enabled on the unchanged 09:30 America/Chicago schedule.
 
 No schedule was changed. No task was enabled or disabled as part of FORM-7 synchronization.
 
-Therefore D4 prompt parity is complete, but Gate D production activation remains blocked by the watchdog's disabled operational state in addition to D3/runtime parity and controlled-test requirements.
+Therefore D4 prompt parity is complete and the later October 5 watchdog readback resolves the operational-state blocker. D3/runtime parity and controlled-test requirements remain.
 
 ## D5 read-only preflight — 2026-10-04
 
@@ -104,7 +104,7 @@ Current executable-consumer result:
 - Resend repository compatibility + return-safe Welcome copy: **PASS**;
 - Resend production runtime parity: **UNKNOWN**;
 - watchdog prompt parity: **PASS**;
-- watchdog operational state: **BLOCKED — disabled**;
+- watchdog operational state: **PASS — enabled/current-day monitoring verified October 5**;
 - public website isolation: **PASS — Google signup remains public; native signup remains DEV/noindex/unlinked**;
 - Admin Hold safety fixture: **PASS — available**;
 - controlled mutating identity: **UNKNOWN — not yet selected**.

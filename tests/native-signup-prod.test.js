@@ -60,7 +60,7 @@ function runtime(opts={}){
       ['Operational Production Database ID',PROD_DB,'',''],
       ['Processor Mode',opts.processorMode||'GOOGLE + NATIVE','',''],
       ['Native Signup Mode',opts.signupMode||'CONTROLLED','',''],
-      ['Native Signup Controlled Email',opts.controlledEmail||'control@example.com','','']
+      ['Native Signup Controlled Email',opts.controlledEmail !== undefined ? opts.controlledEmail : 'control@example.com','','']
     ],
     'Native Signup Requests':[
       ['Request ID','Created At','Email','Consent','Source','Client Nonce','Response Key','Status','Processed At','Result','Notes']
@@ -187,6 +187,27 @@ function diagRows(intake){ return intake.getSheetByName('Native Signup Diagnosti
   assert(source.includes("FORBIDDEN_DEV_INTAKE_ID"));
   assert(source.includes("FORBIDDEN_DEV_DATABASE_ID"));
   assert(source.includes("Production native signup target collided with DEV."));
+})();
+
+(function disabledPreflightPasses(){
+  const {context}=runtime({
+    props:{
+      ADB_NATIVE_SIGNUP_PROD_ENABLED:'FALSE',
+      ADB_NATIVE_SIGNUP_PROD_MODE:'CONTROLLED',
+      ADB_NATIVE_SIGNUP_PROD_ALLOWLIST:'',
+      ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN:'https://austindailybriefing.com'
+    },
+    signupMode:'DISABLED',
+    controlledEmail:''
+  });
+  const report=context.validateNativeSignupProdPreflightV1();
+  assert.strictEqual(report.endpointEnabled,false);
+  assert.strictEqual(report.endpointMode,'CONTROLLED');
+  assert.strictEqual(report.nativeSignupMode,'DISABLED');
+  assert.strictEqual(report.processorMode,'GOOGLE + NATIVE');
+  assert.strictEqual(report.requestRows,0);
+  assert.strictEqual(report.diagnosticRows,0);
+  assert.strictEqual(report.subscriberMutation,false);
 })();
 
 console.log('Native signup Gate D production endpoint QA passed.');

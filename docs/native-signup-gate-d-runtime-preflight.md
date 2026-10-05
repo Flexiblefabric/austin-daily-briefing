@@ -22,7 +22,7 @@ Verified read-only:
 - Native Signup Requests contains headers only;
 - Native Signup Diagnostics contains headers only;
 - Subscriber Operations scheduler is enabled and requires `ADB-SUBOPS-PROD-1.1`;
-- production watchdog scheduler copy requires `ADB-WATCHDOG-PROD-2.4` but the task is currently disabled;
+- production watchdog scheduler copy requires `ADB-WATCHDOG-PROD-2.4`; October 5 live readback confirms the task is enabled on the unchanged 09:30 America/Chicago schedule;
 - a retained Admin Hold QA identity exists for the Gate D safety no-op;
 - public production signup still routes through the Google signup form;
 - the website native-signup page remains noindex/unlinked and configured for DEV.
@@ -87,16 +87,11 @@ Expected status:
 
 The current Welcome/Daily script modes should be recorded from the returned status but not changed by parity verification.
 
-### 3. Watchdog operational disposition
+### 3. Watchdog operational disposition — RESOLVED
 
-Live scheduler metadata shows the canonical `ADB-WATCHDOG-PROD-2.4` prompt is synchronized but disabled.
+The October 4 preflight observed the canonical `ADB-WATCHDOG-PROD-2.4` task disabled. October 5 live scheduler readback confirms the same task is now enabled on the unchanged 09:30 America/Chicago schedule with current-day monitoring evidence.
 
-Gate D activation remains blocked until one of these is explicitly approved:
-
-- re-enable the existing 09:30 America/Chicago watchdog task; or
-- approve a temporary alternate monitoring disposition for Gate D.
-
-The recommended path is to re-enable the existing watchdog so controlled native-signup behavior is observed through the production monitoring contract already designed for it.
+No additional watchdog action is required before controlled activation unless its live state changes again.
 
 ### 4. Controlled mutating identity
 
@@ -112,8 +107,7 @@ D1, D2 and D4 are complete. D5 repository/data checks pass, but activation is bl
 
 1. D3 production web-app runtime/deployment not yet verified;
 2. production Resend runtime parity not yet verified;
-3. watchdog task disabled;
-4. mutating controlled-test address not yet selected.
+3. mutating controlled-test address not yet selected.
 
 Native Signup Mode must remain `DISABLED` until all four blockers are resolved and the compatibility matrix contains no FAIL/UNKNOWN for executable consumers.
 

@@ -2,6 +2,24 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-05 — FORM-7 Gate D production runtime parity
+
+**Type:** Controlled-production preflight / production runtime synchronization  
+**Components:** native signup production endpoint, Resend transport, Welcome renderer  
+**Registry impact:** Yes — 2026-10-05.2
+
+FORM-7 Gate D production runtime parity was verified without enabling native signup or delivering mail.
+
+### Evidence
+
+- Native signup production preflight returned endpoint disabled, CONTROLLED mode, no configured allowlist, Native Signup Mode DISABLED, shared Processor Mode GOOGLE + NATIVE, zero native request/diagnostic rows, exact ADB site origin, and no subscriber mutation.
+- The Apps Script runtime does not permit a blank saved property value, so the native-signup allowlist property is intentionally absent until a controlled mutating address is selected; the production preflight confirmed this as equivalent to an unconfigured allowlist.
+- Production Resend transport was synchronized to current repository source and the Gate D compatibility validator passed with GOOGLE + NATIVE intake/processor modes, DISABLED native signup, return-safe Welcome copy, deliveryInvoked=false and writes=false.
+- No dispatcher was invoked as part of parity verification.
+- Native Signup Mode remains DISABLED and the public signup route remains the Google Form.
+
+Remaining Gate D pre-activation work is to record the production native-signup web-app `/exec` URL and select one operator-owned deliverable address for the mutating controlled test.
+
 ## 2026-10-05 — FORM-7 Gate D PR reconciliation
 
 **Type:** Development safeguard reconciliation  

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-05.1",
+  "registry_version": "2026-10-05.2",
   "last_reviewed": "2026-10-05",
   "project": {
     "name": "Austin Daily Briefing",
@@ -94,7 +94,7 @@
     "native_signup_intake": {
       "status": "staging",
       "provider": "Google Apps Script",
-      "environment": "production request/diagnostic schema installed; runtime not deployed; Native Signup Mode remains DISABLED",
+      "environment": "production runtime installed and disabled; native-signup preflight passed; deployment /exec URL still needs to be recorded; Native Signup Mode remains DISABLED",
       "source_path": "apps-script/NativeSignupProd.gs",
       "public_cutover": "not authorized; public signup remains Google Form through Gate D",
       "pre_d2_backup_id": "1iJ4i4bRmgs0PwQd-k_g8i3Z374QWLexekmab7d5Acl8"
@@ -216,8 +216,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D D1/D2/D4 pass and D5 read-only preflight is a partial pass. Remaining blockers are D3 separate disabled production web app, production Resend runtime parity, one operator-owned mutating controlled-test address",
-      "verification": "Read-only Gate D preflight confirmed Native Signup Mode remains DISABLED, controlled email blank, production Native Signup Requests/Diagnostics header-only, shared Intake/Processor Mode = GOOGLE + NATIVE, Subscriber Operations enabled on ADB-SUBOPS-PROD-1.1, and watchdog prompt synchronized to ADB-WATCHDOG-PROD-2.4 but scheduler disabled. Repository runtime status probes added for native-signup endpoint and Resend transport. No production mutation occurred. Follow-up 2026-10-05: watchdog is enabled with current-day operational evidence; its disabled-state blocker is resolved. Other Gate D blockers remain."
+      "reporting": "FORM-7 Gates A–C complete. Gate D endpoint runtime preflight and production Resend transport compatibility now pass. Remaining items before controlled mutation are recording the production native-signup /exec URL and selecting one operator-owned mutating controlled-test address",
+      "verification": "2026-10-05 operator evidence: validateNativeSignupProdPreflightV1 passed with endpointEnabled=false, endpointMode=CONTROLLED, allowlistConfigured=false, Native Signup Mode=DISABLED, Processor Mode=GOOGLE + NATIVE, zero request/diagnostic rows and subscriberMutation=false. validateForm7GateDTransportCompatibilityV1 passed with Intake/Processor Mode=GOOGLE + NATIVE, Native Signup Mode=DISABLED, return-safe Welcome copy, deliveryInvoked=false and writes=false. ADB_NATIVE_SIGNUP_PROD_ALLOWLIST is intentionally absent while no controlled mutating identity is selected; absence is equivalent to blank for preflight."
     }
   },
   "runtime_properties": [

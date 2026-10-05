@@ -116,3 +116,14 @@ Native Signup Mode must remain `DISABLED` until all four blockers are resolved a
 ## October 5 watchdog reconciliation
 
 The disabled-watchdog findings above describe the October 4 preflight. Live scheduler readback on October 5 confirms the existing task is enabled on ADB-WATCHDOG-PROD-2.4 with the unchanged 09:30 America/Chicago schedule and current-day monitoring evidence. The watchdog disabled-state blocker is resolved; this reconciliation did not change tasks. Native Signup Mode remains DISABLED and the separate endpoint, transport runtime parity and mutating controlled-test identity requirements remain open. This update does not authorize Gate D activation.
+
+## Runtime parity evidence — 2026-10-05
+
+Operator-run production validators passed without mutation:
+
+- `validateNativeSignupProdPreflightV1` returned build `native-signup-prod-stage-v1`, endpointEnabled=false, endpointMode=CONTROLLED, allowlistConfigured=false, Native Signup Mode=DISABLED, Processor Mode=`GOOGLE + NATIVE`, requestRows=0, diagnosticRows=0, exact site origin, and subscriberMutation=false.
+- `validateForm7GateDTransportCompatibilityV1` returned transport=Resend, Intake/Processor Mode=`GOOGLE + NATIVE`, Native Signup Mode=DISABLED, Welcome copy=`RETURN_SAFE`, deliveryInvoked=false, and writes=false.
+
+The Apps Script UI does not permit a blank property value, so `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` is intentionally absent until the controlled mutating address is selected. The runtime treats the absent property as blank, and the endpoint preflight passed with `allowlistConfigured=false`.
+
+Runtime parity is therefore PASS. Remaining pre-activation items are recording the production native-signup web-app `/exec` URL and selecting one operator-owned deliverable address for the mutating controlled test.

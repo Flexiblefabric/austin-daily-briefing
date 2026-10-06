@@ -103,6 +103,8 @@ function getNativeManagementDevRuntimeStatusV1() {
       String(props.getProperty(ADB_NATIVE_MANAGE_DEV.WEB_APP_URL_PROPERTY) || '').trim()
     ),
     siteOrigin: String(props.getProperty(ADB_NATIVE_MANAGE_DEV.SITE_ORIGIN_PROPERTY) || '').trim() || 'UNSET',
+    confirmPageConfigured: String(props.getProperty(ADB_NATIVE_MANAGE_DEV.CONFIRM_PAGE_URL_PROPERTY) || '').trim() ===
+      'https://austindailybriefing.com/manage-confirm.html',
     productionTouched: false
   };
 }
@@ -136,11 +138,13 @@ function doPost(e) {
   } catch (error) {
     console.error('Native management DEV request failed: ' +
       String(error && error.message ? error.message : error).slice(0, 500));
-    return adbManagePostMessageHtml_({
-      ok:false,
-      status:'temporary_error',
-      message:'We could not process that request right now. Please try again later.'
-    }, '');
+    const params = adbManageEventParams_(e);
+    const failure = {ok:false,status:'temporary_error'};
+    if (String(params.action || '').trim().toLowerCase() === 'confirm') {
+      return adbManageConfirmPostMessageHtml_(failure, String(params.client_nonce || ''));
+    }
+    failure.message = 'We could not process that request right now. Please try again later.';
+    return adbManagePostMessageHtml_(failure, String(params.client_nonce || ''));
   }
 }
 

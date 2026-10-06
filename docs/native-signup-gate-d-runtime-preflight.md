@@ -127,3 +127,11 @@ Operator-run production validators passed without mutation:
 The Apps Script UI does not permit a blank property value, so `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` is intentionally absent until the controlled mutating address is selected. The runtime treats the absent property as blank, and the endpoint preflight passed with `allowlistConfigured=false`.
 
 Runtime parity is therefore PASS. Remaining pre-activation items are recording the production native-signup web-app `/exec` URL and selecting one operator-owned deliverable address for the mutating controlled test.
+
+## Deployment and controlled-test readiness — 2026-10-05
+
+The separate production native-signup web app is deployed. Its exact `/exec` URL is stored only in private production configuration and intentionally omitted from repository documentation.
+
+A deliverable operator-owned mutating QA identity has been selected and stored privately. The retained Admin Hold QA identity is prepared as the current Sheet-side controlled email for the safety no-op. Native Signup Mode remains DISABLED and the endpoint is not armed.
+
+The remaining pre-test action is runtime-only: configure the endpoint allowlist with the Admin Hold QA address and set `ADB_NATIVE_SIGNUP_PROD_ENABLED=TRUE`. Only after those properties are confirmed should Sheet-side Native Signup Mode move to CONTROLLED for the safety request.

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-05.2",
+  "registry_version": "2026-10-05.3",
   "last_reviewed": "2026-10-05",
   "project": {
     "name": "Austin Daily Briefing",
@@ -94,7 +94,7 @@
     "native_signup_intake": {
       "status": "staging",
       "provider": "Google Apps Script",
-      "environment": "production runtime installed and disabled; native-signup preflight passed; deployment /exec URL still needs to be recorded; Native Signup Mode remains DISABLED",
+      "environment": "separate production web app deployed and recorded in private production Integration Config; endpoint remains disabled/inert and public signup remains Google Form",
       "source_path": "apps-script/NativeSignupProd.gs",
       "public_cutover": "not authorized; public signup remains Google Form through Gate D",
       "pre_d2_backup_id": "1iJ4i4bRmgs0PwQd-k_g8i3Z374QWLexekmab7d5Acl8"
@@ -216,8 +216,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D endpoint runtime preflight and production Resend transport compatibility now pass. Remaining items before controlled mutation are recording the production native-signup /exec URL and selecting one operator-owned mutating controlled-test address",
-      "verification": "2026-10-05 operator evidence: validateNativeSignupProdPreflightV1 passed with endpointEnabled=false, endpointMode=CONTROLLED, allowlistConfigured=false, Native Signup Mode=DISABLED, Processor Mode=GOOGLE + NATIVE, zero request/diagnostic rows and subscriberMutation=false. validateForm7GateDTransportCompatibilityV1 passed with Intake/Processor Mode=GOOGLE + NATIVE, Native Signup Mode=DISABLED, return-safe Welcome copy, deliveryInvoked=false and writes=false. ADB_NATIVE_SIGNUP_PROD_ALLOWLIST is intentionally absent while no controlled mutating identity is selected; absence is equivalent to blank for preflight."
+      "reporting": "FORM-7 Gates A–C complete. Gate D production endpoint deployment is recorded privately, endpoint/Resend runtime parity pass, watchdog is active, and an operator-owned mutating QA identity is selected. Admin Hold safety target is prepared while Native Signup Mode remains DISABLED; next step is arm the endpoint allowlist/enable gate for the Admin Hold no-op",
+      "verification": "Production Integration Config now records the separate native-signup web-app deployment privately, prepares the retained Admin Hold QA identity as Native Signup Controlled Email, and records a selected operator-owned mutating QA identity privately. Native Signup Mode remains DISABLED, the endpoint has not been armed, and no production native-signup request or subscriber mutation was created."
     }
   },
   "runtime_properties": [

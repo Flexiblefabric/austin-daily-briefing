@@ -101,15 +101,19 @@ Current executable-consumer result:
 - Subscriber Operations canonical + scheduler prompt parity: **PASS**;
 - native-signup endpoint repository source: **PASS**;
 - native-signup endpoint runtime preflight: **PASS — installed disabled/inert**;
-- native-signup deployment URL record: **OPEN — `/exec` URL not yet recorded**;
+- native-signup deployment URL record: **PASS — exact `/exec` URL stored privately in production Integration Config**;
 - Resend repository compatibility + return-safe Welcome copy: **PASS**;
 - Resend production runtime parity: **PASS — non-sending validator passed October 5**;
 - watchdog prompt parity: **PASS**;
 - watchdog operational state: **PASS — enabled/current-day monitoring verified October 5**;
 - public website isolation: **PASS — Google signup remains public; native signup remains DEV/noindex/unlinked**;
 - Admin Hold safety fixture: **PASS — available**;
-- controlled mutating identity: **UNKNOWN — not yet selected**.
+- controlled mutating identity: **PASS — operator-owned deliverable QA identity selected and stored privately; not yet armed**.
 
 The production Integration Config remains `Native Signup Mode = DISABLED` with blank controlled email, and both native-signup production sheets remain header-only.
 
 Runtime parity must use the repository status probes documented in `docs/native-signup-gate-d-runtime-preflight.md`. No dispatcher invocation is required merely to prove source/config parity.
+
+### D6 readiness update — 2026-10-05
+
+The separate production endpoint deployment and operator-owned mutating QA identity are now recorded privately. The retained Admin Hold safety target is prepared in Integration Config while Native Signup Mode remains DISABLED. No endpoint allowlist or enable gate is active yet, so controlled production mutation remains blocked until the runtime properties are deliberately armed.

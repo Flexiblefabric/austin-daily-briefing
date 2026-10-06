@@ -28,7 +28,7 @@
 - **v2_production_observation** — observation — October 4 first cycle and October 5 one-time follow-up completed — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
-  - Reporting: FORM-7 Gates A–C complete. Gate D production endpoint deployment is recorded privately, endpoint/Resend runtime parity pass, watchdog is active, and an operator-owned mutating QA identity is selected. Admin Hold safety target is prepared while Native Signup Mode remains DISABLED; next step is arm the endpoint allowlist/enable gate for the Admin Hold no-op.
+  - Reporting: FORM-7 Gates A–C complete. Gate D production endpoint deployment is recorded privately, endpoint/Resend runtime parity pass, watchdog is active, and an operator-owned mutating QA identity is selected. Admin Hold safety target is prepared while Native Signup Mode remains DISABLED; next step is arm the endpoint allowlist/enable gate for the Admin Hold no-op..
 
 ## Runtime configuration
 

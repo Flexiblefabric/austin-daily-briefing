@@ -44,7 +44,7 @@ function getAdbResendRuntimeStatusV1() {
   const intake = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_INTAKE_ID);
   const state = adbValidateResendDeliveryGates_(database, intake);
 
-  return {
+  const report = {
     build: ADB_RESEND.BUILD,
     databaseTarget: ADB_RESEND.PRODUCTION_DATABASE_ID,
     intakeTarget: ADB_RESEND.PRODUCTION_INTAKE_ID,
@@ -54,8 +54,11 @@ function getAdbResendRuntimeStatusV1() {
     welcomeDeliveryMode: String(state.cfg['Welcome Delivery Mode'] || '').trim(),
     scriptWelcomeMode: String(props.getProperty(ADB_RESEND.WELCOME_MODE_PROPERTY) || 'CONTROLLED').trim().toUpperCase(),
     scriptDailyMode: String(props.getProperty(ADB_RESEND.DAILY_MODE_PROPERTY) || 'CONTROLLED').trim().toUpperCase(),
-    welcomeCopy: 'state-neutral-v1'
+    welcomeCopy: 'state-neutral-v1',
+    customizeUrl: ADB_RESEND.CUSTOMIZE_URL
   };
+  Logger.log(JSON.stringify(report));
+  return report;
 }
 
 function validateForm7GateDTransportCompatibilityV1() {

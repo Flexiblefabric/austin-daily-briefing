@@ -2,7 +2,7 @@
 window.ADB_NATIVE_MANAGE_CONFIRM_CONFIG = Object.freeze({
   defaultEnvironment: 'development',
   endpoints: Object.freeze({
-    development: '',
+    development: 'https://script.google.com/macros/s/AKfycbzENgETifuF_AXbYEfgwb5oWjjsyvDRByWWaATxmfopXbObgF6_KeiTBVHBlJiHytUO/exec',
     production: ''
   })
 });

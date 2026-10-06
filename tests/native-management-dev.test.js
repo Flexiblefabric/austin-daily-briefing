@@ -63,7 +63,8 @@ function context() {
   assert(confirmBrowser.includes("window.location.hash"));
   assert(confirmBrowser.includes("data.type !== 'adb-native-manage-confirm-dev'"));
   assert(endpoint.includes("CONFIRM_PAGE_URL_PROPERTY: 'ADB_NATIVE_MANAGE_DEV_CONFIRM_PAGE_URL'"));
-  assert(endpoint.includes("manage-confirm.html#env=development&token="));
+  assert(endpoint.includes("https://austindailybriefing.com/manage-confirm.html"));
+  assert(endpoint.includes("'#env=development&token='"));
   assert(!endpoint.includes("?action=confirm&token="));
 })();
 

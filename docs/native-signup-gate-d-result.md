@@ -1,7 +1,7 @@
 # Native Signup — Gate D Controlled Production Result
 
 **FORM-7 Gate:** D — controlled production  
-**Result:** PASS — final closeout pending endpoint Script Property disarm  
+**Result:** PASS — COMPLETE  
 **Date:** 2026-10-06  
 **Public routing:** unchanged; Google signup remains public
 
@@ -68,24 +68,16 @@ After the mutating processor transaction:
 - private Integration Config records Gate D controlled-production PASS;
 - the separate production endpoint remains deployed but must be disarmed at the Script Property layer before Gate D is marked fully closed.
 
-## Final closeout requirement
+## Final closeout — PASS
 
-Before closing Gate D, set:
+The endpoint Script Property disarm was completed after the controlled-production pass:
 
 - `ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE`;
-- remove `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` (Apps Script cannot persist a blank value, so deleting the property is the expected inert state).
+- `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` removed;
+- `ADB_NATIVE_SIGNUP_PROD_MODE=CONTROLLED` retained;
+- `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN=https://austindailybriefing.com` retained;
+- Sheet-side `Native Signup Mode=DISABLED`.
 
-Keep:
+The operator-run runtime logger returned build `native-signup-prod-stage-v1.1`, `enabled=false`, `mode=CONTROLLED`, `allowlistConfigured=false`, exact site origin, `integrationNativeSignupMode=DISABLED`, and shared `Processor Mode=GOOGLE + NATIVE`.
 
-- `ADB_NATIVE_SIGNUP_PROD_MODE=CONTROLLED`;
-- `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN=https://austindailybriefing.com`.
-
-Then run the runtime status logger and require:
-
-- build `native-signup-prod-stage-v1.1`;
-- enabled=false;
-- mode=CONTROLLED;
-- allowlistConfigured=false;
-- integrationNativeSignupMode=DISABLED.
-
-Once that readback passes, Gate D may be marked complete. Gate E remains a separate public-cutover decision.
+Gate D is therefore fully complete. The runtime logging wrapper used for this readback is retained in repository source as a read-only diagnostic helper. Gate E public cutover is a separate promotion step.

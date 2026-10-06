@@ -118,12 +118,6 @@ jobs:
                       continue
                   text = html.read_text(encoding="utf-8")
                   assert 'href="signup.html"' not in text, f"{html} links to DEV signup"
-
-          for html in Path("site").glob("*.html"):
-              if html.name in {"manage.html", "manage-confirm.html"}:
-                  continue
-              text = html.read_text(encoding="utf-8")
-              assert 'href="manage.html"' not in text, f"{html} links to FORM-9 DEV management"
           elif "environment: 'production'" in config:
               assert '<meta name="robots" content="index, follow">' in signup
               assert 'https://austindailybriefing.com/signup.html' in signup
@@ -136,6 +130,12 @@ jobs:
               assert 'href="signup.html"' in Path("site/index.html").read_text(encoding="utf-8")
           else:
               raise AssertionError("signup-config.js must explicitly declare development or production")
+
+          for html in Path("site").glob("*.html"):
+              if html.name in {"manage.html", "manage-confirm.html"}:
+                  continue
+              text = html.read_text(encoding="utf-8")
+              assert 'href="manage.html"' not in text, f"{html} links to FORM-9 DEV management"
 
       - name: Upload preview
         uses: actions/upload-artifact@v4

@@ -54,12 +54,13 @@ function context() {
   assert(html.includes('name="delivery_action" value="unsubscribe"'));
   assert(html.includes('name="reset_topics"'));
   assert(config.includes("environment: 'development'"));
-  assert(config.includes("endpoint: ''"));
+  assert(config.includes("https://script.google.com/macros/s/AKfycbzENgETifuF_AXbYEfgwb5oWjjsyvDRByWWaATxmfopXbObgF6_KeiTBVHBlJiHytUO/exec"));
   assert(browser.includes("data.type !== expectedResultType"));
   assert(browser.includes("Choose a delivery change, a topic reset, or both."));
   assert(confirmHtml.includes('<meta name="robots" content="noindex, nofollow">'));
   assert(confirmHtml.includes('name="token"'));
   assert(confirmConfig.includes("defaultEnvironment: 'development'"));
+  assert(confirmConfig.includes("https://script.google.com/macros/s/AKfycbzENgETifuF_AXbYEfgwb5oWjjsyvDRByWWaATxmfopXbObgF6_KeiTBVHBlJiHytUO/exec"));
   assert(confirmBrowser.includes("window.location.hash"));
   assert(confirmBrowser.includes("data.type !== 'adb-native-manage-confirm-dev'"));
   assert(endpoint.includes("CONFIRM_PAGE_URL_PROPERTY: 'ADB_NATIVE_MANAGE_DEV_CONFIRM_PAGE_URL'"));

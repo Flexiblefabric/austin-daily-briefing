@@ -28,7 +28,7 @@
 - **v2_production_observation** — observation — Normal-cycle observation; next check follows structured-notes merge — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
-  - Reporting: FORM-7 Gates A–C complete. Gate D production endpoint deployment is recorded privately, endpoint/Resend runtime parity pass, watchdog is active, and an operator-owned mutating QA identity is selected. Admin Hold safety target is prepared while Native Signup Mode remains DISABLED; next step is arm the endpoint allowlist/enable gate for the Admin Hold no-op.
+  - Reporting: FORM-7 Gates A–C complete. Gate D Admin Hold safety request reached the production endpoint but was rejected before staging by a production email-validator defect that treated the letter s as whitespace. Sheet-side Native Signup Mode was immediately returned to DISABLED. Repository validator fix and regression coverage are staged; next: merge, synchronize/redeploy production NativeSignupProd.gs, verify runtime, then re-arm the Admin Hold safety test.
 
 ## Runtime configuration
 

@@ -11,6 +11,7 @@ assert(prod.includes('integrationControlledEmailConfigured'));
 assert(prod.includes('allowlistConfigured'));
 assert(prod.includes('sharedProcessorMode'));
 assert(prod.includes('function runGateDDeploymentSafetyRequestV1()'));
+assert(prod.includes('function logNativeSignupProdRuntimeStatusV1()'));
 assert(prod.includes("cfg['Native Signup Production Web App URL']"));
 assert(prod.includes('UrlFetchApp.fetch(endpoint'));
 

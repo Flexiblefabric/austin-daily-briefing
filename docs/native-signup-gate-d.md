@@ -270,3 +270,22 @@ The live hourly Resend Welcome dispatcher subsequently delivered the single queu
 Sheet-side `Native Signup Mode` was returned to `DISABLED` immediately after processing. Durable evidence: `docs/native-signup-gate-d-result.md`.
 
 Gate D controlled-production behavior passes. Final closeout remains the endpoint Script Property disarm: set `ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE`, remove `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST`, and verify the v1.1 runtime reports enabled=false, allowlistConfigured=false and integrationNativeSignupMode=DISABLED. Gate E remains separate.
+
+
+## D8 final closeout — COMPLETE
+
+After the controlled Admin Hold and mutating paths passed, the production endpoint was returned to the required inert state. Operator runtime readback on 2026-10-06 confirmed:
+
+- build `native-signup-prod-stage-v1.1`;
+- `enabled=false`;
+- runtime mode `CONTROLLED`;
+- `allowlistConfigured=false`;
+- exact production site origin;
+- Sheet-side `Native Signup Mode=DISABLED`;
+- shared Processor Mode `GOOGLE + NATIVE`.
+
+The Script Property allowlist was removed rather than stored blank, matching Apps Script behavior. Public signup remained on the Google Form throughout Gate D.
+
+**Gate D result: COMPLETE.**
+
+Gate E is now the active FORM-7 gate. Its cutover sequence and rollback controls are defined in `docs/native-signup-gate-e.md`.

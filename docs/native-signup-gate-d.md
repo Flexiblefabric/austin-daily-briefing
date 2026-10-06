@@ -192,3 +192,28 @@ Controlled activation remains blocked until the separate production endpoint is 
 ## October 5 watchdog reconciliation
 
 The disabled-watchdog findings above describe the October 4 preflight. Live scheduler readback on October 5 confirms the existing task is enabled on ADB-WATCHDOG-PROD-2.4 with the unchanged 09:30 America/Chicago schedule and current-day monitoring evidence. The watchdog disabled-state blocker is resolved; this reconciliation did not change tasks. Native Signup Mode remains DISABLED and the separate endpoint, transport runtime parity and mutating controlled-test identity requirements remain open. This update does not authorize Gate D activation.
+
+## D6 readiness — deployment and identities recorded
+
+The separate production native-signup web app has been deployed and its exact `/exec` URL is stored only in the private production Integration Config, not in GitHub. The endpoint remains disabled/inert and the public website still routes signup through the Google Form.
+
+The operator-owned deliverable address for the mutating Gate D test has been selected and is also stored only in the private production control workbook. The retained Admin Hold QA identity is currently prepared as the Sheet-side `Native Signup Controlled Email` for the first safety no-op.
+
+Current safety state:
+
+- `Native Signup Mode = DISABLED`;
+- `ADB_NATIVE_SIGNUP_PROD_ENABLED` remains FALSE until the operator arms the test;
+- the native-signup Script Property allowlist is not yet configured;
+- no production native-signup request has been staged;
+- no subscriber/profile/preference/Signup Action/Welcome mutation has occurred.
+
+### Next controlled sequence
+
+1. Set `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` to the retained Admin Hold QA address.
+2. Set `ADB_NATIVE_SIGNUP_PROD_ENABLED=TRUE` while leaving mode `CONTROLLED`.
+3. After runtime properties are confirmed, change production `Native Signup Mode` from DISABLED to CONTROLLED and leave the Sheet-side controlled email on the Admin Hold QA identity.
+4. Submit one controlled signup request through the separate production endpoint.
+5. Run/reconcile Subscriber Operations and verify `admin_hold_noop`, unchanged Admin Hold status, no Welcome queue row and no duplicate identity.
+6. Return the endpoint to inert state, then switch both Sheet-side controlled email and Script Property allowlist to the privately selected operator-owned mutating identity for the second controlled test.
+
+Do not commit either private address or the deployment URL to GitHub.

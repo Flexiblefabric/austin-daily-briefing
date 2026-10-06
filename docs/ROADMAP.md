@@ -1,7 +1,7 @@
 # Austin Daily Briefing Roadmap
 
 **Status:** Active project backlog  
-**Last reconciled:** 2026-10-04\
+**Last reconciled:** 2026-10-06\
 **Scope:** Cross-project work that is pending, blocked, deferred, or recently completed  
 **Technical state authority:** [`PROJECT_STATE.json`](../PROJECT_STATE.json)
 
@@ -52,7 +52,7 @@ Use these states:
 | FORM-4 | Native customization | Add subscriber verification for preference changes using single-use, scoped confirmation links and hashed tokens | Complete | DEV hashed-token confirmation, 24-hour expiry, single-use behavior, and exactly-once application path passed controlled QA |
 | FORM-5 | Native customization | Run DEV parity/idempotency/security tests against the existing processor before any production cutover | Complete | End-to-end website submission, confirmation, exactly-once application, immediate replay no-op, and DEV diagnostics passed controlled QA. Root cause of prior failures was stale website endpoint pointing to an older Apps Script deployment |
 | FORM-6 | Native customization | Promote the native customization page while retaining the Google Form as an operator/fallback path | Complete | Gate F accepted as passing by operator on 2026-10-04; 09:03 CT Subscriber Operations cycle was Healthy with zero errors and no Pending/Confirmed native requests. Gate G closeout recorded; Google fallback retained pending FORM-10 |
-| FORM-7 | Native signup | Design and implement first-party signup while preserving the existing consent, subscriber creation, and Welcome queue workflow | Active | Gates A–C complete. Gate D controlled production PASS: Admin Hold no-op passed; new-subscriber path created exactly one subscriber/profile, 23 Normal preferences, one Signup Action and one Welcome; hourly Resend delivered exactly once with provider ID and manual replay sent zero. Sheet-side mode is DISABLED. Final closeout: disable endpoint Script Property and remove allowlist, verify inert runtime, then mark Gate D complete |
+| FORM-7 | Native signup | Design and implement first-party signup while preserving the existing consent, subscriber creation, and Welcome queue workflow | Active | Gates A–E complete. First-party native signup is public on `signup.html`; Google signup remains fallback. Gate F normal-cycle observation is active for duplicate creation, queue ownership, Welcome delivery, processor health, abuse controls and unrelated subscriber regressions before Gate G closeout |
 | FORM-8 | Native feedback | Design and implement first-party feedback/corrections intake with current retention and privacy rules | Deferred | After signup or when operational capacity allows |
 | FORM-9 | Native management | Design authenticated pause/resume/reset/unsubscribe flows using signed or single-use verification rather than email-only identity | Deferred | Security model proven in customization/signup |
 | FORM-10 | Native forms | Decide whether and when public Google Forms can be retired; retain background/fallback forms until native flows have sustained production evidence | Deferred | Successful rollout of preceding native forms |

@@ -1,8 +1,8 @@
 # Native Signup — Design and Rollout Baseline
 
-**Status:** FORM-7 Active — Gates A–D complete; Gate E public cutover staged  
+**Status:** FORM-7 Active — Gates A–E complete; Gate F production observation active  
 **Started:** 2026-10-04  
-**Production boundary:** Gate D production behavior is proven. Public cutover occurs only through the Gate E runbook and explicit promotion sequence.
+**Production boundary:** Native signup is public after Gate E promotion. Google signup remains fallback while Gate F normal-cycle observation runs.
 
 ## Goal
 

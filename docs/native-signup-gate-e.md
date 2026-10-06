@@ -1,7 +1,7 @@
 # Native Signup — Gate E Public Cutover
 
 **FORM-7 Gate:** E — public cutover  
-**Status:** STAGED — explicit promotion authorized 2026-10-06; runtime LIVE arm and merge remain gated  
+**Status:** PASS — public cutover promoted 2026-10-06; Gate F observation active  
 **Gate D dependency:** COMPLETE  
 **Fallback:** retain the Google signup form through observation and until FORM-10
 
@@ -123,3 +123,33 @@ If Gate E must be reversed:
 8. record any completed public rollback in the changelog and registry.
 
 Rollback does not require changing the shared `GOOGLE + NATIVE` Processor Mode because native customization independently uses that shared production state.
+
+
+## Gate E result — PASS
+
+Gate E public promotion completed on 2026-10-06.
+
+Runtime evidence immediately before merge:
+
+- build `native-signup-prod-stage-v1.1`;
+- endpoint `enabled=true`;
+- runtime mode `LIVE`;
+- `allowlistConfigured=false`;
+- exact production site origin;
+- Sheet-side `Native Signup Mode=LIVE`;
+- no controlled email configured;
+- shared `Processor Mode=GOOGLE + NATIVE`.
+
+Repository/public-routing evidence:
+
+- PR #95 merged as commit `575a86eed3c9d1dd7888ccafbb022bf7cd3aa4b2`;
+- GitHub Pages deployment run `37525703129` completed successfully;
+- the deployment evaluated the environment URL as `https://austindailybriefing.com/`;
+- pre-merge site QA passed local route/asset checks and production-aware native-signup guardrails;
+- public Get the Briefing links now target `signup.html`;
+- `signup.html` uses the production endpoint and retains an explicit Google signup fallback;
+- `signup.html` is included in the sitemap.
+
+Cutover readback found only the two terminal Gate D QA requests in `Native Signup Requests`; no pending Gate D request was eligible for replay.
+
+Gate E is complete. Gate F observation begins with the first normal public native-signup cycles. The Google signup fallback remains available throughout observation and until a later FORM-10 decision.

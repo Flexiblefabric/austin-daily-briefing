@@ -28,7 +28,7 @@
 - **v2_production_observation** — observation — Normal-cycle observation; next check follows structured-notes merge — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
-  - Reporting: FORM-7 Gates A–C complete. Gate D Admin Hold safety attempt safely exposed and rolled back an email-validator defect before staging. The validator fix is merged; corrected build native-signup-prod-stage-v1.1 now adds a deployment-smoke helper that posts through the actual configured /exec endpoint. Next: merge this verification update, synchronize/redeploy production NativeSignupProd.gs, confirm v1.1 runtime while Sheet mode is DISABLED, then re-arm and retry the Admin Hold no-op.
+  - Reporting: FORM-7 Gates A–C complete. Gate D Admin Hold safety no-op passed through the deployed v1.1 production endpoint and canonical Subscriber Operations: hold preserved, no native Signup Action or Welcome, zero errors. Sheet-side Native Signup Mode is DISABLED and the operator-owned mutating QA identity is prepared privately. Next: replace the endpoint Script Property allowlist with the mutating QA identity, re-arm CONTROLLED mode, run one deployed-endpoint signup, process exactly once, deliver exactly one Welcome through Resend, then verify replay/duplicate behavior.
 
 ## Runtime configuration
 

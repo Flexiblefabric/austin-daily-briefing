@@ -2,6 +2,30 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-06 — FORM-7 Gate D Admin Hold safety pass
+
+**Type:** Controlled-production validation  
+**Components:** native signup production endpoint, Subscriber Operations, production control plane  
+**Registry impact:** Yes — 2026-10-06.4
+
+The corrected production native-signup build completed the Gate D administrative-hold safety test through the actual versioned web-app endpoint.
+
+### Evidence
+
+- The deployed endpoint staged exactly one controlled native-signup request.
+- The canonical production processor completed the request as `Processed / admin_hold_noop`.
+- The administrative hold and existing profile were preserved.
+- No native Signup Action was created.
+- No deterministic native Welcome was created or delivered.
+- Subscriber Operations monitoring recorded one processed native-signup Admin Hold no-op, zero messages sent and zero errors.
+- No duplicate subscriber identity was created.
+
+### Transition
+
+After the pass, Sheet-side `Native Signup Mode` was returned to `DISABLED`. The operator-owned mutating QA identity was verified absent from production Subscribers, Signup Actions and Outbound Messages and prepared privately for the next controlled test. The public signup route remains the Google Form.
+
+Gate D remains open for the mutating new-subscriber test, exactly-one Welcome delivery, provider-ID readback and replay/duplicate verification.
+
 ## 2026-10-06 — FORM-7 Gate D email-validator rollback
 
 **Type:** Controlled-production safety rollback and source correction  

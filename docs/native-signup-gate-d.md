@@ -248,3 +248,13 @@ Corrective requirement before retry:
 5. only then return Sheet-side mode to CONTROLLED;
 6. run `runGateDDeploymentSafetyRequestV1()` exactly once. This helper reads the private production `/exec` URL and controlled email from Integration Config and posts through the actual deployed web app rather than calling `doPost()` directly in the editor;
 7. verify one staged request, then process/reconcile it through Subscriber Operations for the Admin Hold no-op.
+
+## D6 Admin Hold safety retry — PASS
+
+The corrected production build `native-signup-prod-stage-v1.1` was deployed and the retry was submitted through the actual configured versioned `/exec` endpoint. The request staged successfully and was processed under `ADB-SUBOPS-PROD-1.1` / `ADB-NATIVE-SIGNUP-PROD-0.1` as `Processed / admin_hold_noop`.
+
+Readback confirmed the administrative hold remained intact, the existing profile was unchanged, no native Signup Action was created, no deterministic native Welcome was created, no delivery was invoked, and Subscriber Operations monitoring recorded one processed native-signup Admin Hold no-op with zero errors.
+
+After the pass, Sheet-side `Native Signup Mode` was returned to `DISABLED`. The operator-owned mutating QA identity was verified absent from production Subscribers, Signup Actions and Outbound Messages and is prepared privately for the next controlled test.
+
+Durable evidence: `docs/native-signup-gate-d-safety-result.md`.

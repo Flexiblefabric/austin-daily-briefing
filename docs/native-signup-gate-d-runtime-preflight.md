@@ -60,7 +60,7 @@ Run `setupNativeSignupProdV1`, then run `getNativeSignupProdRuntimeStatusV1` and
 
 Expected pre-activation status:
 
-- build = `native-signup-prod-stage-v1`;
+- build = `native-signup-prod-stage-v1.1`;
 - production database/intake IDs exact;
 - enabled = `false`;
 - mode = `CONTROLLED`;
@@ -135,3 +135,15 @@ The separate production native-signup web app is deployed. Its exact `/exec` URL
 A deliverable operator-owned mutating QA identity has been selected and stored privately. The retained Admin Hold QA identity is prepared as the current Sheet-side controlled email for the safety no-op. Native Signup Mode remains DISABLED and the endpoint is not armed.
 
 The remaining pre-test action is runtime-only: configure the endpoint allowlist with the Admin Hold QA address and set `ADB_NATIVE_SIGNUP_PROD_ENABLED=TRUE`. Only after those properties are confirmed should Sheet-side Native Signup Mode move to CONTROLLED for the safety request.
+
+## Corrected deployment verification — build v1.1
+
+After the 2026-10-06 email-validator rollback, current production source fingerprint is `native-signup-prod-stage-v1.1`. The prior October 5 evidence showing build `native-signup-prod-stage-v1` remains valid historical preflight evidence for the earlier version but does not prove the corrected deployment is active.
+
+Before re-arming Gate D:
+
+1. synchronize the current repository `apps-script/NativeSignupProd.gs` into the production Apps Script project;
+2. update the versioned web-app deployment so the recorded `/exec` URL serves the new version;
+3. run `getNativeSignupProdRuntimeStatusV1` and confirm build `native-signup-prod-stage-v1.1` while Sheet-side Native Signup Mode remains DISABLED;
+4. only after that readback may Sheet-side mode return to CONTROLLED;
+5. submit the Admin Hold retry with `runGateDDeploymentSafetyRequestV1()`, which calls the private configured `/exec` URL through `UrlFetchApp` and therefore tests the deployed endpoint rather than editor head code.

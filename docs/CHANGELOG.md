@@ -32,8 +32,11 @@ As a result, any email address containing the letter `s` was rejected as invalid
 
 - Fixed the production email validator in repository source.
 - Added a request-path regression using an address containing the letter `s`.
+- Advanced the corrected production source fingerprint to `native-signup-prod-stage-v1.1`.
+- Added `runGateDDeploymentSafetyRequestV1()`, which reads the private production deployment URL and controlled email from Integration Config and posts through the actual versioned `/exec` endpoint via `UrlFetchApp`.
 - Gate D remains blocked until the corrected Apps Script source is synchronized to production and the versioned web-app deployment is updated.
-- The Admin Hold safety test must then be retried before the mutating controlled test.
+- Runtime readback must confirm build v1.1 while Sheet-side mode remains DISABLED before the Admin Hold safety test is re-armed and retried.
+- The Admin Hold safety test must pass before the mutating controlled test.
 
 ## 2026-10-06 — Structured editorial notes and selection validation
 

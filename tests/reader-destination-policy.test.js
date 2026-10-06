@@ -105,8 +105,8 @@ const sandbox = {};
 vm.createContext(sandbox);
 vm.runInContext(
   transport +
-    '\\nthis.__validateReaderDestinations = adbValidateReaderFacingDestinations_;' +
-    '\\nthis.__readerDestinations = ADB_READER_DESTINATIONS;',
+    '\nthis.__validateReaderDestinations = adbValidateReaderFacingDestinations_;' +
+    '\nthis.__readerDestinations = ADB_READER_DESTINATIONS;',
   sandbox
 );
 

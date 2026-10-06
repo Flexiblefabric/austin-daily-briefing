@@ -7,6 +7,9 @@ const processor = fs.readFileSync('apps-script/NativeManagementDevProcessor.gs',
 const browser = fs.readFileSync('site/manage.js','utf8');
 const html = fs.readFileSync('site/manage.html','utf8');
 const config = fs.readFileSync('site/manage-config.js','utf8');
+const confirmHtml = fs.readFileSync('site/manage-confirm.html','utf8');
+const confirmConfig = fs.readFileSync('site/manage-confirm-config.js','utf8');
+const confirmBrowser = fs.readFileSync('site/manage-confirm.js','utf8');
 const design = fs.readFileSync('docs/native-management-design.md','utf8');
 
 function digestBytes(value) {
@@ -54,6 +57,14 @@ function context() {
   assert(config.includes("endpoint: ''"));
   assert(browser.includes("data.type !== expectedResultType"));
   assert(browser.includes("Choose a delivery change, a topic reset, or both."));
+  assert(confirmHtml.includes('<meta name="robots" content="noindex, nofollow">'));
+  assert(confirmHtml.includes('name="token"'));
+  assert(confirmConfig.includes("defaultEnvironment: 'development'"));
+  assert(confirmBrowser.includes("window.location.hash"));
+  assert(confirmBrowser.includes("data.type !== 'adb-native-manage-confirm-dev'"));
+  assert(endpoint.includes("CONFIRM_PAGE_URL_PROPERTY: 'ADB_NATIVE_MANAGE_DEV_CONFIRM_PAGE_URL'"));
+  assert(endpoint.includes("manage-confirm.html#env=development&token="));
+  assert(!endpoint.includes("?action=confirm&token="));
 })();
 
 (function payloadValidation(){
@@ -121,6 +132,8 @@ function context() {
   assert(design.includes('Unsubscribed + resume remains Unsubscribed'));
   assert(design.includes('Admin Hold + unsubscribe becomes Unsubscribed'));
   assert(design.includes('32 random token bytes'));
+  assert(design.includes('manage-confirm.html'));
+  assert(design.includes('URL fragment'));
   assert(design.includes('Native Manage Verification Queue'));
   assert(design.includes('Production non-goals during DEV'));
 })();

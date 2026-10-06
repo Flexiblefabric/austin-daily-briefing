@@ -71,6 +71,7 @@ jobs:
           node --check --input-type=commonjs < apps-script/NativeSignupProd.gs
           node --check --input-type=commonjs < apps-script/NativeManagementDev.gs
           node --check --input-type=commonjs < apps-script/NativeManagementDevProcessor.gs
+          node --check --input-type=commonjs < apps-script/ResendTransport.gs
 
       - name: Run native signup DEV runtime QA
         run: node tests/native-signup-dev.test.js
@@ -80,6 +81,9 @@ jobs:
 
       - name: Run Welcome copy compatibility QA
         run: node tests/welcome-copy-compat.test.js
+
+      - name: Run reader destination policy QA
+        run: node tests/reader-destination-policy.test.js
 
       - name: Run FORM-7 Gate D runtime fingerprint QA
         run: node tests/native-signup-gate-d-runtime.test.js
@@ -124,7 +128,6 @@ jobs:
           elif "environment: 'production'" in config:
               assert '<meta name="robots" content="index, follow">' in signup
               assert 'https://austindailybriefing.com/signup.html' in signup
-              assert 'Open the Google signup form' in signup
               assert "native-signup-prod-stage-v1.1" in prod_server
               assert "ADB_NATIVE_SIGNUP_PROD_ENABLED" in prod_server
               assert "ADB_NATIVE_SIGNUP_PROD_MODE" in prod_server

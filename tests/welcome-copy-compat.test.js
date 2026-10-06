@@ -42,9 +42,10 @@ const emailQaAssets = [
 
 assert(source.includes(`CUSTOMIZE_URL: '${nativeCustomizeUrl}'`), 'Resend transport must use the native Customize URL.');
 assert(!source.includes(`CUSTOMIZE_URL: '${legacyCustomizeUrl}'`), 'Resend transport still points Customize to the legacy Google form.');
-assert(source.includes(`const expectedCustomizeUrl = '${nativeCustomizeUrl}'`), 'Runtime compatibility check must pin the native Customize URL.');
+assert(source.includes("ADB_READER_DESTINATION_POLICY_VERSION = 'ADB-READER-DESTINATIONS-1.0'"), 'Runtime destination policy version is missing.');
+assert(source.includes('function adbValidateReaderFacingDestinations_'), 'Reader-facing destination validator is missing.');
 assert(dailyPrompt.includes(`Reader-facing Customize destination: ${nativeCustomizeUrl}`), 'Daily prompt must declare the native reader-facing Customize destination.');
-assert(dailyPrompt.includes('The fallback is not a normal reader-facing destination.'), 'Daily prompt must keep the Google form operator-only by default.');
+assert(dailyPrompt.includes('The fallback is operator-only.'), 'Daily prompt must keep the Google form operator-only by default.');
 assert(dailyPrompt.includes(`Set Customize URL exactly to ${nativeCustomizeUrl}.`), 'Daily queue rule must pin the native Customize URL.');
 emailQaAssets.forEach((asset, index) => {
   assert(asset.includes(nativeCustomizeUrl), `Email QA asset ${index} is missing the native Customize URL.`);

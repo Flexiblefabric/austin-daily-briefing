@@ -28,7 +28,7 @@
 - **v2_production_observation** — observation — Normal-cycle observation; next check follows structured-notes merge — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
-  - Reporting: FORM-7 Gates A–C complete. Gate D Admin Hold safety no-op passed through the deployed v1.1 production endpoint and canonical Subscriber Operations: hold preserved, no native Signup Action or Welcome, zero errors. Sheet-side Native Signup Mode is DISABLED and the operator-owned mutating QA identity is prepared privately. Next: replace the endpoint Script Property allowlist with the mutating QA identity, re-arm CONTROLLED mode, run one deployed-endpoint signup, process exactly once, deliver exactly one Welcome through Resend, then verify replay/duplicate behavior.
+  - Reporting: FORM-7 Gates A–C complete. Gate D controlled production passed: Admin Hold no-op preserved the hold, new-subscriber path created exactly one subscriber/profile, 23 Normal preferences, one Signup Action and one Welcome; hourly Resend delivered exactly once with provider ID, and manual dispatcher replay sent zero. Sheet-side mode is DISABLED. Final Gate D closeout awaits setting ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE and removing the endpoint allowlist.
 
 ## Runtime configuration
 

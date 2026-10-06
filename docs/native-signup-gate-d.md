@@ -258,3 +258,15 @@ Readback confirmed the administrative hold remained intact, the existing profile
 After the pass, Sheet-side `Native Signup Mode` was returned to `DISABLED`. The operator-owned mutating QA identity was verified absent from production Subscribers, Signup Actions and Outbound Messages and is prepared privately for the next controlled test.
 
 Durable evidence: `docs/native-signup-gate-d-safety-result.md`.
+
+## D7 mutating controlled production — PASS
+
+The operator-owned mutating QA identity completed the full controlled production path through deployed build `native-signup-prod-stage-v1.1`.
+
+Canonical Subscriber Operations produced exactly one Active subscriber/profile, 23 Normal preferences, one deterministic native Signup Action and one deterministic Queued `WELCOME_V1`, then marked the request `Processed / new_subscriber`.
+
+The live hourly Resend Welcome dispatcher subsequently delivered the single queued Welcome and recorded exactly one provider ID. A later manual dispatcher invocation returned `mode=LIVE, sent=0, skipped=0`, providing the required zero-send replay verification. Post-run readback found no duplicate subscriber, profile, action, Welcome or provider handoff.
+
+Sheet-side `Native Signup Mode` was returned to `DISABLED` immediately after processing. Durable evidence: `docs/native-signup-gate-d-result.md`.
+
+Gate D controlled-production behavior passes. Final closeout remains the endpoint Script Property disarm: set `ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE`, remove `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST`, and verify the v1.1 runtime reports enabled=false, allowlistConfigured=false and integrationNativeSignupMode=DISABLED. Gate E remains separate.

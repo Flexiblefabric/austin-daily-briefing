@@ -141,7 +141,9 @@ Raw tokens and token-bearing URLs must never be stored.
 
 ## Confirmation security
 
-Gate B uses a dedicated DEV management Apps Script project and a single-use confirmation flow. The DEV email may temporarily link directly to the DEV Apps Script confirmation prompt while FORM-9 validates request semantics. Before production staging, Gate C must move management confirmation onto the first-party ADB confirmation/relay architecture or an equivalently isolated signed relay.
+Gate B uses a dedicated DEV management Apps Script project plus a first-party `manage-confirm.html` page. The confirmation email carries the raw token only in the URL fragment, so the token is not sent to the static site host. The first-party page transfers the token only in the explicit confirmation POST body to the DEV Apps Script endpoint. Opening the email link does not consume the token.
+
+This design intentionally avoids coupling FORM-9 to the already-live customization confirmation relay. A signed relay may still be added later if production browser constraints require it, but it is not an ownership requirement when the single-use token remains the authorization factor and the POST path stays isolated.
 
 Requirements:
 
@@ -244,9 +246,13 @@ Exercise at minimum:
 - partial/ambiguous state fail-closed;
 - no direct email delivery or subscriber creation.
 
-### Gate D — first-party confirmation integration
+### Gate D — DEV end-to-end browser confirmation
 
-Move DEV management confirmation onto the approved first-party confirmation/relay boundary, preserving customization confirmation behavior and preventing route/token-type confusion.
+- deploy the isolated DEV Apps Script endpoint;
+- connect `manage.html` and `manage-confirm.html` to that endpoint;
+- run a controlled inbox test through request → email → first-party confirmation → processor → readback;
+- verify the token is never written to Sheets, logs, repository files, or query-string URLs;
+- verify customization confirmation remains unchanged.
 
 ### Gate E — controlled production
 

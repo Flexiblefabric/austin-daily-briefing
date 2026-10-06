@@ -29,6 +29,8 @@
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — observation — Gate F normal-cycle observation — `docs/native-signup-gate-e.md`
   - Reporting: FORM-7 Gates A-E complete. First-party native signup is public, Google signup remains fallback, and Gate F observation is active before Gate G closeout.
+- **native_management_development** — development — manual gated rollout — `docs/native-management-design.md`
+  - Reporting: FORM-9 Gate A design and Gate B static/unit/processor parity validation; public Manage remains the Google form until controlled production promotion.
 
 ## Runtime configuration
 

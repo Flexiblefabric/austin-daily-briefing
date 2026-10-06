@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-06.6",
+  "registry_version": "2026-10-06.7",
   "last_reviewed": "2026-10-06",
   "project": {
     "name": "Austin Daily Briefing",
@@ -218,6 +218,13 @@
       "runbook": "docs/native-signup-gate-e.md",
       "reporting": "FORM-7 Gates A-E complete. First-party native signup is public, Google signup remains fallback, and Gate F observation is active before Gate G closeout",
       "verification": "2026-10-06 Gate E: operator runtime readback showed build native-signup-prod-stage-v1.1, enabled=true, mode=LIVE, allowlistConfigured=false, exact production site origin, integrationNativeSignupMode=LIVE, no controlled email and shared Processor Mode=GOOGLE + NATIVE. PR #95 merged at commit 575a86eed3c9d1dd7888ccafbb022bf7cd3aa4b2; GitHub Pages deployment run 37525703129 completed successfully and published https://austindailybriefing.com/. Gate D request table contained only the two terminal Processed QA rows at cutover."
+    },
+    "native_management_development": {
+      "status": "development",
+      "cadence": "manual gated rollout",
+      "runbook": "docs/native-management-design.md",
+      "reporting": "FORM-9 Gate A design and Gate B static/unit/processor parity validation; public Manage remains the Google form until controlled production promotion",
+      "verification": "2026-10-06: isolated DEV Native Manage Requests, Native Manage Verification Queue and Native Manage Diagnostics tabs created with headers only. PR #97 merged noindex/unlinked manage and first-party confirmation pages, DEV Apps Script intake/confirmation and DEV processor. Site-preview CI passed syntax, payload/status matrix, confirmation guardrails, DEV/production boundaries and synthetic exactly-once processor parity cases. No production management behavior or public Manage routing changed."
     }
   },
   "runtime_properties": [
@@ -374,7 +381,8 @@
     "selection_notes_validator": "scripts/validate_selection_notes.py",
     "native_signup_gate_d_safety_result": "docs/native-signup-gate-d-safety-result.md",
     "native_signup_gate_d_result": "docs/native-signup-gate-d-result.md",
-    "native_signup_gate_e": "docs/native-signup-gate-e.md"
+    "native_signup_gate_e": "docs/native-signup-gate-e.md",
+    "native_management_design": "docs/native-management-design.md"
   },
   "governance": {
     "registry_is_authoritative": true,

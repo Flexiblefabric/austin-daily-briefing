@@ -1,8 +1,8 @@
 # Native Signup — Design and Rollout Baseline
 
-**Status:** FORM-7 Active — Gates A–C complete; Gate D controlled-production staging active  
+**Status:** FORM-7 Active — Gates A–D complete; Gate E public cutover staged  
 **Started:** 2026-10-04  
-**Production boundary:** No native signup production writes or public cutover are authorized by this document.
+**Production boundary:** Gate D production behavior is proven. Public cutover occurs only through the Gate E runbook and explicit promotion sequence.
 
 ## Goal
 
@@ -140,4 +140,4 @@ Gate B passed on 2026-10-04. Repository runtime QA and the corrected live DEV sm
 
 Gate C passed subscriber-state resolution, new subscriber creation, re-subscription, preference preservation, deterministic Welcome queue ownership, and replay protection. Durable result: `docs/native-signup-gate-c-result.md`.
 
-Gate D is staged in `docs/native-signup-gate-d.md`. Production activation is intentionally blocked until the compatibility matrix is fully PASS and the production endpoint/runtime, processor prompt, monitoring, and controlled identity are installed together.
+Gate D is complete; durable controlled-production evidence is recorded in `docs/native-signup-gate-d-result.md`. Gate E public cutover is staged in `docs/native-signup-gate-e.md` and preserves the Google signup form as fallback.

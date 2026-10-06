@@ -25,7 +25,7 @@
   - Reporting: privacy-safe full-scan Google plus feature-gated native signup-to-Welcome classification using ADB-COMPLETION-0.2.
 - **native_customization_cutover** — complete — completed gated rollout — `docs/native-customization-production-cutover.md`
   - Reporting: Gates A–F passed; Gate G closeout recorded 2026-10-04; public native customization is live with Google fallback retained pending FORM-10.
-- **v2_production_observation** — observation — October 4 first cycle and October 5 one-time follow-up completed — `docs/v2-promotion-2026-10-03.md`
+- **v2_production_observation** — observation — Normal-cycle observation; next check follows structured-notes merge — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
 - **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-d.md`
   - Reporting: FORM-7 Gates A–C complete. Gate D production endpoint deployment is recorded privately, endpoint/Resend runtime parity pass, watchdog is active, and an operator-owned mutating QA identity is selected. Admin Hold safety target is prepared while Native Signup Mode remains DISABLED; next step is arm the endpoint allowlist/enable gate for the Admin Hold no-op.

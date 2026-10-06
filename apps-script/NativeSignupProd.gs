@@ -23,7 +23,7 @@
  */
 
 const ADB_NATIVE_SIGNUP_PROD = Object.freeze({
-  BUILD: 'native-signup-prod-stage-v1',
+  BUILD: 'native-signup-prod-stage-v1.1',
   PROD_INTAKE_ID: '1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho',
   PROD_DATABASE_ID: '1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0',
   FORBIDDEN_DEV_INTAKE_ID: '1TiSgmFxij8p3wKnt_skTFXQvAOEuR2wI5c6V8Jq_Yyw',
@@ -177,6 +177,51 @@ function setupNativeSignupProdV1() {
     requestSheet: requestSheet.getName(),
     diagnosticSheet: diagnosticSheet.getName()
   };
+}
+
+function runGateDDeploymentSafetyRequestV1() {
+  adbSignupProdAssertTargets_();
+
+  const cfg = adbSignupProdIntegrationConfig_();
+  const endpoint = String(cfg['Native Signup Production Web App URL'] || '').trim();
+  const email = adbSignupProdNormalizeEmail_(cfg['Native Signup Controlled Email']);
+
+  if (!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(endpoint)) {
+    throw new Error('Native Signup Production Web App URL is missing or invalid.');
+  }
+  if (!adbSignupProdValidEmail_(email)) {
+    throw new Error('Native Signup Controlled Email is missing or invalid.');
+  }
+
+  const nonce = Utilities.getUuid().replace(/-/g, '').slice(0, 32);
+  const response = UrlFetchApp.fetch(endpoint, {
+    method: 'post',
+    payload: {
+      action: 'request',
+      source: 'website',
+      email: email,
+      consent: 'yes',
+      client_nonce: nonce,
+      form_check: ''
+    },
+    followRedirects: true,
+    muteHttpExceptions: true
+  });
+
+  const code = response.getResponseCode();
+  if (code !== 200) {
+    throw new Error('Production native-signup deployment returned HTTP ' + code + '.');
+  }
+
+  const report = {
+    event: 'form7_gate_d_deployment_safety_request',
+    build: ADB_NATIVE_SIGNUP_PROD.BUILD,
+    httpStatus: code,
+    client_nonce: nonce,
+    deploymentInvoked: true
+  };
+  console.log(JSON.stringify(report));
+  return report;
 }
 
 function doPost(e) {

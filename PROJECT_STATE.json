@@ -216,7 +216,7 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D controlled production passed: Admin Hold no-op preserved the hold, new-subscriber path created exactly one subscriber/profile, 23 Normal preferences, one Signup Action and one Welcome; hourly Resend delivered exactly once with provider ID, and manual dispatcher replay sent zero. Sheet-side mode is DISABLED. Final Gate D closeout awaits setting ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE and removing the endpoint allowlist.",
+      "reporting": "FORM-7 Gates A–C complete. Gate D controlled production passed: Admin Hold no-op preserved the hold, new-subscriber path created exactly one subscriber/profile, 23 Normal preferences, one Signup Action and one Welcome; hourly Resend delivered exactly once with provider ID, and manual dispatcher replay sent zero. Sheet-side mode is DISABLED. Final Gate D closeout awaits setting ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE and removing the endpoint allowlist",
       "verification": "2026-10-06 Gate D controlled-production PASS: deployed v1.1 endpoint staged one Admin Hold safety request and one mutating QA request; canonical processing completed admin_hold_noop and new_subscriber as expected; mutating path produced one Active subscriber/profile, 23 Normal preferences, one deterministic Signup Action and one deterministic WELCOME_V1. Hourly Resend dispatcher sent the Welcome once at 14:27 CT with provider ID recorded; later manual dispatcher invocation returned mode=LIVE, sent=0, skipped=0. No duplicate subscriber/action/Welcome/provider handoff exists. Sheet-side Native Signup Mode is DISABLED."
     }
   },

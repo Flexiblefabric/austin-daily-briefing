@@ -2,6 +2,39 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-06 — FORM-7 Gate D email-validator rollback
+
+**Type:** Controlled-production safety rollback and source correction  
+**Components:** native signup production endpoint, Gate D QA, production Integration Config  
+**Registry impact:** Yes — 2026-10-06.2
+
+The first controlled Admin Hold native-signup safety request reached the production endpoint but failed before staging with `validation_error / invalid_email`.
+
+### Root cause
+
+The production `adbSignupProdValidEmail_` regex had lost whitespace escapes during earlier source generation:
+
+- incorrect: `/s/` and `[^s@]`;
+- correct: `/\\s/` and `[^\\s@]`.
+
+As a result, any email address containing the letter `s` was rejected as invalid.
+
+### Safety outcome
+
+- No `Native Signup Requests` row was staged.
+- The retained Admin Hold subscriber and profile were unchanged.
+- No Signup Action was created.
+- No Welcome was queued or delivered.
+- Production `Native Signup Mode` was immediately returned to `DISABLED`.
+- Public signup remained the Google Form.
+
+### Corrective action
+
+- Fixed the production email validator in repository source.
+- Added a request-path regression using an address containing the letter `s`.
+- Gate D remains blocked until the corrected Apps Script source is synchronized to production and the versioned web-app deployment is updated.
+- The Admin Hold safety test must then be retried before the mutating controlled test.
+
 ## 2026-10-06 — Structured editorial notes and selection validation
 
 **Type:** Editorial evidence and validation enforcement (effective after merge)

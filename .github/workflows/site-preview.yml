@@ -93,6 +93,9 @@ jobs:
       - name: Run FORM-9 native management DEV QA
         run: node tests/native-management-dev.test.js
 
+      - name: Run FORM-9 native management DEV processor parity QA
+        run: node tests/native-management-processor-dev.test.js
+
 
       - name: Verify native signup deployment guardrails
         shell: python

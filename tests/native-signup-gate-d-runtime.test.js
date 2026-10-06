@@ -15,7 +15,7 @@ assert(prod.includes('function logNativeSignupProdRuntimeStatusV1()'));
 assert(prod.includes("cfg['Native Signup Production Web App URL']"));
 assert(prod.includes('UrlFetchApp.fetch(endpoint'));
 
-assert(resend.includes("BUILD: 'resend-transport-form7-v1'"));
+assert(resend.includes("BUILD: 'resend-transport-native-customize-v1'"));
 assert(resend.includes('function getAdbResendRuntimeStatusV1()'));
 assert(resend.includes("welcomeCopy: 'state-neutral-v1'"));
 assert(resend.includes("SUPPORTED_INTAKE_MODES: Object.freeze(['GOOGLE ONLY', 'GOOGLE + NATIVE CONTROLLED', 'GOOGLE + NATIVE'])"));

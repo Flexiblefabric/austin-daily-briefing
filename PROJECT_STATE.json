@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-06.5",
+  "registry_version": "2026-10-06.6",
   "last_reviewed": "2026-10-06",
   "project": {
     "name": "Austin Daily Briefing",
@@ -92,11 +92,11 @@
       "source_path": "workers/confirmation-relay-prod/"
     },
     "native_signup_intake": {
-      "status": "staging",
+      "status": "live",
       "provider": "Google Apps Script",
-      "environment": "controlled production Gate D passed on deployed native-signup-prod-stage-v1.1; Sheet-side Native Signup Mode returned to DISABLED; public signup remains Google Form; final closeout awaits endpoint Script Property disarm",
+      "environment": "Gate E public cutover promoted 2026-10-06 on deployed native-signup-prod-stage-v1.1; endpoint LIVE; Google signup fallback retained; Gate F observation active",
       "source_path": "apps-script/NativeSignupProd.gs",
-      "public_cutover": "not authorized; public signup remains Google Form through Gate D",
+      "public_cutover": "native signup is public; Google signup form retained as fallback pending FORM-10",
       "pre_d2_backup_id": "1iJ4i4bRmgs0PwQd-k_g8i3Z374QWLexekmab7d5Acl8"
     }
   },
@@ -104,7 +104,7 @@
     "subscriber_processor": {
       "cadence": "every 6 hours",
       "status": "live",
-      "verification": "scheduler copy synchronized 2026-10-04 to ADB-SUBOPS-PROD-1.1; enabled; Native Signup Mode remains DISABLED",
+      "verification": "scheduler copy synchronized 2026-10-04 to ADB-SUBOPS-PROD-1.1; enabled; Native Signup Mode is LIVE after FORM-7 Gate E public cutover",
       "task_id": "6aa1acbcf17c8191a9a89cc95b433629",
       "scheduler_state": "active",
       "prompt_path": "docs/automation-prompts/production-subscriber-operations.md",
@@ -196,7 +196,7 @@
       "specification_id": "ADB-COMPLETION-RECON-0.2",
       "production_boundary": "read-only; no writes, repairs, sends, alerts, or dispatcher invocation",
       "reporting": "privacy-safe full-scan Google plus feature-gated native signup-to-Welcome classification using ADB-COMPLETION-0.2",
-      "verification": "Google completion vectors remain established; FORM-7 adds native new/re-subscribe/no-op/pending/partial/duplicate vectors. Native Signup Mode DISABLED preserves prior Google-only behavior."
+      "verification": "Google completion vectors remain established; FORM-7 native new/re-subscribe/no-op/pending/partial/duplicate vectors are active under Native Signup Mode LIVE. Reconciler remains read-only."
     },
     "native_customization_cutover": {
       "status": "complete",
@@ -213,11 +213,11 @@
       "verification": "October 6: 12 editions queued 08:04 CT and accepted by Resend by 08:38 CT; 157 matching history rows Sent; launch notice absent. MFY audit found 39 Normal-interest entries above the approved 20-point relevance ceiling. Structured Notes and executable pre-queue enforcement prepared under ADB-SELECTION-NOTE-1; activated by merge, first live evidence pending. No historical evidence backfill or delivery replay. V2-10 remains open."
     },
     "native_signup_development": {
-      "status": "development",
-      "cadence": "manual gated rollout",
-      "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D controlled production passed: Admin Hold no-op preserved the hold, new-subscriber path created exactly one subscriber/profile, 23 Normal preferences, one Signup Action and one Welcome; hourly Resend delivered exactly once with provider ID, and manual dispatcher replay sent zero. Sheet-side mode is DISABLED. Final Gate D closeout awaits setting ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE and removing the endpoint allowlist",
-      "verification": "2026-10-06 Gate D controlled-production PASS: deployed v1.1 endpoint staged one Admin Hold safety request and one mutating QA request; canonical processing completed admin_hold_noop and new_subscriber as expected; mutating path produced one Active subscriber/profile, 23 Normal preferences, one deterministic Signup Action and one deterministic WELCOME_V1. Hourly Resend dispatcher sent the Welcome once at 14:27 CT with provider ID recorded; later manual dispatcher invocation returned mode=LIVE, sent=0, skipped=0. No duplicate subscriber/action/Welcome/provider handoff exists. Sheet-side Native Signup Mode is DISABLED."
+      "status": "observation",
+      "cadence": "Gate F normal-cycle observation",
+      "runbook": "docs/native-signup-gate-e.md",
+      "reporting": "FORM-7 Gates A-E complete. First-party native signup is public, Google signup remains fallback, and Gate F observation is active before Gate G closeout",
+      "verification": "2026-10-06 Gate E: operator runtime readback showed build native-signup-prod-stage-v1.1, enabled=true, mode=LIVE, allowlistConfigured=false, exact production site origin, integrationNativeSignupMode=LIVE, no controlled email and shared Processor Mode=GOOGLE + NATIVE. PR #95 merged at commit 575a86eed3c9d1dd7888ccafbb022bf7cd3aa4b2; GitHub Pages deployment run 37525703129 completed successfully and published https://austindailybriefing.com/. Gate D request table contained only the two terminal Processed QA rows at cutover."
     }
   },
   "runtime_properties": [
@@ -373,7 +373,8 @@
     "selection_notes": "docs/selection-notes.md",
     "selection_notes_validator": "scripts/validate_selection_notes.py",
     "native_signup_gate_d_safety_result": "docs/native-signup-gate-d-safety-result.md",
-    "native_signup_gate_d_result": "docs/native-signup-gate-d-result.md"
+    "native_signup_gate_d_result": "docs/native-signup-gate-d-result.md",
+    "native_signup_gate_e": "docs/native-signup-gate-e.md"
   },
   "governance": {
     "registry_is_authoritative": true,

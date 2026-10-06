@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Development preview for Austin Daily Briefing subscription management.">
+  <meta name="theme-color" content="#181818">
+  <title>Manage — Austin Daily Briefing</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="masthead-row wrap">
+    <a class="brand-link" href="./" aria-label="Austin Daily Briefing home"><img src="brand/adb-masthead.svg" width="900" height="220" alt="Austin Daily Briefing"></a>
+  </div>
+  <div class="nav-shell">
+    <nav class="desktop-nav wrap" aria-label="Main navigation">
+      <div class="nav-primary">
+        <a class="nav-link" href="how-it-works.html">How ADB Works</a>
+        <a class="nav-link" href="whats-new.html">What’s New</a>
+        <a class="nav-link" href="./#sample">See a Sample</a>
+      </div>
+      <div class="nav-actions">
+        <a class="nav-action" href="customize.html">Customize</a>
+        <span class="nav-action" aria-current="page">Manage</span>
+        <a class="button" href="signup.html">Get the Briefing</a>
+      </div>
+    </nav>
+    <div class="mobile-nav wrap">
+      <div class="mobile-nav-bar">
+        <a class="button" href="signup.html">Get the Briefing</a>
+        <details class="mobile-menu">
+          <summary class="menu-summary">Menu</summary>
+          <nav class="mobile-menu-panel" aria-label="Mobile navigation">
+            <a href="how-it-works.html">How ADB Works</a>
+            <a href="whats-new.html">What’s New</a>
+            <a href="./#sample">See a Sample</a>
+            <a href="customize.html">Customize</a>
+            <span class="mobile-current">Manage</span>
+            <a href="corrections.html">Corrections</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+          </nav>
+        </details>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="customize-main" id="main">
+  <header class="customize-header wrap">
+    <p class="eyebrow">Development preview</p>
+    <h1>Manage your briefing.</h1>
+    <p class="lede">Pause or resume delivery, unsubscribe, or reset every topic preference to Normal. Nothing changes until the request is confirmed from the subscribed inbox.</p>
+  </header>
+
+  <div class="customize-layout wrap">
+    <aside class="customize-aside">
+      <p class="section-label">Before you start</p>
+      <p>Use the email address that receives Austin Daily Briefing.</p>
+      <p>We do not show your current delivery status on this page.</p>
+      <div class="security-note">
+        <strong>Confirmation is required.</strong>
+        <p>We’ll send a single-use link to the subscribed address before applying any management request.</p>
+      </div>
+      <p class="field-help">Need the current form? <a href="https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform" target="_blank" rel="noopener noreferrer">Open the Google management form</a>.</p>
+    </aside>
+
+    <form class="customize-form" id="native-manage-form" method="post" target="adb-native-manage-result" novalidate>
+      <input type="hidden" name="action" value="request">
+      <input type="hidden" id="manage-client-nonce" name="client_nonce" value="">
+      <input type="hidden" name="source" value="website">
+      <div class="form-honeypot" aria-hidden="true">
+        <label for="manage-form-check">Leave this field blank</label>
+        <input id="manage-form-check" name="form_check" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      </div>
+
+      <fieldset class="identity-fieldset">
+        <legend><span class="form-section-number">00</span> Subscriber</legend>
+        <label class="field-label" for="manage-email">Email address</label>
+        <input class="text-input" id="manage-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
+        <p class="field-help">Use the address that receives Austin Daily Briefing.</p>
+      </fieldset>
+
+      <fieldset class="preference-section">
+        <legend><span class="form-section-number">01</span> Delivery</legend>
+        <p class="field-help">Choose a delivery change, or leave delivery unchanged if you only want to reset topics.</p>
+        <div class="style-row">
+          <div><div class="preference-name" id="delivery-action-label">Delivery action</div></div>
+          <div class="segmented segmented-wide" role="radiogroup" aria-labelledby="delivery-action-label">
+            <input type="radio" id="delivery-keep-current" name="delivery_action" value="keep_current" checked>
+            <label for="delivery-keep-current">Keep current</label>
+            <input type="radio" id="delivery-pause" name="delivery_action" value="pause">
+            <label for="delivery-pause">Pause</label>
+            <input type="radio" id="delivery-resume" name="delivery_action" value="resume">
+            <label for="delivery-resume">Resume</label>
+            <input type="radio" id="delivery-unsubscribe" name="delivery_action" value="unsubscribe">
+            <label for="delivery-unsubscribe">Unsubscribe</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="preference-section">
+        <legend><span class="form-section-number">02</span> Topic preferences</legend>
+        <label class="consent-row" for="manage-reset-topics">
+          <input id="manage-reset-topics" name="reset_topics" type="checkbox" value="yes">
+          <span>
+            <strong>Reset every active topic to Normal.</strong>
+            <span class="field-help">This does not change More for You volume, summary style, or Why It Matters length.</span>
+          </span>
+        </label>
+      </fieldset>
+
+      <div class="confirmation-explainer">
+        <p class="section-label">What happens next</p>
+        <h2>Nothing changes until you confirm.</h2>
+        <p>If the address is connected to ADB, we’ll send a single-use confirmation link. The browser response does not reveal whether the address is subscribed.</p>
+      </div>
+
+      <div class="form-actions">
+        <button class="button customize-submit" id="manage-submit" type="submit" aria-describedby="manage-submit-note">Send confirmation</button>
+        <p id="manage-submit-note">Your request will remain pending until confirmed.</p>
+        <div class="form-status" id="manage-status" role="status" aria-live="polite"></div>
+      </div>
+      <iframe class="native-result-frame" id="adb-native-manage-result" name="adb-native-manage-result" title="Management request result" aria-hidden="true"></iframe>
+    </form>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-main">
+      <div class="footer-brand-cell"><img class="footer-mark" src="brand/adb-mark-reversed.svg" width="256" height="256" alt="ADB"></div>
+      <div class="footer-links"><p class="footer-heading">Product</p><a href="./">Home</a><a href="how-it-works.html">How ADB Works</a><a href="whats-new.html">What’s New</a></div>
+      <div class="footer-links"><p class="footer-heading">Subscriber</p><a href="customize.html">Customize</a><span>Manage</span><a href="https://docs.google.com/forms/d/e/1FAIpQLSc_0-djww4qboFaEn9k-nEponrCBBqz-MCB81sOUtLjVsOZ7w/viewform" target="_blank" rel="noopener noreferrer">Feedback</a></div>
+      <div class="footer-links"><p class="footer-heading">Trust</p><a href="corrections.html">Corrections</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+    </div>
+    <div class="footer-bottom"><span>Austin, Texas · An independent experimental project</span><span><a href="mailto:briefing@austindailybriefing.com">briefing@austindailybriefing.com</a></span></div>
+  </div>
+</footer>
+<script src="manage-config.js"></script>
+<script src="manage.js"></script>
+</body>
+</html>

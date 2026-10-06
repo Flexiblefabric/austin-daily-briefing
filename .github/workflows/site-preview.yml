@@ -63,10 +63,14 @@ jobs:
       - name: Validate native signup DEV syntax
         run: |
           node --check site/signup.js
+          node --check site/manage.js
+          node --check site/manage-confirm.js
           node --check --input-type=commonjs < apps-script/NativeSignupDev.gs
           node --check --input-type=commonjs < apps-script/NativeSignupDevQa.gs
           node --check --input-type=commonjs < apps-script/NativeSignupDevProcessor.gs
           node --check --input-type=commonjs < apps-script/NativeSignupProd.gs
+          node --check --input-type=commonjs < apps-script/NativeManagementDev.gs
+          node --check --input-type=commonjs < apps-script/NativeManagementDevProcessor.gs
 
       - name: Run native signup DEV runtime QA
         run: node tests/native-signup-dev.test.js
@@ -85,6 +89,13 @@ jobs:
 
       - name: Run FORM-7 Gate D prompt compatibility QA
         run: node tests/native-signup-gate-d-prompts.test.js
+
+      - name: Run FORM-9 native management DEV QA
+        run: node tests/native-management-dev.test.js
+
+      - name: Run FORM-9 native management DEV processor parity QA
+        run: node tests/native-management-processor-dev.test.js
+
 
       - name: Verify native signup deployment guardrails
         shell: python
@@ -122,6 +133,12 @@ jobs:
               assert 'href="signup.html"' in Path("site/index.html").read_text(encoding="utf-8")
           else:
               raise AssertionError("signup-config.js must explicitly declare development or production")
+
+          for html in Path("site").glob("*.html"):
+              if html.name in {"manage.html", "manage-confirm.html"}:
+                  continue
+              text = html.read_text(encoding="utf-8")
+              assert 'href="manage.html"' not in text, f"{html} links to FORM-9 DEV management"
 
       - name: Upload preview
         uses: actions/upload-artifact@v4

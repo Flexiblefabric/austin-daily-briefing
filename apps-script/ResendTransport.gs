@@ -5,7 +5,7 @@
  * Never place the key in Sheets or source code.
  */
 const ADB_RESEND = Object.freeze({
-  BUILD: 'resend-transport-native-customize-v1',
+  BUILD: 'resend-transport-destination-policy-v1',
   ENDPOINT: 'https://api.resend.com/emails',
   FROM: 'Austin Daily Briefing <briefing@austindailybriefing.com>',
   REPLY_TO: 'briefing@austindailybriefing.com',
@@ -29,6 +29,61 @@ const ADB_RESEND = Object.freeze({
   MASTHEAD_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/assets/brand/adb-masthead@2x.png',
   FOOTER_MARK_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/assets/brand/adb-mark-reversed@2x.png',
   SENDER_CHANGE_APPROVAL_PROPERTY: 'ADB_SENDER_CHANGE_APPROVAL'
+});
+
+const ADB_READER_DESTINATION_POLICY_VERSION = 'ADB-READER-DESTINATIONS-1.0';
+
+const ADB_READER_DESTINATIONS = Object.freeze({
+  SITE: Object.freeze({
+    state: 'NATIVE_PRIMARY',
+    primaryUrl: ADB_RESEND.SITE_URL,
+    fallbackUrl: '',
+    fallbackVisibility: 'NONE'
+  }),
+  SIGNUP: Object.freeze({
+    state: 'NATIVE_PRIMARY',
+    primaryUrl: 'https://austindailybriefing.com/signup.html',
+    fallbackUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfoDFw2mnESsjLPCJkBBhmSnxSl0P7tc7t19bUFq1bbE0BSaA/viewform',
+    fallbackVisibility: 'PUBLIC_TEMPORARY'
+  }),
+  CUSTOMIZE: Object.freeze({
+    state: 'NATIVE_PRIMARY',
+    primaryUrl: ADB_RESEND.CUSTOMIZE_URL,
+    fallbackUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform',
+    fallbackVisibility: 'OPERATOR_ONLY'
+  }),
+  MANAGE: Object.freeze({
+    state: 'LEGACY_PRIMARY',
+    primaryUrl: ADB_RESEND.MANAGE_URL,
+    nativeCandidateUrl: 'https://austindailybriefing.com/manage.html',
+    fallbackUrl: '',
+    fallbackVisibility: 'NONE'
+  }),
+  FEEDBACK: Object.freeze({
+    state: 'LEGACY_PRIMARY',
+    primaryUrl: ADB_RESEND.FEEDBACK_URL,
+    nativeCandidateUrl: '',
+    fallbackUrl: '',
+    fallbackVisibility: 'NONE'
+  }),
+  CORRECTIONS_LOG: Object.freeze({
+    state: 'NATIVE_PRIMARY',
+    primaryUrl: 'https://austindailybriefing.com/corrections.html',
+    fallbackUrl: '',
+    fallbackVisibility: 'NONE'
+  }),
+  PRIVACY: Object.freeze({
+    state: 'NATIVE_PRIMARY',
+    primaryUrl: ADB_RESEND.PRIVACY_URL,
+    fallbackUrl: '',
+    fallbackVisibility: 'NONE'
+  }),
+  TERMS: Object.freeze({
+    state: 'NATIVE_PRIMARY',
+    primaryUrl: ADB_RESEND.TERMS_URL,
+    fallbackUrl: '',
+    fallbackVisibility: 'NONE'
+  })
 });
 
 /**
@@ -55,10 +110,132 @@ function getAdbResendRuntimeStatusV1() {
     scriptWelcomeMode: String(props.getProperty(ADB_RESEND.WELCOME_MODE_PROPERTY) || 'CONTROLLED').trim().toUpperCase(),
     scriptDailyMode: String(props.getProperty(ADB_RESEND.DAILY_MODE_PROPERTY) || 'CONTROLLED').trim().toUpperCase(),
     welcomeCopy: 'state-neutral-v1',
-    customizeUrl: ADB_RESEND.CUSTOMIZE_URL
+    customizeUrl: ADB_RESEND.CUSTOMIZE_URL,
+    destinationPolicy: ADB_READER_DESTINATION_POLICY_VERSION
   };
   Logger.log(JSON.stringify(report));
   return report;
+}
+
+function validateReaderDestinationPolicyV1() {
+  if (ADB_READER_DESTINATIONS.CUSTOMIZE.primaryUrl !== ADB_RESEND.CUSTOMIZE_URL) {
+    throw new Error('Destination policy Customize URL does not match Resend transport.');
+  }
+  if (ADB_READER_DESTINATIONS.MANAGE.primaryUrl !== ADB_RESEND.MANAGE_URL) {
+    throw new Error('Destination policy Manage URL does not match Resend transport.');
+  }
+  if (ADB_READER_DESTINATIONS.FEEDBACK.primaryUrl !== ADB_RESEND.FEEDBACK_URL) {
+    throw new Error('Destination policy Feedback URL does not match Resend transport.');
+  }
+
+  const welcome = adbValidateReaderFacingDestinations_(
+    adbWelcomePlainText_(),
+    adbWelcomeHtml_(),
+    {
+      context: 'WELCOME_V1 policy self-check',
+      requiredRoles: ['CUSTOMIZE','MANAGE','FEEDBACK','PRIVACY','TERMS'],
+      customizeUrlField: ADB_RESEND.CUSTOMIZE_URL
+    }
+  );
+  const senderChange = adbValidateReaderFacingDestinations_(
+    adbSenderChangePlainText_(),
+    adbSenderChangeHtml_(),
+    {
+      context: 'SENDER_CHANGE_V1 policy self-check',
+      requiredRoles: ['SITE','CUSTOMIZE','MANAGE'],
+      customizeUrlField: ADB_RESEND.CUSTOMIZE_URL
+    }
+  );
+
+  const report = {
+    policy: ADB_READER_DESTINATION_POLICY_VERSION,
+    signupState: ADB_READER_DESTINATIONS.SIGNUP.state,
+    signupFallbackVisibility: ADB_READER_DESTINATIONS.SIGNUP.fallbackVisibility,
+    customizeState: ADB_READER_DESTINATIONS.CUSTOMIZE.state,
+    customizeFallbackVisibility: ADB_READER_DESTINATIONS.CUSTOMIZE.fallbackVisibility,
+    manageState: ADB_READER_DESTINATIONS.MANAGE.state,
+    feedbackState: ADB_READER_DESTINATIONS.FEEDBACK.state,
+    welcomeGoogleForms: welcome.googleForms,
+    senderChangeGoogleForms: senderChange.googleForms,
+    deliveryInvoked: false,
+    writes: false
+  };
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
+function adbCanonicalGoogleFormUrl_(value) {
+  const match = String(value || '').match(/https:\/\/docs\.google\.com\/forms\/d\/e\/[A-Za-z0-9_-]+\/viewform/i);
+  return match ? match[0] : '';
+}
+
+function adbExtractGoogleFormUrls_(value) {
+  const source = String(value || '');
+  const re = /https:\/\/docs\.google\.com\/forms\/d\/e\/[A-Za-z0-9_-]+\/viewform(?:\?[^\s"'<>]*)?/gi;
+  const found = [];
+  let match;
+  while ((match = re.exec(source)) !== null) {
+    const canonical = adbCanonicalGoogleFormUrl_(match[0]);
+    if (canonical && found.indexOf(canonical) < 0) found.push(canonical);
+  }
+  return found;
+}
+
+function adbValidateReaderFacingDestinations_(textBody, htmlBody, options) {
+  options = options || {};
+  const context = String(options.context || 'reader-facing message');
+  const text = String(textBody || '');
+  const html = String(htmlBody || '');
+  const requiredRoles = options.requiredRoles || [];
+  const allowedGoogleForms = [];
+
+  requiredRoles.forEach(function(role) {
+    const destination = ADB_READER_DESTINATIONS[role];
+    if (!destination || !destination.primaryUrl) {
+      throw new Error(context + ' references an unknown or unconfigured destination role: ' + role + '.');
+    }
+    if (text.indexOf(destination.primaryUrl) < 0 || html.indexOf(destination.primaryUrl) < 0) {
+      throw new Error(context + ' is missing the primary ' + role + ' destination in both plain text and HTML.');
+    }
+
+    const primaryForm = adbCanonicalGoogleFormUrl_(destination.primaryUrl);
+    if (primaryForm && allowedGoogleForms.indexOf(primaryForm) < 0) {
+      allowedGoogleForms.push(primaryForm);
+    }
+    if (destination.fallbackVisibility === 'PUBLIC_TEMPORARY') {
+      const fallbackForm = adbCanonicalGoogleFormUrl_(destination.fallbackUrl);
+      if (fallbackForm && allowedGoogleForms.indexOf(fallbackForm) < 0) {
+        allowedGoogleForms.push(fallbackForm);
+      }
+    }
+  });
+
+  if (Object.prototype.hasOwnProperty.call(options, 'customizeUrlField') &&
+      String(options.customizeUrlField || '').trim() !== ADB_READER_DESTINATIONS.CUSTOMIZE.primaryUrl) {
+    throw new Error(context + ' has a noncanonical Customize URL field.');
+  }
+
+  Object.keys(ADB_READER_DESTINATIONS).forEach(function(role) {
+    const destination = ADB_READER_DESTINATIONS[role];
+    if (destination.fallbackVisibility === 'OPERATOR_ONLY' && destination.fallbackUrl &&
+        (text.indexOf(destination.fallbackUrl) >= 0 || html.indexOf(destination.fallbackUrl) >= 0)) {
+      throw new Error(context + ' exposes operator-only fallback for ' + role + '.');
+    }
+  });
+
+  const forms = adbExtractGoogleFormUrls_(text + '\n' + html);
+  forms.forEach(function(url) {
+    if (allowedGoogleForms.indexOf(url) < 0) {
+      throw new Error(context + ' contains an unauthorized reader-facing Google Form: ' + url);
+    }
+  });
+
+  return {
+    context: context,
+    requiredRoles: requiredRoles.slice(),
+    googleForms: forms,
+    customizeUrl: ADB_READER_DESTINATIONS.CUSTOMIZE.primaryUrl
+  };
 }
 
 function validateForm7GateDTransportCompatibilityV1() {
@@ -78,11 +255,12 @@ function validateForm7GateDTransportCompatibilityV1() {
   const requiredCopy = 'Personalized sections use the interests and reading settings saved to your profile.';
   const newSubscriberCopy = 'If you’re new, your interests start at Normal with standard reading settings.';
   const obsoleteCopy = 'subscribers begin with all interest categories set to Normal';
-  const expectedCustomizeUrl = 'https://austindailybriefing.com/customize.html';
 
-  if (ADB_RESEND.CUSTOMIZE_URL !== expectedCustomizeUrl || /docs\.google\.com\/forms/i.test(ADB_RESEND.CUSTOMIZE_URL)) {
-    throw new Error('Reader-facing Customize URL must use the native customization page.');
-  }
+  adbValidateReaderFacingDestinations_(plain, html, {
+    context: 'FORM-7 Welcome compatibility',
+    requiredRoles: ['CUSTOMIZE','MANAGE','FEEDBACK','PRIVACY','TERMS'],
+    customizeUrlField: ADB_RESEND.CUSTOMIZE_URL
+  });
 
   if (plain.indexOf(requiredCopy) < 0 || html.indexOf(requiredCopy) < 0) {
     throw new Error('Gate D Welcome copy is not return-safe in both renderers.');
@@ -253,6 +431,11 @@ function dispatchQueuedWelcomeMessagesViaResendV1() {
       const text = adbWelcomePlainText_();
       const html = adbWelcomeHtml_();
       try {
+        adbValidateReaderFacingDestinations_(text, html, {
+          context: 'WELCOME_V1 row ' + sheetRow,
+          requiredRoles: ['CUSTOMIZE','MANAGE','FEEDBACK','PRIVACY','TERMS'],
+          customizeUrlField: row['Customize URL']
+        });
         const result = adbSendEmailViaResend_({
           to: email,
           subject: subject,
@@ -268,7 +451,7 @@ function dispatchQueuedWelcomeMessagesViaResendV1() {
         sent++;
       } catch (error) {
         queueSheet.getRange(sheetRow, statusColumn).setValue('Failed');
-        queueSheet.getRange(sheetRow, notesColumn).setValue('Resend failure: ' + String(error.message || error).slice(0, 500));
+        queueSheet.getRange(sheetRow, notesColumn).setValue('Welcome delivery failure: ' + String(error.message || error).slice(0, 500));
         throw error;
       }
     });
@@ -421,11 +604,18 @@ function sendAdbSenderChangeAnnouncementV1() {
         skipped++;
         return;
       }
+      const senderText = adbSenderChangePlainText_();
+      const senderHtml = adbSenderChangeHtml_();
+      adbValidateReaderFacingDestinations_(senderText, senderHtml, {
+        context: 'SENDER_CHANGE_V1 row ' + sheetRow,
+        requiredRoles: ['SITE','CUSTOMIZE','MANAGE'],
+        customizeUrlField: row['Customize URL']
+      });
       const result = adbSendEmailViaResend_({
         to: email,
         subject: String(row.Subject || matches[0].Subject),
-        text: adbSenderChangePlainText_(),
-        html: adbSenderChangeHtml_(),
+        text: senderText,
+        html: senderHtml,
         idempotencyKey: String(row['Message ID']),
         tags: {message_type: 'sender_change', environment: 'production'}
       });
@@ -527,7 +717,7 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
     const queueSheet = database.getSheetByName('Outbound Messages');
     const queue = adbRowsWithSheetRows_(queueSheet);
     const requiredQueue = ['Message ID','Profile ID','Email','Template ID','Status','Subject',
-      'Sent At / Gmail ID','Notes','Plain Text','HTML','Run ID'];
+      'Customize URL','Sent At / Gmail ID','Notes','Plain Text','HTML','Run ID'];
     requiredQueue.forEach(function(header) {
       if (queue.headers.indexOf(header) < 0) throw new Error('Outbound Messages is missing header: ' + header);
     });
@@ -595,6 +785,11 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
 
       let result;
       try {
+        adbValidateReaderFacingDestinations_(textBody, htmlBody, {
+          context: 'DAILY_BRIEFING_V1 row ' + entry.sheetRow,
+          requiredRoles: ['SITE','CUSTOMIZE','MANAGE','FEEDBACK','CORRECTIONS_LOG','PRIVACY','TERMS'],
+          customizeUrlField: row['Customize URL']
+        });
         result = adbSendEmailViaResend_({
           to: email,
           subject: subject,
@@ -606,7 +801,7 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
       } catch (error) {
         queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Failed');
         queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
-          .setValue('Resend failure: ' + String(error.message || error).slice(0, 500));
+          .setValue('Daily delivery failure: ' + String(error.message || error).slice(0, 500));
         historyMatches.forEach(function(historyEntry) {
           historySheet.getRange(historyEntry.sheetRow, historyColumns['Delivery Status']).setValue('Failed');
         });

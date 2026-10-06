@@ -12,6 +12,7 @@
  * - ADB_NATIVE_MANAGE_DEV_SITE_ORIGIN=https://austindailybriefing.com
  * - ADB_NATIVE_MANAGE_DEV_SEND_EMAIL=TRUE
  * - ADB_NATIVE_MANAGE_DEV_ALLOWLIST=<controlled DEV recipient(s)>
+ * - ADB_NATIVE_MANAGE_DEV_CONFIRM_PAGE_URL=https://austindailybriefing.com/manage-confirm.html
  * - RESEND_API_KEY=<secret>
  */
 
@@ -33,6 +34,7 @@ const ADB_NATIVE_MANAGE_DEV = Object.freeze({
   SITE_ORIGIN_PROPERTY: 'ADB_NATIVE_MANAGE_DEV_SITE_ORIGIN',
   SEND_EMAIL_PROPERTY: 'ADB_NATIVE_MANAGE_DEV_SEND_EMAIL',
   ALLOWLIST_PROPERTY: 'ADB_NATIVE_MANAGE_DEV_ALLOWLIST',
+  CONFIRM_PAGE_URL_PROPERTY: 'ADB_NATIVE_MANAGE_DEV_CONFIRM_PAGE_URL',
   RESEND_KEY_PROPERTY: 'RESEND_API_KEY',
 
   DEFAULT_SITE_ORIGIN: 'https://austindailybriefing.com',
@@ -119,7 +121,7 @@ function doPost(e) {
 
     if (action === 'confirm') {
       const result = adbManageConfirmRequestDevV1_(params.token || '');
-      return adbManageConfirmationResultHtml_(result);
+      return adbManageConfirmPostMessageHtml_(result, String(params.client_nonce || ''));
     }
 
     if (action !== 'request') {
@@ -142,19 +144,9 @@ function doPost(e) {
   }
 }
 
-function doGet(e) {
-  try {
-    adbManageAssertDevEnabled_();
-    const params = adbManageEventParams_(e);
-    if (String(params.action || '').trim().toLowerCase() !== 'confirm' || !params.token) {
-      return adbManageSimpleHtml_('Austin Daily Briefing',
-        'This DEV endpoint accepts native management confirmations only.');
-    }
-    return adbManageConfirmPromptHtml_(String(params.token || ''));
-  } catch (error) {
-    return adbManageSimpleHtml_('Austin Daily Briefing',
-      'This confirmation link is unavailable.');
-  }
+function doGet() {
+  return adbManageSimpleHtml_('Austin Daily Briefing',
+    'Use the first-party ADB management confirmation page from the link in your email.');
 }
 
 function adbManageStageRequestDevV1_(e, params) {
@@ -283,7 +275,13 @@ function adbManageStageRequestDevV1_(e, params) {
     }
 
     try {
-      const confirmationUrl = webAppUrl + '?action=confirm&token=' +
+      const confirmationPage = String(props.getProperty(
+        ADB_NATIVE_MANAGE_DEV.CONFIRM_PAGE_URL_PROPERTY
+      ) || '').trim();
+      if (confirmationPage !== 'https://austindailybriefing.com/manage-confirm.html') {
+        throw new Error('ADB_NATIVE_MANAGE_DEV_CONFIRM_PAGE_URL is missing or invalid.');
+      }
+      const confirmationUrl = confirmationPage + '#env=development&token=' +
         encodeURIComponent(rawToken);
       const providerId = adbManageSendVerificationEmailDev_(
         email, confirmationUrl, payload.deliveryAction, payload.resetTopics
@@ -515,39 +513,23 @@ function adbManageSendVerificationEmailDev_(email, confirmationUrl, deliveryActi
   return String(result.id);
 }
 
-function adbManageConfirmPromptHtml_(rawToken) {
-  const webAppUrl = String(PropertiesService.getScriptProperties()
-    .getProperty(ADB_NATIVE_MANAGE_DEV.WEB_APP_URL_PROPERTY) || '').trim();
-  if (!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(webAppUrl)) {
-    return adbManageSimpleHtml_('Austin Daily Briefing',
-      'This confirmation link is unavailable.');
-  }
+function adbManageConfirmPostMessageHtml_(result, clientNonce) {
+  const origin = String(PropertiesService.getScriptProperties()
+    .getProperty(ADB_NATIVE_MANAGE_DEV.SITE_ORIGIN_PROPERTY) ||
+    ADB_NATIVE_MANAGE_DEV.DEFAULT_SITE_ORIGIN).trim();
+  const nonce = /^[A-Za-z0-9_-]{16,128}$/.test(String(clientNonce || ''))
+    ? String(clientNonce) : '';
+  const payload = JSON.stringify({
+    type:'adb-native-manage-confirm-dev',
+    ok:!!result.ok,
+    status:String(result.status || 'temporary_error'),
+    client_nonce:nonce
+  }).replace(/</g, '\\u003c');
 
-  const html = '<!doctype html><html><head><meta charset="utf-8">' +
-    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-    '<base target="_top"><title>Confirm management request</title></head>' +
-    '<body style="font-family:Arial,sans-serif;background:#fffefa;color:#181818;margin:0;padding:40px">' +
-    '<main style="max-width:620px;margin:0 auto"><div style="border-top:5px solid #db2d2d;padding-top:24px">' +
-    '<p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#db2d2d">Austin Daily Briefing · DEV</p>' +
-    '<h1 style="font-family:Georgia,serif;font-size:36px">Confirm your management request.</h1>' +
-    '<p>Nothing changes until you press the confirmation button below. This link can be used once and expires after 24 hours.</p>' +
-    '<form method="post" action="' + adbManageEscapeHtml_(webAppUrl) + '" target="_top">' +
-    '<input type="hidden" name="action" value="confirm">' +
-    '<input type="hidden" name="token" value="' + adbManageEscapeHtml_(String(rawToken || '')) + '">' +
-    '<button type="submit" style="background:#db2d2d;color:white;border:0;padding:12px 18px;font-weight:700;cursor:pointer">Confirm request</button>' +
-    '</form><p style="margin-top:24px;color:#68635a;font-size:14px">If you did not request this, close this page and no changes will be applied.</p>' +
-    '</div></main></body></html>';
-  return HtmlService.createHtmlOutput(html);
-}
-
-function adbManageConfirmationResultHtml_(result) {
-  const ok = result && result.ok && result.status === 'confirmed';
-  return adbManageSimpleHtml_(
-    ok ? 'Request confirmed' : 'Confirmation unavailable',
-    ok
-      ? 'Your request is confirmed. The DEV management processor can now apply it exactly once.'
-      : 'The link may be invalid, expired, or already used.'
-  );
+  return HtmlService.createHtmlOutput(
+    '<!doctype html><meta charset="utf-8"><script>window.top.postMessage(' +
+    payload + ',' + JSON.stringify(origin) + ');<\\/script>'
+  ).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 function adbManagePostMessageHtml_(result, clientNonce) {

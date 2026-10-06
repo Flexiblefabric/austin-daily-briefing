@@ -243,6 +243,8 @@ Corrective requirement before retry:
 
 1. merge the repository validator fix and regression coverage;
 2. synchronize the production Apps Script source to the corrected `NativeSignupProd.gs`;
-3. create/update the versioned production web-app deployment so the `/exec` endpoint serves the corrected code;
-4. run runtime readback with the Sheet-side mode still DISABLED;
-5. only then return Sheet-side mode to CONTROLLED and retry exactly one Admin Hold safety request.
+3. create/update the versioned production web-app deployment so the `/exec` endpoint serves corrected build `native-signup-prod-stage-v1.1`;
+4. run runtime readback with the Sheet-side mode still DISABLED and confirm build `native-signup-prod-stage-v1.1`;
+5. only then return Sheet-side mode to CONTROLLED;
+6. run `runGateDDeploymentSafetyRequestV1()` exactly once. This helper reads the private production `/exec` URL and controlled email from Integration Config and posts through the actual deployed web app rather than calling `doPost()` directly in the editor;
+7. verify one staged request, then process/reconcile it through Subscriber Operations for the Admin Hold no-op.

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-06.4",
+  "registry_version": "2026-10-06.5",
   "last_reviewed": "2026-10-06",
   "project": {
     "name": "Austin Daily Briefing",
@@ -94,7 +94,7 @@
     "native_signup_intake": {
       "status": "staging",
       "provider": "Google Apps Script",
-      "environment": "production web app corrected to native-signup-prod-stage-v1.1; Admin Hold safety no-op passed through actual /exec deployment; Sheet-side Native Signup Mode is DISABLED while mutating QA allowlist is prepared; public signup remains Google Form",
+      "environment": "controlled production Gate D passed on deployed native-signup-prod-stage-v1.1; Sheet-side Native Signup Mode returned to DISABLED; public signup remains Google Form; final closeout awaits endpoint Script Property disarm",
       "source_path": "apps-script/NativeSignupProd.gs",
       "public_cutover": "not authorized; public signup remains Google Form through Gate D",
       "pre_d2_backup_id": "1iJ4i4bRmgs0PwQd-k_g8i3Z374QWLexekmab7d5Acl8"
@@ -216,8 +216,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D Admin Hold safety no-op passed through the deployed v1.1 production endpoint and canonical Subscriber Operations: hold preserved, no native Signup Action or Welcome, zero errors. Sheet-side Native Signup Mode is DISABLED and the operator-owned mutating QA identity is prepared privately. Next: replace the endpoint Script Property allowlist with the mutating QA identity, re-arm CONTROLLED mode, run one deployed-endpoint signup, process exactly once, deliver exactly one Welcome through Resend, then verify replay/duplicate behavior",
-      "verification": "2026-10-06 Gate D safety PASS: deployed v1.1 endpoint staged exactly one controlled request; canonical production processing completed it as Processed/admin_hold_noop; Admin Hold subscriber/profile unchanged; no NATIVE:SIGNUP action and no WELCOME-NATIVE message created; Subscriber Operations monitoring Healthy with one processed native signup and zero messages/errors. The Sheet-side gate was then returned to DISABLED and the mutating QA identity was verified absent from Subscribers, Signup Actions and Outbound Messages."
+      "reporting": "FORM-7 Gates A–C complete. Gate D controlled production passed: Admin Hold no-op preserved the hold, new-subscriber path created exactly one subscriber/profile, 23 Normal preferences, one Signup Action and one Welcome; hourly Resend delivered exactly once with provider ID, and manual dispatcher replay sent zero. Sheet-side mode is DISABLED. Final Gate D closeout awaits setting ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE and removing the endpoint allowlist.",
+      "verification": "2026-10-06 Gate D controlled-production PASS: deployed v1.1 endpoint staged one Admin Hold safety request and one mutating QA request; canonical processing completed admin_hold_noop and new_subscriber as expected; mutating path produced one Active subscriber/profile, 23 Normal preferences, one deterministic Signup Action and one deterministic WELCOME_V1. Hourly Resend dispatcher sent the Welcome once at 14:27 CT with provider ID recorded; later manual dispatcher invocation returned mode=LIVE, sent=0, skipped=0. No duplicate subscriber/action/Welcome/provider handoff exists. Sheet-side Native Signup Mode is DISABLED."
     }
   },
   "runtime_properties": [
@@ -372,7 +372,8 @@
     "native_signup_gate_d_runtime_preflight": "docs/native-signup-gate-d-runtime-preflight.md",
     "selection_notes": "docs/selection-notes.md",
     "selection_notes_validator": "scripts/validate_selection_notes.py",
-    "native_signup_gate_d_safety_result": "docs/native-signup-gate-d-safety-result.md"
+    "native_signup_gate_d_safety_result": "docs/native-signup-gate-d-safety-result.md",
+    "native_signup_gate_d_result": "docs/native-signup-gate-d-result.md"
   },
   "governance": {
     "registry_is_authoritative": true,

@@ -5,7 +5,7 @@
  * Never place the key in Sheets or source code.
  */
 const ADB_RESEND = Object.freeze({
-  BUILD: 'resend-transport-form7-v1',
+  BUILD: 'resend-transport-native-customize-v1',
   ENDPOINT: 'https://api.resend.com/emails',
   FROM: 'Austin Daily Briefing <briefing@austindailybriefing.com>',
   REPLY_TO: 'briefing@austindailybriefing.com',
@@ -20,7 +20,7 @@ const ADB_RESEND = Object.freeze({
   SUPPORTED_INTAKE_MODES: Object.freeze(['GOOGLE ONLY', 'GOOGLE + NATIVE CONTROLLED', 'GOOGLE + NATIVE']),
   PRODUCTION_DATABASE_ID: '1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0',
   PRODUCTION_INTAKE_ID: '1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho',
-  CUSTOMIZE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform',
+  CUSTOMIZE_URL: 'https://austindailybriefing.com/customize.html',
   MANAGE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform',
   FEEDBACK_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSc_0-djww4qboFaEn9k-nEponrCBBqz-MCB81sOUtLjVsOZ7w/viewform',
   SITE_URL: 'https://austindailybriefing.com/',
@@ -75,6 +75,11 @@ function validateForm7GateDTransportCompatibilityV1() {
   const requiredCopy = 'Personalized sections use the interests and reading settings saved to your profile.';
   const newSubscriberCopy = 'If you’re new, your interests start at Normal with standard reading settings.';
   const obsoleteCopy = 'subscribers begin with all interest categories set to Normal';
+  const expectedCustomizeUrl = 'https://austindailybriefing.com/customize.html';
+
+  if (ADB_RESEND.CUSTOMIZE_URL !== expectedCustomizeUrl || /docs\.google\.com\/forms/i.test(ADB_RESEND.CUSTOMIZE_URL)) {
+    throw new Error('Reader-facing Customize URL must use the native customization page.');
+  }
 
   if (plain.indexOf(requiredCopy) < 0 || html.indexOf(requiredCopy) < 0) {
     throw new Error('Gate D Welcome copy is not return-safe in both renderers.');
@@ -92,6 +97,7 @@ function validateForm7GateDTransportCompatibilityV1() {
     processorMode: state.cfg['Processor Mode'],
     nativeSignupMode: nativeSignupMode,
     welcomeCopy: 'RETURN_SAFE',
+    customizeUrl: ADB_RESEND.CUSTOMIZE_URL,
     deliveryInvoked: false,
     writes: false
   };

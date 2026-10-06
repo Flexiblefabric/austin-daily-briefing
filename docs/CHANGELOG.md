@@ -2,6 +2,31 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-06 — FORM-7 Gate D controlled-production pass
+
+**Type:** Controlled-production validation  
+**Components:** native signup production endpoint, Subscriber Operations, Resend Welcome dispatcher  
+**Registry impact:** Yes — 2026-10-06.5
+
+Gate D completed the mutating production path after the Admin Hold safety pass.
+
+### Evidence
+
+- The deployed `native-signup-prod-stage-v1.1` endpoint staged exactly one controlled new-subscriber request.
+- Canonical Subscriber Operations created exactly one Active subscriber/profile, 23 Normal preferences, one deterministic native Signup Action and one deterministic Queued `WELCOME_V1`.
+- The request completed as `Processed / new_subscriber`.
+- The live hourly Resend Welcome dispatcher delivered the queued message naturally and recorded exactly one provider ID.
+- The controlled QA inbox confirmed receipt.
+- A later manual dispatcher invocation returned `mode=LIVE, sent=0, skipped=0`, proving zero-send replay.
+- Post-run readback found one subscriber, one profile, 23 preferences, one native Signup Action and one native Welcome, with no duplicate provider handoff.
+
+### Safety state
+
+- Sheet-side `Native Signup Mode` was returned to `DISABLED`.
+- Public signup remains the Google Form.
+- Final Gate D closeout is limited to endpoint Script Property disarm: set `ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE`, remove `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST`, and verify the v1.1 runtime is inert.
+- Gate E remains a separate public-cutover decision.
+
 ## 2026-10-06 — FORM-7 Gate D Admin Hold safety pass
 
 **Type:** Controlled-production validation  

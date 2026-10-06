@@ -217,3 +217,32 @@ Current safety state:
 6. Return the endpoint to inert state, then switch both Sheet-side controlled email and Script Property allowlist to the privately selected operator-owned mutating identity for the second controlled test.
 
 Do not commit either private address or the deployment URL to GitHub.
+
+## D6 safety attempt — validator defect and rollback
+
+On 2026-10-06 the first Admin Hold safety request reached the production native-signup endpoint while the feature was armed only for the retained QA identity. The endpoint wrote a privacy-safe `received` diagnostic and then returned `validation_error / invalid_email`; no native request row was staged.
+
+Readback confirmed:
+
+- the Admin Hold subscriber remained unchanged;
+- the existing profile remained unchanged;
+- no new Signup Action was created;
+- no new Welcome was queued or delivered;
+- no native request was staged.
+
+Root cause was a production-source escaping defect in `adbSignupProdValidEmail_`: whitespace patterns had been emitted as `/s/` and `[^s@]` rather than `/\\s/` and `[^\\s@]`. This caused any address containing the letter `s` to be rejected as invalid.
+
+Immediate safety response:
+
+- production Integration Config `Native Signup Mode` was returned to `DISABLED`;
+- the prepared Admin Hold controlled email was retained for retry;
+- public signup remained the Google Form;
+- no processor or dispatcher action was run.
+
+Corrective requirement before retry:
+
+1. merge the repository validator fix and regression coverage;
+2. synchronize the production Apps Script source to the corrected `NativeSignupProd.gs`;
+3. create/update the versioned production web-app deployment so the `/exec` endpoint serves the corrected code;
+4. run runtime readback with the Sheet-side mode still DISABLED;
+5. only then return Sheet-side mode to CONTROLLED and retry exactly one Admin Hold safety request.

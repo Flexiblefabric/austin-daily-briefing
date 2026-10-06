@@ -478,8 +478,8 @@ function adbSignupProdNormalizeEmail_(value) {
 }
 
 function adbSignupProdValidEmail_(email) {
-  if (!email || email.length > 254 || /s/.test(email)) return false;
-  return /^[^s@]+@[^s@]+.[^s@]+$/.test(email);
+  if (!email || email.length > 254 || /\s/.test(email)) return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function adbSignupProdSha256Hex_(text) {

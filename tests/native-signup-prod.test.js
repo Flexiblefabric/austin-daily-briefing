@@ -118,6 +118,18 @@ function diagRows(intake){ return intake.getSheetByName('Native Signup Diagnosti
   assert(/^[A-Za-z0-9_-]{43}$/.test(row[6]));
 })();
 
+(function emailValidationAllowsLetterS(){
+  const {context,intake}=runtime({
+    props:{ADB_NATIVE_SIGNUP_PROD_ALLOWLIST:'stress@example.com'},
+    controlledEmail:'stress@example.com'
+  });
+  assert.strictEqual(context.adbSignupProdValidEmail_('stress@example.com'),true);
+  assert.strictEqual(context.adbSignupProdValidEmail_('stress @example.com'),false);
+  context.doPost(event('stress@example.com'));
+  assert.strictEqual(requestRows(intake).length,2);
+  assert.strictEqual(requestRows(intake)[1][2],'stress@example.com');
+})();
+
 (function controlledUnauthorizedGenericNoop(){
   const {context,intake}=runtime();
   context.doPost(event('other@example.com'));

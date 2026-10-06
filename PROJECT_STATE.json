@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-06.3",
+  "registry_version": "2026-10-06.4",
   "last_reviewed": "2026-10-06",
   "project": {
     "name": "Austin Daily Briefing",
@@ -94,7 +94,7 @@
     "native_signup_intake": {
       "status": "staging",
       "provider": "Google Apps Script",
-      "environment": "production web app remains disarmed after validator rollback; corrected repository build native-signup-prod-stage-v1.1 includes deployed-endpoint smoke verification and awaits production Apps Script synchronization/redeployment; public signup remains Google Form",
+      "environment": "production web app corrected to native-signup-prod-stage-v1.1; Admin Hold safety no-op passed through actual /exec deployment; Sheet-side Native Signup Mode is DISABLED while mutating QA allowlist is prepared; public signup remains Google Form",
       "source_path": "apps-script/NativeSignupProd.gs",
       "public_cutover": "not authorized; public signup remains Google Form through Gate D",
       "pre_d2_backup_id": "1iJ4i4bRmgs0PwQd-k_g8i3Z374QWLexekmab7d5Acl8"
@@ -216,8 +216,8 @@
       "status": "development",
       "cadence": "manual gated rollout",
       "runbook": "docs/native-signup-gate-d.md",
-      "reporting": "FORM-7 Gates A–C complete. Gate D Admin Hold safety attempt safely exposed and rolled back an email-validator defect before staging. The validator fix is merged; corrected build native-signup-prod-stage-v1.1 now adds a deployment-smoke helper that posts through the actual configured /exec endpoint. Next: merge this verification update, synchronize/redeploy production NativeSignupProd.gs, confirm v1.1 runtime while Sheet mode is DISABLED, then re-arm and retry the Admin Hold no-op",
-      "verification": "2026-10-06 first controlled Admin Hold attempt created only received + invalid_email diagnostics and no Native Signup Request; subscriber/profile/Welcome/Signup Action remained unchanged and Sheet-side mode was returned to DISABLED. Root-cause regex correction passed request-path CI. The follow-up v1.1 build requires the retry to exercise the deployed /exec URL through UrlFetchApp rather than editor-only doPost execution."
+      "reporting": "FORM-7 Gates A–C complete. Gate D Admin Hold safety no-op passed through the deployed v1.1 production endpoint and canonical Subscriber Operations: hold preserved, no native Signup Action or Welcome, zero errors. Sheet-side Native Signup Mode is DISABLED and the operator-owned mutating QA identity is prepared privately. Next: replace the endpoint Script Property allowlist with the mutating QA identity, re-arm CONTROLLED mode, run one deployed-endpoint signup, process exactly once, deliver exactly one Welcome through Resend, then verify replay/duplicate behavior",
+      "verification": "2026-10-06 Gate D safety PASS: deployed v1.1 endpoint staged exactly one controlled request; canonical production processing completed it as Processed/admin_hold_noop; Admin Hold subscriber/profile unchanged; no NATIVE:SIGNUP action and no WELCOME-NATIVE message created; Subscriber Operations monitoring Healthy with one processed native signup and zero messages/errors. The Sheet-side gate was then returned to DISABLED and the mutating QA identity was verified absent from Subscribers, Signup Actions and Outbound Messages."
     }
   },
   "runtime_properties": [
@@ -371,7 +371,8 @@
     "native_signup_completion_monitoring": "docs/native-signup-completion-monitoring.md",
     "native_signup_gate_d_runtime_preflight": "docs/native-signup-gate-d-runtime-preflight.md",
     "selection_notes": "docs/selection-notes.md",
-    "selection_notes_validator": "scripts/validate_selection_notes.py"
+    "selection_notes_validator": "scripts/validate_selection_notes.py",
+    "native_signup_gate_d_safety_result": "docs/native-signup-gate-d-safety-result.md"
   },
   "governance": {
     "registry_is_authoritative": true,

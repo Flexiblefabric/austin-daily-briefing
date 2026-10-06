@@ -60,7 +60,8 @@ function runtime(opts={}){
       ['Operational Production Database ID',PROD_DB,'',''],
       ['Processor Mode',opts.processorMode||'GOOGLE + NATIVE','',''],
       ['Native Signup Mode',opts.signupMode||'CONTROLLED','',''],
-      ['Native Signup Controlled Email',opts.controlledEmail !== undefined ? opts.controlledEmail : 'control@example.com','','']
+      ['Native Signup Controlled Email',opts.controlledEmail !== undefined ? opts.controlledEmail : 'control@example.com','',''],
+      ['Native Signup Production Web App URL',opts.webAppUrl||'https://script.google.com/macros/s/TEST_DEPLOYMENT/exec','','']
     ],
     'Native Signup Requests':[
       ['Request ID','Created At','Email','Consent','Source','Client Nonce','Response Key','Status','Processed At','Result','Notes']
@@ -70,6 +71,7 @@ function runtime(opts={}){
     ]
   });
   const cache=new Map();
+  const fetches=[];
   let uuid=0;
   const context={
     console:{log(){},error(){}},
@@ -92,11 +94,12 @@ function runtime(opts={}){
       base64EncodeWebSafe(bytes){return Buffer.from(bytes.map(b=>b<0?b+256:b)).toString('base64url');},
       getUuid(){uuid++;return '00000000-0000-4000-8000-'+String(uuid).padStart(12,'0');}
     },
-    HtmlService:{XFrameOptionsMode:{ALLOWALL:'ALLOWALL'},createHtmlOutput(html){return{html,setXFrameOptionsMode(){return this;}};}}
+    HtmlService:{XFrameOptionsMode:{ALLOWALL:'ALLOWALL'},createHtmlOutput(html){return{html,setXFrameOptionsMode(){return this;}};}},
+    UrlFetchApp:{fetch(url,options){fetches.push({url,options});return{getResponseCode(){return 200;}};}}
   };
   vm.createContext(context);
   vm.runInContext(source,context,{filename:'apps-script/NativeSignupProd.gs'});
-  return {context,db,intake};
+  return {context,db,intake,fetches};
 }
 function event(email,nonce='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',extra={}){
   return {parameter:Object.assign({
@@ -128,6 +131,22 @@ function diagRows(intake){ return intake.getSheetByName('Native Signup Diagnosti
   context.doPost(event('stress@example.com'));
   assert.strictEqual(requestRows(intake).length,2);
   assert.strictEqual(requestRows(intake)[1][2],'stress@example.com');
+})();
+
+(function deploymentSafetyHelperUsesConfiguredEndpoint(){
+  const {context,fetches}=runtime({
+    controlledEmail:'stress@example.com',
+    webAppUrl:'https://script.google.com/macros/s/TEST_DEPLOYMENT/exec'
+  });
+  const report=context.runGateDDeploymentSafetyRequestV1();
+  assert.strictEqual(report.build,'native-signup-prod-stage-v1.1');
+  assert.strictEqual(report.httpStatus,200);
+  assert.strictEqual(report.deploymentInvoked,true);
+  assert.strictEqual(fetches.length,1);
+  assert.strictEqual(fetches[0].url,'https://script.google.com/macros/s/TEST_DEPLOYMENT/exec');
+  assert.strictEqual(fetches[0].options.payload.email,'stress@example.com');
+  assert.strictEqual(fetches[0].options.payload.consent,'yes');
+  assert.strictEqual(fetches[0].options.payload.source,'website');
 })();
 
 (function controlledUnauthorizedGenericNoop(){

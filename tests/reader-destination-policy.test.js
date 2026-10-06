@@ -1,6 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 
 const transport = fs.readFileSync('apps-script/ResendTransport.gs', 'utf8');
 
@@ -98,5 +99,71 @@ assert(dailyPrompt.includes('ADB-READER-DESTINATIONS-1.0'));
 assert(dailyPrompt.includes(URLS.CUSTOMIZE_NATIVE));
 assert(!dailyPrompt.includes('unless an explicit native-customization outage has been declared for that run'),
   'Operator-only Customize fallback must not be authorized for reader-facing outage use.');
+
+
+const sandbox = {};
+vm.createContext(sandbox);
+vm.runInContext(
+  transport +
+    '\\nthis.__validateReaderDestinations = adbValidateReaderFacingDestinations_;' +
+    '\\nthis.__readerDestinations = ADB_READER_DESTINATIONS;',
+  sandbox
+);
+
+const dailyRoles = ['SITE','CUSTOMIZE','MANAGE','FEEDBACK','CORRECTIONS_LOG','PRIVACY','TERMS'];
+const validDailyBody = dailyRoles
+  .map(role => sandbox.__readerDestinations[role].primaryUrl)
+  .join('\n');
+
+assert.doesNotThrow(() => sandbox.__validateReaderDestinations(
+  validDailyBody,
+  validDailyBody,
+  {
+    context: 'synthetic valid daily',
+    requiredRoles: dailyRoles,
+    customizeUrlField: URLS.CUSTOMIZE_NATIVE
+  }
+));
+
+assert.throws(() => sandbox.__validateReaderDestinations(
+  validDailyBody + '\n' + URLS.CUSTOMIZE_FORM,
+  validDailyBody + '\n' + URLS.CUSTOMIZE_FORM,
+  {
+    context: 'synthetic legacy customize',
+    requiredRoles: dailyRoles,
+    customizeUrlField: URLS.CUSTOMIZE_NATIVE
+  }
+), /operator-only fallback|unauthorized reader-facing Google Form/);
+
+assert.throws(() => sandbox.__validateReaderDestinations(
+  validDailyBody + '\n' + URLS.SIGNUP_FORM,
+  validDailyBody + '\n' + URLS.SIGNUP_FORM,
+  {
+    context: 'synthetic unrelated signup fallback',
+    requiredRoles: dailyRoles,
+    customizeUrlField: URLS.CUSTOMIZE_NATIVE
+  }
+), /unauthorized reader-facing Google Form/);
+
+assert.throws(() => sandbox.__validateReaderDestinations(
+  validDailyBody,
+  validDailyBody,
+  {
+    context: 'synthetic stale queue field',
+    requiredRoles: dailyRoles,
+    customizeUrlField: URLS.CUSTOMIZE_FORM
+  }
+), /noncanonical Customize URL field/);
+
+const unknownForm = 'https://docs.google.com/forms/d/e/1FAIpQLUnknownReaderFacingForm/viewform';
+assert.throws(() => sandbox.__validateReaderDestinations(
+  validDailyBody + '\n' + unknownForm,
+  validDailyBody + '\n' + unknownForm,
+  {
+    context: 'synthetic unknown form',
+    requiredRoles: dailyRoles,
+    customizeUrlField: URLS.CUSTOMIZE_NATIVE
+  }
+), /unauthorized reader-facing Google Form/);
 
 console.log('Reader destination policy QA passed.');

@@ -80,6 +80,12 @@ function getNativeSignupProdRuntimeStatusV1() {
   };
 }
 
+function logNativeSignupProdRuntimeStatusV1() {
+  const status = getNativeSignupProdRuntimeStatusV1();
+  console.log(JSON.stringify(status));
+  return status;
+}
+
 function validateNativeSignupProdPreflightV1() {
   adbSignupProdAssertTargets_();
 

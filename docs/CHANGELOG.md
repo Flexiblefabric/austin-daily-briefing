@@ -2,6 +2,32 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-05 — FORM-7 Gate D deployment and controlled-test readiness
+
+**Type:** Controlled-production staging  
+**Components:** native signup production endpoint, production Integration Config, controlled QA setup  
+**Registry impact:** Yes — 2026-10-05.3
+
+The separate production native-signup web app deployment is now recorded in private production configuration, and the controlled Gate D test identities are prepared without enabling native signup.
+
+### Changes
+
+- Recorded the production native-signup web-app deployment URL in the private production Integration Config; the exact URL is intentionally omitted from GitHub.
+- Prepared the retained Admin Hold QA identity as the current Sheet-side controlled email for the first non-mutating safety test.
+- Recorded an operator-owned deliverable mutating QA identity privately for the second controlled test.
+- Preserved `Native Signup Mode = DISABLED`.
+- Preserved the endpoint in an unarmed state; no Script Property allowlist or enable gate was activated by this change.
+- Public signup remains the Google Form.
+
+### Validation
+
+- Readback confirmed the private deployment record and both controlled-test records.
+- Native Signup Mode remains DISABLED.
+- No native signup request was staged.
+- No subscriber, profile, preference, Signup Action, Welcome queue, or delivery record was changed.
+
+The next Gate D action is to arm only the endpoint Script Property allowlist/enable gate for the retained Admin Hold QA identity, then explicitly switch the Sheet-side Native Signup Mode to CONTROLLED for the safety no-op.
+
 ## 2026-10-05 — FORM-7 Gate D production runtime parity
 
 **Type:** Controlled-production preflight / production runtime synchronization  

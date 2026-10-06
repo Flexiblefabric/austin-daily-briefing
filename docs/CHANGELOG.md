@@ -2,6 +2,29 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+
+## 2026-10-06 — FORM-7 Gate E native signup public promotion
+
+**Type:** Development-to-production promotion and public routing change  
+**Components:** native signup production endpoint, public website, Subscriber Operations, Welcome delivery  
+**Registry impact:** Yes — 2026-10-06.6
+
+Austin Daily Briefing promoted first-party native signup to the public production route after Gate D controlled-production validation and final inert closeout.
+
+### Promotion evidence
+
+- The operator-run production runtime logger returned build `native-signup-prod-stage-v1.1`, `enabled=true`, runtime mode `LIVE`, `allowlistConfigured=false`, exact production site origin, `Native Signup Mode=LIVE`, no controlled email and shared `Processor Mode=GOOGLE + NATIVE`.
+- PR #95 merged the production `signup.html` configuration and public Get the Briefing routing.
+- GitHub Pages deployment run `37525703129` completed successfully and evaluated the production environment URL as `https://austindailybriefing.com/`.
+- The Google signup form remains available as an explicit fallback.
+- Production Subscriber Operations remains the sole owner of subscriber/profile/preference/Signup Action/Welcome-queue mutation.
+- The Resend Welcome dispatcher remains the sole owner of Welcome delivery and provider-ID recording.
+- The Native Signup Requests table contained only the two terminal Gate D QA requests at cutover; no pending controlled request was carried into LIVE mode.
+
+### Transition
+
+FORM-7 Gates A–E are complete. Gate F normal-cycle observation is active for duplicate creation, queue ownership, Welcome delivery, processor health, abuse controls and unrelated subscriber regressions. Google-form retirement remains deferred to FORM-10.
+
 ## 2026-10-06 — FORM-7 Gate D controlled-production pass
 
 **Type:** Controlled-production validation  

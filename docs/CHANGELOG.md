@@ -2,6 +2,16 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+## 2026-10-06 — Structured editorial notes and selection validation
+
+**Type:** Editorial evidence and validation enforcement (effective after merge)
+**Components:** generation prompt, selection provenance, read-only pre-queue validator
+**Registry impact:** Yes — 2026-10-06.1
+
+Adds ADB-SELECTION-NOTE-1 in existing Briefing History Notes: original eligible slates and displacement decisions, actual saved-preference score calibration, precise prior/new repeat facts with source passages, and independent Under the Radar search evidence including empty outcomes. The daily generator must run the validator on its actual proposed records before queue/history writes and verify exact note readback. Scoring contracts, weights, floors, schedule, template and delivery ownership remain unchanged. No production tables or scheduled tasks are added.
+
+Synthetic regressions exercise the October 6 Normal-interest score drift pattern, score/floor boundaries, original-slate displacement and no-chain rules, vague/calendar-only repeats, UTR evidence, source timing and private-input error handling. This records implementation readiness, not successful live generation under the new notes contract. First post-merge observation remains open. No historical production notes were rewritten and no edition was generated or resent.
+
 ## 2026-10-05 — FORM-7 Gate D deployment and controlled-test readiness
 
 **Type:** Controlled-production staging  

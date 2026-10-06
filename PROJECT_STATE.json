@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-05.3",
-  "last_reviewed": "2026-10-05",
+  "registry_version": "2026-10-06.1",
+  "last_reviewed": "2026-10-06",
   "project": {
     "name": "Austin Daily Briefing",
     "repository": "Flexiblefabric/austin-daily-briefing",
@@ -207,10 +207,10 @@
     },
     "v2_production_observation": {
       "status": "observation",
-      "cadence": "October 4 first cycle and October 5 one-time follow-up completed",
+      "cadence": "Normal-cycle observation; next check follows structured-notes merge",
       "runbook": "docs/v2-promotion-2026-10-03.md",
       "reporting": "Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend",
-      "verification": "Both production reviews completed; Oct. 4: 12 editions/166 history rows accepted 09:41–09:42 CT; Oct. 5: 12 editions/157 history rows accepted 09:37 CT; launch notice only Oct. 4; Oct. 5 generation/delivery monitoring Healthy. Inbox delivery events unknown. V2-10 remains open for generation-cutoff/rejected-candidate evidence, MFY fit and Under the Radar prominence evidence; see promotion record."
+      "verification": "October 6: 12 editions queued 08:04 CT and accepted by Resend by 08:38 CT; 157 matching history rows Sent; launch notice absent. MFY audit found 39 Normal-interest entries above the approved 20-point relevance ceiling. Structured Notes and executable pre-queue enforcement prepared under ADB-SELECTION-NOTE-1; activated by merge, first live evidence pending. No historical evidence backfill or delivery replay. V2-10 remains open."
     },
     "native_signup_development": {
       "status": "development",
@@ -369,7 +369,9 @@
     "native_signup_production_processing": "docs/native-signup-production-processing.md",
     "native_signup_gate_d_compatibility": "docs/native-signup-gate-d-compatibility.md",
     "native_signup_completion_monitoring": "docs/native-signup-completion-monitoring.md",
-    "native_signup_gate_d_runtime_preflight": "docs/native-signup-gate-d-runtime-preflight.md"
+    "native_signup_gate_d_runtime_preflight": "docs/native-signup-gate-d-runtime-preflight.md",
+    "selection_notes": "docs/selection-notes.md",
+    "selection_notes_validator": "scripts/validate_selection_notes.py"
   },
   "governance": {
     "registry_is_authoritative": true,

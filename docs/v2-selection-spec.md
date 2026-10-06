@@ -127,14 +127,14 @@ Keep the existing Friday recap of at most three meaningful developments. V2 does
 
 ## Internal evidence and pre-queue checks
 
-Preserve a compact selection audit with specification IDs, generation cutoff, source links/access, candidate topic/key, applicable history, material change, event timing, component scores/sum, section, match reason, balance/control effects and final disposition. Never include subscriber identities or private profile details in public repository records. Use existing authorized history/notes fields for published-item provenance; introduce no new production tables in this release.
+Preserve a compact selection audit with specification IDs, generation cutoff, source links/access, candidate topic/key, applicable history, material change, event timing, component scores/sum, section, match reason, balance/control effects and final disposition. Never include subscriber identities or private profile details in public repository records. Use existing authorized history/notes fields for published-item provenance; introduce no new production tables in this release. The required serialization and executable pre-queue evidence checks are defined in [Structured selection notes](selection-notes.md), contract ADB-SELECTION-NOTE-1. Preserve original eligible rankings and rejected-candidate reasons inside Notes, never as additional published-item rows. Missing evidence is not a passing check.
 
 Before queueing, confirm:
 - Source and procedural-status checks pass; timestamps do not overstate availability.
-- Every shared item meets the shared floor and every MFY item meets all three MFY minimums.
+- Every shared item meets the shared floor and every MFY item meets all three MFY minimums. Enforce the interest-relevance calibration band against the actual saved preference and documented direct/adjacent match; Normal cannot receive 21–25 points.
 - Scores match the required fingerprints and sum correctly.
 - Shared selection is profile-independent; MFY excludes Off.
-- No calendar-only material-update or unchanged-repeat rescue occurred.
+- No calendar-only material-update or unchanged-repeat rescue occurred. Each ranked repeat retains the prior published fact, exact verified new fact, source passage and incremental value; a generic material-update label is insufficient.
 - Under the Radar has independent discovery evidence or is empty.
 - Every variety/promotion displacement meets its own limits and preserved scores.
 - No cross-section duplication, filler, new labels or unsolicited Friday expansion.

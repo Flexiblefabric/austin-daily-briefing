@@ -279,6 +279,9 @@ function adbNsProcResubscribe_(db, intake, requestSheet, request, subscriber, em
     return String(row['Profile ID'] || '').trim() === profileId;
   });
   if (profiles.length !== 1) throw new Error('Re-subscribe requires exactly one existing profile.');
+  if (String(profiles[0].Status || '').trim() !== 'Unsubscribed') {
+    throw new Error('Re-subscribe requires matching Unsubscribed subscriber and profile statuses.');
+  }
 
   const preferences = adbNsProcRows_(preferencesSheet).rows.filter(function(row) {
     return String(row['Profile ID'] || '').trim() === profileId;
@@ -293,6 +296,8 @@ function adbNsProcResubscribe_(db, intake, requestSheet, request, subscriber, em
 
   subscribersSheet.getRange(subscriber.__rowNumber, 2).setValue('Active');
   subscribersSheet.getRange(subscriber.__rowNumber, 4).setValue(now);
+  profilesSheet.getRange(profiles[0].__rowNumber, 2).setValue('Active');
+  profilesSheet.getRange(profiles[0].__rowNumber, 4).setValue(actionId);
 
   actionsSheet.appendRow([
     actionId,

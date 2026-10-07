@@ -19,7 +19,6 @@
   const endpointPattern = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
   let token = '';
   let endpoint = '';
-  let pendingNonce = '';
   let pending = false;
 
   function setStatus(kind, message) {
@@ -33,18 +32,6 @@
     return Array.prototype.map.call(bytes, function (value) {
       return value.toString(16).padStart(2, '0');
     }).join('');
-  }
-
-  function isAllowedResultOrigin(origin) {
-    try {
-      const url = new URL(origin);
-      if (url.protocol !== 'https:') return false;
-      return url.hostname === 'script.google.com' ||
-        url.hostname === 'script.googleusercontent.com' ||
-        url.hostname.endsWith('-script.googleusercontent.com');
-    } catch (error) {
-      return false;
-    }
   }
 
   function unavailable(message) {
@@ -68,8 +55,33 @@
     setStatus('success', 'Confirmation accepted.');
   }
 
+  function temporaryError() {
+    token = '';
+    pending = false;
+    button.disabled = true;
+    title.textContent = 'We could not confirm this request.';
+    copy.textContent = 'No management change was applied. Reopen the confirmation link from your email and try again.';
+    help.textContent = 'If the problem continues, submit a new management request.';
+    setStatus('error', 'Confirmation was not completed.');
+  }
+
   const rawHash = window.location.hash ? window.location.hash.slice(1) : '';
   const params = new URLSearchParams(rawHash);
+  const result = String(params.get('result') || '').trim().toLowerCase();
+
+  if (result === 'confirmed') {
+    confirmed();
+    return;
+  }
+  if (result === 'invalid_or_expired') {
+    unavailable('The link may be invalid, expired, or already used.');
+    return;
+  }
+  if (result === 'temporary_error') {
+    temporaryError();
+    return;
+  }
+
   token = String(params.get('token') || '').trim();
   let environment = String(params.get('env') || defaultEnvironment).trim().toLowerCase();
   if (environment === 'dev') environment = 'development';
@@ -89,34 +101,12 @@
 
   button.addEventListener('click', function () {
     if (!token || pending) return;
-    pendingNonce = createNonce();
-    nonceInput.value = pendingNonce;
+    nonceInput.value = createNonce();
     tokenInput.value = token;
     pending = true;
     button.disabled = true;
     button.textContent = 'Confirming…';
     setStatus('notice', 'Confirming your request…');
     form.submit();
-  });
-
-  window.addEventListener('message', function (event) {
-    if (!isAllowedResultOrigin(event.origin)) return;
-    const data = event.data;
-    if (!data || data.type !== 'adb-native-manage-confirm-dev') return;
-    if (!pendingNonce || data.client_nonce !== pendingNonce) return;
-
-    if (data.ok && data.status === 'confirmed') {
-      confirmed();
-      return;
-    }
-    if (data.status === 'invalid_or_expired') {
-      unavailable('The link may be invalid, expired, or already used.');
-      return;
-    }
-
-    pending = false;
-    button.disabled = false;
-    button.textContent = 'Confirm request';
-    setStatus('error', 'We could not confirm this request right now. Reopen the link from your email and try again.');
   });
 })();

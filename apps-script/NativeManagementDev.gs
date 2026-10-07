@@ -123,7 +123,7 @@ function doPost(e) {
 
     if (action === 'confirm') {
       const result = adbManageConfirmRequestDevV1_(params.token || '');
-      return adbManageConfirmPostMessageHtml_(result, String(params.client_nonce || ''));
+      return adbManageConfirmRedirectHtml_(result);
     }
 
     if (action !== 'request') {
@@ -141,7 +141,7 @@ function doPost(e) {
     const params = adbManageEventParams_(e);
     const failure = {ok:false,status:'temporary_error'};
     if (String(params.action || '').trim().toLowerCase() === 'confirm') {
-      return adbManageConfirmPostMessageHtml_(failure, String(params.client_nonce || ''));
+      return adbManageConfirmRedirectHtml_(failure);
     }
     failure.message = 'We could not process that request right now. Please try again later.';
     return adbManagePostMessageHtml_(failure, String(params.client_nonce || ''));
@@ -517,23 +517,28 @@ function adbManageSendVerificationEmailDev_(email, confirmationUrl, deliveryActi
   return String(result.id);
 }
 
-function adbManageConfirmPostMessageHtml_(result, clientNonce) {
-  const origin = String(PropertiesService.getScriptProperties()
-    .getProperty(ADB_NATIVE_MANAGE_DEV.SITE_ORIGIN_PROPERTY) ||
-    ADB_NATIVE_MANAGE_DEV.DEFAULT_SITE_ORIGIN).trim();
-  const nonce = /^[A-Za-z0-9_-]{16,128}$/.test(String(clientNonce || ''))
-    ? String(clientNonce) : '';
-  const payload = JSON.stringify({
-    type:'adb-native-manage-confirm-dev',
-    ok:!!result.ok,
-    status:String(result.status || 'temporary_error'),
-    client_nonce:nonce
-  }).replace(/</g, '\\u003c');
+function adbManageConfirmRedirectHtml_(result) {
+  let outcome = 'temporary_error';
+  if (result && result.ok && result.status === 'confirmed') {
+    outcome = 'confirmed';
+  } else if (result && result.status === 'invalid_or_expired') {
+    outcome = 'invalid_or_expired';
+  }
+
+  const destination = ADB_NATIVE_MANAGE_DEV.DEFAULT_SITE_ORIGIN +
+    '/manage-confirm.html#result=' + encodeURIComponent(outcome);
+  const safeDestination = adbManageEscapeHtml_(destination);
+  const scriptDestination = JSON.stringify(destination).replace(/</g, '\\u003c');
 
   return HtmlService.createHtmlOutput(
-    '<!doctype html><meta charset="utf-8"><script>window.top.postMessage(' +
-    payload + ',' + JSON.stringify(origin) + ');<\\/script>'
-  ).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    '<!doctype html><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<meta http-equiv="refresh" content="0; url=' + safeDestination + '">' +
+    '<title>Returning to Austin Daily Briefing</title>' +
+    '<p>Returning to Austin Daily Briefing…</p>' +
+    '<p><a href="' + safeDestination + '">Continue</a></p>' +
+    '<script>window.location.replace(' + scriptDestination + ');<\\/script>'
+  );
 }
 
 function adbManagePostMessageHtml_(result, clientNonce) {

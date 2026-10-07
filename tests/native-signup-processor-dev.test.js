@@ -279,7 +279,7 @@ function findRow(book, name, column, value) {
   const {context, db, intake} = makeRuntime({
     email:'returning@example.com',
     subscribers:[['returning@example.com','Unsubscribed','old','old','Existing subscriber','PDEV004','returning@example.com','OK']],
-    profiles:[['PDEV004','Active','returning@example.com','old-submission','https://docs.google.com/forms/d/e/DEV/viewform','old','Existing profile','More','Explanatory','Brief']],
+    profiles:[['PDEV004','Unsubscribed','returning@example.com','old-submission','https://docs.google.com/forms/d/e/DEV/viewform','old','Existing profile','More','Explanatory','Brief']],
     preferences:savedPrefs
   });
 
@@ -291,6 +291,9 @@ function findRow(book, name, column, value) {
   assert.strictEqual(sub[5], 'PDEV004');
 
   const profile = findRow(db,'Profiles','Profile ID','PDEV004');
+  assert.strictEqual(profile[1], 'Active');
+  assert.strictEqual(profile[3], 'NATIVE:SIGNUP:' + 'A'.repeat(43));
+  assert.strictEqual(profile[5], 'old');
   assert.strictEqual(profile[7], 'More');
   assert.strictEqual(profile[8], 'Explanatory');
   assert.strictEqual(profile[9], 'Brief');
@@ -306,6 +309,22 @@ function findRow(book, name, column, value) {
   assert(msg);
   assert.strictEqual(msg[5], 'Queued');
   assert.strictEqual(rows(intake,'Native Signup Requests')[1][9], 'resubscribed');
+})();
+
+(function mismatchedProfileStatusFailsClosed() {
+  const {context, db, intake} = makeRuntime({
+    email:'mismatch@example.com',
+    subscribers:[['mismatch@example.com','Unsubscribed','old','old','Existing subscriber','PDEV004','mismatch@example.com','OK']],
+    profiles:[['PDEV004','Active','mismatch@example.com','old-submission','https://docs.google.com/forms/d/e/DEV/viewform','old','Existing profile','More','Explanatory','Brief']],
+    preferences:interestIds.map(id => ['PDEV004',id,'Normal',1,'before','old-source','PDEV004'])
+  });
+  const summary = context.processNativeSignupDevV1();
+  assert.strictEqual(summary.errors, 1);
+  assert.strictEqual(findRow(db,'Subscribers','Email','mismatch@example.com')[1], 'Unsubscribed');
+  assert.strictEqual(findRow(db,'Profiles','Profile ID','PDEV004')[1], 'Active');
+  assert.strictEqual(rows(db,'Signup Actions').length, 1);
+  assert.strictEqual(rows(db,'Outbound Messages').length, 1);
+  assert.strictEqual(rows(intake,'Native Signup Requests')[1][7], 'Error');
 })();
 
 (function ambiguousIdentityFailsClosed() {
@@ -379,7 +398,7 @@ function findRow(book, name, column, value) {
   const {context, db, intake} = makeRuntime({
     email:'legacy-returning@example.com',
     subscribers:[['legacy-returning@example.com','Unsubscribed','old','old','Existing subscriber','PDEV004','legacy-returning@example.com','OK']],
-    profiles:[['PDEV004','Active','legacy-returning@example.com','old-submission','https://docs.google.com/forms/d/e/DEV/viewform','old','Existing profile','More','Explanatory','Brief']],
+    profiles:[['PDEV004','Unsubscribed','legacy-returning@example.com','old-submission','https://docs.google.com/forms/d/e/DEV/viewform','old','Existing profile','More','Explanatory','Brief']],
     preferences:savedPrefs
   });
   const before = JSON.stringify(rows(db,'Preferences').slice(1).filter(row => row[0] === 'PDEV004'));

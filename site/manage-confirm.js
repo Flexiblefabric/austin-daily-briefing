@@ -38,6 +38,7 @@
     token = '';
     pending = false;
     button.disabled = true;
+    button.hidden = true;
     actions.hidden = false;
     title.textContent = 'This confirmation link is unavailable.';
     copy.textContent = message || 'The link may be invalid, expired, or already used.';
@@ -49,6 +50,7 @@
     token = '';
     pending = false;
     button.disabled = true;
+    button.hidden = true;
     title.textContent = 'Request confirmed.';
     copy.textContent = 'Your request is confirmed. The management processor can now apply it exactly once.';
     help.textContent = 'You can close this page.';
@@ -59,6 +61,7 @@
     token = '';
     pending = false;
     button.disabled = true;
+    button.hidden = true;
     title.textContent = 'We could not confirm this request.';
     copy.textContent = 'No management change was applied. Reopen the confirmation link from your email and try again.';
     help.textContent = 'If the problem continues, submit a new management request.';

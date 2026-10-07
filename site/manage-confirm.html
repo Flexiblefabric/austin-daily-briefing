@@ -21,7 +21,7 @@
     <p class="eyebrow">Subscriber security</p>
     <h1 id="manage-confirm-title">Confirm your management request.</h1>
     <p class="lede" id="manage-confirm-copy">Nothing changes until you confirm below. The link is single-use and expires after 24 hours.</p>
-    <form id="native-manage-confirm-form" method="post" target="adb-native-manage-confirm-result" hidden>
+    <form id="native-manage-confirm-form" method="post" target="_top" hidden>
       <input type="hidden" name="action" value="confirm">
       <input type="hidden" id="manage-confirm-token" name="token" value="">
       <input type="hidden" id="manage-confirm-client-nonce" name="client_nonce" value="">
@@ -31,7 +31,6 @@
       <div class="form-status" id="manage-confirm-status" role="status" aria-live="polite"></div>
       <p class="field-help" id="manage-confirm-help">If you did not request this change, close this page. No management change will be applied.</p>
     </div>
-    <iframe class="native-result-frame" id="adb-native-manage-confirm-result" name="adb-native-manage-confirm-result" title="Management confirmation result" aria-hidden="true"></iframe>
   </section>
 </main>
 <script src="manage-confirm-config.js"></script>

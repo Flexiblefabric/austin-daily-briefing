@@ -11,6 +11,7 @@ const confirmHtml = fs.readFileSync('site/manage-confirm.html','utf8');
 const confirmConfig = fs.readFileSync('site/manage-confirm-config.js','utf8');
 const confirmBrowser = fs.readFileSync('site/manage-confirm.js','utf8');
 const design = fs.readFileSync('docs/native-management-design.md','utf8');
+const css = fs.readFileSync('site/styles.css','utf8');
 
 function digestBytes(value) {
   const crypto = require('crypto');
@@ -65,6 +66,8 @@ function context() {
   assert(confirmBrowser.includes("params.get('result')"));
   assert(confirmBrowser.includes("form.submit()"));
   assert(confirmBrowser.includes("button.hidden = true"));
+  assert(css.includes('#manage-confirm-button[hidden]{display:none!important}'));
+
   assert(endpoint.includes("CONFIRM_PAGE_URL_PROPERTY: 'ADB_NATIVE_MANAGE_DEV_CONFIRM_PAGE_URL'"));
   assert(endpoint.includes("https://austindailybriefing.com/manage-confirm.html"));
   assert(endpoint.includes("'#env=development&token='"));

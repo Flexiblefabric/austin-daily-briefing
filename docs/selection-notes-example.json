@@ -1,0 +1,25 @@
+{
+  "run_id": "SYNTHETIC-RUN",
+  "cutoff": "2026-10-07T08:00:00-05:00",
+  "history_complete": true,
+  "history_window_start": "2026-09-23",
+  "published_history": [],
+  "profiles": {
+    "SYNTHETIC": {
+      "volume": "Standard",
+      "preferences": {
+        "TEST_INTEREST": "Normal"
+      }
+    }
+  },
+  "rows": [
+    {
+      "profile_id": "SYNTHETIC",
+      "section": "More for You",
+      "key": "a",
+      "material_update": false,
+      "source_url": "https://example.org/record",
+      "notes": "ADB-SELECTION-NOTE-1 {\"schema\":\"ADB-SELECTION-NOTE-1\",\"production_spec\":\"ADB-DAILY-PROD-2.0\",\"selection_spec\":\"ADB-V2-SELECT-1.0\",\"run_id\":\"SYNTHETIC-RUN\",\"cutoff\":\"2026-10-07T08:00:00-05:00\",\"candidate\":{\"key\":\"a\",\"topic\":\"a\",\"lane\":\"mfy\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://example.org/record\",\"access\":\"read\",\"accessed_at\":\"2026-10-07T07:30:00-05:00\",\"published_at\":\"2026-10-06T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":[20,22,16,8,8,6],\"total\":80,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"],\"fit\":{\"interest_id\":\"TEST_INTEREST\",\"saved_preference\":\"Normal\",\"match\":\"direct_normal\",\"source_feature\":\"A usable service guide with concrete instructions.\",\"reader_payoff\":\"Readers can use the service immediately.\",\"catalog_scope\":\"Synthetic enabled interest scope.\",\"off_topic_relabel\":false}},\"context\":{\"volume\":\"Standard\",\"shared_weights\":[20,20,15,15,10,10,10],\"mfy_weights\":[25,25,20,10,10,10],\"history_window_start\":\"2026-09-23\",\"top\":{\"complete_eligible_pool\":true,\"ranked\":[],\"slots\":0,\"capacity_reason\":\"Standard volume; only useful eligible items included.\",\"control_status\":\"none\",\"decisions\":[]},\"mfy\":{\"complete_eligible_pool\":true,\"ranked\":[{\"key\":\"a\",\"topic\":\"a\",\"lane\":\"mfy\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://example.org/record\",\"access\":\"read\",\"accessed_at\":\"2026-10-07T07:30:00-05:00\",\"published_at\":\"2026-10-06T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":[20,22,16,8,8,6],\"total\":80,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"],\"fit\":{\"interest_id\":\"TEST_INTEREST\",\"saved_preference\":\"Normal\",\"match\":\"direct_normal\",\"source_feature\":\"A usable service guide with concrete instructions.\",\"reader_payoff\":\"Readers can use the service immediately.\",\"catalog_scope\":\"Synthetic enabled interest scope.\",\"off_topic_relabel\":false}}],\"slots\":1,\"capacity_reason\":\"Standard volume; only useful eligible items included.\",\"control_status\":\"none\",\"decisions\":[]},\"rejected\":[],\"utr_search\":{\"independent\":true,\"outcome\":\"none_qualified\",\"reason\":\"Reviewed agenda has no consequential overlooked development.\",\"checks\":[{\"query_or_path\":\"Commission agenda and supporting records\",\"finding\":\"Only procedural approvals; no substantive discovery.\",\"source\":{\"url\":\"https://example.org/record\",\"access\":\"read\",\"accessed_at\":\"2026-10-07T07:30:00-05:00\",\"published_at\":\"2026-10-06T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}}]}}}"
+    }
+  ]
+}

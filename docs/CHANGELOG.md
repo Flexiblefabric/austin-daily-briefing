@@ -2,6 +2,243 @@
 
 This file records material internal production changes. Newest entries appear first.
 
+
+## 2026-10-06 — FORM-7 Gate E native signup public promotion
+
+**Type:** Development-to-production promotion and public routing change  
+**Components:** native signup production endpoint, public website, Subscriber Operations, Welcome delivery  
+**Registry impact:** Yes — 2026-10-06.6
+
+Austin Daily Briefing promoted first-party native signup to the public production route after Gate D controlled-production validation and final inert closeout.
+
+### Promotion evidence
+
+- The operator-run production runtime logger returned build `native-signup-prod-stage-v1.1`, `enabled=true`, runtime mode `LIVE`, `allowlistConfigured=false`, exact production site origin, `Native Signup Mode=LIVE`, no controlled email and shared `Processor Mode=GOOGLE + NATIVE`.
+- PR #95 merged the production `signup.html` configuration and public Get the Briefing routing.
+- GitHub Pages deployment run `37525703129` completed successfully and evaluated the production environment URL as `https://austindailybriefing.com/`.
+- The Google signup form remains available as an explicit fallback.
+- Production Subscriber Operations remains the sole owner of subscriber/profile/preference/Signup Action/Welcome-queue mutation.
+- The Resend Welcome dispatcher remains the sole owner of Welcome delivery and provider-ID recording.
+- The Native Signup Requests table contained only the two terminal Gate D QA requests at cutover; no pending controlled request was carried into LIVE mode.
+
+### Transition
+
+FORM-7 Gates A–E are complete. Gate F normal-cycle observation is active for duplicate creation, queue ownership, Welcome delivery, processor health, abuse controls and unrelated subscriber regressions. Google-form retirement remains deferred to FORM-10.
+
+## 2026-10-06 — FORM-7 Gate D controlled-production pass
+
+**Type:** Controlled-production validation  
+**Components:** native signup production endpoint, Subscriber Operations, Resend Welcome dispatcher  
+**Registry impact:** Yes — 2026-10-06.5
+
+Gate D completed the mutating production path after the Admin Hold safety pass.
+
+### Evidence
+
+- The deployed `native-signup-prod-stage-v1.1` endpoint staged exactly one controlled new-subscriber request.
+- Canonical Subscriber Operations created exactly one Active subscriber/profile, 23 Normal preferences, one deterministic native Signup Action and one deterministic Queued `WELCOME_V1`.
+- The request completed as `Processed / new_subscriber`.
+- The live hourly Resend Welcome dispatcher delivered the queued message naturally and recorded exactly one provider ID.
+- The controlled QA inbox confirmed receipt.
+- A later manual dispatcher invocation returned `mode=LIVE, sent=0, skipped=0`, proving zero-send replay.
+- Post-run readback found one subscriber, one profile, 23 preferences, one native Signup Action and one native Welcome, with no duplicate provider handoff.
+
+### Safety state
+
+- Sheet-side `Native Signup Mode` was returned to `DISABLED`.
+- Public signup remains the Google Form.
+- Final Gate D closeout is limited to endpoint Script Property disarm: set `ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE`, remove `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST`, and verify the v1.1 runtime is inert.
+- Gate E remains a separate public-cutover decision.
+
+## 2026-10-06 — FORM-7 Gate D Admin Hold safety pass
+
+**Type:** Controlled-production validation  
+**Components:** native signup production endpoint, Subscriber Operations, production control plane  
+**Registry impact:** Yes — 2026-10-06.4
+
+The corrected production native-signup build completed the Gate D administrative-hold safety test through the actual versioned web-app endpoint.
+
+### Evidence
+
+- The deployed endpoint staged exactly one controlled native-signup request.
+- The canonical production processor completed the request as `Processed / admin_hold_noop`.
+- The administrative hold and existing profile were preserved.
+- No native Signup Action was created.
+- No deterministic native Welcome was created or delivered.
+- Subscriber Operations monitoring recorded one processed native-signup Admin Hold no-op, zero messages sent and zero errors.
+- No duplicate subscriber identity was created.
+
+### Transition
+
+After the pass, Sheet-side `Native Signup Mode` was returned to `DISABLED`. The operator-owned mutating QA identity was verified absent from production Subscribers, Signup Actions and Outbound Messages and prepared privately for the next controlled test. The public signup route remains the Google Form.
+
+Gate D remains open for the mutating new-subscriber test, exactly-one Welcome delivery, provider-ID readback and replay/duplicate verification.
+
+## 2026-10-06 — FORM-7 Gate D email-validator rollback
+
+**Type:** Controlled-production safety rollback and source correction  
+**Components:** native signup production endpoint, Gate D QA, production Integration Config  
+**Registry impact:** Yes — 2026-10-06.2
+
+The first controlled Admin Hold native-signup safety request reached the production endpoint but failed before staging with `validation_error / invalid_email`.
+
+### Root cause
+
+The production `adbSignupProdValidEmail_` regex had lost whitespace escapes during earlier source generation:
+
+- incorrect: `/s/` and `[^s@]`;
+- correct: `/\\s/` and `[^\\s@]`.
+
+As a result, any email address containing the letter `s` was rejected as invalid.
+
+### Safety outcome
+
+- No `Native Signup Requests` row was staged.
+- The retained Admin Hold subscriber and profile were unchanged.
+- No Signup Action was created.
+- No Welcome was queued or delivered.
+- Production `Native Signup Mode` was immediately returned to `DISABLED`.
+- Public signup remained the Google Form.
+
+### Corrective action
+
+- Fixed the production email validator in repository source.
+- Added a request-path regression using an address containing the letter `s`.
+- Advanced the corrected production source fingerprint to `native-signup-prod-stage-v1.1`.
+- Added `runGateDDeploymentSafetyRequestV1()`, which reads the private production deployment URL and controlled email from Integration Config and posts through the actual versioned `/exec` endpoint via `UrlFetchApp`.
+- Gate D remains blocked until the corrected Apps Script source is synchronized to production and the versioned web-app deployment is updated.
+- Runtime readback must confirm build v1.1 while Sheet-side mode remains DISABLED before the Admin Hold safety test is re-armed and retried.
+- The Admin Hold safety test must pass before the mutating controlled test.
+
+## 2026-10-06 — Structured editorial notes and selection validation
+
+**Type:** Editorial evidence and validation enforcement (effective after merge)
+**Components:** generation prompt, selection provenance, read-only pre-queue validator
+**Registry impact:** Yes — 2026-10-06.1
+
+Adds ADB-SELECTION-NOTE-1 in existing Briefing History Notes: original eligible slates and displacement decisions, actual saved-preference score calibration, precise prior/new repeat facts with source passages, and independent Under the Radar search evidence including empty outcomes. The daily generator must run the validator on its actual proposed records before queue/history writes and verify exact note readback. Scoring contracts, weights, floors, schedule, template and delivery ownership remain unchanged. No production tables or scheduled tasks are added.
+
+Synthetic regressions exercise the October 6 Normal-interest score drift pattern, score/floor boundaries, original-slate displacement and no-chain rules, vague/calendar-only repeats, UTR evidence, source timing and private-input error handling. This records implementation readiness, not successful live generation under the new notes contract. First post-merge observation remains open. No historical production notes were rewritten and no edition was generated or resent.
+
+## 2026-10-05 — FORM-7 Gate D deployment and controlled-test readiness
+
+**Type:** Controlled-production staging  
+**Components:** native signup production endpoint, production Integration Config, controlled QA setup  
+**Registry impact:** Yes — 2026-10-05.3
+
+The separate production native-signup web app deployment is now recorded in private production configuration, and the controlled Gate D test identities are prepared without enabling native signup.
+
+### Changes
+
+- Recorded the production native-signup web-app deployment URL in the private production Integration Config; the exact URL is intentionally omitted from GitHub.
+- Prepared the retained Admin Hold QA identity as the current Sheet-side controlled email for the first non-mutating safety test.
+- Recorded an operator-owned deliverable mutating QA identity privately for the second controlled test.
+- Preserved `Native Signup Mode = DISABLED`.
+- Preserved the endpoint in an unarmed state; no Script Property allowlist or enable gate was activated by this change.
+- Public signup remains the Google Form.
+
+### Validation
+
+- Readback confirmed the private deployment record and both controlled-test records.
+- Native Signup Mode remains DISABLED.
+- No native signup request was staged.
+- No subscriber, profile, preference, Signup Action, Welcome queue, or delivery record was changed.
+
+The next Gate D action is to arm only the endpoint Script Property allowlist/enable gate for the retained Admin Hold QA identity, then explicitly switch the Sheet-side Native Signup Mode to CONTROLLED for the safety no-op.
+
+## 2026-10-05 — FORM-7 Gate D production runtime parity
+
+**Type:** Controlled-production preflight / production runtime synchronization  
+**Components:** native signup production endpoint, Resend transport, Welcome renderer  
+**Registry impact:** Yes — 2026-10-05.2
+
+FORM-7 Gate D production runtime parity was verified without enabling native signup or delivering mail.
+
+### Evidence
+
+- Native signup production preflight returned endpoint disabled, CONTROLLED mode, no configured allowlist, Native Signup Mode DISABLED, shared Processor Mode GOOGLE + NATIVE, zero native request/diagnostic rows, exact ADB site origin, and no subscriber mutation.
+- The Apps Script runtime does not permit a blank saved property value, so the native-signup allowlist property is intentionally absent until a controlled mutating address is selected; the production preflight confirmed this as equivalent to an unconfigured allowlist.
+- Production Resend transport was synchronized to current repository source and the Gate D compatibility validator passed with GOOGLE + NATIVE intake/processor modes, DISABLED native signup, return-safe Welcome copy, deliveryInvoked=false and writes=false.
+- No dispatcher was invoked as part of parity verification.
+- Native Signup Mode remains DISABLED and the public signup route remains the Google Form.
+
+Remaining Gate D pre-activation work is to record the production native-signup web-app `/exec` URL and select one operator-owned deliverable address for the mutating controlled test.
+
+## 2026-10-05 — FORM-7 Gate D PR reconciliation
+
+**Type:** Development safeguard reconciliation  
+**Components:** native signup Gate D endpoint, Resend transport, watchdog-state documentation  
+**Registry impact:** No — authoritative registry already reflected the October 5 watchdog reconciliation
+
+Reconciled overlapping Gate D work from PRs #84, #85 and #86. The stricter disabled-state endpoint preflight validator and non-sending Resend compatibility validator from open PR #84 were retained on current main alongside the runtime status probes introduced by #85. Gate D documentation now treats the October 4 disabled watchdog state as historical and the October 5 enabled/current-day state as current. No production runtime was deployed and Native Signup Mode remains DISABLED.
+
+## 2026-10-05 — V2 observation and watchdog state reconciliation
+
+**Type:** Operational evidence and documentation reconciliation  
+**Registry impact:** Yes — 2026-10-05.1
+
+- Recorded October 4/5 V2 reviews in the promotion record: provider acceptance for 12 editions each; October 5 generation and delivery monitoring Healthy; launch notice not repeated.
+- Reconciled the already-enabled production watchdog and retained its current contract/schedule. No scheduler or runtime behavior was changed.
+- Kept V2-10 open for editorial audit/fit/prominence gaps; provider acceptance does not prove inbox delivery.
+- Recorded operator clarification: late generation missed the initial hourly dispatcher pass.
+- Corrected only 12 voter-registration Briefing History Notes cells to separate new extended-hours information from deadline timing; scores and delivery evidence retained.
+- Regenerated internal technical documentation from the updated registry.
+
+## 2026-10-04 — Native signup Gate D production task contracts staged disabled
+
+**Type:** Production automation and monitoring contract update  
+**Components:** Subscriber Operations, signup completion reconciliation, production health watchdog, native signup  
+**Registry impact:** Yes — 2026-10-04.12
+
+FORM-7 Gate D integrated native-signup semantics into the canonical production task contracts while the production feature gate remains `Native Signup Mode = DISABLED`.
+
+### Changes
+
+- Advanced Subscriber Operations to `ADB-SUBOPS-PROD-1.1`.
+- Advanced the completion contract to `ADB-COMPLETION-0.2`.
+- Advanced the manual completion reconciler to `ADB-COMPLETION-RECON-0.2`.
+- Advanced the production watchdog to `ADB-WATCHDOG-PROD-2.4`.
+- Versioned native production-processing and monitoring contracts as `ADB-NATIVE-SIGNUP-PROD-0.1` and `ADB-NATIVE-SIGNUP-MONITOR-0.1`.
+- Added feature-gated native new-signup, re-subscribe, Active/Paused/Admin Hold no-op, deterministic Welcome, partial-state and completion-monitoring rules.
+- Preserved the existing promoted alert policy: only `Unhealthy — intake incomplete` remains alert-enabled.
+- Preserved the existing shared `GOOGLE + NATIVE` production mode; FORM-7 adds no new shared Intake/Processor Mode.
+- Scheduler-copy synchronization is required immediately after merge; repository merge alone does not establish scheduler parity.
+- Post-merge synchronization completed: Subscriber Operations now requires `ADB-SUBOPS-PROD-1.1`; the watchdog copy now requires `ADB-WATCHDOG-PROD-2.4`.
+- Subscriber Operations remains enabled. The watchdog was already disabled and that state was preserved; it remains a Gate D activation blocker.
+
+### Safety state
+
+- Production `Native Signup Mode` remains `DISABLED`.
+- Production Native Signup Requests/Diagnostics remain empty.
+- Public signup remains the Google Form.
+- No native signup production request or subscriber mutation is authorized by this change.
+
+## 2026-10-04 — Native signup Gate D inert production schema
+
+**Type:** Production data-storage and configuration staging  
+**Components:** production intake workbook, native signup, documentation registry  
+**Registry impact:** Yes — 2026-10-04.11
+
+FORM-7 Gate D installed the production native-signup storage/configuration boundary in a disabled state. No native signup runtime or processor integration was enabled.
+
+### Changes
+
+- Created empty production `Native Signup Requests` and `Native Signup Diagnostics` tabs with the approved Gate B/C schemas.
+- Added `Native Signup Mode = DISABLED`.
+- Added blank `Native Signup Controlled Email`.
+- Preserved production `Intake Mode = GOOGLE + NATIVE`.
+- Preserved production `Processor Mode = GOOGLE + NATIVE`.
+- Created a fresh private production-intake backup immediately before the schema write.
+- Public signup remains on the Google Form.
+
+### Validation
+
+- Both new production tabs were read back with headers only.
+- Native Signup Mode was read back as DISABLED.
+- Native Signup Controlled Email was read back blank.
+- Shared Intake/Processor modes were read back unchanged.
+- No native signup request, subscriber/profile/preference mutation, Signup Action, or Welcome queue record was created.
+
 ## 2026-10-04 — Native customization closeout and native signup start
 
 **Type:** Production rollout closeout and development workstream start  

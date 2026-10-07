@@ -22,13 +22,15 @@
 - **task_reconciliation** — available — manual/read-only — `docs/task-reconciliation.md`
   - Reporting: exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable.
 - **completion_reconciliation** — development — manual/read-only — `docs/automation-prompts/end-to-end-completion-reconcile.md`
-  - Reporting: privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1.
+  - Reporting: privacy-safe full-scan Google plus feature-gated native signup-to-Welcome classification using ADB-COMPLETION-0.2.
 - **native_customization_cutover** — complete — completed gated rollout — `docs/native-customization-production-cutover.md`
   - Reporting: Gates A–F passed; Gate G closeout recorded 2026-10-04; public native customization is live with Google fallback retained pending FORM-10.
-- **v2_production_observation** — observation — first normal cycle on 2026-10-04 — `docs/v2-promotion-2026-10-03.md`
+- **v2_production_observation** — observation — Normal-cycle observation; next check follows structured-notes merge — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
-- **native_signup_development** — development — manual gated rollout — `docs/native-signup-gate-c-dev.md`
-  - Reporting: FORM-7 Gates A/B complete; Gate C mocked parity passed and controlled DEV fixtures are prepared; add the repository processor source to the DEV Apps Script project and run processNativeSignupDevV1 twice for live mutation + replay verification.
+- **native_signup_development** — observation — Gate F normal-cycle observation — `docs/native-signup-gate-e.md`
+  - Reporting: FORM-7 Gates A-E complete. First-party native signup is public, Google signup remains fallback, and Gate F observation is active before Gate G closeout.
+- **native_management_development** — development — manual gated rollout — `docs/native-management-design.md`
+  - Reporting: FORM-9 Gate A design and Gate B static/unit/processor parity validation; public Manage remains the Google form until controlled production promotion.
 
 ## Runtime configuration
 
@@ -49,6 +51,10 @@
 - `ADB_NATIVE_CUSTOMIZE_PROD_RELAY_SECRET` — secret — Apps Script HMAC secret for production confirmation relay
 - `ADB_APPS_SCRIPT_CONFIRM_URL` — secret — Cloudflare Worker secret containing production Apps Script relay target
 - `ADB_CONFIRM_RELAY_SECRET` — secret — Cloudflare Worker HMAC secret matching the production Apps Script relay secret
+- `ADB_NATIVE_SIGNUP_PROD_ENABLED` — config — production native signup endpoint enable gate
+- `ADB_NATIVE_SIGNUP_PROD_MODE` — config — production native signup CONTROLLED/LIVE mode
+- `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST` — private_config — controlled production native-signup address allowlist
+- `ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN` — config — allowed ADB website origin for native signup
 
 No runtime property values belong in this repository. Secret and private configuration values remain in their external runtime stores.
 

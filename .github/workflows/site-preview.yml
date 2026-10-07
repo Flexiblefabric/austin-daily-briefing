@@ -63,9 +63,14 @@ jobs:
       - name: Validate native signup DEV syntax
         run: |
           node --check site/signup.js
+          node --check site/manage.js
+          node --check site/manage-confirm.js
           node --check --input-type=commonjs < apps-script/NativeSignupDev.gs
           node --check --input-type=commonjs < apps-script/NativeSignupDevQa.gs
           node --check --input-type=commonjs < apps-script/NativeSignupDevProcessor.gs
+          node --check --input-type=commonjs < apps-script/NativeSignupProd.gs
+          node --check --input-type=commonjs < apps-script/NativeManagementDev.gs
+          node --check --input-type=commonjs < apps-script/NativeManagementDevProcessor.gs
 
       - name: Run native signup DEV runtime QA
         run: node tests/native-signup-dev.test.js
@@ -73,30 +78,67 @@ jobs:
       - name: Run native signup Gate C processor parity QA
         run: node tests/native-signup-processor-dev.test.js
 
-      - name: Verify native signup DEV guardrails
+      - name: Run Welcome copy compatibility QA
+        run: node tests/welcome-copy-compat.test.js
+
+      - name: Run FORM-7 Gate D runtime fingerprint QA
+        run: node tests/native-signup-gate-d-runtime.test.js
+
+      - name: Run native signup Gate D production endpoint QA
+        run: node tests/native-signup-prod.test.js
+
+      - name: Run FORM-7 Gate D prompt compatibility QA
+        run: node tests/native-signup-gate-d-prompts.test.js
+
+      - name: Run FORM-9 native management DEV QA
+        run: node tests/native-management-dev.test.js
+
+      - name: Run FORM-9 native management DEV processor parity QA
+        run: node tests/native-management-processor-dev.test.js
+
+
+      - name: Verify native signup deployment guardrails
         shell: python
         run: |
           from pathlib import Path
 
           signup = Path("site/signup.html").read_text(encoding="utf-8")
           config = Path("site/signup-config.js").read_text(encoding="utf-8")
-          server = Path("apps-script/NativeSignupDev.gs").read_text(encoding="utf-8")
+          dev_server = Path("apps-script/NativeSignupDev.gs").read_text(encoding="utf-8")
+          prod_server = Path("apps-script/NativeSignupProd.gs").read_text(encoding="utf-8")
 
-          assert '<meta name="robots" content="noindex, nofollow">' in signup
-          assert "environment: 'development'" in config
           assert "https://script.google.com/macros/s/" in config
           assert "/exec" in config
-          assert "AKfycby252Epi4epHaNdefEt8ov6YHhT0Kt0YcH0wD-0kQ67vGhU1u44_BnmuKcdy3BadjfWvw" not in config
-          assert "1TiSgmFxij8p3wKnt_skTFXQvAOEuR2wI5c6V8Jq_Yyw" in server
-          assert "SpreadsheetApp.openById(ADB_NATIVE_SIGNUP_DEV.DEV_INTAKE_ID)" in server
-          assert "FORBIDDEN_PROD_INTAKE_ID" in server
-          assert "FORBIDDEN_PROD_DATABASE_ID" in server
+          assert "1TiSgmFxij8p3wKnt_skTFXQvAOEuR2wI5c6V8Jq_Yyw" in dev_server
+          assert "SpreadsheetApp.openById(ADB_NATIVE_SIGNUP_DEV.DEV_INTAKE_ID)" in dev_server
+          assert "FORBIDDEN_PROD_INTAKE_ID" in dev_server
+          assert "FORBIDDEN_PROD_DATABASE_ID" in dev_server
+
+          if "environment: 'development'" in config:
+              assert '<meta name="robots" content="noindex, nofollow">' in signup
+              for html in Path("site").glob("*.html"):
+                  if html.name == "signup.html":
+                      continue
+                  text = html.read_text(encoding="utf-8")
+                  assert 'href="signup.html"' not in text, f"{html} links to DEV signup"
+          elif "environment: 'production'" in config:
+              assert '<meta name="robots" content="index, follow">' in signup
+              assert 'https://austindailybriefing.com/signup.html' in signup
+              assert 'Open the Google signup form' in signup
+              assert "native-signup-prod-stage-v1.1" in prod_server
+              assert "ADB_NATIVE_SIGNUP_PROD_ENABLED" in prod_server
+              assert "ADB_NATIVE_SIGNUP_PROD_MODE" in prod_server
+              assert "ADB_NATIVE_SIGNUP_PROD_ALLOWLIST" in prod_server
+              assert "function logNativeSignupProdRuntimeStatusV1()" in prod_server
+              assert 'href="signup.html"' in Path("site/index.html").read_text(encoding="utf-8")
+          else:
+              raise AssertionError("signup-config.js must explicitly declare development or production")
 
           for html in Path("site").glob("*.html"):
-              if html.name == "signup.html":
+              if html.name in {"manage.html", "manage-confirm.html"}:
                   continue
               text = html.read_text(encoding="utf-8")
-              assert 'href="signup.html"' not in text, f"{html} links to DEV signup"
+              assert 'href="manage.html"' not in text, f"{html} links to FORM-9 DEV management"
 
       - name: Upload preview
         uses: actions/upload-artifact@v4

@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
-  "registry_version": "2026-10-04.7",
-  "last_reviewed": "2026-10-04",
+  "registry_version": "2026-10-06.7",
+  "last_reviewed": "2026-10-06",
   "project": {
     "name": "Austin Daily Briefing",
     "repository": "Flexiblefabric/austin-daily-briefing",
@@ -90,21 +90,30 @@
       "status": "live",
       "domain": "confirm-prod.austindailybriefing.com",
       "source_path": "workers/confirmation-relay-prod/"
+    },
+    "native_signup_intake": {
+      "status": "live",
+      "provider": "Google Apps Script",
+      "environment": "Gate E public cutover promoted 2026-10-06 on deployed native-signup-prod-stage-v1.1; endpoint LIVE; Google signup fallback retained; Gate F observation active",
+      "source_path": "apps-script/NativeSignupProd.gs",
+      "public_cutover": "native signup is public; Google signup form retained as fallback pending FORM-10",
+      "pre_d2_backup_id": "1iJ4i4bRmgs0PwQd-k_g8i3Z374QWLexekmab7d5Acl8"
     }
   },
   "automation": {
     "subscriber_processor": {
       "cadence": "every 6 hours",
       "status": "live",
-      "verification": "manual/external",
+      "verification": "scheduler copy synchronized 2026-10-04 to ADB-SUBOPS-PROD-1.1; enabled; Native Signup Mode is LIVE after FORM-7 Gate E public cutover",
       "task_id": "6aa1acbcf17c8191a9a89cc95b433629",
       "scheduler_state": "active",
-      "prompt_path": "docs/automation-prompts/production-subscriber-operations.md"
+      "prompt_path": "docs/automation-prompts/production-subscriber-operations.md",
+      "specification_id": "ADB-SUBOPS-PROD-1.1"
     },
     "daily_generation": {
       "cadence": "08:00 America/Chicago",
       "status": "live",
-      "verification": "manual/external",
+      "verification": "October 4 and 5 V2 cycles observed with ADB-DAILY-PROD-2.0 and ADB-V2-SELECT-1.0; 12 editions each, provider acceptance reconciled. Queue timestamps 08:22 and 08:16 CT were late; operator confirms late generation missed the initial hourly dispatcher pass.",
       "task_id": "6a91bd2144d081918d9d54d5c14d1175",
       "scheduler_state": "active",
       "prompt_path": "docs/automation-prompts/austin-daily-briefing.md",
@@ -138,10 +147,11 @@
       "scheduler_state": "active",
       "task_id": "6aa8401e16a88191ae14ba1b4d6cba6e",
       "prompt_path": "docs/automation-prompts/production-health-watchdog.md",
-      "specification_id": "ADB-WATCHDOG-PROD-2.3",
-      "coverage": "subscriber operations, morning generation, daily Resend delivery, welcome Resend queue health, staged signup completion intake-incomplete detection, and compatibility with controlled/native subscriber-intake modes",
+      "specification_id": "ADB-WATCHDOG-PROD-2.4",
+      "coverage": "subscriber operations, morning generation, daily Resend delivery, welcome Resend queue health, Google plus feature-gated native signup completion intake-incomplete detection, and compatibility with controlled/native subscriber-intake modes",
       "alert_transport": "validated Gmail administrator-alert path",
-      "completion_monitoring": "ADB-COMPLETION-PROD-0.1 — intake-incomplete alert class only; other completion findings remain report-only"
+      "completion_monitoring": "ADB-COMPLETION-PROD-0.1 alert policy; contracts ADB-COMPLETION-0.2 / ADB-COMPLETION-RECON-0.2 add native journeys while only intake-incomplete remains alert-enabled",
+      "verification": "Read back enabled on 2026-10-05 with ADB-WATCHDOG-PROD-2.4 and unchanged daily 09:30 America/Chicago schedule; current-date run and Healthy configuration/daily delivery monitoring observed. This reconciliation did not alter the scheduler."
     }
   },
   "manual_operations": {
@@ -177,16 +187,16 @@
       "cadence": "manual/read-only",
       "runbook": "docs/task-reconciliation.md",
       "reporting": "exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable",
-      "verification": "manual baseline rechecked 2026-10-03; all three registered active ADB task IDs and schedules matched live scheduler metadata; Apps Script trigger state remains separate"
+      "verification": "2026-10-05 live metadata confirms registered Daily Briefing and Subscriber Operations enabled and watchdog enabled on ADB-WATCHDOG-PROD-2.4 at unchanged 09:30 daily schedule. next_run_time unavailable; Apps Script trigger inspection is separate."
     },
     "completion_reconciliation": {
       "status": "development",
       "cadence": "manual/read-only",
       "runbook": "docs/automation-prompts/end-to-end-completion-reconcile.md",
-      "specification_id": "ADB-COMPLETION-RECON-0.1",
+      "specification_id": "ADB-COMPLETION-RECON-0.2",
       "production_boundary": "read-only; no writes, repairs, sends, alerts, or dispatcher invocation",
-      "reporting": "privacy-safe full-scan signup-to-Welcome classification using ADB-COMPLETION-0.1",
-      "verification": "DEV vectors passed 15/15 on 2026-09-22; first production incident class remains live in watchdog 2.3; full reconciler remains manual/read-only"
+      "reporting": "privacy-safe full-scan Google plus feature-gated native signup-to-Welcome classification using ADB-COMPLETION-0.2",
+      "verification": "Google completion vectors remain established; FORM-7 native new/re-subscribe/no-op/pending/partial/duplicate vectors are active under Native Signup Mode LIVE. Reconciler remains read-only."
     },
     "native_customization_cutover": {
       "status": "complete",
@@ -197,17 +207,24 @@
     },
     "v2_production_observation": {
       "status": "observation",
-      "cadence": "first normal cycle on 2026-10-04",
+      "cadence": "Normal-cycle observation; next check follows structured-notes merge",
       "runbook": "docs/v2-promotion-2026-10-03.md",
       "reporting": "Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend",
-      "verification": "Pending first production cycle; promotion is not delivery evidence"
+      "verification": "October 6: 12 editions queued 08:04 CT and accepted by Resend by 08:38 CT; 157 matching history rows Sent; launch notice absent. MFY audit found 39 Normal-interest entries above the approved 20-point relevance ceiling. Structured Notes and executable pre-queue enforcement prepared under ADB-SELECTION-NOTE-1; activated by merge, first live evidence pending. No historical evidence backfill or delivery replay. V2-10 remains open."
     },
     "native_signup_development": {
+      "status": "observation",
+      "cadence": "Gate F normal-cycle observation",
+      "runbook": "docs/native-signup-gate-e.md",
+      "reporting": "FORM-7 Gates A-E complete. First-party native signup is public, Google signup remains fallback, and Gate F observation is active before Gate G closeout",
+      "verification": "2026-10-06 Gate E: operator runtime readback showed build native-signup-prod-stage-v1.1, enabled=true, mode=LIVE, allowlistConfigured=false, exact production site origin, integrationNativeSignupMode=LIVE, no controlled email and shared Processor Mode=GOOGLE + NATIVE. PR #95 merged at commit 575a86eed3c9d1dd7888ccafbb022bf7cd3aa4b2; GitHub Pages deployment run 37525703129 completed successfully and published https://austindailybriefing.com/. Gate D request table contained only the two terminal Processed QA rows at cutover."
+    },
+    "native_management_development": {
       "status": "development",
       "cadence": "manual gated rollout",
-      "runbook": "docs/native-signup-gate-c-dev.md",
-      "reporting": "FORM-7 Gates A/B complete; Gate C mocked parity passed and controlled DEV fixtures are prepared; add the repository processor source to the DEV Apps Script project and run processNativeSignupDevV1 twice for live mutation + replay verification",
-      "verification": "Gate B PASS on live DEV intake. Gate C repository parity passed. Controlled DEV fixtures now cover new, Active, Paused and Unsubscribed states; prior Gate B smoke requests are terminal intake-only records. No Gate C processor execution or production write has occurred yet."
+      "runbook": "docs/native-management-design.md",
+      "reporting": "FORM-9 Gate A design and Gate B static/unit/processor parity validation; public Manage remains the Google form until controlled production promotion",
+      "verification": "2026-10-06: isolated DEV Native Manage Requests, Native Manage Verification Queue and Native Manage Diagnostics tabs created with headers only. PR #97 merged noindex/unlinked manage and first-party confirmation pages, DEV Apps Script intake/confirmation and DEV processor. Site-preview CI passed syntax, payload/status matrix, confirmation guardrails, DEV/production boundaries and synthetic exactly-once processor parity cases. No production management behavior or public Manage routing changed."
     }
   },
   "runtime_properties": [
@@ -295,6 +312,26 @@
       "name": "ADB_CONFIRM_RELAY_SECRET",
       "sensitivity": "secret",
       "purpose": "Cloudflare Worker HMAC secret matching the production Apps Script relay secret"
+    },
+    {
+      "name": "ADB_NATIVE_SIGNUP_PROD_ENABLED",
+      "sensitivity": "config",
+      "purpose": "production native signup endpoint enable gate"
+    },
+    {
+      "name": "ADB_NATIVE_SIGNUP_PROD_MODE",
+      "sensitivity": "config",
+      "purpose": "production native signup CONTROLLED/LIVE mode"
+    },
+    {
+      "name": "ADB_NATIVE_SIGNUP_PROD_ALLOWLIST",
+      "sensitivity": "private_config",
+      "purpose": "controlled production native-signup address allowlist"
+    },
+    {
+      "name": "ADB_NATIVE_SIGNUP_PROD_SITE_ORIGIN",
+      "sensitivity": "config",
+      "purpose": "allowed ADB website origin for native signup"
     }
   ],
   "documentation": {
@@ -333,7 +370,19 @@
     "native_signup_processor_contract": "docs/native-signup-processor-contract.md",
     "native_signup_dev_deployment": "docs/native-signup-dev-deployment.md",
     "native_signup_gate_b_result": "docs/native-signup-gate-b-result.md",
-    "native_signup_gate_c_dev": "docs/native-signup-gate-c-dev.md"
+    "native_signup_gate_c_dev": "docs/native-signup-gate-c-dev.md",
+    "native_signup_gate_c_result": "docs/native-signup-gate-c-result.md",
+    "native_signup_gate_d": "docs/native-signup-gate-d.md",
+    "native_signup_production_processing": "docs/native-signup-production-processing.md",
+    "native_signup_gate_d_compatibility": "docs/native-signup-gate-d-compatibility.md",
+    "native_signup_completion_monitoring": "docs/native-signup-completion-monitoring.md",
+    "native_signup_gate_d_runtime_preflight": "docs/native-signup-gate-d-runtime-preflight.md",
+    "selection_notes": "docs/selection-notes.md",
+    "selection_notes_validator": "scripts/validate_selection_notes.py",
+    "native_signup_gate_d_safety_result": "docs/native-signup-gate-d-safety-result.md",
+    "native_signup_gate_d_result": "docs/native-signup-gate-d-result.md",
+    "native_signup_gate_e": "docs/native-signup-gate-e.md",
+    "native_management_design": "docs/native-management-design.md"
   },
   "governance": {
     "registry_is_authoritative": true,

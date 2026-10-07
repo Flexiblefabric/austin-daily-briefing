@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#181818">
+  <title>Confirm management request — Austin Daily Briefing</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="masthead-row wrap">
+    <a class="brand-link" href="./" aria-label="Austin Daily Briefing home"><img src="brand/adb-masthead.svg" width="900" height="220" alt="Austin Daily Briefing"></a>
+  </div>
+</header>
+<main class="customize-main" id="main">
+  <section class="customize-header wrap">
+    <p class="eyebrow">Subscriber security</p>
+    <h1 id="manage-confirm-title">Confirm your management request.</h1>
+    <p class="lede" id="manage-confirm-copy">Nothing changes until you confirm below. The link is single-use and expires after 24 hours.</p>
+    <form id="native-manage-confirm-form" method="post" target="_top" hidden>
+      <input type="hidden" name="action" value="confirm">
+      <input type="hidden" id="manage-confirm-token" name="token" value="">
+      <input type="hidden" id="manage-confirm-client-nonce" name="client_nonce" value="">
+    </form>
+    <div class="form-actions" id="manage-confirm-actions">
+      <button class="button customize-submit" id="manage-confirm-button" type="button">Confirm request</button>
+      <div class="form-status" id="manage-confirm-status" role="status" aria-live="polite"></div>
+      <p class="field-help" id="manage-confirm-help">If you did not request this change, close this page. No management change will be applied.</p>
+    </div>
+  </section>
+</main>
+<script src="manage-confirm-config.js"></script>
+<script src="manage-confirm.js"></script>
+</body>
+</html>

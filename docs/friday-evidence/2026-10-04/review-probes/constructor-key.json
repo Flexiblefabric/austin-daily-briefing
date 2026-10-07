@@ -1,0 +1,33 @@
+[
+  {
+    "probe_id": "P201",
+    "expected_hard_gates": [
+      "false_pattern",
+      "material_unsupported_conclusion"
+    ],
+    "mutation": "Two published accounts of the initial draft show that resident support was growing before the vote."
+  },
+  {
+    "probe_id": "P202",
+    "expected_hard_gates": [
+      "unlogged_source"
+    ],
+    "mutation": "Budget prose preserved but S07 omitted from declaration, claims, displayed group and exact source labels."
+  },
+  {
+    "probe_id": "P203",
+    "expected_hard_gates": [
+      "unsupported_causation",
+      "false_pattern",
+      "material_unsupported_conclusion"
+    ],
+    "mutation": "The week exposed a common breakdown in city service management, driving disruptions in transit, health care and water."
+  },
+  {
+    "probe_id": "P204",
+    "expected_hard_gates": [
+      "material_unsupported_conclusion"
+    ],
+    "mutation": "The initial closure announcement left patients without a transition plan."
+  }
+]

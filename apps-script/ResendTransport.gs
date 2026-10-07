@@ -5,6 +5,7 @@
  * Never place the key in Sheets or source code.
  */
 const ADB_RESEND = Object.freeze({
+  BUILD: 'resend-transport-native-customize-v1',
   ENDPOINT: 'https://api.resend.com/emails',
   FROM: 'Austin Daily Briefing <briefing@austindailybriefing.com>',
   REPLY_TO: 'briefing@austindailybriefing.com',
@@ -19,7 +20,7 @@ const ADB_RESEND = Object.freeze({
   SUPPORTED_INTAKE_MODES: Object.freeze(['GOOGLE ONLY', 'GOOGLE + NATIVE CONTROLLED', 'GOOGLE + NATIVE']),
   PRODUCTION_DATABASE_ID: '1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0',
   PRODUCTION_INTAKE_ID: '1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho',
-  CUSTOMIZE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLScwQiC37TuOgRqXpCsfcC9jTOL4Gg7d9KOUrYhRkwdfNGhhuQ/viewform',
+  CUSTOMIZE_URL: 'https://austindailybriefing.com/customize.html',
   MANAGE_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSeR4whAT-kkkdx81VMGdHtVJMSVAe5CdZx-PvFhwhrwMSEFxg/viewform',
   FEEDBACK_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSc_0-djww4qboFaEn9k-nEponrCBBqz-MCB81sOUtLjVsOZ7w/viewform',
   SITE_URL: 'https://austindailybriefing.com/',
@@ -37,6 +38,76 @@ const ADB_RESEND = Object.freeze({
  *   idempotencyKey?: string, tags?: Object<string,string>}} message
  * @return {{id: string, statusCode: number}}
  */
+function getAdbResendRuntimeStatusV1() {
+  const props = PropertiesService.getScriptProperties();
+  const database = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_DATABASE_ID);
+  const intake = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_INTAKE_ID);
+  const state = adbValidateResendDeliveryGates_(database, intake);
+
+  const report = {
+    build: ADB_RESEND.BUILD,
+    databaseTarget: ADB_RESEND.PRODUCTION_DATABASE_ID,
+    intakeTarget: ADB_RESEND.PRODUCTION_INTAKE_ID,
+    supportedIntakeModes: ADB_RESEND.SUPPORTED_INTAKE_MODES.slice(),
+    currentIntakeMode: String(state.env['Intake Mode'] || '').trim(),
+    currentProcessorMode: String(state.cfg['Processor Mode'] || '').trim(),
+    welcomeDeliveryMode: String(state.cfg['Welcome Delivery Mode'] || '').trim(),
+    scriptWelcomeMode: String(props.getProperty(ADB_RESEND.WELCOME_MODE_PROPERTY) || 'CONTROLLED').trim().toUpperCase(),
+    scriptDailyMode: String(props.getProperty(ADB_RESEND.DAILY_MODE_PROPERTY) || 'CONTROLLED').trim().toUpperCase(),
+    welcomeCopy: 'state-neutral-v1',
+    customizeUrl: ADB_RESEND.CUSTOMIZE_URL
+  };
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
+function validateForm7GateDTransportCompatibilityV1() {
+  const database = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_DATABASE_ID);
+  const intake = SpreadsheetApp.openById(ADB_RESEND.PRODUCTION_INTAKE_ID);
+  const state = adbValidateResendDeliveryGates_(database, intake);
+
+  const nativeSignupMode = String(
+    state.cfg['Native Signup Mode'] || 'DISABLED'
+  ).trim().toUpperCase();
+  if (['DISABLED','CONTROLLED','LIVE'].indexOf(nativeSignupMode) < 0) {
+    throw new Error('Unsupported Native Signup Mode for Gate D compatibility.');
+  }
+
+  const plain = adbWelcomePlainText_();
+  const html = adbWelcomeHtml_();
+  const requiredCopy = 'Personalized sections use the interests and reading settings saved to your profile.';
+  const newSubscriberCopy = 'If you’re new, your interests start at Normal with standard reading settings.';
+  const obsoleteCopy = 'subscribers begin with all interest categories set to Normal';
+  const expectedCustomizeUrl = 'https://austindailybriefing.com/customize.html';
+
+  if (ADB_RESEND.CUSTOMIZE_URL !== expectedCustomizeUrl || /docs\.google\.com\/forms/i.test(ADB_RESEND.CUSTOMIZE_URL)) {
+    throw new Error('Reader-facing Customize URL must use the native customization page.');
+  }
+
+  if (plain.indexOf(requiredCopy) < 0 || html.indexOf(requiredCopy) < 0) {
+    throw new Error('Gate D Welcome copy is not return-safe in both renderers.');
+  }
+  if (plain.indexOf(newSubscriberCopy) < 0 || html.indexOf(newSubscriberCopy) < 0) {
+    throw new Error('Gate D Welcome copy is missing the new-subscriber qualifier.');
+  }
+  if (plain.indexOf(obsoleteCopy) >= 0 || html.indexOf(obsoleteCopy) >= 0) {
+    throw new Error('Gate D Welcome copy still contains the obsolete all-subscribers-start-Normal claim.');
+  }
+
+  const report = {
+    transport: 'Resend',
+    intakeMode: state.env['Intake Mode'],
+    processorMode: state.cfg['Processor Mode'],
+    nativeSignupMode: nativeSignupMode,
+    welcomeCopy: 'RETURN_SAFE',
+    customizeUrl: ADB_RESEND.CUSTOMIZE_URL,
+    deliveryInvoked: false,
+    writes: false
+  };
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
 function adbSendEmailViaResend_(message) {
   const apiKey = PropertiesService.getScriptProperties()
     .getProperty(ADB_RESEND.API_KEY_PROPERTY);
@@ -711,8 +782,8 @@ function adbWelcomePlainText_() {
     'Short.\nMost briefings take 5–7 minutes to read. Most editions begin with about five Top Stories. Key facts come first, and source links are always provided.\n\n' +
     'Personalized.\nMore for You is built from the topics you choose and the level of detail you want. The briefing adjusts to match.\n\n' +
     'Austin-first.\nThe shared briefing stays focused on Austin and developments consequential to the immediate area. Personalized items may reach beyond Austin when that context matches your selected interests.\n\n' +
-    'YOUR STARTING SETTINGS\n\n' +
-    'Everyone receives the shared Top Stories. For personalized sections, subscribers begin with all interest categories set to Normal and standard reading settings. Most people adjust this within the first week.\n\n' +
+    'YOUR SETTINGS\n\n' +
+    'Everyone receives the shared Top Stories. Personalized sections use the interests and reading settings saved to your profile. If you’re new, your interests start at Normal with standard reading settings. You can change these anytime.\n\n' +
     'CUSTOMIZE MY BRIEFING\n\n' +
     'Choose your topics and reading style. It takes about 30 seconds, and you can change it anytime.\n\n' +
     'Customize my briefing\n' + ADB_RESEND.CUSTOMIZE_URL + '\n\n' +
@@ -750,8 +821,8 @@ function adbWelcomeHtml_() {
     '<p style="margin:0;font-size:16px;line-height:1.58;color:#2a2926;"><strong>Austin-first.</strong> The shared briefing stays focused on Austin and developments consequential to the immediate area. Personalized items may reach beyond Austin when that context matches your selected interests.</p></div>' +
 
     '<div class="section" style="padding:32px 0;border-bottom:1px solid #dedad1;">' +
-    '<div style="margin:0 0 12px;color:#8f1717;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;">YOUR STARTING SETTINGS</div>' +
-    '<div style="padding:18px;border:1px solid #dedad1;background:#fffefa;"><p style="margin:0;font-size:16px;line-height:1.58;color:#2a2926;">Everyone receives the shared Top Stories. For personalized sections, subscribers begin with all interest categories set to Normal and standard reading settings. Most people adjust this within the first week.</p></div></div>' +
+    '<div style="margin:0 0 12px;color:#8f1717;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;">YOUR SETTINGS</div>' +
+    '<div style="padding:18px;border:1px solid #dedad1;background:#fffefa;"><p style="margin:0;font-size:16px;line-height:1.58;color:#2a2926;">Everyone receives the shared Top Stories. Personalized sections use the interests and reading settings saved to your profile. If you’re new, your interests start at Normal with standard reading settings. You can change these anytime.</p></div></div>' +
 
     '<div class="section" style="padding:32px 0;border-bottom:1px solid #dedad1;">' +
     '<div style="margin:0 0 10px;color:#8f1717;font-family:\'Arial Narrow\',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;">CUSTOMIZE MY BRIEFING</div>' +

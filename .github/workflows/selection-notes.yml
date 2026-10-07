@@ -1,0 +1,40 @@
+name: Validate selection notes
+
+on:
+  pull_request:
+    paths:
+      - "scripts/validate_selection_notes.py"
+      - "scripts/test_selection_notes.py"
+      - "scripts/validate_v2_rules.py"
+      - "docs/selection-notes*"
+      - "docs/v2-selection-spec.md"
+      - "docs/automation-prompts/austin-daily-briefing.md"
+      - ".github/workflows/selection-notes.yml"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/validate_selection_notes.py"
+      - "scripts/test_selection_notes.py"
+      - "scripts/validate_v2_rules.py"
+      - "docs/selection-notes*"
+      - "docs/v2-selection-spec.md"
+      - "docs/automation-prompts/austin-daily-briefing.md"
+      - ".github/workflows/selection-notes.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  selection-notes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Original approved scoring boundaries
+        run: python scripts/validate_v2_rules.py
+      - name: Actual-note validation regressions (synthetic only)
+        run: python scripts/test_selection_notes.py
+      - name: Validate documented input example
+        run: python scripts/validate_selection_notes.py docs/selection-notes-example.json

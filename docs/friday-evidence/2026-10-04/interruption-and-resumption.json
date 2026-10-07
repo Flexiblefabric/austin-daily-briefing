@@ -1,0 +1,14 @@
+{
+  "resumed_on": "2026-10-07",
+  "status": "Restarted missing blind passes with attempt 02; no lost output reconstructed.",
+  "recovered_from": "PR #77 head 2f2285a8964489dcfcb81c6ff4ff17e3f6ab0dc6",
+  "interruption": "An October 4 agent reported a usage limit. The workspace later reset. No evaluation result from that interrupted pass is available.",
+  "reported_but_unavailable_outputs": {
+    "W031-blind-01-output.json": "b34fb0d601e8c22dd574b9bf6676f830b874d0e243d433c1194becde97f58102",
+    "W075-blind-01-output.json": "d8e60870e14bbe2b080792f90472dc056af67a6b19a48ba74408d72321483d97",
+    "W118-blind-01-output.json": "299b4e4084bed5df3997ccc36f241d09bf258ef6d600b57ef023515dd346ca6b",
+    "W032-blind-01-output.json": "8adee094de90cad30b42bace1894d7ed45693855cc18d4583640b397932db58d"
+  },
+  "interpretation": "These hashes are conversation-reported provenance only; missing files cannot be verified or counted as evaluated evidence.",
+  "baseline_reconciliation": "Current main was merged into the development branch. Frozen October 4 source packets and pinned contracts are retained for reproducibility. October 6 structured selection notes and MFY-band enforcement are production integration requirements, not retroactively claimed by these shared-only synthetic fixtures."
+}

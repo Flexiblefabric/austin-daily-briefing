@@ -1,0 +1,38 @@
+{
+  "created_date": "2026-10-07",
+  "purpose": "Frozen additional synthetic input variants; reviewer-only case mapping separate. Recreated after unsaved Oct4 work was lost.",
+  "artifacts": [
+    {
+      "path": "docs/friday-evidence/2026-10-04/W076/daily-v2.json",
+      "sha256": "24c3edfc16cbc73e2dc9d354d6c6f51707b7e669b005681e1324641ee9aa4e93"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W076/history.json",
+      "sha256": "a13dd8316a321031636d3e7015bc1a250650773815fd6e6de526b6e866116fde"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W076/packet.json",
+      "sha256": "12e43c3f9a9fc817cd292c44559991d78be3837a6ea21ed3673c52023aef79ba"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W076/sources.json",
+      "sha256": "7237165ee139c2c10011451b151b2f7049a33b294312107bed510925349a2c31"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W077/daily-v2.json",
+      "sha256": "b0c06e417141b390e65825f38c620835e709bb5478d99420adf111b4096255ff"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W077/history.json",
+      "sha256": "aa0843bc11b90dba9eb2e0cd314baa5a344f34ec6a4c60d8d8c13da9541d8181"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W077/packet.json",
+      "sha256": "3ce63d6fcd1bbf431ece3d365b371c85d4244fc95b8b44359d703844e6b09274"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W077/sources.json",
+      "sha256": "d3efa0d4b28546ed0db69923ec4273aef418ff762b54ed0733100e837de9376d"
+    }
+  ]
+}

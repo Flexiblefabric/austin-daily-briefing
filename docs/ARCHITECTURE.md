@@ -24,6 +24,7 @@ Austin Daily Briefing uses Google Sheets and Google Apps Script as its operation
 - **website** — live — GitHub Pages; source `site/`
 - **native_customization_intake** — live — Google Apps Script; source `apps-script/NativeCustomizationProd.gs`
 - **customization_confirmation_relay** — live — Cloudflare Workers; source `workers/confirmation-relay-prod/`
+- **native_signup_intake** — live — Google Apps Script; source `apps-script/NativeSignupProd.gs`
 
 ## Delivery path
 

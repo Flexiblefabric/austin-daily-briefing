@@ -62,11 +62,15 @@ function context() {
   assert(confirmConfig.includes("defaultEnvironment: 'development'"));
   assert(confirmConfig.includes("https://script.google.com/macros/s/AKfycbzENgETifuF_AXbYEfgwb5oWjjsyvDRByWWaATxmfopXbObgF6_KeiTBVHBlJiHytUO/exec"));
   assert(confirmBrowser.includes("window.location.hash"));
-  assert(confirmBrowser.includes("data.type !== 'adb-native-manage-confirm-dev'"));
+  assert(confirmBrowser.includes("params.get('result')"));
+  assert(confirmBrowser.includes("form.submit()"));
   assert(endpoint.includes("CONFIRM_PAGE_URL_PROPERTY: 'ADB_NATIVE_MANAGE_DEV_CONFIRM_PAGE_URL'"));
   assert(endpoint.includes("https://austindailybriefing.com/manage-confirm.html"));
   assert(endpoint.includes("'#env=development&token='"));
   assert(!endpoint.includes("?action=confirm&token="));
+  assert(endpoint.includes("function adbManageConfirmRedirectHtml_"));
+  assert(endpoint.includes("/manage-confirm.html#result="));
+  assert(!endpoint.includes("adb-native-manage-confirm-dev"));
 })();
 
 (function payloadValidation(){

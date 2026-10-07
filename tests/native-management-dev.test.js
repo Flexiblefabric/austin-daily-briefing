@@ -64,6 +64,7 @@ function context() {
   assert(confirmBrowser.includes("window.location.hash"));
   assert(confirmBrowser.includes("params.get('result')"));
   assert(confirmBrowser.includes("form.submit()"));
+  assert(confirmBrowser.includes("button.hidden = true"));
   assert(endpoint.includes("CONFIRM_PAGE_URL_PROPERTY: 'ADB_NATIVE_MANAGE_DEV_CONFIRM_PAGE_URL'"));
   assert(endpoint.includes("https://austindailybriefing.com/manage-confirm.html"));
   assert(endpoint.includes("'#env=development&token='"));

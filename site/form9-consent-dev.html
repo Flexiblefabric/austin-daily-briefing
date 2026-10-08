@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Isolated development consent testing for Austin Daily Briefing.">
+  <meta name="theme-color" content="#181818">
+  <title>DEV Signup Consent Test — Austin Daily Briefing</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="masthead-row wrap">
+      <a class="brand-link" href="./" aria-label="Austin Daily Briefing home"><img src="brand/adb-masthead.svg" width="900" height="220" alt="Austin Daily Briefing"></a>
+    </div>
+  </header>
+  <main class="customize-main" id="main">
+    <header class="customize-header wrap">
+      <p class="eyebrow">Development test only</p>
+      <h1>Test fresh signup consent.</h1>
+      <p class="lede">This isolated form sends consent only to the FORM-7 development signup intake. It does not change your production subscription. Only use a designated DEV test account.</p>
+    </header>
+    <div class="customize-layout wrap">
+      <aside class="customize-aside">
+        <p class="section-label">Controlled FORM-9 test</p>
+        <p>Use the same test inbox that was unsubscribed in the DEV management cycle.</p>
+        <p>This step only stages affirmative signup consent. The DEV processor is run separately after the request has been verified.</p>
+        <div class="security-note">
+          <strong>Production stays unchanged.</strong>
+          <p>No automatic subscriber reactivation or Welcome delivery occurs when you submit this form.</p>
+        </div>
+      </aside>
+      <form class="customize-form" id="native-signup-form" method="post" target="adb-native-signup-result" novalidate>
+        <input type="hidden" name="action" value="request">
+        <input type="hidden" name="source" value="website">
+        <input type="hidden" id="signup-client-nonce" name="client_nonce" value="">
+        <div class="form-honeypot" aria-hidden="true">
+          <label for="signup-form-check">Leave this field blank</label>
+          <input id="signup-form-check" name="form_check" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        </div>
+        <fieldset class="identity-fieldset">
+          <legend><span class="form-section-number">01</span> DEV signup</legend>
+          <label class="field-label" for="signup-email">Test email address</label>
+          <input class="text-input" id="signup-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
+          <label class="signup-consent" for="signup-consent">
+            <input id="signup-consent" name="consent" type="checkbox" value="yes" required>
+            <span>Yes — send me Austin Daily Briefing.</span>
+          </label>
+          <p class="field-help">Consent is recorded in the DEV intake only, until the DEV processor explicitly runs.</p>
+        </fieldset>
+        <div class="form-actions">
+          <button class="button customize-submit" id="signup-submit" type="submit">Submit DEV consent</button>
+          <div class="form-status" id="signup-status" role="status" aria-live="polite"></div>
+        </div>
+      </form>
+      <iframe class="native-result-frame" id="adb-native-signup-result" name="adb-native-signup-result" title="DEV signup response" aria-hidden="true"></iframe>
+    </div>
+  </main>
+  <script src="form9-consent-dev-config.js"></script>
+  <script src="signup.js"></script>
+</body>
+</html>

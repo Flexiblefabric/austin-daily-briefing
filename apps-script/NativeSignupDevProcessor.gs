@@ -59,7 +59,9 @@ function processNativeSignupDevV1() {
       new_subscribers: 0,
       resubscribed: 0,
       active_noop: 0,
-      paused_noop: 0
+      paused_noop: 0,
+      admin_hold_noop: 0,
+      admin_review_noop: 0
     };
 
     table.rows.forEach(function(request) {
@@ -85,6 +87,8 @@ function processNativeSignupDevV1() {
         if (result === 'resubscribed') summary.resubscribed += 1;
         if (result === 'existing_active_noop') summary.active_noop += 1;
         if (result === 'paused_requires_manage') summary.paused_noop += 1;
+        if (result === 'admin_hold_noop') summary.admin_hold_noop += 1;
+        if (result === 'admin_review_noop') summary.admin_review_noop += 1;
       } catch (error) {
         adbNsProcFinishRequest_(requestSheet, request.__rowNumber, 'Error', 'processor_error', String(error && error.message ? error.message : error));
         summary.errors += 1;
@@ -151,6 +155,16 @@ function adbNsProcProcessRequest_(db, intake, requestSheet, request) {
 
   const subscriber = matches[0];
   const subscriberStatus = String(subscriber.Status || '').trim();
+  const adminStatus = String(subscriber['Admin Status'] || '').trim();
+  if (['OK','Review','Hold'].indexOf(adminStatus) < 0) {
+    throw new Error('DEV subscriber Admin Status is missing or invalid.');
+  }
+  if (adminStatus === 'Hold' || adminStatus === 'Review') {
+    const result = adminStatus === 'Hold' ? 'admin_hold_noop' : 'admin_review_noop';
+    adbNsProcFinishRequest_(requestSheet, request.__rowNumber, 'Processed',
+      result, 'Administrative restriction preserved; no subscriber activation or Welcome.');
+    return result;
+  }
 
   if (subscriberStatus === 'Active') {
     adbNsProcFinishRequest_(requestSheet, request.__rowNumber, 'Processed', 'existing_active_noop', 'Existing Active subscriber retained; no duplicate profile, preferences, or Welcome.');

@@ -119,16 +119,19 @@ function context() {
 (function statusMatrix(){
   const ctx=context();
   const f=ctx.adbManageResolveStatus_;
-  assert.strictEqual(f('Active','pause'),'Paused');
-  assert.strictEqual(f('Paused','resume'),'Active');
-  assert.strictEqual(f('Active','unsubscribe'),'Unsubscribed');
-  assert.strictEqual(f('Paused','unsubscribe'),'Unsubscribed');
-  assert.strictEqual(f('Admin Hold','pause'),'Admin Hold');
-  assert.strictEqual(f('Admin Hold','resume'),'Admin Hold');
-  assert.strictEqual(f('Admin Hold','unsubscribe'),'Unsubscribed');
-  assert.strictEqual(f('Unsubscribed','resume'),'Unsubscribed');
-  assert.strictEqual(f('Unsubscribed','pause'),'Unsubscribed');
-  assert.strictEqual(f('Active','keep_current'),'Active');
+  assert.strictEqual(f('Active','pause','OK'),'Paused');
+  assert.strictEqual(f('Paused','resume','OK'),'Active');
+  assert.strictEqual(f('Active','unsubscribe','OK'),'Unsubscribed');
+  assert.strictEqual(f('Paused','unsubscribe','OK'),'Unsubscribed');
+  assert.strictEqual(f('Active','pause','Hold'),'Active');
+  assert.strictEqual(f('Paused','resume','Hold'),'Paused');
+  assert.strictEqual(f('Paused','resume','Review'),'Paused');
+  assert.strictEqual(f('Paused','unsubscribe','Hold'),'Unsubscribed');
+  assert.strictEqual(f('Unsubscribed','resume','OK'),'Unsubscribed');
+  assert.strictEqual(f('Unsubscribed','pause','OK'),'Unsubscribed');
+  assert.strictEqual(f('Active','keep_current','OK'),'Active');
+  assert.throws(()=>f('Admin Hold','pause','OK'), /Invalid subscriber delivery status/);
+  assert.throws(()=>f('Active','pause',''), /Invalid DEV Admin Status/);
 })();
 
 (function actionLabels(){
@@ -139,8 +142,9 @@ function context() {
 })();
 
 (function designContract(){
-  assert(design.includes('Unsubscribed + resume remains Unsubscribed'));
-  assert(design.includes('Admin Hold + unsubscribe becomes Unsubscribed'));
+  assert(design.includes('Unsubscribed, Admin Status OK'));
+  assert(design.includes('Admin Status Hold + unsubscribe changes delivery to Unsubscribed'));
+  assert(design.includes('production Subscribers header does'));
   assert(design.includes('32 random token bytes'));
   assert(design.includes('manage-confirm.html'));
   assert(design.includes('URL fragment'));

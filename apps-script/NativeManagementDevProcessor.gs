@@ -99,7 +99,21 @@ function adbManageApplyConfirmedRequestDev_(requestSheet, requestHeaders, reques
   }
 
   const priorStatus = String(subscriber.row.Status || '').trim();
-  const nextStatus = adbManageResolveStatus_(priorStatus, payload.deliveryAction);
+  const profileStatus = String(profile.row.Status || '').trim();
+  const adminStatus = String(subscriber.row['Admin Status'] || '').trim();
+  if (subscribers.headers.indexOf('Admin Status') < 0 ||
+      ['OK','Review','Hold'].indexOf(adminStatus) < 0) {
+    throw new Error('DEV subscriber Admin Status is missing or invalid.');
+  }
+  if (['Active','Paused','Unsubscribed'].indexOf(priorStatus) < 0 ||
+      profileStatus !== priorStatus) {
+    throw new Error('DEV subscriber/profile delivery status mismatch.');
+  }
+  if (adbManageNormalizeEmail_(profile.row['Primary Preference Email']) !==
+      adbManageNormalizeEmail_(request.Email)) {
+    throw new Error('DEV profile email does not match subscriber.');
+  }
+  const nextStatus = adbManageResolveStatus_(priorStatus, payload.deliveryAction, adminStatus);
   const reset = payload.resetTopics;
   const actionLabel = adbManageActionLabel_(payload.deliveryAction, reset);
   const now = new Date().toISOString();
@@ -180,7 +194,7 @@ function adbManageApplyConfirmedRequestDev_(requestSheet, requestHeaders, reques
     'New Status':nextStatus,
     'Result':(nextStatus === priorStatus && !reset) ? 'CONFIRMED — NO CHANGE' : 'CONFIRMED AND APPLIED',
     'Processed At':now,
-    'Notes':'FORM-9 native management DEV exactly-once application.'
+    'Notes':'FORM-9 native management DEV exactly-once application. Admin Status: ' + adminStatus + ' (preserved).'
   };
   if (actions.headers.indexOf('Profile ID') >= 0) actionObject['Profile ID'] = profileId;
   if (actions.headers.indexOf('Resolved Profile ID') >= 0) actionObject['Resolved Profile ID'] = profileId;
@@ -204,12 +218,22 @@ function adbManageApplyConfirmedRequestDev_(requestSheet, requestHeaders, reques
   return noChange ? 'no_change' : 'applied';
 }
 
-function adbManageResolveStatus_(currentStatus, deliveryAction) {
+function adbManageResolveStatus_(currentStatus, deliveryAction, adminStatus) {
   const current = String(currentStatus || '').trim();
   const action = String(deliveryAction || '').trim().toLowerCase();
+  const admin = String(adminStatus || '').trim();
+  if (['Active','Paused','Unsubscribed'].indexOf(current) < 0) {
+    throw new Error('Invalid subscriber delivery status.');
+  }
+  if (['OK','Review','Hold'].indexOf(admin) < 0) {
+    throw new Error('Invalid DEV Admin Status.');
+  }
 
   if (action === 'keep_current') return current;
-  if (action === 'unsubscribe') return current === 'Unsubscribed' ? current : 'Unsubscribed';
+  // Explicit withdrawal of delivery consent must work even during administrative review/hold.
+  if (action === 'unsubscribe') return 'Unsubscribed';
+  // Administrative controls are independent of delivery status.
+  if (admin !== 'OK' && (action === 'pause' || action === 'resume')) return current;
 
   if (action === 'pause') {
     if (current === 'Active') return 'Paused';

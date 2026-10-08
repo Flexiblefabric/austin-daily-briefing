@@ -112,7 +112,7 @@ function baseFixture(opts = {}) {
   const dbSheets = {
     'Subscribers': [
       ['Email','Status','Created','Updated','Notes','Profile ID','Preference Source Email','Admin Status'],
-      [email,status,'old','old','fixture','PDEV900',email,'OK']
+      [email,status,'old','old','fixture','PDEV900',email,opts.adminStatus || 'OK']
     ],
     'Profiles': [
       ['Profile ID','Status','Primary Preference Email','Latest Submission ID','Customize URL','Last Preference Update','Notes','More for You Volume','Summary Style','Why It Matters Length'],
@@ -228,19 +228,85 @@ function rowBy(book, sheetName, header, value) {
 })();
 
 (function adminHoldResumePreservesHold(){
-  const {context,db}=makeRuntime({status:'Admin Hold',profileStatus:'Admin Hold',delivery:'resume'});
+  const {context,db}=makeRuntime({status:'Paused',adminStatus:'Hold',delivery:'resume'});
   const result=context.processConfirmedNativeManagementDevV1();
   assert.strictEqual(result.noChange,1);
-  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[1],'Admin Hold');
-  assert.strictEqual(rowBy(db,'Profiles','Profile ID','PDEV900')[1],'Admin Hold');
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[1],'Paused');
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[7],'Hold');
+  assert.strictEqual(rowBy(db,'Profiles','Profile ID','PDEV900')[1],'Paused');
+})();
+
+(function adminHoldPausePreservesHold(){
+  const {context,db}=makeRuntime({status:'Active',adminStatus:'Hold',delivery:'pause'});
+  const result=context.processConfirmedNativeManagementDevV1();
+  assert.strictEqual(result.noChange,1);
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[1],'Active');
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[7],'Hold');
+  assert.strictEqual(rowBy(db,'Profiles','Profile ID','PDEV900')[1],'Active');
+})();
+
+(function adminReviewPreventsResume(){
+  const {context,db}=makeRuntime({status:'Paused',adminStatus:'Review',delivery:'resume'});
+  const result=context.processConfirmedNativeManagementDevV1();
+  assert.strictEqual(result.noChange,1);
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[1],'Paused');
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[7],'Review');
+})();
+
+(function adminHoldResetOnlyPreservesHold(){
+  const {context,db}=makeRuntime({status:'Active',adminStatus:'Hold',delivery:'keep_current',reset:true});
+  const result=context.processConfirmedNativeManagementDevV1();
+  assert.strictEqual(result.applied,1);
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[1],'Active');
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[7],'Hold');
+  assert.strictEqual(rowBy(db,'Profiles','Profile ID','PDEV900')[1],'Active');
+  assert(table(db,'Preferences').slice(1).every(row=>row[2]==='Normal'&&row[3]===1));
+})();
+
+(function adminHoldCombinedResumeResetPreservesHold(){
+  const {context,db}=makeRuntime({status:'Paused',adminStatus:'Hold',delivery:'resume',reset:true});
+  const result=context.processConfirmedNativeManagementDevV1();
+  assert.strictEqual(result.applied,1);
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[1],'Paused');
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[7],'Hold');
+  assert(table(db,'Preferences').slice(1).every(row=>row[2]==='Normal'&&row[3]===1));
 })();
 
 (function adminHoldUnsubscribeHonorsWithdrawal(){
-  const {context,db}=makeRuntime({status:'Admin Hold',profileStatus:'Admin Hold',delivery:'unsubscribe'});
+  const {context,db}=makeRuntime({status:'Paused',adminStatus:'Hold',delivery:'unsubscribe'});
   const result=context.processConfirmedNativeManagementDevV1();
   assert.strictEqual(result.applied,1);
   assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[1],'Unsubscribed');
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[7],'Hold');
   assert.strictEqual(rowBy(db,'Profiles','Profile ID','PDEV900')[1],'Unsubscribed');
+})();
+
+(function profileStatusMismatchFailsClosed(){
+  const {context,db,intake}=makeRuntime({status:'Paused',profileStatus:'Unsubscribed',delivery:'resume'});
+  const result=context.processConfirmedNativeManagementDevV1();
+  assert.strictEqual(result.errors,1);
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[1],'Paused');
+  assert.strictEqual(table(db,'Management Actions').length,1);
+  assert.strictEqual(table(intake,'Native Manage Requests')[1][8],'Confirmed');
+})();
+
+(function legacyAdminHoldAsDeliveryStatusFailsClosed(){
+  const {context,db,intake}=makeRuntime({status:'Admin Hold',profileStatus:'Admin Hold',delivery:'resume'});
+  const result=context.processConfirmedNativeManagementDevV1();
+  assert.strictEqual(result.errors,1);
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[1],'Admin Hold');
+  assert.strictEqual(table(db,'Management Actions').length,1);
+  assert.strictEqual(table(intake,'Native Manage Requests')[1][8],'Confirmed');
+})();
+
+(function invalidAdminStatusFailsClosed(){
+  const {context,db,intake}=makeRuntime({status:'Active',adminStatus:'',delivery:'pause'});
+  // Deliberately erase a present, validated admin field.
+  table(db,'Subscribers')[1][7]='';
+  const result=context.processConfirmedNativeManagementDevV1();
+  assert.strictEqual(result.errors,1);
+  assert.strictEqual(rowBy(db,'Subscribers','Email','manage@example.com')[1],'Active');
+  assert.strictEqual(table(intake,'Native Manage Requests')[1][8],'Confirmed');
 })();
 
 (function unsubscribedResumeDoesNotResubscribe(){

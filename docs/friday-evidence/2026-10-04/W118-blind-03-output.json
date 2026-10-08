@@ -1,0 +1,442 @@
+{
+  "exact_recap": "THIS WEEK IN AUSTIN\n\nBus routes return in stages\nThree of the four bus routes placed on detour at the start of the week are back on their normal paths by Friday’s cutoff. A maintenance closure began the disruption; partial corridor reopening restored two routes, and a third subsequently returned. That leaves one route on detour with no return date set. The week brought substantial restoration of normal routing, but the disruption has not fully ended.\nSources: Synthetic bus disruption notice; Synthetic bus access bulletin; Synthetic bus operations update.\n\nA patient transfer plan takes shape\nThe clinic’s planned closure after its lease ends this month now comes with a signed agreement to transfer existing patients to two partners. The agreement gives the closure a defined transfer plan, while leaving appointment timing unsettled: current appointment dates are not guaranteed. A transfer agreement is in place; that does not establish that patients have already transferred or that their schedules will be preserved.\nSources: Synthetic clinic notice; Synthetic clinic transition agreement.\n\nWater notice ends within a limited scope\nThe facility-specific boil-water notice issued after filter damage ended this week following repairs and compliant samples. The change is concrete: the notice that applied during repairs and testing has been lifted. Its scope matters as much as its resolution. The clearance applies to this facility; other infrastructure was not evaluated, so the result provides no basis for a broader claim about infrastructure conditions.\nSources: Synthetic waterworks inspection; Synthetic waterworks clearance.",
+  "opening": "",
+  "arcs": [
+    {
+      "arc_id": "A1",
+      "heading": "Bus routes return in stages",
+      "text": "Three of the four bus routes placed on detour at the start of the week are back on their normal paths by Friday’s cutoff. A maintenance closure began the disruption; partial corridor reopening restored two routes, and a third subsequently returned. That leaves one route on detour with no return date set. The week brought substantial restoration of normal routing, but the disruption has not fully ended."
+    },
+    {
+      "arc_id": "A2",
+      "heading": "A patient transfer plan takes shape",
+      "text": "The clinic’s planned closure after its lease ends this month now comes with a signed agreement to transfer existing patients to two partners. The agreement gives the closure a defined transfer plan, while leaving appointment timing unsettled: current appointment dates are not guaranteed. A transfer agreement is in place; that does not establish that patients have already transferred or that their schedules will be preserved."
+    },
+    {
+      "arc_id": "A3",
+      "heading": "Water notice ends within a limited scope",
+      "text": "The facility-specific boil-water notice issued after filter damage ended this week following repairs and compliant samples. The change is concrete: the notice that applied during repairs and testing has been lifted. Its scope matters as much as its resolution. The clearance applies to this facility; other infrastructure was not evaluated, so the result provides no basis for a broader claim about infrastructure conditions."
+    }
+  ],
+  "section_included": true,
+  "omission_reason": null,
+  "sources_used": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07"
+  ],
+  "displayed_source_groups": [
+    {
+      "group_id": "G1",
+      "supports_locations": [
+        "arcs.A1.heading",
+        "arcs.A1.text"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "labels": [
+        "Synthetic bus disruption notice",
+        "Synthetic bus access bulletin",
+        "Synthetic bus operations update"
+      ]
+    },
+    {
+      "group_id": "G2",
+      "supports_locations": [
+        "arcs.A2.heading",
+        "arcs.A2.text"
+      ],
+      "source_ids": [
+        "S04",
+        "S05"
+      ],
+      "labels": [
+        "Synthetic clinic notice",
+        "Synthetic clinic transition agreement"
+      ]
+    },
+    {
+      "group_id": "G3",
+      "supports_locations": [
+        "arcs.A3.heading",
+        "arcs.A3.text"
+      ],
+      "source_ids": [
+        "S06",
+        "S07"
+      ],
+      "labels": [
+        "Synthetic waterworks inspection",
+        "Synthetic waterworks clearance"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "CL01",
+      "location": "arcs.A1.heading",
+      "text": "Bus routes return in stages",
+      "kind": "synthesis",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C04",
+        "C07"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Successive updates concern the same four-route corridor disruption and record progressively restored routes.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL02",
+      "location": "arcs.A1.text.sentence1",
+      "text": "Three of the four bus routes placed on detour at the start of the week are back on their normal paths by Friday’s cutoff.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C04",
+        "C07"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The shared record reports four detours, two restorations, then a third restoration.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL03",
+      "location": "arcs.A1.text.sentence2",
+      "text": "A maintenance closure began the disruption; partial corridor reopening restored two routes, and a third subsequently returned.",
+      "kind": "fact",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C04",
+        "C07"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "S01 supplies the maintenance cause; S02 supplies the partial-reopening relationship. No cause is inferred for the third restoration.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL04",
+      "location": "arcs.A1.text.sentence3",
+      "text": "That leaves one route on detour with no return date set.",
+      "kind": "fact",
+      "development_ids": [
+        "D03"
+      ],
+      "source_ids": [
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C07"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Retains the unscheduled return at the cutoff."
+    },
+    {
+      "claim_id": "CL05",
+      "location": "arcs.A1.text.sentence4",
+      "text": "The week brought substantial restoration of normal routing, but the disruption has not fully ended.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C04",
+        "C07"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Three of four affected routes returned; one remains on detour.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Does not imply complete restoration."
+    },
+    {
+      "claim_id": "CL06",
+      "location": "arcs.A2.heading",
+      "text": "A patient transfer plan takes shape",
+      "kind": "synthesis",
+      "development_ids": [
+        "D04",
+        "D05"
+      ],
+      "source_ids": [
+        "S04",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C03",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The closure announcement is followed by a signed agreement for the same clinic’s existing patients.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL07",
+      "location": "arcs.A2.text.sentence1",
+      "text": "The clinic’s planned closure after its lease ends this month now comes with a signed agreement to transfer existing patients to two partners.",
+      "kind": "fact",
+      "development_ids": [
+        "D04",
+        "D05"
+      ],
+      "source_ids": [
+        "S04",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C03",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Closure and transfer agreement concern the same clinic.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Closure is planned, and transfer is described as agreed rather than completed."
+    },
+    {
+      "claim_id": "CL08",
+      "location": "arcs.A2.text.sentence2",
+      "text": "The agreement gives the closure a defined transfer plan, while leaving appointment timing unsettled: current appointment dates are not guaranteed.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D04",
+        "D05"
+      ],
+      "source_ids": [
+        "S04",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C03",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The signed agreement specifies two receiving partners for existing patients.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Preserves the agreement’s explicit lack of appointment-date guarantees."
+    },
+    {
+      "claim_id": "CL09",
+      "location": "arcs.A2.text.sentence3",
+      "text": "A transfer agreement is in place; that does not establish that patients have already transferred or that their schedules will be preserved.",
+      "kind": "bounded_interpretation",
+      "development_ids": [
+        "D05"
+      ],
+      "source_ids": [
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Distinguishes an agreement from implementation; does not assert that no transfers have occurred."
+    },
+    {
+      "claim_id": "CL10",
+      "location": "arcs.A3.heading",
+      "text": "Water notice ends within a limited scope",
+      "kind": "synthesis",
+      "development_ids": [
+        "D06",
+        "D07"
+      ],
+      "source_ids": [
+        "S06",
+        "S07"
+      ],
+      "prior_shared_coverage_refs": [
+        "C02",
+        "C06"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The initial notice and subsequent clearance concern the same facility.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL11",
+      "location": "arcs.A3.text.sentence1",
+      "text": "The facility-specific boil-water notice issued after filter damage ended this week following repairs and compliant samples.",
+      "kind": "fact",
+      "development_ids": [
+        "D06",
+        "D07"
+      ],
+      "source_ids": [
+        "S06",
+        "S07"
+      ],
+      "prior_shared_coverage_refs": [
+        "C02",
+        "C06"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "S06 establishes the damaged-filter notice; S07 explicitly connects repairs and compliant samples to lifting it.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL12",
+      "location": "arcs.A3.text.sentence2",
+      "text": "The change is concrete: the notice that applied during repairs and testing has been lifted.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D06",
+        "D07"
+      ],
+      "source_ids": [
+        "S06",
+        "S07"
+      ],
+      "prior_shared_coverage_refs": [
+        "C02",
+        "C06"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Status changes from notice in effect to notice lifted.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL13",
+      "location": "arcs.A3.text.sentence3",
+      "text": "Its scope matters as much as its resolution.",
+      "kind": "bounded_interpretation",
+      "development_ids": [
+        "D07"
+      ],
+      "source_ids": [
+        "S07"
+      ],
+      "prior_shared_coverage_refs": [
+        "C06"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Interpretive emphasis on the explicit facility-only scope; no citywide pattern asserted.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL14",
+      "location": "arcs.A3.text.sentence4",
+      "text": "The clearance applies to this facility; other infrastructure was not evaluated, so the result provides no basis for a broader claim about infrastructure conditions.",
+      "kind": "bounded_interpretation",
+      "development_ids": [
+        "D07"
+      ],
+      "source_ids": [
+        "S07"
+      ],
+      "prior_shared_coverage_refs": [
+        "C06"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The stated evaluation boundary directly limits what can be inferred from this clearance.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Does not turn one facility’s clearance into citywide assurance or deterioration."
+    }
+  ],
+  "execution_metadata": {
+    "agent": "/root/blind_fragmented_rerun",
+    "timestamp": "2026-10-07T23:59:13.776423+00:00",
+    "input_hashes": {
+      "git:c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/friday-synthesis-spec.md": "3f4e9db698d078c72a27bcdd0ef6aa41ada7672f6faac8c530cce2bcf524b566",
+      "docs/friday-evidence/2026-10-04/synthesis-instructions-v2.txt": "39b46d5eb76135d83de9faed602ad419dabb63adaa9915784e7ba45a3f539e7f",
+      "docs/friday-evidence/2026-10-04/W118/packet.json": "cca2e8390f8dc6086e87bb1bc33834a4dd421243ba95f26e6261c9bf9692d243"
+    },
+    "exact_task_instructions": "User authorized blind FRI-5 synthesis. Repo /workspace/scratch/9aa1e270c37b/austin-daily-briefing. Read ONLY git show c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/friday-synthesis-spec.md, docs/friday-evidence/2026-10-04/synthesis-instructions-v2.txt, and W118/packet.json there. Do NOT read README, keys, manifests, past outputs/scores, other agent work or conversations. Apply pinned spec and instructions to packet. Write W118-blind-03-output.json in evidence dir with exact_recap, opening, arcs [{arc_id,heading,text}], section_included, omission_reason, sources_used IDs, displayed_source_groups [{group_id,supports_locations,source_ids,labels}], claims [{claim_id,location,text,kind,development_ids,source_ids,prior_shared_coverage_refs,context_exception,exception_reason,new_context_disclosure,relationship_support,pattern_minimum_departure_reason,uncertainty_handling}], execution_metadata {agent,timestamp,input_hashes,exact_task_instructions,files_read,context_isolation,limitations}. No scoring. Fictional sources only. Freeze SHA report. Do not edit other files, commit/publish, use external services, contact agents or spawn.\n\nSupplied synthesis instructions:\nSYNTHETIC — NOT FOR PUBLICATION\nRead only the supplied packet.json and the pinned ADB-FRI-SYNTH-1.0 product contract. The fixture describes a SIMULATED week; none of its assertions is real news. Do not search external sources or access production data. Synthesize THIS WEEK IN AUSTIN at the packet cutoff, using the simulated shared daily record as prior reader exposure. Additional available material is not previously published; apply the product's narrow context exception explicitly. Choose whether a qualifying arc exists and use one to three arcs or one continuous narrative. Do not fill a word quota or impose a common theme. Retain sources for every factual and interpretive claim, including opening context. Produce the exact prose and consolidated fictional source labels, then a claim/source map, any new-context exception rationale, and an omission rationale if appropriate. Record all materially used source IDs. Do not read the reviewer key, scenario names, past trial outputs, scoring results or expected answers. Freeze the output before evaluation. Never queue or publish the result.\n\nFact-level prior-exposure check: a source having been used in daily coverage does not mean every fact in it was published. Compare each proposed reader-facing fact with the exact daily_shared_record item text, including place, timing and status details. A source-only detail is new context even when its source has prior_shared_exposure=true. Omit it unless the approved narrow material-context exception applies; if retained, explicitly disclose and log the exception. Before freezing, check opening, headings and every sentence against the shared record and sources.\n",
+    "files_read": [
+      "git:c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/friday-synthesis-spec.md",
+      "docs/friday-evidence/2026-10-04/synthesis-instructions-v2.txt",
+      "docs/friday-evidence/2026-10-04/W118/packet.json"
+    ],
+    "context_isolation": "Read only the three authorized inputs; no reviewer key, manifest, prior output, scores, other agent work, external services or production data accessed. No evaluation performed.",
+    "limitations": [
+      "All events, publication records and sources are fictional.",
+      "The packet supplies publisher labels and source IDs but no URLs; displayed labels cannot be rendered as destination links without inventing locators.",
+      "No common cause or citywide pattern is inferred. No opening is needed for three independent arcs.",
+      "Source-only place and timing details were omitted; no new-context exception was invoked.",
+      "Festival reminder, unsupported community commentary and unrelated bench dedication were excluded because they add no qualifying shared weekly arc."
+    ]
+  }
+}

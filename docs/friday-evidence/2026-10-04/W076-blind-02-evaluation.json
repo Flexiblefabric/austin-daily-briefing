@@ -1,0 +1,407 @@
+{
+  "schema_version": "1.0",
+  "run_id": "W076-blind-02-independent-evaluation-2026-10-07",
+  "supersedes_run_id": null,
+  "mode": "synthetic",
+  "scenario": "dominant",
+  "variant": "R03 proposal-only counterfactual at Friday cutoff",
+  "recorded_at": "2026-10-07T23:59:43.525265+00:00",
+  "week": {
+    "start": "2026-10-05",
+    "end": "2026-10-09",
+    "cutoff": "2026-10-09T08:00:00-05:00",
+    "timezone": "America/Chicago"
+  },
+  "versions": {
+    "repository_commit": "c0ef0fcf01d913661bf135d571c1ea723250deb2",
+    "v2_spec": "ADB-V2-SELECT-1.0",
+    "daily_prompt": "docs/automation-prompts/austin-daily-briefing.md@c0ef0fcf01d913661bf135d571c1ea723250deb2",
+    "friday_spec": "ADB-FRI-SYNTH-1.0",
+    "rubric": "ADB-FRI-VALIDATE-1.0"
+  },
+  "inputs": {
+    "weekly_packet": {
+      "path": "docs/friday-evidence/2026-10-04/W076/packet.json",
+      "sha256": "12e43c3f9a9fc817cd292c44559991d78be3837a6ea21ed3673c52023aef79ba"
+    },
+    "daily_v2_outputs": [
+      {
+        "path": "docs/friday-evidence/2026-10-04/W076/daily-v2.json",
+        "sha256": "24c3edfc16cbc73e2dc9d354d6c6f51707b7e669b005681e1324641ee9aa4e93"
+      }
+    ],
+    "history_seed": {
+      "path": "docs/friday-evidence/2026-10-04/W076/history.json",
+      "sha256": "a13dd8316a321031636d3e7015bc1a250650773815fd6e6de526b6e866116fde"
+    },
+    "synthesis_prompt": {
+      "path": "docs/friday-evidence/2026-10-04/synthesis-instructions.txt",
+      "sha256": "5a8a2c5e9ff897a8eb4e15a4f8faf0e584659a984deaf99eac0254cc067bdbac"
+    },
+    "reviewer_key": {
+      "path": "docs/friday-evidence/2026-10-04/challenge-input-notes.md",
+      "sha256": "25959c6bae642be68897ce2a8b94b8db2cd531b1ea3469f6dc583d985d17d9ee"
+    }
+  },
+  "separation": {
+    "constructor": "October 7 recreated variant constructor; operator identity not asserted by challenge-input-notes",
+    "synthesizer": "/root/blind_resume_c",
+    "evaluator": "/root/evaluate_variants",
+    "method": "Separate evaluator context received explicit evaluation assignment. Read only assigned two outputs, their packet/source/daily/history files, pinned contracts/schema, task, synthesis instructions, challenge manifest/notes and validator code. Did not read other recaps, evaluations or exploratory records, contact writers or generate recaps. Writer execution metadata permits only assigned packets/spec/instructions, corroborated by hashes.",
+    "key_withheld": true,
+    "limitations": [
+      "SYNTHETIC — NOT FOR PUBLICATION; future fictional week, not actual subscriber history or live source research.",
+      "Writer separation is supported by frozen execution_metadata assignment, files_read, producer identity, isolation statement and matching input hashes; full independent tool transcript is not available to this evaluator.",
+      "Constructor identity is not supplied in variant artifacts; challenge-input-notes documents October 7 recreation. This evaluator did not construct inputs or write recaps."
+    ]
+  },
+  "output": {
+    "section_included": true,
+    "omission_reason": null,
+    "opening": "",
+    "arcs": [
+      {
+        "arc_id": "A1",
+        "heading": "A smaller proposal, still awaiting approval",
+        "text": "The repair-grant proposal narrowed this week without becoming an adopted program. Staff replaced the initial $12 million draft with a recommended $4 million pilot limited to two service areas. That changed the scale and geographic scope under consideration; it did not authorize grants.\n\nAt Wednesday’s hearing, speakers disagreed over the two-area limit, and no vote occurred. Those speakers’ views do not establish wider resident opinion. At the Friday cutoff, the available record still leaves the pilot as a recommendation, with approval unresolved."
+      }
+    ],
+    "exact_recap": "THIS WEEK IN AUSTIN\n\nA smaller proposal, still awaiting approval\n\nThe repair-grant proposal narrowed this week without becoming an adopted program. Staff replaced the initial $12 million draft with a recommended $4 million pilot limited to two service areas. That changed the scale and geographic scope under consideration; it did not authorize grants.\n\nAt Wednesday’s hearing, speakers disagreed over the two-area limit, and no vote occurred. Those speakers’ views do not establish wider resident opinion. At the Friday cutoff, the available record still leaves the pilot as a recommendation, with approval unresolved.\n\nSources: Synthetic recovery grant draft [S01]; Synthetic staff revision [S03]; Synthetic hearing record [S04].",
+    "word_count": 106,
+    "full_edition_word_count": null,
+    "reading_time_method": "Whitespace-delimited exact recap count, including section label, heading and source labels; section minutes at 200 words/minute. Full edition unavailable in shared editorial extracts; no advertised full-edition time claim verified."
+  },
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic recovery grant draft",
+      "locator": "docs/friday-evidence/2026-10-04/W076/sources.json#S01",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "access_time": "2026-10-07T23:59:43.525265+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "A draft proposes a $12 million home-repair grant program.; Eligibility rules and funding remain unapproved.",
+      "used_for": [
+        "CL01",
+        "CL02",
+        "CL03",
+        "CL04"
+      ]
+    },
+    {
+      "source_id": "S03",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic staff revision",
+      "locator": "docs/friday-evidence/2026-10-04/W076/sources.json#S03",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "access_time": "2026-10-07T23:59:43.525265+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Staff revise the draft to a $4 million pilot in two service areas.; The revision remains a recommendation, not an adopted program.",
+      "used_for": [
+        "CL01",
+        "CL02",
+        "CL03",
+        "CL04",
+        "CL07"
+      ]
+    },
+    {
+      "source_id": "S04",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic hearing record",
+      "locator": "docs/friday-evidence/2026-10-04/W076/sources.json#S04",
+      "publication_time": "2026-10-07T07:00:00-05:00",
+      "access_time": "2026-10-07T23:59:43.525265+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Speakers at a hearing disagree over limiting the pilot to two service areas.; No vote occurs.; The record does not measure wider resident opinion.",
+      "used_for": [
+        "CL02",
+        "CL05",
+        "CL06",
+        "CL07"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "CL01",
+      "location": "A1.heading",
+      "text": "A smaller proposal, still awaiting approval",
+      "kind": "interpretation",
+      "development_ids": [
+        "D01",
+        "D02"
+      ],
+      "source_ids": [
+        "S01",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "S03 explicitly revises the S01 draft to a smaller recommendation.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Recommendation is not adoption."
+    },
+    {
+      "claim_id": "CL02",
+      "location": "A1.sentence1",
+      "text": "The repair-grant proposal narrowed this week without becoming an adopted program.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S01",
+        "S03",
+        "S04"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03",
+        "C04"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The same proposal is revised in S03; S04 records a hearing without a vote.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "No later shared development is supplied."
+    },
+    {
+      "claim_id": "CL03",
+      "location": "A1.sentence2",
+      "text": "Staff replaced the initial $12 million draft with a recommended $4 million pilot limited to two service areas.",
+      "kind": "fact",
+      "development_ids": [
+        "D01",
+        "D02"
+      ],
+      "source_ids": [
+        "S01",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "S03 explicitly replaces the earlier draft.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "No additional uncertainty attaches to this bounded amount/revision or directly disclosed allocation; does not imply implementation or guaranteed expansion."
+    },
+    {
+      "claim_id": "CL04",
+      "location": "A1.sentence3",
+      "text": "That changed the scale and geographic scope under consideration; it did not authorize grants.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D01",
+        "D02"
+      ],
+      "source_ids": [
+        "S01",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Comparison of the initial amount and the revised amount and two-area restriction; no causal claim.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Scope remains proposed; grants are not authorized by a recommendation."
+    },
+    {
+      "claim_id": "CL05",
+      "location": "A1.sentence4",
+      "text": "At Wednesday’s hearing, speakers disagreed over the two-area limit, and no vote occurred.",
+      "kind": "fact",
+      "development_ids": [
+        "D03"
+      ],
+      "source_ids": [
+        "S04"
+      ],
+      "prior_shared_coverage_refs": [
+        "C04"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "No vote at this hearing; disagreement belongs to speakers."
+    },
+    {
+      "claim_id": "CL06",
+      "location": "A1.sentence5",
+      "text": "Those speakers’ views do not establish wider resident opinion.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D03"
+      ],
+      "source_ids": [
+        "S04"
+      ],
+      "prior_shared_coverage_refs": [
+        "C04"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "No inference of citywide opinion."
+    },
+    {
+      "claim_id": "CL07",
+      "location": "A1.sentence6",
+      "text": "At the Friday cutoff, the available record still leaves the pilot as a recommendation, with approval unresolved.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S03",
+        "S04"
+      ],
+      "prior_shared_coverage_refs": [
+        "C03",
+        "C04"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Packet coverage_note states no further shared developments after Wednesday.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "End state is expressly bounded to the supplied record and cutoff; no assumed later decision."
+    }
+  ],
+  "displayed_source_groups": [
+    {
+      "group_id": "G1",
+      "supports_locations": [
+        "A1.heading",
+        "A1"
+      ],
+      "source_ids": [
+        "S01",
+        "S03",
+        "S04"
+      ],
+      "labels": [
+        "Synthetic recovery grant draft",
+        "Synthetic staff revision",
+        "Synthetic hearing record"
+      ]
+    }
+  ],
+  "scorecard": {
+    "factual_fidelity": {
+      "weight": 20,
+      "rating": 4,
+      "points": 20.0,
+      "reason": "CL01–CL07 match S01/S03/S04 and shared C01/C03/C04. $12m becomes a recommended $4m two-area pilot, Wednesday has no vote, and the packet explicitly closes the record after Wednesday; Friday approval remains unresolved."
+    },
+    "narrative_usefulness": {
+      "weight": 15,
+      "rating": 3,
+      "points": 11.25,
+      "reason": "A1 explains the smaller scale and proposal-versus-authorization distinction. CL07 supplies the end state. It is useful but closely restates the three daily extracts and repeats pending approval in heading, first and last sentences."
+    },
+    "unsupported_inference_control": {
+      "weight": 15,
+      "rating": 4,
+      "points": 15.0,
+      "reason": "CL06 confines hearing disagreement to speakers. CL07 bounds unresolved status to the supplied Friday record; no invented later outcome or biography-based motive appears."
+    },
+    "source_traceability": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "All material claims and heading map to logged S01/S03/S04 and a single publisher-named G1; no opening adds hidden evidence. Fixture IDs are appropriate synthetic destinations."
+    },
+    "pattern_causation_discipline": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "CL01–CL04 connect explicit revision of the same draft, supported by distinct D01/D02; D03 supplies hearing status. S02 repeats D01 and is not counted. No citywide pattern or cause is asserted."
+    },
+    "material_uncertainty": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "CL02/CL04/CL07 repeatedly distinguish recommendation from authorization, while CL05 limits no-vote status to the hearing. Approval stays unresolved at cutoff; no false closure."
+    },
+    "no_filler": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "Only one short qualifying arc, no padded opening, second arc, biography aside or decorative conclusion. Speaker-opinion limit is brief and locally relevant."
+    },
+    "voice_restraint": {
+      "weight": 5,
+      "rating": 4,
+      "points": 5.0,
+      "reason": "A1 names staff and hearing speakers, uses restrained procedural language and avoids broad resident sentiment or editorial motives."
+    },
+    "structure_readability": {
+      "weight": 5,
+      "rating": 3,
+      "points": 3.75,
+      "reason": "Clear heading and compact paragraphs with consolidated fictional publishers. Shorter than 250 words is valid. Full-edition placement, HTML/plain-text parity and reading burden are unavailable in these shared extracts; those integration requirements remain untested."
+    }
+  },
+  "total_score": 95.0,
+  "hard_fail_checks": {
+    "fabricated_fact": {
+      "result": "clear",
+      "reason": "All amounts, scope and procedural statuses agree with sources/shared record; no later decision is fabricated."
+    },
+    "material_unsupported_conclusion": {
+      "result": "clear",
+      "reason": "Unresolved recommendation is supported by the explicit closed counterfactual record, not silence alone; no false conclusion from missing uncertainty."
+    },
+    "unsupported_causation": {
+      "result": "clear",
+      "reason": "Revision/sequence are explicit; no explanation of motive or claimed cause of the smaller pilot."
+    },
+    "false_pattern": {
+      "result": "clear",
+      "reason": "Single program arc is not generalized to a citywide trend; two articles on D01 are not counted twice."
+    },
+    "unlogged_source": {
+      "result": "clear",
+      "reason": "All materially asserted facts map to logged sources; no biography or duplicate source is materially used."
+    },
+    "invalid_new_context": {
+      "result": "clear",
+      "reason": "No new context used; all facts are in shared C01/C03/C04."
+    }
+  },
+  "disposition": "pass_candidate",
+  "human_review": null,
+  "limitations": [
+    "SYNTHETIC — NOT FOR PUBLICATION; future fictional week, not actual subscriber history or live source research.",
+    "Writer separation is supported by frozen execution_metadata assignment, files_read, producer identity, isolation statement and matching input hashes; full independent tool transcript is not available to this evaluator.",
+    "Constructor identity is not supplied in variant artifacts; challenge-input-notes documents October 7 recreation. This evaluator did not construct inputs or write recaps.",
+    "Shared editorial extracts omit full edition/rendering, delivery, source URL and placement QA. Section-only candidate status is not production/promotion clearance.",
+    "Frozen output sha256: 9004c2fe35291c11ce25d6d621d303782065723818871586cc689325a06ad737",
+    "Exact recap SHA256 (UTF-8): 3d82549c152588066a0feb51989a0a554b3b08ebb43259ce2987b6ef3898338f",
+    "Packaging normalization only: CL01: kind synthesis -> interpretation; CL01: boolean context_exception -> none; CL02: kind synthesis -> interpretation; CL02: boolean context_exception -> none; CL03: boolean context_exception -> none; CL03: null uncertainty_handling -> nonempty reviewer note; CL04: kind synthesis -> interpretation; CL04: boolean context_exception -> none; CL05: boolean context_exception -> none; CL06: kind evidence_limit -> interpretation; CL06: boolean context_exception -> none; CL07: kind status_synthesis -> interpretation; CL07: boolean context_exception -> none",
+    "No human review or approval recorded."
+  ],
+  "next_action": "Retain frozen candidate for Anthony’s synthetic editorial review and provisional-cutoff judgment; complete whole-edition rendering/reading-time and production gates separately. No publication or promotion."
+}

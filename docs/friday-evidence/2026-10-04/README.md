@@ -1,8 +1,8 @@
-# FRI-5 initial evidence package
+# FRI-5 synthetic validation evidence package
 
 **SYNTHETIC — NOT FOR PUBLICATION**
 
-Status: fixture construction and exploratory review complete; **independent synthesis and evaluation pending**. Nothing here promotes Friday synthesis or proves live editorial reliability. FRI-5 remains Active.
+Status: independent base/input-variant and evaluator-sensitivity reviews recorded on October 7. See [resumed validation report](resumed-validation-report.md) for current findings, failed attempts and the instruction correction. This is synthetic validation evidence, not promotion or live editorial reliability.
 
 ## Baseline and scope
 
@@ -16,10 +16,10 @@ Sources were turned into 15 daily records with candidate dispositions, seven-com
 
 | Fixture | Scenario | Construction status | Synthesis/evaluation status |
 | --- | --- | --- | --- |
-| W031 | Quiet | Frozen; one modest evolving access change and unrelated one-day items | Exploratory only |
-| W075 | Dominant story | Frozen; draft → revision → limited adoption; material new budget context | Exploratory only |
-| W118 | Fragmented | Frozen; bus routes, clinic transition and water restriction evolve independently | Exploratory draft failed inference review |
-| W032 | Zero-arc quiet variant | Frozen; removes later development from W031's only arc | Blind omission test pending |
+| W031 | Quiet | Frozen; one modest evolving access change and unrelated one-day items | Independent candidate passes recorded |
+| W075 | Dominant story | Frozen; draft → revision → limited adoption; material new budget context | Independent candidate passes recorded |
+| W118 | Fragmented | Frozen; bus routes, clinic transition and water restriction evolve independently | Original exploratory and blind failures retained; corrected blind rerun evaluated separately |
+| W032 | Zero-arc quiet variant | Frozen; removes later development from W031's only arc | Independent omission candidate pass |
 | W074 | Superseded construction draft | Preserved; Friday status reconfirmation incorrectly selected as material news | Rejected before synthesis; not an active base fixture |
 
 Use [manifest-v2.json](manifest-v2.json) for the three active base inputs and [omission-variant-manifest.json](omission-variant-manifest.json) for W032. [manifest.json](manifest.json) preserves the first construction freeze. The [construction correction](construction-correction.md) explains the W074 → W075 change.
@@ -56,10 +56,12 @@ python -m venv /tmp/adb-friday-validation
 /tmp/adb-friday-validation/bin/python scripts/validate_friday_evidence.py --self-test
 ```
 
-## Remaining FRI-5 work
+## Independent validation and handoff
 
-Run [blind synthesis](blind-synthesis-task.md) in a fresh context using only the allowed inputs, freeze the results, then use a separate context for [evaluation](independent-evaluation-task.md). The handoff prompts are prepared; no separate agent or context has been run or claimed in this package. Do not supply this README, exploratory drafts, reviewer keys or score results to the blind synthesizer.
+[Resumed validation report](resumed-validation-report.md) indexes separate writing/evaluation contexts, all eleven editorial challenges, evaluator misses and recorded corrective reruns. [Interruption record](interruption-and-resumption.json) distinguishes unavailable October 4 blind artifacts from these newly frozen outputs; old hash-only reports are not counted as recovered evidence.
 
-The [reviewer challenge matrix](reviewer-challenge-matrix.md) expands the required editorial-risk coverage. Its variants are defined but have not been independently exercised. Twelve integrity checks are not substitutes for those editorial tests. Keep FRI-5 open until the base cases and challenge variants have independent evidence and material defects have recorded dispositions.
+Fresh blind writers saw only their packets, the pinned product specification and the relevant synthesis instruction revision. Evaluators saw source/publication evidence after outputs were frozen. Separation is supported by task/access/hash attestations, not an operating-system access audit or independent human review. The final [output manifest](resumed-output-manifest.json) pins new artifacts.
 
-FRI-6 still owns rendered HTML/plain-text integration, source-link presentation and whole-edition length. It also needs the explicit transport-compatibility check required by the current release controls; editorial-only synthetic success cannot establish dispatcher acceptance. FRI-7 retains explicit promotion approval. Four-Friday human observation has not started.
+The original same-context trials and initial integrity result above are historical. The [resumed integrity result](resumed-integrity-check-result.json) covers all eleven evaluation records, six active fixture inputs and four controlled probe digests. The deliberately altered probes test evaluator sensitivity; they are not generation success samples.
+
+FRI-6 owns rendered HTML/plain-text integration, real consolidated source links, section order, whole-edition reading burden, canonical prompt reconciliation and executable transport compatibility. Current main adds structured selection notes, MFY enforcement and precise material-update evidence; this older pinned study does not validate their serialization or live execution. Carry both [synthesis instructions v2](synthesis-instructions-v2.txt) and [evaluation instructions v2](evaluation-instructions-v2.txt) into integration. FRI-7 retains explicit promotion approval and provisional-threshold review. Four-Friday human observation has not started.

@@ -311,6 +311,38 @@ function findRow(book, name, column, value) {
   assert.strictEqual(rows(intake,'Native Signup Requests')[1][9], 'resubscribed');
 })();
 
+(function adminHoldPreventsReactivation() {
+  const {context,db,intake}=makeRuntime({
+    email:'hold@example.com',
+    subscribers:[['hold@example.com','Unsubscribed','old','old','Administrative hold','PDEV004','hold@example.com','Hold']],
+    profiles:[['PDEV004','Unsubscribed','hold@example.com','old','https://example.test/customize','old','Hold fixture','More','Explanatory','Brief']],
+    preferences:interestIds.map(id=>['PDEV004',id,'Normal',1,'before','old-source','PDEV004'])
+  });
+  const result=context.processNativeSignupDevV1();
+  assert.strictEqual(result.admin_hold_noop,1);
+  assert.strictEqual(result.resubscribed,0);
+  assert.strictEqual(result.errors,0);
+  assert.strictEqual(findRow(db,'Subscribers','Email','hold@example.com')[1],'Unsubscribed');
+  assert.strictEqual(findRow(db,'Subscribers','Email','hold@example.com')[7],'Hold');
+  assert.strictEqual(findRow(db,'Profiles','Profile ID','PDEV004')[1],'Unsubscribed');
+  assert.strictEqual(rows(db,'Signup Actions').length,1);
+  assert.strictEqual(rows(db,'Outbound Messages').length,1);
+  assert.strictEqual(rows(intake,'Native Signup Requests')[1][9],'admin_hold_noop');
+})();
+
+(function adminReviewPreventsReactivation() {
+  const {context,db,intake}=makeRuntime({
+    email:'review@example.com',
+    subscribers:[['review@example.com','Unsubscribed','old','old','Administrative review','PDEV004','review@example.com','Review']],
+    profiles:[['PDEV004','Unsubscribed','review@example.com','old','https://example.test/customize','old','Review fixture','More','Explanatory','Brief']]
+  });
+  const result=context.processNativeSignupDevV1();
+  assert.strictEqual(result.admin_review_noop,1);
+  assert.strictEqual(findRow(db,'Subscribers','Email','review@example.com')[1],'Unsubscribed');
+  assert.strictEqual(rows(db,'Outbound Messages').length,1);
+  assert.strictEqual(rows(intake,'Native Signup Requests')[1][9],'admin_review_noop');
+})();
+
 (function mismatchedProfileStatusFailsClosed() {
   const {context, db, intake} = makeRuntime({
     email:'mismatch@example.com',

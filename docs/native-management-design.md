@@ -45,20 +45,30 @@ At least one requested change is required. A reader may combine a delivery actio
 
 The browser does not show the subscriber's current delivery status or preferences. This avoids turning the management page into an email-address lookup service.
 
-## Status semantics
+## Delivery status and administrative restrictions
 
-After valid confirmation, the processor resolves the subscriber's current state immediately before mutation.
+In the current DEV database, `Subscribers.Status` is a validated delivery-status field with exactly three allowed values: `Active`, `Paused`, and `Unsubscribed`. `Profiles.Status` must match the subscriber delivery status.
 
-| Requested action | Active | Paused | Admin Hold | Unsubscribed |
+`Admin Hold` is **not** a valid value for either delivery-status column. The separate DEV `Subscribers.Admin Status` column supports `OK`, `Review`, and `Hold`. `Hold` is the administrative restriction; `Review` also fails closed for delivery changes until an operator resolves it. The management processor must require this column, a recognized administrative value, and subscriber/profile status parity. It must not clear the administrative restriction as a side effect of a management request.
+
+### Requested delivery action
+
+| Subscriber delivery status | Keep current | Pause | Resume | Unsubscribe |
 | --- | --- | --- | --- | --- |
-| Keep current | preserve | preserve | preserve | preserve |
-| Pause | Paused | no-op | preserve hold | preserve Unsubscribed |
-| Resume | no-op | Active | preserve hold | preserve Unsubscribed; re-subscription requires fresh signup consent |
-| Unsubscribe | Unsubscribed | Unsubscribed | Unsubscribed | no-op |
+| Active, Admin Status OK | Active | Paused | Active | Unsubscribed |
+| Paused, Admin Status OK | Paused | Paused | Active | Unsubscribed |
+| Unsubscribed, Admin Status OK | Unsubscribed | Unsubscribed | Unsubscribed | Unsubscribed |
+| Active, Admin Status Hold/Review | Active | Active | Active | Unsubscribed |
+| Paused, Admin Status Hold/Review | Paused | Paused | Paused | Unsubscribed |
+| Unsubscribed, Admin Status Hold/Review | Unsubscribed | Unsubscribed | Unsubscribed | Unsubscribed |
 
-A confirmed topic reset may apply regardless of Active, Paused, Admin Hold, or Unsubscribed delivery state because it does not enable delivery. Reset changes only active topic preferences to Normal/1; it does not alter briefing-style settings.
+Topic reset may occur with any validated delivery/admin status combination, because it does not authorize delivery. It changes only active interest preferences to `Normal/1` and preserves reading-style settings.
 
-An unsubscribe request is allowed to replace Admin Hold because it is an explicit withdrawal of delivery consent. Pause or resume must never clear an Admin Hold. Resume must never reactivate an Unsubscribed subscriber; fresh affirmative signup consent owns re-subscription.
+An unsubscribe request honors explicit withdrawal of delivery consent **without clearing `Admin Status`**. A later signup request must not reactivate an account while `Admin Status` is `Hold` or `Review`. Fresh affirmative consent is necessary but not sufficient to bypass an administrative restriction.
+
+### Production schema blocker
+
+The current production Subscribers header does **not** contain the DEV-only `Admin Status` column. FORM-9 must not be promoted by assuming production supports this field. Before Gate E, decide and document the authoritative production representation of administrative holds, reconcile it with signup/customization/daily/welcome delivery eligibility and validate the change across every production consumer. In particular, the existing Resend welcome dispatcher checks `Subscribers.Status === 'Active'` but does not currently consult `Admin Status`. A future production hold overlay must protect delivery before that representation goes live.
 
 ## Browser and endpoint privacy
 
@@ -233,9 +243,9 @@ Exercise at minimum:
 - Paused → Active;
 - Active → Unsubscribed;
 - already-Unsubscribed unsubscribe no-op;
-- Admin Hold + pause preserves hold;
-- Admin Hold + resume preserves hold;
-- Admin Hold + unsubscribe becomes Unsubscribed;
+- Admin Status Hold/Review + pause/resume preserves both delivery status and administrative restriction;
+- Admin Status Hold + unsubscribe changes delivery to Unsubscribed without clearing Hold;
+- Admin Status Hold/Review prevents fresh-consent signup from reactivating an account;
 - Unsubscribed + resume remains Unsubscribed;
 - reset-only;
 - pause + reset;
@@ -256,6 +266,7 @@ Exercise at minimum:
 
 ### Gate E — controlled production
 
+- Resolve and document production administrative restriction representation (the production Subscribers sheet currently lacks DEV `Admin Status`); verify signup, management, customization and dispatch guardrails before writes.
 Stage production management sheets/endpoint disabled first, complete compatibility checks, restrict to one controlled address, confirm each protected action class without affecting unrelated subscribers.
 
 ### Gate F — public cutover

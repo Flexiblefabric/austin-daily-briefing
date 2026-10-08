@@ -410,4 +410,25 @@ function findRow(book, name, column, value) {
   assert.strictEqual(rows(intake,'Native Signup Requests')[1][9], 'resubscribed');
 })();
 
+(function form9FreshConsentDevPageIsIsolated() {
+  const html = fs.readFileSync('site/form9-consent-dev.html', 'utf8');
+  const devConfig = fs.readFileSync('site/form9-consent-dev-config.js', 'utf8');
+  const productionConfig = fs.readFileSync('site/signup-config.js', 'utf8');
+  const homepage = fs.readFileSync('site/index.html', 'utf8');
+  const sitemap = fs.readFileSync('site/sitemap.xml', 'utf8');
+
+  assert(html.includes('<meta name="robots" content="noindex, nofollow">'));
+  assert(html.includes('id="native-signup-form"'));
+  assert(html.includes('id="signup-consent"'));
+  assert(html.includes('name="consent" type="checkbox" value="yes" required'));
+  assert(html.includes('form9-consent-dev-config.js'));
+  assert(html.includes('signup.js'));
+  assert(devConfig.includes("environment: 'development'"));
+  assert(devConfig.includes('AKfycbzx2Ktealkm7PnFf1aXCcrZOzmffG7KBUE3NUsVA-pxsaq0lLkzn-O9F_Ajruov5v1l'));
+  assert(productionConfig.includes("environment: 'production'"));
+  assert(!productionConfig.includes('AKfycbzx2Ktealkm7PnFf1aXCcrZOzmffG7KBUE3NUsVA-pxsaq0lLkzn-O9F_Ajruov5v1l'));
+  assert(!homepage.includes('form9-consent-dev.html'));
+  assert(!sitemap.includes('form9-consent-dev.html'));
+})();
+
 console.log('Native signup Gate C DEV processor parity QA passed.');

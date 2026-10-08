@@ -142,8 +142,9 @@ function context() {
 })();
 
 (function designContract(){
-  assert(design.includes('Unsubscribed + resume remains Unsubscribed'));
-  assert(design.includes('Admin Hold + unsubscribe becomes Unsubscribed'));
+  assert(design.includes('Unsubscribed, Admin Status OK'));
+  assert(design.includes('Admin Status Hold + unsubscribe changes delivery to Unsubscribed'));
+  assert(design.includes('production Subscribers header does'));
   assert(design.includes('32 random token bytes'));
   assert(design.includes('manage-confirm.html'));
   assert(design.includes('URL fragment'));

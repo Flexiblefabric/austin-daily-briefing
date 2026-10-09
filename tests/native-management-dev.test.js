@@ -57,6 +57,11 @@ function context() {
   assert(config.includes("environment: 'development'"));
   assert(config.includes("https://script.google.com/macros/s/AKfycbzENgETifuF_AXbYEfgwb5oWjjsyvDRByWWaATxmfopXbObgF6_KeiTBVHBlJiHytUO/exec"));
   assert(browser.includes("data.type !== expectedResultType"));
+  assert(browser.includes("data.client_nonce !== pendingNonce"));
+  assert(browser.includes("data.ok && data.status === 'accepted'"));
+  assert(browser.includes("We could not verify that the request was received."));
+  assert(!browser.includes("resultFrame.addEventListener('load'"));
+  assert(!browser.includes("fallbackTimer"));
   assert(browser.includes("Choose a delivery change, a topic reset, or both."));
   assert(confirmHtml.includes('<meta name="robots" content="noindex, nofollow">'));
   assert(confirmHtml.includes('name="token"'));

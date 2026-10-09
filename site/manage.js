@@ -20,7 +20,6 @@
   const endpointPattern = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
 
   let responseTimer = null;
-  let fallbackTimer = null;
   let pendingNonce = '';
   let submissionPending = false;
 
@@ -81,9 +80,7 @@
 
   function finish(kind, message) {
     if (responseTimer) window.clearTimeout(responseTimer);
-    if (fallbackTimer) window.clearTimeout(fallbackTimer);
     responseTimer = null;
-    fallbackTimer = null;
     submissionPending = false;
     setSubmitting(false);
     pendingNonce = '';
@@ -129,19 +126,13 @@
 
     if (responseTimer) window.clearTimeout(responseTimer);
     responseTimer = window.setTimeout(function () {
-      finish('error', 'We could not complete the request. Please try again.');
+      finish('error', 'We could not verify that the request was received. Check your inbox before submitting again.');
     }, 20000);
   });
 
-  resultFrame.addEventListener('load', function () {
-    if (!submissionPending) return;
-    if (fallbackTimer) window.clearTimeout(fallbackTimer);
-    fallbackTimer = window.setTimeout(function () {
-      if (!submissionPending) return;
-      finish('success', successMessage());
-    }, 500);
-  });
-
+  // Loading the hidden iframe does not prove that Apps Script accepted the request.
+  // Success requires a nonce-bound acknowledgement from the expected endpoint.
+  // Cross-origin redirects, network errors and browser-blocked frames can all load.
   form.addEventListener('change', function () {
     if (statusBox.classList.contains('form-status-error')) setStatus('', '');
   });

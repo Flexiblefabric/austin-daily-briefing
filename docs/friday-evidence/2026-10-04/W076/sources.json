@@ -1,0 +1,75 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "fixture_id": "W076",
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic recovery grant draft",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "development_id": "D01",
+      "topic_key": "repair-grants",
+      "facts": [
+        "A draft proposes a $12 million home-repair grant program.",
+        "Eligibility rules and funding remain unapproved."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S02",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic civic bulletin",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "development_id": "D01",
+      "topic_key": "repair-grants",
+      "facts": [
+        "The same $12 million draft is under consideration."
+      ],
+      "limits": "Repeats S01 without new facts.",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S03",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic staff revision",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "development_id": "D02",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Staff revise the draft to a $4 million pilot in two service areas.",
+        "The revision remains a recommendation, not an adopted program."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S04",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic hearing record",
+      "publication_time": "2026-10-07T07:00:00-05:00",
+      "development_id": "D03",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Speakers at a hearing disagree over limiting the pilot to two service areas.",
+        "No vote occurs.",
+        "The record does not measure wider resident opinion."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S08",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic profile interview",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D07",
+      "topic_key": "director-profile",
+      "facts": [
+        "An agency director previously worked in another city."
+      ],
+      "limits": "No documented link between that biography and this program's decisions.",
+      "access_status": "fixture_read"
+    }
+  ]
+}

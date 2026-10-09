@@ -1,0 +1,74 @@
+{
+  "comparison_by": "/root after independent results frozen",
+  "independent_results_sha256": "5cafd55da1f7f7683a46851237478fe6cdea9fa1b8139a74a6627427592838ba",
+  "constructor_key_sha256": "a9b0d675396ea831daa8e5169ed659013ca1e6debe0553100cc8da6ff2160b43",
+  "gate_name_mapping": {
+    "false_pattern": "materially_false_pattern",
+    "material_unsupported_conclusion": "materially_unsupported_conclusion",
+    "unsupported_causation": "materially_unsupported_causal_claim",
+    "unlogged_source": "materially_used_but_unlogged_source"
+  },
+  "probes": [
+    {
+      "probe_id": "P201",
+      "targeted_gates": {
+        "false_pattern": "fail",
+        "material_unsupported_conclusion": "fail"
+      },
+      "all_targeted_detected": true,
+      "actual_total": 53.75,
+      "actual_disposition": "fail"
+    },
+    {
+      "probe_id": "P202",
+      "targeted_gates": {
+        "unlogged_source": "fail"
+      },
+      "all_targeted_detected": true,
+      "actual_total": 91.25,
+      "actual_disposition": "fail"
+    },
+    {
+      "probe_id": "P203",
+      "targeted_gates": {
+        "unsupported_causation": "fail",
+        "false_pattern": "fail",
+        "material_unsupported_conclusion": "fail"
+      },
+      "all_targeted_detected": true,
+      "actual_total": 41.25,
+      "actual_disposition": "fail"
+    },
+    {
+      "probe_id": "P204",
+      "targeted_gates": {
+        "material_unsupported_conclusion": "fail"
+      },
+      "all_targeted_detected": true,
+      "actual_total": 60.0,
+      "actual_disposition": "fail"
+    }
+  ],
+  "targeted_false_negatives": 0,
+  "limitations": "Four deliberately altered samples only; sensitivity result is not generation reliability. P203/P204 inherit W118-blind-02 context failure, so targeted detection is based on exact quote and gate reason, not overall fail disposition alone.",
+  "additional_findings": [
+    {
+      "probe_id": "P204",
+      "finding": "Independent initial probe evaluator marked invalid-new-context clear despite inherited north-corridor and Thursday-evening facts absent from prior shared text. Independent base evaluator had correctly failed these same details. This is a semantic false negative beyond the injected target.",
+      "disposition": "Focused fresh P204-exposure-review-02 with explicit full-prose fact-level instructions failed unauthorized new context at 66.25, identifying north-corridor/Thursday-evening and further descriptive details. Initial miss preserved."
+    },
+    {
+      "probe_id": "P203",
+      "finding": "Initial evaluator caught injected common-cause/new-context failure but did not separately identify inherited bus-detail context leakage.",
+      "disposition": "Not counted as proof of complete baseline fact-level auditing."
+    }
+  ],
+  "exposure_regression": {
+    "review_path": "docs/friday-evidence/2026-10-04/review-probes/P204-exposure-review-02.json",
+    "sha256": "efe5b1c040ba97373a2e0cc3c3d5b1ceeebc4aee52f52189561f5c2fa30ceb04",
+    "disposition": "fail",
+    "score": 66.25,
+    "new_context_detected": true,
+    "limitations": "Targeted retest of known leakage using clarified general evaluation instructions; not broad reviewer reliability."
+  }
+}

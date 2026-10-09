@@ -1,0 +1,27 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "scenario": "fragmented",
+  "fixture_id": "W118",
+  "expected_constraints": {
+    "eligible_arcs": [
+      "Bus detours narrow from four to one.",
+      "Clinic closure acquires a signed patient-transfer plan.",
+      "Water restriction ends after repair and testing."
+    ],
+    "material_uncertainty": [
+      "Remaining bus detour date unknown.",
+      "Clinic appointment continuity not guaranteed."
+    ],
+    "resolved_status": [
+      "Water notice genuinely lifted for this facility; no generic unresolved disclaimer needed."
+    ],
+    "exclude": [
+      "S09 cannot establish common cause or service collapse.",
+      "Festival belongs to utility; bench item fails V2 floor."
+    ],
+    "pattern": [
+      "Three local service stories do not establish a single institutional cause. Frame their different stages without inferring a citywide trend."
+    ]
+  },
+  "not_a_model_answer": true
+}

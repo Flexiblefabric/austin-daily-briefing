@@ -1,0 +1,391 @@
+{
+  "schema_version": "1.0",
+  "run_id": "W118-blind-02",
+  "supersedes_run_id": null,
+  "mode": "synthetic",
+  "scenario": "fragmented",
+  "variant": null,
+  "recorded_at": "2026-10-07T13:44:25.567396+00:00",
+  "week": {
+    "start": "2026-10-05",
+    "end": "2026-10-09",
+    "cutoff": "2026-10-09T08:00:00-05:00",
+    "timezone": "America/Chicago"
+  },
+  "versions": {
+    "repository_commit": "c0ef0fcf01d913661bf135d571c1ea723250deb2",
+    "v2_spec": "ADB-V2-SELECT-1.0",
+    "daily_prompt": "c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/automation-prompts/austin-daily-briefing.md",
+    "friday_spec": "ADB-FRI-SYNTH-1.0",
+    "rubric": "ADB-FRI-VALIDATE-1.0"
+  },
+  "inputs": {
+    "weekly_packet": {
+      "path": "docs/friday-evidence/2026-10-04/W118/packet.json",
+      "sha256": "cca2e8390f8dc6086e87bb1bc33834a4dd421243ba95f26e6261c9bf9692d243"
+    },
+    "daily_v2_outputs": [
+      {
+        "path": "docs/friday-evidence/2026-10-04/W118/daily-v2.json",
+        "sha256": "b069a846bcb24b4819e154eca5c187fddd95e141fa8d941db5fa837048a5067c"
+      }
+    ],
+    "history_seed": {
+      "path": "docs/friday-evidence/2026-10-04/W118/history.json",
+      "sha256": "5fb14847c802199f93fb387e9171fd12401f4e7274c07f37a08f5efe0079fdee"
+    },
+    "synthesis_prompt": {
+      "path": "docs/friday-evidence/2026-10-04/synthesis-instructions.txt",
+      "sha256": "5a8a2c5e9ff897a8eb4e15a4f8faf0e584659a984deaf99eac0254cc067bdbac"
+    },
+    "reviewer_key": {
+      "path": "docs/friday-evidence/2026-10-04/W118/reviewer-key.json",
+      "sha256": "66b2b9849683b5d9350861a2d018abed6e5e4edb9b78809cbd5b7c546fad19db"
+    }
+  },
+  "separation": {
+    "constructor": "Prior fixture construction context recorded in manifest-v2.json / omission-variant-manifest.json; distinct from blind-02 writer and this evaluator",
+    "synthesizer": "/root/blind_resume_b",
+    "evaluator": "/root/evaluate_resume_base",
+    "method": "Fresh separate evaluator context after output freeze. Read only pinned contracts, current schema, allowed fixtures/manifests and frozen blind-02 outputs; keys withheld from writers per preserved task instructions/files_read. No writer communication; no exploratory outputs/scores or other evaluation results read.",
+    "key_withheld": true,
+    "limitations": [
+      "Recorded role/access attestations; no OS-level isolation attestation. Synthetic source corpus and same model family do not establish statistically independent performance."
+    ]
+  },
+  "output": {
+    "section_included": true,
+    "omission_reason": null,
+    "opening": "",
+    "arcs": [
+      {
+        "arc_id": "A1",
+        "heading": "Bus detours narrow to one route",
+        "text": "Three of the four bus routes diverted by a corridor maintenance closure are back on their normal paths by Friday’s cutoff. The north part of the corridor reopened first, restoring two routes; a third returned Thursday evening. That leaves a smaller disruption, but not a completed restoration: one route remains on detour without a return date."
+      },
+      {
+        "arc_id": "A2",
+        "heading": "A transfer plan for clinic patients",
+        "text": "The community clinic’s month-end closure now has a patient-transfer agreement attached to it. After announcing that it would close when its lease ends, the clinic signed an agreement to move existing patients to two partner sites. The agreement establishes where those patients will transfer, but does not guarantee that every appointment will retain its current date."
+      },
+      {
+        "arc_id": "A3",
+        "heading": "Water notice ends after repairs and testing",
+        "text": "The damaged filter that prompted a neighborhood treatment facility’s boil-water notice has been repaired. Required samples met the standard, allowing the notice to be lifted Thursday. The week’s change is specific to that facility: the clearance does not evaluate other infrastructure."
+      }
+    ],
+    "exact_recap": "THIS WEEK IN AUSTIN\n\nBus detours narrow to one route\n\nThree of the four bus routes diverted by a corridor maintenance closure are back on their normal paths by Friday’s cutoff. The north part of the corridor reopened first, restoring two routes; a third returned Thursday evening. That leaves a smaller disruption, but not a completed restoration: one route remains on detour without a return date.\n\nSources: Synthetic bus disruption notice (S01); Synthetic bus access bulletin (S02); Synthetic bus operations update (S03).\n\nA transfer plan for clinic patients\n\nThe community clinic’s month-end closure now has a patient-transfer agreement attached to it. After announcing that it would close when its lease ends, the clinic signed an agreement to move existing patients to two partner sites. The agreement establishes where those patients will transfer, but does not guarantee that every appointment will retain its current date.\n\nSources: Synthetic clinic notice (S04); Synthetic clinic transition agreement (S05).\n\nWater notice ends after repairs and testing\n\nThe damaged filter that prompted a neighborhood treatment facility’s boil-water notice has been repaired. Required samples met the standard, allowing the notice to be lifted Thursday. The week’s change is specific to that facility: the clearance does not evaluate other infrastructure.\n\nSources: Synthetic waterworks inspection (S06); Synthetic waterworks clearance (S07).",
+    "word_count": 211,
+    "full_edition_word_count": null,
+    "reading_time_method": "Whitespace-delimited exact_recap tokens including label, headings and source labels; section estimate at 200 words/minute. Full-edition count unavailable (shared extracts only). Omitted section adds zero words."
+  },
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic bus disruption notice",
+      "locator": "docs/friday-evidence/2026-10-04/W118/sources.json#S01",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.567110+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. Drivers are using detours on four bus routes because a maintenance project closes a corridor.",
+      "used_for": [
+        "K01"
+      ]
+    },
+    {
+      "source_id": "S02",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic bus access bulletin",
+      "locator": "docs/friday-evidence/2026-10-04/W118/sources.json#S02",
+      "publication_time": "2026-10-07T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.567156+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. Two of the four routes return to normal paths after the north part of the corridor reopens. The other two routes remain on detour.",
+      "used_for": [
+        "K01"
+      ]
+    },
+    {
+      "source_id": "S03",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic bus operations update",
+      "locator": "docs/friday-evidence/2026-10-04/W118/sources.json#S03",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.567193+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. One more route returns to its normal path Thursday evening. One route remains on detour at Friday cutoff; its return date is not set.",
+      "used_for": [
+        "K01"
+      ]
+    },
+    {
+      "source_id": "S04",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic clinic notice",
+      "locator": "docs/friday-evidence/2026-10-04/W118/sources.json#S04",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.567228+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. A community clinic announces it will close at the end of the month after its lease ends.",
+      "used_for": [
+        "K02"
+      ]
+    },
+    {
+      "source_id": "S05",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic clinic transition agreement",
+      "locator": "docs/friday-evidence/2026-10-04/W118/sources.json#S05",
+      "publication_time": "2026-10-08T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.567261+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. The clinic signs an agreement to transfer its existing patients to two partner sites. The agreement does not guarantee that every appointment will keep its current date.",
+      "used_for": [
+        "K02"
+      ]
+    },
+    {
+      "source_id": "S06",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic waterworks inspection",
+      "locator": "docs/friday-evidence/2026-10-04/W118/sources.json#S06",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.567294+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. Inspection finds a damaged filter at a neighborhood treatment facility. The facility issues a boil-water notice while repairs and tests take place.",
+      "used_for": [
+        "K03"
+      ]
+    },
+    {
+      "source_id": "S07",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic waterworks clearance",
+      "locator": "docs/friday-evidence/2026-10-04/W118/sources.json#S07",
+      "publication_time": "2026-10-08T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.567328+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. The filter is repaired, required samples meet the standard and the boil-water notice is lifted. The clearance applies to this facility and does not evaluate other infrastructure.",
+      "used_for": [
+        "K03"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "K01",
+      "location": "arcs.A1.text",
+      "text": "Three of the four bus routes diverted by a corridor maintenance closure are back on their normal paths by Friday’s cutoff. The north part of the corridor reopened first, restoring two routes; a third returned Thursday evening. That leaves a smaller disruption, but not a completed restoration: one route remains on detour without a return date.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C04",
+        "C07"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The three notices explicitly follow the same four routes through the closure and staged restoration. The comparison is confined to those routes.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "One remaining detour and the absence of a return date are explicit."
+    },
+    {
+      "claim_id": "K02",
+      "location": "arcs.A2.text",
+      "text": "The community clinic’s month-end closure now has a patient-transfer agreement attached to it. After announcing that it would close when its lease ends, the clinic signed an agreement to move existing patients to two partner sites. The agreement establishes where those patients will transfer, but does not guarantee that every appointment will retain its current date.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D04",
+        "D05"
+      ],
+      "source_ids": [
+        "S04",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C03",
+        "C05"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The closure announcement and signed transfer agreement concern the same clinic and its existing patients. No completed transfers or wider service trend are asserted.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "The agreement does not guarantee unchanged appointment dates; the closure and transfers remain prospective."
+    },
+    {
+      "claim_id": "K03",
+      "location": "arcs.A3.text",
+      "text": "The damaged filter that prompted a neighborhood treatment facility’s boil-water notice has been repaired. Required samples met the standard, allowing the notice to be lifted Thursday. The week’s change is specific to that facility: the clearance does not evaluate other infrastructure.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D06",
+        "D07"
+      ],
+      "source_ids": [
+        "S06",
+        "S07"
+      ],
+      "prior_shared_coverage_refs": [
+        "C02",
+        "C06"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The inspection and clearance concern the same damaged filter and facility-specific notice.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Clearance is explicitly limited to the facility, with no assessment of other infrastructure."
+    }
+  ],
+  "displayed_source_groups": [
+    {
+      "group_id": "G1",
+      "supports_locations": [
+        "arcs.A1.text"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "labels": [
+        "Synthetic bus disruption notice",
+        "Synthetic bus access bulletin",
+        "Synthetic bus operations update"
+      ]
+    },
+    {
+      "group_id": "G2",
+      "supports_locations": [
+        "arcs.A2.text"
+      ],
+      "source_ids": [
+        "S04",
+        "S05"
+      ],
+      "labels": [
+        "Synthetic clinic notice",
+        "Synthetic clinic transition agreement"
+      ]
+    },
+    {
+      "group_id": "G3",
+      "supports_locations": [
+        "arcs.A3.text"
+      ],
+      "source_ids": [
+        "S06",
+        "S07"
+      ],
+      "labels": [
+        "Synthetic waterworks inspection",
+        "Synthetic waterworks clearance"
+      ]
+    }
+  ],
+  "scorecard": {
+    "factual_fidelity": {
+      "weight": 20,
+      "rating": 4,
+      "points": 20.0,
+      "reason": "K01–K03 match source facts: four routes to one remaining, signed transfer agreement with date limits, and facility-specific repair/testing clearance. No fabricated fact or proposal/adoption confusion. Some source facts lack prior exposure, assessed separately under invalid_new_context."
+    },
+    "narrative_usefulness": {
+      "weight": 15,
+      "rating": 4,
+      "points": 15.0,
+      "reason": "Three real arcs each explain a changed end state; no forced opening or conclusion. Bus and clinic remain limited; water is genuinely resolved locally."
+    },
+    "unsupported_inference_control": {
+      "weight": 15,
+      "rating": 4,
+      "points": 15.0,
+      "reason": "No unsupported broad service collapse, motives, sentiment or permanent restoration implied; source-supported causal language stays within its facility/corridor."
+    },
+    "source_traceability": {
+      "weight": 10,
+      "rating": 3,
+      "points": 7.5,
+      "reason": "All seven material sources are logged and visibly grouped. K01 source references support facts, but C04/C07 do not establish prior reader exposure to north-part geography or Thursday-evening timing; the producer conflates source detail with shared coverage."
+    },
+    "pattern_causation_discipline": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "D01–D03, D04–D05 and D06–D07 support three separate relationships. No cross-arc causal or institutional trend invented."
+    },
+    "material_uncertainty": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "One detour lacks a return date; appointment dates are not guaranteed; water clearance is limited to the facility. No misleading omitted uncertainty or gratuitous unresolved ending."
+    },
+    "no_filler": {
+      "weight": 10,
+      "rating": 3,
+      "points": 7.5,
+      "reason": "Short independent arcs are proportionate, but north-part geography and Thursday-evening precision do not add necessary weekly understanding."
+    },
+    "voice_restraint": {
+      "weight": 5,
+      "rating": 4,
+      "points": 5.0,
+      "reason": "Measured and readable; no civic generalization or emotional inflation."
+    },
+    "structure_readability": {
+      "weight": 5,
+      "rating": 3,
+      "points": 3.75,
+      "reason": "Three descriptive headings and per-arc consolidated publisher groups. Section burden measured; full-edition and rendered integration untested."
+    }
+  },
+  "total_score": 93.75,
+  "hard_fail_checks": {
+    "fabricated_fact": {
+      "result": "clear",
+      "reason": "K01–K03 match source facts: four routes to one remaining, signed transfer agreement with date limits, and facility-specific repair/testing clearance. No fabricated fact or proposal/adoption confusion. Some source facts lack prior exposure, assessed separately under invalid_new_context."
+    },
+    "material_unsupported_conclusion": {
+      "result": "clear",
+      "reason": "No unsupported broad service collapse, motives, sentiment or permanent restoration implied; source-supported causal language stays within its facility/corridor. Material-uncertainty omissions were separately assessed: One detour lacks a return date; appointment dates are not guaranteed; water clearance is limited to the facility. No misleading omitted uncertainty or gratuitous unresolved ending."
+    },
+    "unsupported_causation": {
+      "result": "clear",
+      "reason": "D01–D03, D04–D05 and D06–D07 support three separate relationships. No cross-arc causal or institutional trend invented."
+    },
+    "false_pattern": {
+      "result": "clear",
+      "reason": "D01–D03, D04–D05 and D06–D07 support three separate relationships. No cross-arc causal or institutional trend invented."
+    },
+    "unlogged_source": {
+      "result": "clear",
+      "reason": "All seven material sources are logged and visibly grouped. K01 source references support facts, but C04/C07 do not establish prior reader exposure to north-part geography or Thursday-evening timing; the producer conflates source detail with shared coverage. Expanded metadata only; no undeclared source has been added to cure an omission."
+    },
+    "invalid_new_context": {
+      "result": "fail",
+      "reason": "K01/A1 introduces “north part of the corridor” (S02) and “Thursday evening” (S03). The explicit shared C04 says only partial corridor reopening, and C07 says only a third route is back to normal. These details are true in the source corpus but not previously surfaced in the simulated shared publication record. No exception rationale or transparent new-context disclosure is supplied; neither detail substantially changes understanding or prevents an egregiously misleading omission. Source-level prior_shared_exposure=true does not publish every source fact. This fails the pinned fact-level context rule; audit normalization does not retrofit an exception."
+    }
+  },
+  "disposition": "fail",
+  "human_review": null,
+  "limitations": [
+    "Closed fictional corpus; no live research, subscriber history, delivery or production behavior tested.",
+    "Full-edition word count unavailable because fixtures contain shared editorial extracts only. HTML/plain-text source destinations, typography, section position and mobile/email integration remain promotion gates; fictional publisher labels are accepted for this synthetic prose test, not validated production links.",
+    "Audit normalization only: producer kind=synthesis/editorial_omission_rationale becomes interpretation; false context_exception becomes none, true becomes prevents_misleading_omission; null uncertainty_handling receives an explicit audit note. Producer sources_used IDs are expanded from frozen sources.json into source objects with locators and claim backreferences. No prose, source ID, coverage reference, exception rationale or displayed group was changed. Producer JSON is preserved separately; normalized classifications are evaluator packaging, not producer-compliant schema output.",
+    "Producer claims do not separately list headings; each heading is directly supported by the same arc sources. This review checks those implications explicitly; no evidence was silently invented.",
+    "Frozen producer: docs/friday-evidence/2026-10-04/W118-blind-02-output.json sha256=9c3d88a6747a2cadb0e571242562c1d0797f9e698f5f8ab99b3ca3b7e49141c4"
+  ],
+  "next_action": "Preserve failure and create a separately identified blind rerun that respects fact-level shared exposure; do not rewrite this output or retrofit an exception."
+}

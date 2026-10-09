@@ -1,0 +1,29 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "fixture_id": "W032",
+  "coverage_start": "2026-09-21",
+  "coverage_end": "2026-10-04",
+  "complete_for_fixture": true,
+  "items": [
+    {
+      "item_id": "H01",
+      "date": "2026-09-28",
+      "topic_key": "park-hearing",
+      "facts": [
+        "Park hearing set for October 12."
+      ],
+      "publication_state": "simulated_shared_published"
+    },
+    {
+      "item_id": "H02",
+      "date": "2026-09-25",
+      "topic_key": "housing-proposal",
+      "facts": [
+        "Housing proposal remains pending.",
+        "Council recess lasts through October 12."
+      ],
+      "publication_state": "simulated_shared_published"
+    }
+  ],
+  "note": "Complete authored seed for these candidate topics; no additional prior matches in this fictional universe. Not actual reader history."
+}

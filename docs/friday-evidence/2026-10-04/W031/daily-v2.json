@@ -1,0 +1,480 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "fixture_id": "W031",
+  "v2_spec": "ADB-V2-SELECT-1.0",
+  "shared_fingerprint": [
+    20,
+    20,
+    15,
+    15,
+    10,
+    10,
+    10
+  ],
+  "scope": "Shared editorial extracts authored from closed synthetic sources. MFY, weather, full-edition rendering and transport are outside this fixture.",
+  "days": [
+    {
+      "date": "2026-10-05",
+      "selection_cutoff": "2026-10-05T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-05T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C01",
+          "day": 5,
+          "source_ids": [
+            "S01"
+          ],
+          "headline": "Document-check trial starts at one center",
+          "summary": "A Wednesday trial will let visitors seek document checks without an appointment at one center. Eligibility and opening hours stay the same.",
+          "components": {
+            "local_impact": 12,
+            "consequence": 11,
+            "new_information": 12,
+            "austin_relevance": 15,
+            "timeliness": 7,
+            "public_interest": 8,
+            "discovery": 3
+          },
+          "base_score": 68,
+          "score_rationale": {
+            "local_impact": "One center; access matters for visitors.",
+            "consequence": "Limited pilot, not benefit expansion.",
+            "new_information": "New access method.",
+            "austin_relevance": "Municipal service.",
+            "timeliness": "Starts Wednesday.",
+            "public_interest": "Benefits access.",
+            "discovery": "Published memo, modest discovery."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "document-access",
+          "development_ids": [
+            "D01"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C01"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C01",
+          "headline": "Document-check trial starts at one center",
+          "text": "A Wednesday trial will let visitors seek document checks without an appointment at one center. Eligibility and opening hours stay the same.",
+          "source_ids": [
+            "S01"
+          ],
+          "development_ids": [
+            "D01"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-06",
+      "selection_cutoff": "2026-10-06T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-06T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C02",
+          "day": 6,
+          "source_ids": [
+            "S04"
+          ],
+          "headline": "Pedestrian bridge reopens",
+          "summary": "Repairs are complete; the bridge is open again.",
+          "components": {
+            "local_impact": 10,
+            "consequence": 10,
+            "new_information": 12,
+            "austin_relevance": 15,
+            "timeliness": 8,
+            "public_interest": 5,
+            "discovery": 2
+          },
+          "base_score": 62,
+          "score_rationale": {
+            "local_impact": "Local crossing.",
+            "consequence": "Restored access.",
+            "new_information": "Completed reopening.",
+            "austin_relevance": "Local infrastructure.",
+            "timeliness": "Open today.",
+            "public_interest": "Public access.",
+            "discovery": "Routine announcement."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "D04",
+          "development_ids": [
+            "D04"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C02"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C02",
+          "headline": "Pedestrian bridge reopens",
+          "text": "Repairs are complete; the bridge is open again.",
+          "source_ids": [
+            "S04"
+          ],
+          "development_ids": [
+            "D04"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-07",
+      "selection_cutoff": "2026-10-07T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-07T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C03",
+          "day": 7,
+          "source_ids": [
+            "S02"
+          ],
+          "headline": "Document trial reaches three centers",
+          "summary": "Appointment-free document checks now cover three centers. Hours and eligibility remain unchanged.",
+          "components": {
+            "local_impact": 13,
+            "consequence": 11,
+            "new_information": 11,
+            "austin_relevance": 15,
+            "timeliness": 8,
+            "public_interest": 8,
+            "discovery": 3
+          },
+          "base_score": 69,
+          "score_rationale": {
+            "local_impact": "Three centers.",
+            "consequence": "Broader but temporary access.",
+            "new_information": "Expansion from one to three.",
+            "austin_relevance": "Local service.",
+            "timeliness": "Starts today.",
+            "public_interest": "Access to support.",
+            "discovery": "Routine revision."
+          },
+          "prior_coverage_refs": [
+            "C01"
+          ],
+          "material_update": true,
+          "exact_material_change": "Trial expands from one center to three.",
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "document-access",
+          "development_ids": [
+            "D02"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C03"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C03",
+          "headline": "Document trial reaches three centers",
+          "text": "Appointment-free document checks now cover three centers. Hours and eligibility remain unchanged.",
+          "source_ids": [
+            "S02"
+          ],
+          "development_ids": [
+            "D02"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-08",
+      "selection_cutoff": "2026-10-08T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-08T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C04",
+          "day": 8,
+          "source_ids": [
+            "S05"
+          ],
+          "headline": "Accessible parking designation adopted",
+          "summary": "An adopted order establishes accessible parking on one residential block immediately.",
+          "components": {
+            "local_impact": 9,
+            "consequence": 10,
+            "new_information": 12,
+            "austin_relevance": 15,
+            "timeliness": 7,
+            "public_interest": 7,
+            "discovery": 2
+          },
+          "base_score": 62,
+          "score_rationale": {
+            "local_impact": "One block; meaningful for affected residents.",
+            "consequence": "Adopted access change.",
+            "new_information": "New order.",
+            "austin_relevance": "Local block.",
+            "timeliness": "Immediate.",
+            "public_interest": "Accessibility.",
+            "discovery": "Published order."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "D05",
+          "development_ids": [
+            "D05"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C04"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C04",
+          "headline": "Accessible parking designation adopted",
+          "text": "An adopted order establishes accessible parking on one residential block immediately.",
+          "source_ids": [
+            "S05"
+          ],
+          "development_ids": [
+            "D05"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-09",
+      "selection_cutoff": "2026-10-09T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-09T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C05",
+          "day": 9,
+          "source_ids": [
+            "S03"
+          ],
+          "headline": "Walk-in option continues through October",
+          "summary": "After two operating days at three centers, appointment-free document checks will continue through October 30. No outcome measurements are available.",
+          "components": {
+            "local_impact": 12,
+            "consequence": 12,
+            "new_information": 10,
+            "austin_relevance": 15,
+            "timeliness": 6,
+            "public_interest": 8,
+            "discovery": 3
+          },
+          "base_score": 66,
+          "score_rationale": {
+            "local_impact": "Three-center access.",
+            "consequence": "Continuation commitment.",
+            "new_information": "Operating status and October 30 commitment.",
+            "austin_relevance": "Local service.",
+            "timeliness": "Future visits can be planned.",
+            "public_interest": "Benefits access.",
+            "discovery": "Operations note."
+          },
+          "prior_coverage_refs": [
+            "C01",
+            "C03"
+          ],
+          "material_update": true,
+          "exact_material_change": "Operations confirmed and continuation through October 30 committed.",
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "document-access",
+          "development_ids": [
+            "D03"
+          ]
+        },
+        {
+          "candidate_id": "C06",
+          "day": 9,
+          "source_ids": [
+            "S06"
+          ],
+          "headline": "Bridge reopening recap",
+          "summary": "A digest repeats Tuesday's reopening.",
+          "components": null,
+          "base_score": null,
+          "score_rationale": {
+            "gate": "Unchanged repeat rejected before scoring."
+          },
+          "prior_coverage_refs": [
+            "C02"
+          ],
+          "material_update": false,
+          "exact_material_change": null,
+          "disposition": "rejected_unchanged",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        },
+        {
+          "candidate_id": "C07",
+          "day": 9,
+          "source_ids": [
+            "S07"
+          ],
+          "headline": "Park hearing approaches",
+          "summary": "The same hearing is approaching.",
+          "components": null,
+          "base_score": null,
+          "score_rationale": {
+            "gate": "Calendar advancement is not material change; potential Austin Ahead utility only."
+          },
+          "prior_coverage_refs": [
+            "H01"
+          ],
+          "material_update": false,
+          "exact_material_change": null,
+          "disposition": "rejected_calendar",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        },
+        {
+          "candidate_id": "C08",
+          "day": 9,
+          "source_ids": [
+            "S08"
+          ],
+          "headline": "Housing proposal still pending",
+          "summary": "No action during announced recess.",
+          "components": null,
+          "base_score": null,
+          "score_rationale": {
+            "gate": "No new fact or clarified status; not a fresh weekly arc."
+          },
+          "prior_coverage_refs": [
+            "H02"
+          ],
+          "material_update": false,
+          "exact_material_change": null,
+          "disposition": "rejected_unchanged",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        },
+        {
+          "candidate_id": "C09",
+          "day": 9,
+          "source_ids": [
+            "S09"
+          ],
+          "headline": "Volunteer remembers service desk",
+          "summary": "A volunteer recollects old service work.",
+          "components": {
+            "local_impact": 3,
+            "consequence": 2,
+            "new_information": 3,
+            "austin_relevance": 15,
+            "timeliness": 0,
+            "public_interest": 2,
+            "discovery": 2
+          },
+          "base_score": 27,
+          "score_rationale": {
+            "local_impact": "Personal recollection.",
+            "consequence": "No material current effect.",
+            "new_information": "Old anecdote.",
+            "austin_relevance": "Local desk.",
+            "timeliness": "None.",
+            "public_interest": "Little service insight.",
+            "discovery": "Minor reminiscence."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "rejected_below_floor",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        }
+      ],
+      "selected_ids": [
+        "C05"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C05",
+          "headline": "Walk-in option continues through October",
+          "text": "After two operating days at three centers, appointment-free document checks will continue through October 30. No outcome measurements are available.",
+          "source_ids": [
+            "S03"
+          ],
+          "development_ids": [
+            "D03"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+THIS WEEK IN AUSTIN
+
+Several local services ended the week in different places. Most of the bus detours had cleared, a closing clinic had arranged patient transfers, and a facility’s boil-water notice had ended. Each development needs its own account: the records describe different projects and decisions, without establishing a common cause.
+
+Four detours become one
+
+The corridor maintenance closure initially diverted four bus routes. Reopening the north part of the corridor restored two routes midweek, and a third returned to its normal path Thursday evening. By Friday, most of the original detours had ended. Riders on the remaining route still faced a different situation: the operator had not set its return date. The progress was substantial within this disruption, without establishing anything about reliability elsewhere in the network.
+
+Sources: Synthetic bus disruption notice [S01]; Synthetic bus access bulletin [S02]; Synthetic bus operations update [S03]
+
+A closure gains a transfer plan
+
+The clinic’s month-end closure announcement initially left the next step for existing patients unspecified. A signed agreement later in the week arranged transfers to two partner sites. That gives the closure a documented transition plan, although it does not guarantee that every appointment will retain its date. The clinic is still closing after its lease ends; the agreement addresses where existing patients will go, rather than reversing that decision.
+
+Sources: Synthetic clinic notice [S04]; Synthetic clinic transition agreement [S05]
+
+Water restrictions end at one facility
+
+The damaged filter that prompted a boil-water notice Monday was repaired, and the required samples met the standard. The notice was then lifted Thursday. For the affected facility, this arc reached a concrete resolution within the week. The clearance applies to that facility; it offers no assessment of other infrastructure and no evidence linking the repair to the bus or clinic developments.
+
+Sources: Synthetic waterworks inspection [S06]; Synthetic waterworks clearance [S07]

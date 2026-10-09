@@ -75,4 +75,16 @@ Use an incident key based on exact component plus the America/Chicago date. Send
 
 Record recovery silently only from later evidence. Monitoring must never send, replay, retry, modify, or repair subscriber-facing messages, queue records, Briefing History, preferences, subscriber status, Apps Script properties, triggers, Resend configuration, or website settings.
 
-If all components are healthy and no status/history change is needed, output exactly ::SKIP_COMPLETION::.
+### Monitoring completion and readback
+
+Silence is a notification policy, not permission to skip required monitoring writes. A scheduler `last_run_time` is not evidence that a scan completed or that its results were persisted.
+
+For every completed scan, refresh the existing watchdog-owned rows `Daily Resend Delivery`, `Signup Completion`, `Welcome Resend Delivery`, and `Configuration`, including on unchanged healthy and zero-work runs. Resolve each by exact Component and require exactly one matching row. Set Last Attempt to the actual scan time in America/Chicago; never backdate a missed cycle. Apply each component's success rules above; for Welcome Resend Delivery and Configuration, advance Last Success only after their complete checks pass. Preserve Last Success when evidence is incomplete or a check fails. Use Warning with an explicit evidence-unavailable Detail for an incomplete scan, without inventing a delivery failure or clearing an unresolved incident. Never write a success merely because a previous row was Healthy.
+
+`Subscriber Operations` and `Morning Briefing` retain their producer-owned attempt/success timestamps and counts. Monitoring must not substitute its own scan time for a producer run, rename Morning Briefing to Morning Generation, or clear a delivery incident based on queue creation. Missing or duplicate fixed rows are configuration defects, not authorization to create rows.
+
+Immediately before a monitoring write, reread the target rows and reconcile any intervening changes. After the write, reread the exact rows and verify component identity, actual Last Attempt, eligible Last Success, Status, counts, Detail, Version, Incident Key, and Unhealthy For against the intended result. Verify any required idempotent failure/recovery history append as well. Unchanged healthy scans require status refresh but no new incident/history row.
+
+If a source read, gate, write, or readback prevents completion, report the exact stage and affected components in the task result. Distinguish evidence unavailable from a proven component failure. Do not output the silent-success sentinel on a partial scan or failed readback. When production gates cannot be verified, make no monitoring writes or alerts; report the blocked check here. A failure to record monitoring must never trigger subscriber replay or resend.
+
+Only after all required scans, status updates, and readbacks succeed, and no reportable failure remains, output exactly ::SKIP_COMPLETION::. Preserve the existing alert eligibility and daily deduplication rules; this clarification creates no new alert class.

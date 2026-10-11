@@ -1,7 +1,8 @@
 # Austin Daily Briefing Roadmap
 
 **Status:** Active project backlog  
-**Last reconciled:** 2026-10-06\
+**Last full status reconciliation:** 2026-10-06  
+**Stabilization-plan additions:** 2026-10-10  
 **Scope:** Cross-project work that is pending, blocked, deferred, or recently completed  
 **Technical state authority:** [`PROJECT_STATE.json`](../PROJECT_STATE.json)
 
@@ -15,6 +16,29 @@ Use these states:
 - **Review** — implementation is complete enough to require human review or an explicit promotion decision.
 - **Deferred** — deliberately outside the current work sequence.
 - **Complete** — finished; retained here only when recent completion helps explain current state.
+
+## October stabilization and editorial-quality phase (proposed)
+
+**Intent:** ADB remains a quasi-public, long-term AI-assisted publishing experiment, not an audience-growth or commercialization program. Prioritize **fast, consistent, grounded** briefing output and lower operator intervention. Capture new ideas freely in Whiteboard; defer additional reader-facing feature activation while the current reliability and quality work is observed. This is a prioritization period, not a freeze on curiosity or research.
+
+**Weekly instrument:** [ADB weekly health scorecard](weekly-health-scorecard.md). Pilot four lightweight Friday observations from existing evidence; do not create a new production Sheet, automation, metrics pipeline, or invasive reader analytics at this stage. A verified outcome matters more than a merged PR or an apparently healthy scheduler.
+
+| ID | Workstream | Action / acceptance criterion | State | Relationship / next step |
+| --- | --- | --- | --- | --- |
+| STAB-1 | Current production incident | Investigate **2026-10-10 Daily Resend Delivery** history mismatch: 13/13 queue rows marked Sent with provider IDs, only 148/170 expected Briefing History rows present and Sent. Determine missing/partial reconciliation cause; validate real downstream state before deciding on safe recovery. No replay or resend from monitoring | **Active** | Read-only comparison of outbound queue, history, and available dispatcher evidence; track as history-integrity failure, **not proven Resend non-delivery** |
+| STAB-2 | Outcome-based monitoring | Verify the post-merge watchdog write/readback contract on ordinary cycles; require persisted current-day result, explicit Unknown or Failed on incomplete evidence, and no silent-success claim | **Active** | Builds on merged watchdog PR #110; preserve separate generation versus delivery monitoring. Evidence from the next normal cycle needed |
+| STAB-3 | Trigger and journey verification | Obtain installed Apps Script dispatcher-trigger evidence and exercise one complete user journey under controlled conditions, confirming backend receipt, identity, queue, delivery, and readback before showing success | **Ready** | Extend OPS-8/OPS-9 and FORM-9 rather than inventing a second monitoring program; DEV management remains unpromoted |
+| EDITQ-1 | Editorial rule compliance | Audit first normal post-merge editions for V2 selection-note enforcement, MFY scoring ceilings, repeat rationale, and Under the Radar evidence; no retrospective rewriting | **Active** | Close V2-10 only with actual production evidence after PR #90 |
+| EDITQ-2 | Claim-level grounding | Review three sampled published shared stories each week for exact source support, procedural status, material change, and Why It Matters; record and correct substantive defects with their existing accountability workflow | **Ready** | Feed weekly scorecard; scoring arithmetic alone is insufficient |
+| READ-1 | Reader usefulness and length | Read one whole edition each week on a phone or computer, note minutes, information density, scrolling, visual drift, and whether fast/consistent/grounded was delivered; optionally invite voluntary feedback from trusted readers without public launch | **Ready** | No subscriber growth target, survey requirement, or analytics deployment; coordinate Friday full-edition burden test under FRI-6 |
+| OPER-1 | Weekly scorecard pilot | Fill the five measures and one weekly decision in [scorecard](weekly-health-scorecard.md) for four Fridays; distinguish provider acceptance, full data reconciliation, and inbox delivery; leave unverified results Unknown | **Ready** | Use current records; evaluate whether this replaces existing status-reporting effort before scheduling anything new |
+| OPER-2 | Experiment intake / work-in-progress | Maintain a parking lot of ideas; allow one new editorial/product experiment in active implementation at a time; require a four-question hypothesis, evidence, and stopping point rather than an elaborate new gate for each idea | **Ready** | Keep native management and Friday validation as already-started work; no expansion until current production defects are addressed |
+| OPER-3 | Documentation cost and freshness | Reconcile dated roadmap/registry summaries against merged changes; eliminate redundant status-writing, report only decisions, failures and verified outcome changes, and time-box routine weekly review | **Ready** | Do not hand-edit generated PROJECT_STATUS/ARCHITECTURE/OPERATIONS; plan-only change here does not assert runtime changes |
+| PRODUCT-1 | Purpose and autonomy | Write a concise private product charter: who ADB serves today, what fast/consistent/grounded mean, what remains experimental, and what four-week unattended operation would require | **Ready** | No requirement to solicit broad readership or decide eventual commercialization now |
+
+**Promotion boundaries:** New reader-facing categories, Weekend Explorer, and major visual expansion wait during this phase. FRI-5 synthetic findings and FRI-6 integration can be completed without automatic Friday activation; FRI-7 still requires a distinct approval. Existing signup observation and controlled management development continue as reliability work, not as mandates to expand the product. Technical failures supersede optional experiments.
+
+**What counts as progress:** reader-facing usefulness, a fully reconciled delivered edition, proven editorial support, and fewer manual interventions. Merges, tests, screenshots, and documentation are supporting evidence; they are not substitutes for normal-cycle outcomes. The four-week review should also test whether this scorecard itself costs more than it helps.
 
 ## Current priorities
 

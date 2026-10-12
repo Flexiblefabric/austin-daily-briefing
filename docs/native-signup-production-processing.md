@@ -62,14 +62,14 @@ Google Signup runs first so an address submitted through both paths in the same 
 
 ## Subscriber-state resolution
 
-Immediately before any write, normalize the email and re-read Subscribers, Profiles, Preferences, Signup Actions, Outbound Messages, and the native request.
+Immediately before any write, normalize the email and re-read Subscribers (including mandatory Admin Status), Profiles, Preferences, Signup Actions, Outbound Messages, and the native request. Require Admin Status to be exactly OK, Review, or Hold for each resolved subscriber; blank/missing/unknown is a fail-closed error. For ordinary delivery statuses require matching Subscriber/Profile statuses and normalized email identity before mutation. New subscriber append operations must write Admin Status=OK by header name, not leave the new H column blank.
 
 ### No matching subscriber
 
 Create a new subscriber using the same production semantics as Google Signup:
 
 - allocate exactly one next sequential production Profile ID;
-- create one Active subscriber;
+- create one Active subscriber with Admin Status explicitly OK;
 - create one Active profile;
 - initialize all 23 active interests to Normal / score 1;
 - set standard initial reading settings;
@@ -99,24 +99,24 @@ Terminal no-op:
 
 Resume remains an explicit Manage action.
 
-### Existing Admin Hold subscriber
+### Existing Admin Hold or Review restriction
 
 Terminal no-op:
 
-- preserve Admin Hold status;
+- preserve the independent Admin Status=Hold (and the current delivery status, which may still be legacy Admin Hold);
 - preserve profile/preferences;
 - create no Signup Action;
 - create no Welcome;
 - mark request `Processed / admin_hold_noop`.
 
-A signup request must never clear or bypass an administrative hold. Only an explicit operator action may change Admin Hold.
+A signup request must never clear or bypass Admin Status Hold or Review. This check must precede all Active, Paused and Unsubscribed branches. Treat both as terminal no-ops (admin_hold_noop or admin_review_noop), and preserve the administrative flag regardless of delivery Status. The legacy subscriber delivery Status=Admin Hold remains blocked until the migration is deliberately completed; never treat it as Active.
 
 ### Existing Unsubscribed subscriber
 
 Fresh affirmative signup consent is explicit re-subscription:
 
 - reuse the existing subscriber and Profile ID;
-- change subscriber Status to Active;
+- change subscriber Status and linked Profile Status to Active only when Admin Status is exactly OK;
 - preserve every existing preference row and reading-style setting;
 - do not create a second subscriber/profile/preferences set;
 - record one Signup Action with Submission ID `NATIVE:SIGNUP:<Response Key>` and Subscriber Result `Reactivated`;

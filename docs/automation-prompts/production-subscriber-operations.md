@@ -34,6 +34,17 @@ Read Integration Config → Native Signup Mode. If absent or blank, treat it as 
 - Native Signup Mode never changes the shared Processor Mode and must not restrict the already-live native customization path.
 If any check fails, make no writes and send no email. Report the exact mismatch.
 
+ADMINISTRATIVE RESTRICTION COMPATIBILITY — 2026-10-12
+- Require Subscribers headers Email, Status, Profile ID, Preference Source Email, and Admin Status. Admin Status is an independent, mandatory value: OK, Review, or Hold. An absent header or unsupported value on the target subscriber is a fail-closed reconciliation error; never assume a blank means OK.
+- New subscribers created by either Google or Native Signup MUST explicitly receive Admin Status=OK. Write all columns by header name (do not append seven positional values and leave the new eighth column blank). Verify the written Admin Status before queuing Welcome.
+- For every existing account, preserve Admin Status across management, signup, customization, and profile/preference changes. Operator-only controls own changes to Hold or Review; user-facing requests cannot clear them.
+- Any subscriber with Admin Status=Hold or Review is ineligible for delivery activation, Resume, Pause, signup reactivation, and ordinary customization. Explicit verified Unsubscribe is allowed and must preserve Admin Status; reset-to-Normal may update preferences while preserving Admin Status and reading styles.
+- If Admin Status=Hold or Review, a fresh-consent signup is a terminal no-op even when Status is Unsubscribed. Processed result is admin_hold_noop for Hold, admin_review_noop for Review. Create no Signup Action or Welcome.
+- Recognize a legacy subscriber Status=Admin Hold only when Admin Status=Hold during the staged migration. Fail closed for non-withdrawal mutations; do not reclassify as Active. Do not auto-fix Subscriber/Profile status mismatches. The single documented legacy profile remains unresolved until the gated cutover below.
+- For normal subscriber statuses Active, Paused, Unsubscribed, require the linked Profile status to match and verify normalized subscriber/profile email identity before a mutating operation; ambiguity or mismatch blocks the affected request.
+- Always re-read Admin Status alongside current delivery status and profile identity immediately before subscriber mutation. Never treat Profile Status=Active by itself as authorization for delivery.
+- This is a safety compatibility amendment under active Specification ID ADB-SUBOPS-PROD-1.1. Do not enable FORM-9 production intake or alter the six-hour schedule during this amendment.
+
 Processor Mode behavior:
 - GOOGLE ONLY: preserve the existing Google Forms-only behavior and do not read or mutate Native Customize Requests / Native Verification Queue.
 - GOOGLE + NATIVE CONTROLLED: preserve all Google behavior and additionally process only eligible confirmed native customization requests for the configured controlled email.
@@ -87,11 +98,11 @@ Eligibility for a native request:
 - In CONTROLLED mode, normalized email exactly equals Native Signup Controlled Email.
 
 Resolve current subscriber state immediately before mutation:
-- No matching subscriber: create exactly one Active subscriber/profile, initialize all 23 active interests to Normal/1, use standard initial reading settings, append one Signup Action with Submission ID NATIVE:SIGNUP:<Response Key>, and append one Queued WELCOME_V1 with Message ID WELCOME-NATIVE:<Response Key>.
-- Active: terminal no-op; preserve all records; mark request Processed / existing_active_noop; no Signup Action and no Welcome.
-- Paused: terminal no-op; preserve Paused status and all records; mark request Processed / paused_requires_manage; no Signup Action and no Welcome.
-- Admin Hold: terminal no-op; preserve Admin Hold and all records; mark request Processed / admin_hold_noop; no Signup Action and no Welcome. A signup request must never clear or bypass an administrative hold.
-- Unsubscribed: explicit re-subscription from fresh affirmative consent; reactivate the existing subscriber, preserve the existing Profile ID, all preference rows and reading settings, append one Signup Action with Subscriber Result Reactivated, and append exactly one Queued WELCOME_V1.
+- No matching subscriber: create exactly one Active subscriber with Admin Status=OK and one Active profile, initialize all 23 active interests to Normal/1, use standard initial reading settings, append one Signup Action with Submission ID NATIVE:SIGNUP:<Response Key>, and append one Queued WELCOME_V1 with Message ID WELCOME-NATIVE:<Response Key>.
+- Active with Admin Status=OK and matching Active profile: terminal no-op; preserve all records; mark request Processed / existing_active_noop; no Signup Action and no Welcome.
+- Paused with Admin Status=OK and matching Paused profile: terminal no-op; preserve Paused status and all records; mark request Processed / paused_requires_manage; no Signup Action and no Welcome.
+- Admin Status Hold/Review (regardless of subscriber delivery state, including legacy Status=Admin Hold): terminal no-op; preserve delivery status, profile and admin restriction; mark Processed / admin_hold_noop or admin_review_noop; no Signup Action and no Welcome. A signup request must never clear or bypass an administrative restriction.
+- Unsubscribed with Admin Status=OK and matching Unsubscribed profile: explicit re-subscription from fresh affirmative consent; reactivate existing subscriber and linked Profile to Active, preserve Profile ID, all preference rows and reading settings, append one Signup Action with Subscriber Result Reactivated, and append exactly one Queued WELCOME_V1.
 - Any other or ambiguous state: make no mutation and report the exact mismatch.
 
 Crash/idempotency boundary:
@@ -107,6 +118,8 @@ Welcome ownership remains unchanged: queue only. Do not send, retry, or alter pr
 
 2. MANAGEMENT
 - Treat pause, resume, unsubscribe, and ownership-sensitive changes as protected operations.
+- For Google Manage, Admin Status=Hold/Review prevents Pause and Resume from authorizing delivery, but confirmed Unsubscribe can set both Subscriber and Profile Status to Unsubscribed without clearing Hold/Review. A confirmed reset to Normal may alter preference rows but not administrative state. The existing verification and ledger contract applies unchanged.
+- During the legacy migration, do not independently reinterpret subscriber Status=Admin Hold as Active. If identity or historical status cannot be reconciled safely, stop that request and report it rather than changing the hold.
 - Apply the existing confirmation/verification rules and production links.
 - Confirmation emails, when required, may use the currently validated Gmail path and must contain only the generic HTTPS confirmation link and non-sensitive context. The single-use token is permitted only inside that link's prefilled token parameter; this is the narrow exception to the email token prohibition. Do not print it separately or include internal IDs, private profile data, or private forwarding addresses in email.
 - Generate a fresh 32-byte cryptographically random token for each new or retried request; store only its SHA-256 hash in Verification Queue. Use the configured 24-hour expiry and scope the token to the exact request and subscribed address. Never store a raw token or token-bearing URL in the intake ledger, Verification Queue, Outbound Messages, logs, notes, GitHub, or task output. Do not consume a token merely when a link is opened; consume it only on a valid confirmation form submission. On send failure, cancel the new verification record and leave the request deferred.
@@ -138,7 +151,7 @@ A native request is eligible to apply only when all of these are true:
 - Linked verification Applied At is blank.
 - Request ID, Verification ID, normalized email, and request/verification linkage agree exactly.
 - The normalized email resolves to exactly one current production subscriber and the request Profile ID equals that subscriber's current Profile ID.
-- Subscriber status is Active or Paused; do not apply customization to Admin Hold or Unsubscribed subscribers.
+- Subscriber delivery Status is Active or Paused, Admin Status=OK, and linked Profile Status matches subscriber Status; do not apply customization to Hold, Review, legacy Admin Hold, Unsubscribed, or mismatched subscribers.
 - Payload JSON parses to an object containing only the supported 23 interest IDs and/or the three supported style fields.
 - Payload SHA-256 equals SHA-256 of the stable canonical JSON payload recorded by the endpoint.
 - Every interest value is off, normal, or high; every style value is one of the documented production Processor Mapping options; keep_current must not be stored in Payload JSON.

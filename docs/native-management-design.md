@@ -68,7 +68,9 @@ An unsubscribe request honors explicit withdrawal of delivery consent **without 
 
 ### Production schema blocker
 
-The current production Subscribers header does **not** contain the DEV-only `Admin Status` column. FORM-9 must not be promoted by assuming production supports this field. Before Gate E, decide and document the authoritative production representation of administrative holds, reconcile it with signup/customization/daily/welcome delivery eligibility and validate the change across every production consumer. In particular, the existing Resend welcome dispatcher checks `Subscribers.Status === 'Active'` but does not currently consult `Admin Status`. A future production hold overlay must protect delivery before that representation goes live.
+**Phase 1 completed 2026-10-12:** production Subscribers now has a separate validated `Admin Status` column with all existing rows backfilled (OK/Review/Hold). The single legacy subscriber `Status=Admin Hold` is intentionally not converted yet; its linked Profile remains Active during the compatibility phase, so existing Status=Active send paths cannot accidentally deliver to it.
+
+**Gate E remains blocked.** Promote and verify all consumers first: production Subscriber Operations, morning briefing eligibility, live Resend Welcome/daily/sender-change dispatch, native/Google signup and customization. The safe final mapping for the legacy held account is Subscriber Status=Paused + Profile Status=Paused + Admin Status=Hold, after runtime compatibility checks. See `docs/admin-status-production-migration.md`. A GitHub source change does not automatically update the deployed Apps Script project.
 
 ## Browser and endpoint privacy
 
@@ -266,7 +268,7 @@ Exercise at minimum:
 
 ### Gate E — controlled production
 
-- Resolve and document production administrative restriction representation (the production Subscribers sheet currently lacks DEV `Admin Status`); verify signup, management, customization and dispatch guardrails before writes.
+- Phase 1 administrative schema migration is complete. Require production runtime consumers to enforce Admin Status (and Profile status parity), safely convert the legacy Admin Hold delivery status to Paused only after that validation, and record successful readback. Keep FORM-9 production route disabled until this separate migration is complete.
 Stage production management sheets/endpoint disabled first, complete compatibility checks, restrict to one controlled address, confirm each protected action class without affecting unrelated subscribers.
 
 ### Gate F — public cutover

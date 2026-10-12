@@ -71,6 +71,7 @@ jobs:
           node --check --input-type=commonjs < apps-script/NativeSignupProd.gs
           node --check --input-type=commonjs < apps-script/NativeManagementDev.gs
           node --check --input-type=commonjs < apps-script/NativeManagementDevProcessor.gs
+          node --check --input-type=commonjs < apps-script/ResendTransport.gs
 
       - name: Run native signup DEV runtime QA
         run: node tests/native-signup-dev.test.js
@@ -80,6 +81,9 @@ jobs:
 
       - name: Run Welcome copy compatibility QA
         run: node tests/welcome-copy-compat.test.js
+
+      - name: Run Admin Status delivery eligibility QA
+        run: node tests/resend-admin-status.test.js
 
       - name: Run FORM-7 Gate D runtime fingerprint QA
         run: node tests/native-signup-gate-d-runtime.test.js

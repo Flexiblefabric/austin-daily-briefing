@@ -19,11 +19,14 @@ assert(subops.includes('DISABLED: do not read or mutate Native Signup Requests /
 assert(subops.includes('NATIVE:SIGNUP:<Response Key>'));
 assert(subops.includes('WELCOME-NATIVE:<Response Key>'));
 assert(subops.includes('admin_hold_noop'));
-assert(subops.includes('A signup request must never clear or bypass an administrative hold'));
+assert(subops.includes('A signup request must never clear or bypass an administrative restriction'));
+assert(subops.includes('Admin Status=Hold or Review'));
+assert(subops.includes('New subscribers created by either Google or Native Signup MUST explicitly receive Admin Status=OK'));
 assert(subops.includes('Process Google Signup responses first, then eligible Native Signup requests'));
 
 assert(prodContract.includes('ADB-NATIVE-SIGNUP-PROD-0.1'));
-assert(prodContract.includes('Existing Admin Hold subscriber'));
+assert(prodContract.includes('Existing Admin Hold or Review restriction'));
+assert(prodContract.includes('independent Admin Status=Hold'));
 assert(prodContract.includes('admin_hold_noop'));
 
 assert(completion.includes('ADB-COMPLETION-0.2'));

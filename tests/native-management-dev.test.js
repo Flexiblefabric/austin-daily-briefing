@@ -149,7 +149,10 @@ function context() {
 (function designContract(){
   assert(design.includes('Unsubscribed, Admin Status OK'));
   assert(design.includes('Admin Status Hold + unsubscribe changes delivery to Unsubscribed'));
-  assert(design.includes('production Subscribers header does'));
+  assert(design.includes('production Subscribers now has a separate validated'));
+  assert(design.includes('Phase 1 completed 2026-10-12'));
+  assert(design.includes('Gate E remains blocked'));
+  assert(design.includes('docs/admin-status-production-migration.md'));
   assert(design.includes('32 random token bytes'));
   assert(design.includes('manage-confirm.html'));
   assert(design.includes('URL fragment'));

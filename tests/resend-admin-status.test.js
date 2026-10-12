@@ -27,7 +27,7 @@ assert.strictEqual(context.adbResendSubscriberEligible_(baseline,{P101:[Object.a
 assert.doesNotThrow(()=>context.adbResendRequireAdminStatusHeader_(['Email','Status','Admin Status']));
 assert.throws(()=>context.adbResendRequireAdminStatusHeader_(['Email','Status']),/Admin Status/);
 
-for (const method of ['dispatchQueuedWelcomeMessagesViaResendV1','sendApprovedSenderChangeNoticeV1','dispatchQueuedDailyBriefingsViaResendV1']) {
+for (const method of ['dispatchQueuedWelcomeMessagesViaResendV1','sendAdbSenderChangeAnnouncementV1','dispatchQueuedDailyBriefingsViaResendV1']) {
   // Calls must exist in every delivery path, not just in the shared helper.
   const match = source.includes('function '+method+'(') || source.includes(method+'(');
   assert(match, 'Expected delivery function: '+method);

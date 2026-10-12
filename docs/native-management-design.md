@@ -66,11 +66,11 @@ Topic reset may occur with any validated delivery/admin status combination, beca
 
 An unsubscribe request honors explicit withdrawal of delivery consent **without clearing `Admin Status`**. A later signup request must not reactivate an account while `Admin Status` is `Hold` or `Review`. Fresh affirmative consent is necessary but not sufficient to bypass an administrative restriction.
 
-### Production schema blocker
+### Production schema migration and remaining Gate E blockers
 
-**Phase 1 completed 2026-10-12:** production Subscribers now has a separate validated `Admin Status` column with all existing rows backfilled (OK/Review/Hold). The single legacy subscriber `Status=Admin Hold` is intentionally not converted yet; its linked Profile remains Active during the compatibility phase, so existing Status=Active send paths cannot accidentally deliver to it.
+**Schema migration completed 2026-10-12:** production Subscribers has a separate validated `Admin Status` column, backfilled across all existing subscribers. After the updated Resend transport build was copied and read back in the live Apps Script runtime, the single legacy held subscriber and its linked Profile were both converted to `Paused`, keeping `Admin Status=Hold`. All subscriber/profile delivery statuses now reconcile; 15 linked profiles retain 345 unique preferences.
 
-**Gate E remains blocked.** Promote and verify all consumers first: production Subscriber Operations, morning briefing eligibility, live Resend Welcome/daily/sender-change dispatch, native/Google signup and customization. The safe final mapping for the legacy held account is Subscriber Status=Paused + Profile Status=Paused + Admin Status=Hold, after runtime compatibility checks. See `docs/admin-status-production-migration.md`. A GitHub source change does not automatically update the deployed Apps Script project.
+**Gate E remains blocked.** The revised Resend source is loaded in the production Apps Script runtime; production Subscriber Operations and daily generation canonical prompts were updated in GitHub main without changing scheduler versions. Their next naturally scheduled cycles still require observation. FORM-9 production intake, confirmed request processing, controlled QA and public cutover have not been activated. See `docs/admin-status-production-migration.md`.
 
 ## Browser and endpoint privacy
 
@@ -268,7 +268,7 @@ Exercise at minimum:
 
 ### Gate E — controlled production
 
-- Phase 1 administrative schema migration is complete. Require production runtime consumers to enforce Admin Status (and Profile status parity), safely convert the legacy Admin Hold delivery status to Paused only after that validation, and record successful readback. Keep FORM-9 production route disabled until this separate migration is complete.
+- Production Admin Status schema and historical Hold-to-Paused delivery-status migration are complete with recorded audit readback. Confirm the next normal Subscriber Operations, briefing generation, and Resend delivery observations before FORM-9 Gate E, then stage disabled production native management and its canonical processor integration behind controlled gates.
 Stage production management sheets/endpoint disabled first, complete compatibility checks, restrict to one controlled address, confirm each protected action class without affecting unrelated subscribers.
 
 ### Gate F — public cutover

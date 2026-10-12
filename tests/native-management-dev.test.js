@@ -149,8 +149,10 @@ function context() {
 (function designContract(){
   assert(design.includes('Unsubscribed, Admin Status OK'));
   assert(design.includes('Admin Status Hold + unsubscribe changes delivery to Unsubscribed'));
-  assert(design.includes('production Subscribers now has a separate validated'));
-  assert(design.includes('Phase 1 completed 2026-10-12'));
+  assert(design.includes('Schema migration completed 2026-10-12'));
+  assert(design.includes('production Subscribers has a separate validated'));
+  assert(design.includes('converted to `Paused`, keeping `Admin Status=Hold`'));
+  assert(design.includes('FORM-9 production intake, confirmed request processing, controlled QA and public cutover have not been activated'));
   assert(design.includes('Gate E remains blocked'));
   assert(design.includes('docs/admin-status-production-migration.md'));
   assert(design.includes('32 random token bytes'));

@@ -2,7 +2,7 @@
 
 **Scope:** ADB subscriber eligibility / FORM-9 readiness
 **Date opened:** 2026-10-12
-**State:** PHASE 1 COMPLETE — phase 2 delivery-consumer promotion and legacy status cutover NOT complete
+**State:** SCHEMA AND LEGACY STATUS MIGRATION COMPLETE — normal-cycle observation pending; FORM-9 production Gate E remains blocked
 **Production database:** existing authoritative subscriber workbook
 **Intake:** existing authoritative production intake workbook
 **FORM-9 public feature:** DISABLED; Google Manage remains public
@@ -20,9 +20,9 @@
 
 Add Subscribers column H `Admin Status`, with strict validation values `OK`, `Review`, `Hold`. Backfill all 15 existing accounts: 14 OK and 1 Hold. Readback confirmed all 15 values. No delivery Status or Profile Status, queue entry, trigger, template, confirmation link, or production script was altered during this phase.
 
-**Safety invariant:** The legacy held account still has Subscriber Status `Admin Hold` and Profile Status `Active`. This mismatch is deliberate temporary migration debt and is NOT permission to classify the subscriber as eligible. Do not change its delivery status to Active. This pre-migration status remains excluded from all existing Status=Active send paths.
+**Historical invariant:** During phase 1, the legacy held account was deliberately left at Subscriber Status `Admin Hold` / Profile Status `Active` until the updated delivery consumer was synchronized. Phase 3 has since safely converted both to `Paused`, retaining `Admin Status=Hold`.
 
-## Phase 2 — compatibility code and canonical task instructions
+## Phase 2 — compatibility code and canonical task instructions (COMPLETED — first normal-cycle observation pending)
 
 1. Stage a ResendTransport.gs source change that requires `Subscribers.Admin Status` to exist; authorizes Welcome, daily and sender-change delivery only for Subscriber Status=Active **AND** Admin Status=OK **AND** an exactly matching, uniquely resolved Profile with Status=Active and matching normalized email. Blank, unknown, Review, Hold, duplicate/missing identity, or legacy Status=Admin Hold must fail closed.
 2. Run static + simulated helper unit tests and existing transport compatibility tests, and ensure the actual production Apps Script source is synchronized with GitHub after review. The repository merge alone does NOT update live Apps Script.
@@ -32,7 +32,7 @@ Add Subscribers column H `Admin Status`, with strict validation values `OK`, `Re
 6. Before the next Subscriber Operations normal cycle, ensure its canonical GitHub readback reflects these instructions. Reconcile any subscribers created since initial backfill: all must have valid Admin Status, linked Profile, and allowed delivery Status. A blank administrative value must never silently default to OK. If no supported manual processor update is possible, block promotion and report.
 7. FORM-9 native production intake, confirmation processing, and public cutover remain DISABLED and out of scope for this migration.
 
-## Phase 3 — one legacy held-status conversion (BLOCKED pending Phase 2)
+## Phase 3 — one legacy held-status conversion (COMPLETED 2026-10-12)
 
 After confirmation that the active Resend dispatcher and both production automation readers enforce independent Admin Status:
 
@@ -42,12 +42,23 @@ After confirmation that the active Resend dispatcher and both production automat
 - Read back all 15+ subscribers for unique IDs, delivery Status in exactly {Active, Paused, Unsubscribed}, Admin Status in exactly {OK, Review, Hold}, linked Profile status parity, and exactly 23 preference records per profile. A new signup between audits must be reconciled, not assumed already covered.
 - Run routine zero-send validation where supported, without dispatching queued mail as a test. Monitor next real scheduled Subscriber Operations, Morning Briefing generation and Resend delivery passes for correct excluded counts.
 
+## Migration completion evidence — 2026-10-12
+
+- GitHub PR #112 merged with green site-preview, documentation, and selection-note checks. The canonical daily and Subscriber Operations specifications retain IDs ADB-DAILY-PROD-2.0 and ADB-SUBOPS-PROD-1.1.
+- Operator copied the merged `ResendTransport.gs` to the production Apps Script project. A read-only `getAdbResendRuntimeStatusV1()` execution reported build `resend-transport-admin-status-v1`, correct production database/intake, `GOOGLE + NATIVE` processor mode, and both Welcome and daily script delivery modes LIVE.
+- Read-only spreadsheet preflight immediately before conversion confirmed the one legacy account was `Admin Hold` / `Hold` in Subscribers and `Active` in Profiles. No queued outbound messages were found.
+- A single Google Sheets batch changed only the subscriber's delivery Status to `Paused` and linked Profile's Status to `Paused`, retaining independent `Admin Status=Hold`.
+- Postmigration full readback: 15 unique subscribers and linked profiles; 13 Active/OK, one Paused/Hold, one Unsubscribed/OK. All subscriber/profile delivery statuses now match. Every profile has 23 unique preferences (345 total), with no missing, duplicate, or orphaned identities. The outbound queue contains zero Queued messages.
+- One matching audit entry was written to the production Change Log and one to Deployment Log. No send, replay, new signup, trigger, newsletter generation, credential change, or FORM-9 production activation was performed in this migration.
+- **Not yet verified:** next naturally scheduled Subscriber Operations, Morning Briefing and Resend dispatcher cycles under the migrated data and revised canonical specs. Check errors, zero unexpected recipient changes, newly created subscriber Admin Status=OK, hold exclusions, and monitoring row outcomes. Do not force execution or send mail to test.
+- **FORM-9 Gate E still blocked:** neither native management production intake nor production processing was activated by this migration.
+
 ## Rollback / stop
 
 - Do NOT collapse Hold back into Active to resolve a mismatch. A conservative `Paused` subscriber is preferable if a hold migration is interrupted.
-- If a row loses Admin Status or parser/consumer compatibility is uncertain, **stop** conversion and leave the legacy held subscriber's Status unchanged; audit H values and repair eligibility checks first.
+- If a row loses Admin Status or parser/consumer compatibility is uncertain, **stop** dependent subscriber mutations or delivery, audit H values and repair eligibility checks first. Maintain the conservative Paused/Hold state for the previously held account.
 - Never run a customer-visible dispatcher or send verification mail as a migration probe; do not alter production consent history, tokens, triggers or the disabled FORM-9 gate.
-- If live send code cannot be safely synchronized, do not execute phase 3. Staged repository changes are not equivalent to active runtime deployment.
+- If live send code ever loses its Admin Status guard, halt further schema/status migration and repair runtime compatibility; repository changes are not equivalent to active Apps Script runtime deployment.
 - Revert source code only after verifying that rollback preserves the independent Hold exclusion; do not delete the Admin Status data as a simple rollback.
 
 ## Gate E remains blocked

@@ -5,7 +5,7 @@
  * Never place the key in Sheets or source code.
  */
 const ADB_RESEND = Object.freeze({
-  BUILD: 'resend-transport-native-customize-v1',
+  BUILD: 'resend-transport-admin-status-v1',
   ENDPOINT: 'https://api.resend.com/emails',
   FROM: 'Austin Daily Briefing <briefing@austindailybriefing.com>',
   REPLY_TO: 'briefing@austindailybriefing.com',
@@ -30,6 +30,44 @@ const ADB_RESEND = Object.freeze({
   FOOTER_MARK_URL: 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/assets/brand/adb-mark-reversed@2x.png',
   SENDER_CHANGE_APPROVAL_PROPERTY: 'ADB_SENDER_CHANGE_APPROVAL'
 });
+
+/**
+ * Production Admin Status is independent of delivery Status.
+ * An old "Admin Hold" delivery status is NEVER eligible. Unrecognized,
+ * blank, or missing Admin Status also fails closed.
+ */
+function adbResendRequireAdminStatusHeader_(headers) {
+  if (!headers || headers.indexOf('Admin Status') < 0) {
+    throw new Error('Production Subscribers schema lacks Admin Status.');
+  }
+}
+function adbResendIndexProfiles_(database) {
+  const sheet = database.getSheetByName('Profiles');
+  if (!sheet) throw new Error('Production Profiles sheet missing.');
+  const table = adbRowsByHeader_(sheet);
+  ['Profile ID','Status','Primary Preference Email'].forEach(function(header) {
+    if (table.headers.indexOf(header) < 0) {
+      throw new Error('Production Profiles missing header: ' + header);
+    }
+  });
+  const byId = {};
+  table.rows.forEach(function(row) {
+    const id = String(row['Profile ID'] || '').trim();
+    if (!id) return;
+    (byId[id] = byId[id] || []).push(row);
+  });
+  return byId;
+}
+function adbResendSubscriberEligible_(row, profilesById) {
+  if (String(row.Status || '').trim() !== 'Active' ||
+      String(row['Admin Status'] || '').trim() !== 'OK') return false;
+  const id = String(row['Profile ID'] || '').trim();
+  const email = String(row.Email || '').trim().toLowerCase();
+  const matches = profilesById[id] || [];
+  return !!id && !!email && matches.length === 1 &&
+    String(matches[0].Status || '').trim() === 'Active' &&
+    String(matches[0]['Primary Preference Email'] || '').trim().toLowerCase() === email;
+}
 
 /**
  * Sends one message through Resend and returns its provider message ID.
@@ -207,6 +245,8 @@ function dispatchQueuedWelcomeMessagesViaResendV1() {
     adbValidateWelcomeDeliveryGates_(database, intake);
 
     const subscribers = adbRowsByHeader_(database.getSheetByName('Subscribers'));
+    adbResendRequireAdminStatusHeader_(subscribers.headers);
+    const profilesById = adbResendIndexProfiles_(database);
     const subscriberIndex = {};
     subscribers.rows.forEach(function(row) {
       const email = String(row.Email || '').trim().toLowerCase();
@@ -244,7 +284,8 @@ function dispatchQueuedWelcomeMessagesViaResendV1() {
       }
       if (mode === 'CONTROLLED' && !allowlist.has(email)) { skipped++; return; }
       const match = subscriberIndex[email];
-      if (!match || match.ambiguous || match.row.Status !== 'Active' || match.row['Profile ID'] !== row['Profile ID']) {
+      if (!match || match.ambiguous || !adbResendSubscriberEligible_(match.row, profilesById) ||
+          match.row['Profile ID'] !== row['Profile ID']) {
         skipped++;
         return;
       }
@@ -362,7 +403,11 @@ function sendAdbSenderChangeAnnouncementV1() {
     }
 
     const subscribers = adbRowsByHeader_(database.getSheetByName('Subscribers'));
-    const active = subscribers.rows.filter(function(row) { return row.Status === 'Active'; });
+    adbResendRequireAdminStatusHeader_(subscribers.headers);
+    const profilesById = adbResendIndexProfiles_(database);
+    const active = subscribers.rows.filter(function(row) {
+      return adbResendSubscriberEligible_(row, profilesById);
+    });
     if (!active.length) throw new Error('No Active subscribers found.');
 
     const seenEmails = {};
@@ -512,11 +557,13 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
     }
 
     const subscribers = adbRowsWithSheetRows_(database.getSheetByName('Subscribers'));
+    adbResendRequireAdminStatusHeader_(subscribers.headers);
+    const profilesById = adbResendIndexProfiles_(database);
     const activeByEmail = {};
     const activeByProfile = {};
     subscribers.rows.forEach(function(entry) {
       const row = entry.values;
-      if (String(row.Status || '').trim().toUpperCase() !== 'ACTIVE') return;
+      if (!adbResendSubscriberEligible_(row, profilesById)) return;
       const email = String(row.Email || '').trim().toLowerCase();
       const profileId = String(row['Profile ID'] || '').trim();
       if (!email || !profileId) return;

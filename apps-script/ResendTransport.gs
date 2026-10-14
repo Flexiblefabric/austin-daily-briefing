@@ -589,47 +589,54 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
     const queueColumns = adbHeaderColumns_(queue.headers);
     const historyColumns = adbHeaderColumns_(history.headers);
 
-    // Release guard ADB-DAILY-HTML-1.0: validate every pending daily HTML payload
-    // BEFORE any provider handoff. One defective profile blocks the entire batch.
-    // Missing helper means deployment parity is broken; do not modify queue state.
-    if (typeof adbValidateDailyNewsletterHtml_ !== 'function') {
+    // Release guard ADB-DAILY-HTML-1.0: check all pending HTML/text pairs
+    // BEFORE any provider call. Invalid payloads fail the whole pending batch,
+    // preventing the next hourly pass from partially delivering the same batch.
+    if (typeof adbValidateDailyNewsletterPayload_ !== 'function') {
       throw new Error('Missing DailyNewsletterContract.gs: production dispatcher source parity failure.');
     }
     const invalidLayouts = [];
-    queue.rows.forEach(function(entry) {
+    const pendingLayouts = queue.rows.filter(function(entry) {
       const row = entry.values;
-      if (String(row.Status || '').trim() !== 'Queued' ||
-          row['Template ID'] !== ADB_RESEND.DAILY_TEMPLATE_ID) return;
+      return String(row.Status || '').trim() === 'Queued' &&
+        row['Template ID'] === ADB_RESEND.DAILY_TEMPLATE_ID;
+    });
+    pendingLayouts.forEach(function(entry) {
       try {
-        adbValidateDailyNewsletterHtml_(String(row.HTML || ''));
+        adbValidateDailyNewsletterPayload_(
+          String(entry.values.HTML || ''), String(entry.values['Plain Text'] || ''));
       } catch (error) {
         invalidLayouts.push({
           sheetRow: entry.sheetRow,
-          profileId: String(row['Profile ID'] || '').trim(),
-          runId: String(row['Run ID'] || '').trim(),
+          profileId: String(entry.values['Profile ID'] || '').trim(),
+          runId: String(entry.values['Run ID'] || '').trim(),
           problem: String(error.message || error)
         });
       }
     });
     if (invalidLayouts.length) {
-      invalidLayouts.forEach(function(bad) {
-        // Invalid HTML must never be dispatched or automatically retried.
-        queueSheet.getRange(bad.sheetRow, queueColumns.Status).setValue('Failed');
-        queueSheet.getRange(bad.sheetRow, queueColumns.Notes)
-          .setValue(('Rendering validation failed (ADB-DAILY-HTML-1.0): ' + bad.problem).slice(0, 1000));
-        history.rows.forEach(function(entry) {
-          const row = entry.values;
-          if (String(row['Profile ID'] || '').trim() !== bad.profileId ||
-              String(row['Run ID'] || '').trim() !== bad.runId ||
-              String(row['Delivery Status'] || '').trim().toUpperCase() !== 'PENDING' ||
-              String(row['Provider Message ID'] || '').trim()) return;
-          historySheet.getRange(entry.sheetRow, historyColumns['Delivery Status']).setValue('Failed');
+      pendingLayouts.forEach(function(entry) {
+        const row = entry.values;
+        const failed = invalidLayouts.find(function(bad) { return bad.sheetRow === entry.sheetRow; });
+        const reason = failed ? failed.problem :
+          'Batch blocked because another queued daily payload violated the newsletter contract.';
+        // Fail ALL Queued daily rows in this invocation, never an existing Sent row.
+        queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Failed');
+        queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
+          .setValue(('Rendering validation blocked delivery (ADB-DAILY-HTML-1.0): ' + reason).slice(0,1000));
+        history.rows.forEach(function(item) {
+          const h = item.values;
+          if (String(h['Profile ID'] || '').trim() !== String(row['Profile ID'] || '').trim() ||
+              String(h['Run ID'] || '').trim() !== String(row['Run ID'] || '').trim() ||
+              String(h['Delivery Status'] || '').trim().toUpperCase() !== 'PENDING' ||
+              String(h['Provider Message ID'] || '').trim()) return;
+          historySheet.getRange(item.sheetRow, historyColumns['Delivery Status']).setValue('Failed');
         });
       });
-      throw new Error('Daily newsletter HTML contract blocked ' + invalidLayouts.length +
-        ' queued edition(s), before Resend handoff: ' +
+      throw new Error('Daily newsletter contract rejected ' + invalidLayouts.length +
+        ' of ' + pendingLayouts.length + ' queued editions; entire batch blocked before Resend: ' +
         invalidLayouts.map(function(bad) { return bad.runId + '/' + bad.profileId + ': ' + bad.problem; })
-          .join(' || ').slice(0, 1400));
+          .join(' || ').slice(0,1400));
     }
     let sent = 0;
     let skipped = 0;

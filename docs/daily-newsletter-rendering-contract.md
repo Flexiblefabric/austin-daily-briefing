@@ -24,10 +24,10 @@ Write exactly one UTF-8 JSON file per intended profile/edition. Use `tests/fixtu
 - `austinAhead`: array of action items; empty triggers the editorial empty state.
 - `footer.manageUrl`: **current approved production** Manage/Pause/Unsubscribe destination. The generator must verify which native or fallback route is live; do not infer migration status from DEV.
 - `footer.feedbackUrl`: optional approved corrections/feedback destination; default is the current canonical live Google Form.
-- Optional `fridayRecap`: array of up to three approved points, Fridays only.
-- Optional `whatsNew` and `correction`: only when editorial policies explicitly qualify.
+- Optional `fridayRecap`: array of up to three sourced objects (`text`, `sources` with publisher/url), Fridays only.
+- Optional `whatsNew` and `correction`: only when editorial policies explicitly qualify; edition-level correction is placed immediately after Austin Pulse.
 
-Each shared `featured`, `topStories` and `underTheRadar` story object needs `headline`, `summary`, `why` and a nonempty `sources` array of `{publisher,url}`; optional `metadata` is display-only. Each `moreForYou` item needs `headline`, `summary`, `sources` and optional `why` based on editorial rules. Each `austinAhead` item requires `action` (one of GO/WATCH/PLAN), `when`, `title`, `organizer`, `url`, and optional `description`.
+Each shared `featured`, `topStories` and `underTheRadar` story object needs `headline`, `summary`, `why` and a nonempty `sources` array of `{publisher,url}`; optional `metadata` is display-only. Each `moreForYou` item needs `headline`, `summary`, `sources` and optional `why` based on editorial rules. Each `austinAhead` item requires `action` (one of GO/WATCH/PLAN), `when`, `title`, `organizer`, `url`, and optional `description` or `linkType` (`Event details` or `Source`).
 
 No private subscriber addresses, profile IDs, safety tokens or selection provenance go inside this JSON. Those remain in their respective protected queue/evidence systems.
 

@@ -595,6 +595,17 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
     if (typeof adbValidateDailyNewsletterPayload_ !== 'function') {
       throw new Error('Missing DailyNewsletterContract.gs: production dispatcher source parity failure.');
     }
+    // An interrupted FAIL-all pass must never let a previously blocked Run ID
+    // send on the next hourly invocation. The Notes marker persists independently
+    // of partial queue status updates; write Notes before Status below.
+    const previouslyBlockedRuns = new Set(queue.rows.filter(function(entry) {
+      const row = entry.values;
+      return row['Template ID'] === ADB_RESEND.DAILY_TEMPLATE_ID &&
+        /^Rendering validation blocked delivery \(ADB-DAILY-HTML-1\.0\):/.test(
+          String(row.Notes || ''));
+    }).map(function(entry) {
+      return String(entry.values['Run ID'] || '').trim();
+    }).filter(Boolean));
     const invalidLayouts = [];
     const pendingLayouts = queue.rows.filter(function(entry) {
       const row = entry.values;
@@ -602,6 +613,16 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
         row['Template ID'] === ADB_RESEND.DAILY_TEMPLATE_ID;
     });
     pendingLayouts.forEach(function(entry) {
+      const queuedRunId = String(entry.values['Run ID'] || '').trim();
+      if (queuedRunId && previouslyBlockedRuns.has(queuedRunId)) {
+        invalidLayouts.push({
+          sheetRow: entry.sheetRow,
+          profileId: String(entry.values['Profile ID'] || '').trim(),
+          runId: queuedRunId,
+          problem: 'Run previously blocked by newsletter rendering validation.'
+        });
+        return;
+      }
       try {
         adbValidateDailyNewsletterPayload_(
           String(entry.values.HTML || ''), String(entry.values['Plain Text'] || ''));
@@ -621,9 +642,9 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
         const reason = failed ? failed.problem :
           'Batch blocked because another queued daily payload violated the newsletter contract.';
         // Fail ALL Queued daily rows in this invocation, never an existing Sent row.
-        queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Failed');
         queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
           .setValue(('Rendering validation blocked delivery (ADB-DAILY-HTML-1.0): ' + reason).slice(0,1000));
+        queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Failed');
         history.rows.forEach(function(item) {
           const h = item.values;
           if (String(h['Profile ID'] || '').trim() !== String(row['Profile ID'] || '').trim() ||

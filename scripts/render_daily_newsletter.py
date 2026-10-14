@@ -22,10 +22,10 @@ def esc(value):
 
 
 def nonempty(obj, key):
-    value = str(obj.get(key, '')).strip()
-    if not value:
-        raise ValueError('Required nonempty field: ' + key)
-    return value
+    value = obj.get(key)
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError('Required nonempty text field: ' + key)
+    return value.strip()
 
 
 def url(value):

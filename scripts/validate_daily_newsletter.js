@@ -15,16 +15,8 @@ try {
   const code=fs.readFileSync(path.join(__dirname,'../apps-script/DailyNewsletterContract.gs'),'utf8');
   const ctx=vm.createContext({});
   vm.runInContext(code,ctx,{timeout:1000});
-  const report=ctx.adbValidateDailyNewsletterHtml_(html);
-  const htmlUrls=Array.from(html.matchAll(/<a\s+[^>]*href=["']([^"']+)["']/gi),m=>m[1].replace(/&amp;/g,'&'));
-  const textUrls=plain.split(/\r?\n/).map(line=>line.trim()).filter(line=>/^https?:\/\//.test(line));
-  if (htmlUrls.length !== textUrls.length ||
-      htmlUrls.some((url,i)=>url!==textUrls[i])) {
-    throw Error('HTML/plain-text URL count or destination order mismatch');
-  }
-  if (!plain.includes('AUSTIN PULSE') || !plain.includes('AUSTIN AHEAD'))
-    throw Error('Plain text is missing required editorial sections');
-  process.stdout.write(JSON.stringify({...report,destinations:htmlUrls.length,status:'PASS'})+'\n');
+  const report=ctx.adbValidateDailyNewsletterPayload_(html,plain);
+  process.stdout.write(JSON.stringify({...report,status:'PASS'})+'\n');
 } catch (error) {
   console.error('Newsletter pre-queue validation FAIL: '+String(error.message || error));
   process.exitCode=1;

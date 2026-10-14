@@ -9,6 +9,7 @@ on:
       - "scripts/validate_daily_newsletter.js"
       - "scripts/render_daily_newsletter.py"
       - "tests/fixtures/daily-newsletter-example.json"
+      - "tests/test_daily_newsletter_renderer.py"
       - "tests/daily-newsletter-contract.test.js"
       - ".github/workflows/daily-newsletter-layout.yml"
   push:
@@ -34,6 +35,8 @@ jobs:
           node-version: "22"
       - name: Structural and dispatch regression tests
         run: node --test tests/daily-newsletter-contract.test.js
+      - name: Structured renderer variants
+        run: python3 -m unittest discover -s tests -p 'test_daily_newsletter_renderer.py' -v
       - name: Production-reference prequeue check (HTML and text)
         run: node scripts/validate_daily_newsletter.js design/newsletter-renderer-qa.html design/newsletter-renderer-qa.txt
       - name: Deterministic live-layout renderer acceptance

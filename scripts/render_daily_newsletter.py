@@ -122,6 +122,11 @@ class Edition:
         pulse = nonempty(p, 'pulse')
         self.add('<p style="margin:0;padding-left:18px;border-left:4px solid #db2d2d;color:#2a2926;font-family:Georgia,\'Times New Roman\',serif;font-size:21px;line-height:1.48;">' + esc(pulse) + '</p>', pulse)
         self.end()
+        # Edition-level corrections appear immediately after Pulse, per component spec.
+        if p.get('correction'):
+            self.section('CORRECTION / CLARIFICATION')
+            self.add('<p style="font-size:16px;line-height:1.55;">' + esc(p['correction']) + '</p>', p['correction'])
+            self.end()
 
         weather = p.get('weather') or {}
         self.section('WEATHER')
@@ -183,7 +188,10 @@ class Edition:
             self.add('<h3 style="margin:7px 0 0;color:#181818;font-family:Georgia,\'Times New Roman\',serif;font-size:20px;line-height:1.2;">' + esc(title) + '</h3>', title)
             if item.get('description'):
                 self.add('<p style="font-size:16px;line-height:1.5;">' + esc(item['description']) + '</p>', item['description'])
-            self.link('Event details', nonempty(item,'organizer'), nonempty(item,'url'))
+            link_type = str(item.get('linkType') or 'Event details')
+            if link_type not in ('Event details', 'Source'):
+                raise ValueError('Austin Ahead linkType must be Event details or Source')
+            self.link(link_type, nonempty(item,'organizer'), nonempty(item,'url'))
             self.add('</div>')
         self.end()
 
@@ -192,18 +200,17 @@ class Edition:
             if day.weekday() != 4 or len(recap) > 3:
                 raise ValueError('Friday recap allowed only on Friday, maximum 3 points')
             self.section('THIS WEEK IN AUSTIN')
-            for line in recap:
+            for entry in recap:
+                if not isinstance(entry, dict):
+                    raise ValueError('Friday recap needs structured text and named source URLs')
+                line = nonempty(entry, 'text')
                 self.add('<p style="font-size:16px;line-height:1.55;">' + esc(line) + '</p>', line)
+                self.sources(entry)
             self.end()
         if p.get('whatsNew'):
             self.section("WHAT'S NEW")
             self.add('<p style="font-size:16px;line-height:1.55;">' + esc(p['whatsNew']) + '</p>', p['whatsNew'])
             self.end()
-        if p.get('correction'):
-            self.section('CORRECTION / CLARIFICATION')
-            self.add('<p style="font-size:16px;line-height:1.55;">' + esc(p['correction']) + '</p>', p['correction'])
-            self.end()
-
         self.add('</td></tr><tr><td align="center" style="background:#181818;color:#fffefa;padding:26px 20px;text-align:center;">')
         self.add('<img src="' + MARK + '" width="54" alt="ADB" style="display:block;margin:0 auto 12px;width:54px;height:auto;">')
         self.add('<p style="font-size:14px;line-height:1.5;color:#e8ecef;">You’re receiving Austin Daily Briefing because this address is subscribed.</p>', 'You are receiving Austin Daily Briefing because this address is subscribed.')

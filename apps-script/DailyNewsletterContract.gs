@@ -98,6 +98,26 @@ function adbValidateDailyNewsletterHtml_(value) {
     if (!/font-family\s*:\s*Georgia\s*,/i.test(h[1])) reject('Standard headline must use Georgia serif');
     if (/text-align\s*:\s*center/i.test(h[1])) reject('Centered headline forbidden');
   });
+  // Every shared story must independently show both consequence and attribution.
+  // Aggregate link counts can conceal a missing source in an individual item.
+  function hasNamedSource(segment) {
+    return /<a\b[^>]*>\s*Source:\s*[^<]+<\/a>/i.test(segment);
+  }
+  function hasWhyTreatment(segment) {
+    return />\s*WHY IT MATTERS\s*</i.test(segment) &&
+      /border-left\s*:\s*4px\s+solid\s+#db2d2d/i.test(segment) &&
+      /background\s*:\s*#f2efe8/i.test(segment);
+  }
+  if (featured && (!hasNamedSource(featured) || !hasWhyTreatment(featured)))
+    reject('Featured story must independently contain a named source and canonical Why It Matters');
+  headlines.forEach(function(heading,index) {
+    const begin = heading.index;
+    const finish = index + 1 < headlines.length ? headlines[index+1].index : storyHtml.length;
+    const segment = storyHtml.slice(begin,finish);
+    if (!hasNamedSource(segment) || !hasWhyTreatment(segment))
+      reject('Standard Top Story ' + (index+1) +
+        ' must independently contain a named source and canonical Why It Matters');
+  });
   const why = (html.slice(featuredAt >= 0 ? featuredAt : 0, next > 0 ? next : html.length)
     .match(/>\s*WHY IT MATTERS\s*</gi) || []).length;
   if (why < headlines.length+1) reject('Why It Matters missing for a Top Story');

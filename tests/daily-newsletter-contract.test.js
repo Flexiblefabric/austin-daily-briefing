@@ -8,6 +8,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const read = p => fs.readFileSync(path.join(root,p),'utf8');
 const approved = read('design/newsletter-renderer-qa.html');
+const approvedText = read('design/newsletter-renderer-qa.txt');
 const contract = read('apps-script/DailyNewsletterContract.gs');
 const transport = read('apps-script/ResendTransport.gs');
 function validate(html) {
@@ -59,6 +60,14 @@ test('rejects dropped Why It Matters sections',()=>{
 test('rejects missing source links',()=>{
   rejected(approved.replace(/Source:/g,'Unattributed:'),/publisher source links/);
 });
+test('shared dispatcher contract rejects text/HTML URL mismatch',()=>{
+  const sandbox=vm.createContext({});
+  vm.runInContext(contract,sandbox);
+  assert.throws(()=>sandbox.adbValidateDailyNewsletterPayload_(approved,
+    approvedText.replace(/https:\/\/www\.kut\.org\//g,'https://example.invalid/')),/destination order mismatch/);
+  assert.equal(sandbox.adbValidateDailyNewsletterPayload_(approved,approvedText).contract,
+    'ADB-DAILY-HTML-1.0');
+});
 test('rejects stale/absent native Customize destination',()=>{
   rejected(approved.replace(/https:\/\/austindailybriefing\.com\/customize\.html/g,
     'https://old.example/customize'),/Native Customize/);
@@ -88,7 +97,7 @@ function simulateDispatch(htmlBodies, withContract=true) {
     'Message ID':'DAILY-LIVE:'+p.profile+':'+p.run,
     'Profile ID':p.profile,Email:p.email,'Template ID':'DAILY_BRIEFING_V1',
     Status:'Queued',Subject:'Test', 'Sent At / Gmail ID':'',Notes:'',
-    'Plain Text':'Test plain text',HTML:p.html,'Run ID':p.run
+    'Plain Text':approvedText,HTML:p.html,'Run ID':p.run
   }}));
   const history=profiles.map((p,i)=>({sheetRow:i+2,values:{
     'Run ID':p.run,'Profile ID':p.profile,Notes:'Original evidence',
@@ -146,9 +155,10 @@ test('production dispatcher validates and sends an approved queued payload',()=>
 test('one invalid profile blocks entire batch before any provider call',()=>{
   const run=simulateDispatch([approved,approved.replace(/color:#8f1717/g,'color:#1f2933')]);
   assert(run.error);
-  assert.match(String(run.error),/contract blocked/);
+  assert.match(String(run.error),/contract rejected/);
   assert.equal(run.sent.length,0);
-  assert.equal(run.queue[0].values.Status,'Queued');
+  assert.equal(run.queue[0].values.Status,'Failed');
+  assert.equal(run.history[0].values['Delivery Status'],'Failed');
   assert.equal(run.queue[1].values.Status,'Failed');
   assert.equal(run.history[1].values['Delivery Status'],'Failed');
   assert.equal(run.history[1].values['Provider Message ID'],'');
@@ -158,4 +168,13 @@ test('missing deployed contract aborts without mutating queue or sending',()=>{
   assert.match(String(run.error),/Missing DailyNewsletterContract/);
   assert.equal(run.sent.length,0);
   assert.equal(run.writes.length,0);
+});
+
+test('one invalid text payload also blocks every queued recipient',()=>{
+  const malformed = approved.replace('https://www.kut.org/', 'https://another.example.org/');
+  const run=simulateDispatch([approved,malformed]);
+  assert(run.error);
+  assert.equal(run.sent.length,0);
+  assert.equal(run.queue[0].values.Status,'Failed');
+  assert.equal(run.queue[1].values.Status,'Failed');
 });

@@ -62,6 +62,13 @@ class RendererQA(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('cannot have zero sources', result.stderr)
 
+    def test_null_required_field_does_not_render_as_none(self):
+        edition = copy.deepcopy(BASE)
+        edition['featured']['headline'] = None
+        result, html, plain = run_case(edition)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Required nonempty text field: headline', result.stderr)
+
     def test_insecure_url_is_rejected(self):
         edition = copy.deepcopy(BASE)
         edition['featured']['sources'][0]['url'] = 'http://example.invalid/story'

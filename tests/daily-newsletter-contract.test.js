@@ -95,7 +95,7 @@ test('rejects missing footer mark',()=>{
   rejected(approved.replace('adb-mark-reversed@2x.png','not-the-footer.png'),/footer mark/);
 });
 
-function simulateDispatch(htmlBodies, withContract=true) {
+function simulateDispatch(htmlBodies, withContract=true, previousBlockedIndex=null) {
   const sent=[], writes=[];
   const profiles=htmlBodies.map((h,i)=>({
     email:'test'+i+'@example.org',profile:'P'+(i+1),run:'RUN-'+(i+1),
@@ -116,6 +116,16 @@ function simulateDispatch(htmlBodies, withContract=true) {
     'Run ID':p.run,'Profile ID':p.profile,Notes:'Original evidence',
     'Delivery Status':'Pending','Provider Message ID':''
   }}));
+  if (previousBlockedIndex !== null) {
+    // Simulate a crash AFTER persisting a rejection marker for the same
+    // Run ID but BEFORE updating every sibling row in that run.
+    const blocked=queue[previousBlockedIndex];
+    blocked.values.Status='Failed';
+    blocked.values.Notes='Rendering validation blocked delivery (ADB-DAILY-HTML-1.0): interrupted pass';
+    history[previousBlockedIndex].values['Delivery Status']='Failed';
+    for (const queued of queue) queued.values['Run ID']='SAME-RUN';
+    for (const pending of history) pending.values['Run ID']='SAME-RUN';
+  }
   const sheet=name=>({
     name,
     getRange(row,col) {
@@ -190,4 +200,14 @@ test('one invalid text payload also blocks every queued recipient',()=>{
   assert.equal(run.sent.length,0);
   assert.equal(run.queue[0].values.Status,'Failed');
   assert.equal(run.queue[1].values.Status,'Failed');
+});
+
+test('persisted rejected-run marker prevents a later hourly partial dispatch',()=>{
+  const run=simulateDispatch([approved,approved],true,0);
+  assert(run.error);
+  assert.match(String(run.error),/Run previously blocked by newsletter rendering validation/);
+  assert.equal(run.sent.length,0);
+  assert.equal(run.queue[0].values.Status,'Failed');
+  assert.equal(run.queue[1].values.Status,'Failed');
+  assert.equal(run.history[1].values['Delivery Status'],'Failed');
 });

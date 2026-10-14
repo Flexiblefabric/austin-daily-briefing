@@ -9,10 +9,10 @@ The original delivered email contains five shared stories **before** the masthea
 ## Repair
 
 1. `apps-script/DailyNewsletterContract.gs`: pure JS structural contract. It examines the real HTML for canonical masthead/date/Pulse/Weather/story order, approved table nesting, noncentered story cells, serif headings, Why It Matters, Under the Radar, source-link styling, and footer/Customize presence.
-2. `apps-script/ResendTransport.gs`: fail-closed batch preflight **before any Resend handoff**. Any invalid queued daily payload is marked Failed with its matching Pending history records; the entire batch stops. Do not modify already Sent rows. Missing contract file stops dispatch without changing queue.
-3. `scripts/validate_daily_newsletter.js`: runs the identical JS validator on final generated HTML, plus HTML/plain-text URL order parity and minimal text structure. Generator must run it on **each actual payload before queueing**.
-4. `docs/automation-prompts/austin-daily-briefing.md`: generation is instructed to reuse `design/newsletter-renderer-qa.html` as an approved *markup/layout* reference only. Sample stories are not production editorial content. A validator failure stops writes.
-5. `tests/daily-newsletter-contract.test.js` and `.github/workflows/daily-newsletter-layout.yml`: reference and negative-fixture tests, including dispatch integration with simulated queue/history and all-or-none handoff.
+2. `apps-script/ResendTransport.gs`: fail-closed batch preflight **before any Resend handoff**. If any queued daily payload is invalid, **all Queued daily rows in that batch** and their matching Pending history rows are marked Failed; the entire batch stops before any handoff. Do not modify already Sent rows. Missing contract file stops dispatch without changing queue.
+3. `scripts/render_daily_newsletter.py`: builds full branded HTML/plain text deterministically from structured, policy-vetted story JSON, instead of giving the generator free rein to rebuild the layout. It runs the shared pre-queue validator automatically. `scripts/validate_daily_newsletter.js` executes the exact Apps Script HTML/text parity contract.
+4. `docs/automation-prompts/austin-daily-briefing.md`: generation must produce structured JSON and use the deterministic renderer. `design/newsletter-renderer-qa.html` remains the controlled visual reference, not an editorial source. A renderer/validator failure stops writes.
+5. `tests/daily-newsletter-contract.test.js`, `tests/fixtures/daily-newsletter-example.json`, and `.github/workflows/daily-newsletter-layout.yml`: positive/negative HTML, text parity, simulated dispatcher, and synthetic deterministic-renderer acceptance.
 
 ## Release and runtime sync — approval gate
 

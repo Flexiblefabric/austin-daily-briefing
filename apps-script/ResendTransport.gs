@@ -588,6 +588,49 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
 
     const queueColumns = adbHeaderColumns_(queue.headers);
     const historyColumns = adbHeaderColumns_(history.headers);
+
+    // Release guard ADB-DAILY-HTML-1.0: validate every pending daily HTML payload
+    // BEFORE any provider handoff. One defective profile blocks the entire batch.
+    // Missing helper means deployment parity is broken; do not modify queue state.
+    if (typeof adbValidateDailyNewsletterHtml_ !== 'function') {
+      throw new Error('Missing DailyNewsletterContract.gs: production dispatcher source parity failure.');
+    }
+    const invalidLayouts = [];
+    queue.rows.forEach(function(entry) {
+      const row = entry.values;
+      if (String(row.Status || '').trim() !== 'Queued' ||
+          row['Template ID'] !== ADB_RESEND.DAILY_TEMPLATE_ID) return;
+      try {
+        adbValidateDailyNewsletterHtml_(String(row.HTML || ''));
+      } catch (error) {
+        invalidLayouts.push({
+          sheetRow: entry.sheetRow,
+          profileId: String(row['Profile ID'] || '').trim(),
+          runId: String(row['Run ID'] || '').trim(),
+          problem: String(error.message || error)
+        });
+      }
+    });
+    if (invalidLayouts.length) {
+      invalidLayouts.forEach(function(bad) {
+        // Invalid HTML must never be dispatched or automatically retried.
+        queueSheet.getRange(bad.sheetRow, queueColumns.Status).setValue('Failed');
+        queueSheet.getRange(bad.sheetRow, queueColumns.Notes)
+          .setValue(('Rendering validation failed (ADB-DAILY-HTML-1.0): ' + bad.problem).slice(0, 1000));
+        history.rows.forEach(function(entry) {
+          const row = entry.values;
+          if (String(row['Profile ID'] || '').trim() !== bad.profileId ||
+              String(row['Run ID'] || '').trim() !== bad.runId ||
+              String(row['Delivery Status'] || '').trim().toUpperCase() !== 'PENDING' ||
+              String(row['Provider Message ID'] || '').trim()) return;
+          historySheet.getRange(entry.sheetRow, historyColumns['Delivery Status']).setValue('Failed');
+        });
+      });
+      throw new Error('Daily newsletter HTML contract blocked ' + invalidLayouts.length +
+        ' queued edition(s), before Resend handoff: ' +
+        invalidLayouts.map(function(bad) { return bad.runId + '/' + bad.profileId + ': ' + bad.problem; })
+          .join(' || ').slice(0, 1400));
+    }
     let sent = 0;
     let skipped = 0;
 

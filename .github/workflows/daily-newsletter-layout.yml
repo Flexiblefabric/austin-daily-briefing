@@ -7,6 +7,8 @@ on:
       - "design/newsletter-renderer-qa.html"
       - "design/newsletter-renderer-qa.txt"
       - "scripts/validate_daily_newsletter.js"
+      - "scripts/render_daily_newsletter.py"
+      - "tests/fixtures/daily-newsletter-example.json"
       - "tests/daily-newsletter-contract.test.js"
       - ".github/workflows/daily-newsletter-layout.yml"
   push:
@@ -34,3 +36,7 @@ jobs:
         run: node --test tests/daily-newsletter-contract.test.js
       - name: Production-reference prequeue check (HTML and text)
         run: node scripts/validate_daily_newsletter.js design/newsletter-renderer-qa.html design/newsletter-renderer-qa.txt
+      - name: Deterministic live-layout renderer acceptance
+        run: |
+          python3 scripts/render_daily_newsletter.py tests/fixtures/daily-newsletter-example.json /tmp/adb-edition.html /tmp/adb-edition.txt
+          node scripts/validate_daily_newsletter.js /tmp/adb-edition.html /tmp/adb-edition.txt

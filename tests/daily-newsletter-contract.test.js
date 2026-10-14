@@ -57,6 +57,19 @@ test('rejects noncanonical publisher link styling',()=>{
 test('rejects dropped Why It Matters sections',()=>{
   rejected(approved.replace(/WHY IT MATTERS/g,'WHY NOT'),/Why It Matters/);
 });
+test('rejects a single unattributed Top Story even when other stories have enough links',()=>{
+  const marker = '>TOP STORIES<';
+  const cut = approved.indexOf(marker);
+  const before = approved.slice(0,cut);
+  const after = approved.slice(cut).replace(/Source:\s*KUT\s*90\.5\s*→/,'Unattributed publication');
+  rejected(before + after,/Standard Top Story 1 must independently contain a named source/);
+});
+test('rejects missing Why It Matters on only one shared story',()=>{
+  const cut = approved.indexOf('>TOP STORIES<');
+  const prefix = approved.slice(0,cut);
+  const suffix = approved.slice(cut).replace('>WHY IT MATTERS<','>EDITOR NOTE<');
+  rejected(prefix + suffix,/Standard Top Story 1 must independently contain/);
+});
 test('rejects missing source links',()=>{
   rejected(approved.replace(/Source:/g,'Unattributed:'),/publisher source links/);
 });

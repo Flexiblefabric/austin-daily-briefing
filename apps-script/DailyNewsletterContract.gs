@@ -127,3 +127,26 @@ function adbValidateDailyNewsletterHtml_(value) {
   if (errors.length) throw new Error('ADB-DAILY-HTML-1.0: ' + errors.join(' | '));
   return {contract:'ADB-DAILY-HTML-1.0',sourceLinks:links.length,standardStories:headlines.length};
 }
+
+
+/**
+ * Edition parity guard. Use this exact function in BOTH generator CLI and dispatcher.
+ * Prevents a valid HTML shell from hiding incomplete plain text or mismatched links.
+ */
+function adbValidateDailyNewsletterPayload_(html, plainText) {
+  const report = adbValidateDailyNewsletterHtml_(html);
+  const text = String(plainText || '');
+  if (!text.trim() || text.length > 45000)
+    throw new Error('ADB-DAILY-HTML-1.0: Plain text must be nonempty and <= 45000 characters');
+  const urls = Array.from(String(html || '').matchAll(/<a\s+[^>]*href=["']([^"']+)["']/gi),
+    function(match) { return match[1].replace(/&amp;/g, '&'); });
+  const textUrls = text.split(/\r?\n/).map(function(line) { return line.trim(); })
+    .filter(function(line) { return /^https?:\/\//.test(line); });
+  if (urls.length !== textUrls.length ||
+      urls.some(function(url,index) { return url !== textUrls[index]; }))
+    throw new Error('ADB-DAILY-HTML-1.0: HTML/plain-text URL count or destination order mismatch');
+  if (text.indexOf('AUSTIN PULSE') < 0 || text.indexOf('AUSTIN AHEAD') < 0)
+    throw new Error('ADB-DAILY-HTML-1.0: Plain text is missing required editorial sections');
+  report.destinations = urls.length;
+  return report;
+}

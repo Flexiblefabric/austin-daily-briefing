@@ -1,0 +1,36 @@
+name: Daily newsletter layout contract
+on:
+  pull_request:
+    paths:
+      - "apps-script/DailyNewsletterContract.gs"
+      - "apps-script/ResendTransport.gs"
+      - "design/newsletter-renderer-qa.html"
+      - "design/newsletter-renderer-qa.txt"
+      - "scripts/validate_daily_newsletter.js"
+      - "tests/daily-newsletter-contract.test.js"
+      - ".github/workflows/daily-newsletter-layout.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps-script/DailyNewsletterContract.gs"
+      - "apps-script/ResendTransport.gs"
+      - "design/newsletter-renderer-qa.html"
+      - "design/newsletter-renderer-qa.txt"
+      - "scripts/validate_daily_newsletter.js"
+      - "tests/daily-newsletter-contract.test.js"
+  workflow_dispatch:
+
+jobs:
+  renderer-contract:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Structural and dispatch regression tests
+        run: node --test tests/daily-newsletter-contract.test.js
+      - name: Production-reference prequeue check (HTML and text)
+        run: node scripts/validate_daily_newsletter.js design/newsletter-renderer-qa.html design/newsletter-renderer-qa.txt

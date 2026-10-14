@@ -61,7 +61,7 @@ test('rejects a single unattributed Top Story even when other stories have enoug
   const marker = '>TOP STORIES<';
   const cut = approved.indexOf(marker);
   const before = approved.slice(0,cut);
-  const after = approved.slice(cut).replace(/Source:\s*KUT\s*90\.5\s*→/,'Unattributed publication');
+  const after = approved.slice(cut).replace(/Source:\s*CapMetro\s*→/,'Unattributed publication');
   rejected(before + after,/Standard Top Story 1 must independently contain a named source/);
 });
 test('rejects missing Why It Matters on only one shared story',()=>{

@@ -150,3 +150,53 @@ function adbValidateDailyNewsletterPayload_(html, plainText) {
   report.destinations = urls.length;
   return report;
 }
+
+
+/**
+ * Read-only controlled reference preflight for manually deployed Apps Script.
+ * Does not access subscriber data, queue, sheets, tokens, or Resend.
+ * Use after installing this file AND the approved ResendTransport.gs revision.
+ */
+function validateAdbDailyNewsletterContractDeploymentV1() {
+  if (typeof adbValidateDailyNewsletterPayload_ !== 'function') {
+    throw new Error('ADB daily rendering contract is not installed.');
+  }
+  const base = 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/design/';
+  const htmlResponse = UrlFetchApp.fetch(base + 'newsletter-renderer-qa.html', {
+    followRedirects: true, muteHttpExceptions: true
+  });
+  const textResponse = UrlFetchApp.fetch(base + 'newsletter-renderer-qa.txt', {
+    followRedirects: true, muteHttpExceptions: true
+  });
+  if (htmlResponse.getResponseCode() !== 200 || textResponse.getResponseCode() !== 200) {
+    throw new Error('Cannot retrieve the approved QA reference: HTTP ' +
+      htmlResponse.getResponseCode() + ' / ' + textResponse.getResponseCode());
+  }
+  const approvedHtml = htmlResponse.getContentText('UTF-8');
+  const approvedText = textResponse.getContentText('UTF-8');
+  const result = adbValidateDailyNewsletterPayload_(approvedHtml, approvedText);
+  const corrupted = approvedHtml.replace('>TOP STORIES<', '>NEWS<');
+  if (corrupted === approvedHtml) {
+    throw new Error('Controlled QA reference lacked TOP STORIES marker.');
+  }
+  let correctlyRejected = false;
+  try {
+    adbValidateDailyNewsletterPayload_(corrupted, approvedText);
+  } catch (expected) {
+    correctlyRejected = /Required component missing: TOP STORIES/.test(String(expected));
+  }
+  if (!correctlyRejected) throw new Error('Negative control was not rejected.');
+  const report = {
+    contract: result.contract,
+    approvedReference: 'PASS',
+    negativeControl: 'REJECTED',
+    linkParity: 'PASS',
+    componentOrder: 'PASS',
+    sourceLinks: result.sourceLinks,
+    destinationCount: result.destinations,
+    queueWrites: 0,
+    providerSends: 0
+  };
+  Logger.log(JSON.stringify(report));
+  return report;
+}

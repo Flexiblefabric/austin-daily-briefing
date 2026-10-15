@@ -181,6 +181,13 @@ function validateAdbDailyNewsletterContractDeploymentV1() {
   if (typeof adbValidateDailyNewsletterPayload_ !== 'function') {
     throw new Error('ADB daily rendering contract is not installed.');
   }
+  // The helper alone is insufficient: confirm the LIVE dispatcher function
+  // actually calls the guard before any Resend transport handoff.
+  if (typeof dispatchQueuedDailyBriefingsViaResendV1 !== 'function' ||
+      String(dispatchQueuedDailyBriefingsViaResendV1).indexOf('adbValidateDailyNewsletterPayload_') < 0 ||
+      String(dispatchQueuedDailyBriefingsViaResendV1).indexOf('previouslyBlockedRuns') < 0) {
+    throw new Error('Live Resend dispatcher is missing the approved daily HTML/text guard; install the matching ResendTransport.gs first.');
+  }
   const base = 'https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/design/';
   const htmlResponse = UrlFetchApp.fetch(base + 'newsletter-renderer-qa.html', {
     followRedirects: true, muteHttpExceptions: true

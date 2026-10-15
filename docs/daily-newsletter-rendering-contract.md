@@ -1,6 +1,7 @@
 # ADB deterministic daily newsletter rendering contract
 
-**Renderer:** `scripts/render_daily_newsletter.py`  
+**Scheduled tool renderer:** `scripts/daily_newsletter_renderer.js` (pure JavaScript; no Python/Node dependency)
+**Offline QA comparator:** `scripts/render_daily_newsletter.py` (not required in scheduled runtime)  
 **Validator:** `scripts/validate_daily_newsletter.js`  
 **Live dispatcher gate:** `apps-script/DailyNewsletterContract.gs`  
 **Contract ID:** `ADB-DAILY-HTML-1.0`
@@ -31,18 +32,30 @@ Each shared `featured`, `topStories` and `underTheRadar` story object needs `hea
 
 No private subscriber addresses, profile IDs, safety tokens or selection provenance go inside this JSON. Those remain in their respective protected queue/evidence systems.
 
-## Before-queue command
+## Before-queue controlled renderer execution
 
-```sh
-python3 scripts/render_daily_newsletter.py input.json edition.html edition.txt
+The morning automation must retrieve `scripts/daily_newsletter_renderer.js`, `apps-script/DailyNewsletterContract.gs` and the canonical selection specifications **at the same verified main commit** using the connected GitHub contents API. No subscriber data or personalized JSON should be placed in GitHub, workflow artifacts, logs or model-visible output.
+
+The automation creates one in-memory editorial JSON object per eligible profile, following the schema above. From a connected-tool JavaScript execution, evaluate the pinned renderer and shared validator, produce exact HTML/text, and validate both BEFORE any Outbound Messages or Briefing History writes:
+
+```js
+const render = new Function(rendererSource + ';return adbRenderDailyNewsletter;')();
+const validate = new Function(contractSource + ';return adbValidateDailyNewsletterPayload_;')();
+const { html, text } = render(validatedStructuredEditorialJson);
+const result = validate(html, text);
+if (result.contract !== 'ADB-DAILY-HTML-1.0') throw Error('Incorrect rendering contract');
 ```
 
-The Python renderer writes the fully escaped, deterministic HTML and plain-text bodies to these exact files, then invokes `node scripts/validate_daily_newsletter.js` itself. It requires a successful exit and printed JSON `status: PASS`; error or missing Node blocks the run. Do not manually assemble alternate HTML, bypass this renderer, remove markup checks or use the reference's synthetic content. The outputs, not the JSON itself, populate the daily Outbound Messages body fields.
+Here `rendererSource` and `contractSource` are bytes fetched through the connected GitHub contents API at a single SHA, not free-form code generated in the conversation. The exact in-memory HTML and plain text populate the outbound payloads. Require an independently confirmed PASS for **every** intended profile before any queue/history writes. Never send or queue a sample fixture or manually reconstructed HTML.
 
-The dispatch-side Apps Script gate independently validates **all queued** HTML/text pairs before sending any. If one is malformed, all pending rows in the inspected batch are failed without provider handoff, including matching Pending history rows. The original queue rows cannot be silently rewritten or replayed.
+If the scheduled executor lacks JavaScript tool execution, source verification, or another required tool, STOP before any writes, report **rendering preflight unavailable**, and mark the normal Morning Briefing failure. Do not fall back to approximate free-form HTML or attempt to switch to Python/Node without an independently verified capability.
+
+`scripts/render_daily_newsletter.py` remains an optional controlled offline comparison and CI test only. It is **not** a second live renderer or production fallback; avoid divergent authoring paths.
+
+The dispatcher-side Apps Script gate independently validates each queued HTML/text pair after its separate `ADB_DAILY_LAYOUT_GUARD_MODE=ENFORCE` cutover. A malformed edition blocks the full pending batch; a persisted blocked-run marker prevents accidental partial delivery on a later hourly invocation. Keep `STAGED` during installation/controlled QA; it is not a protective production state.
 
 ## Release QA
 
 Run the checked-in static visual sample, the structured fixture and the actual dynamic test profile through validation and controlled email client review. Compare desktop/mobile typography, source links, Weather stacking, image blocking and dark mode with the approved design. Current tests provide structural and style-marker protection, **not** pixel-perfect validation.
 
-The Python renderer must be used by the production generator only after PR approval, deployment/version parity and controlled QA. Changing GitHub main alone does not install Apps Script files in production.
+The pure JS renderer must be verified inside the scheduled ChatGPT task's execution context, not only this interactive conversation, before PR promotion. Production must have the matching Apps Script contract and dispatcher installed. Changing GitHub main alone does not install Apps Script files or change their guard mode.

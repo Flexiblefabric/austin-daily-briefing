@@ -24,7 +24,9 @@ Using Google Sheets Outbound Messages HTML/plain text columns without displaying
 
 ## Interactive connector execution proof (not scheduled-runtime proof)
 
-A pure JavaScript version of the renderer was fetched from the branch commit with the connected GitHub contents tool and run in connected-tool JavaScript without Python or Node. It built an HTML/plain text pair from the production-shaped synthetic JSON fixture, and the shared Apps Script contract passed (5 publisher source links, 15 link destinations). The test made **zero** production writes and external send calls. The scheduler still must prove access to the same JavaScript tool-execution capability before PR promotion.
+A pure JavaScript version of the renderer was fetched from the branch commit with the connected GitHub contents tool and run in connected-tool JavaScript without Python or Node. It built an HTML/plain text pair from the production-shaped synthetic JSON fixture, and the shared Apps Script contract passed (5 publisher source links, 15 link destinations). The interactive test made **zero** production writes and external send calls.
+
+**Scheduled capability probe:** One-time task `ADB Renderer Capability Probe` ran and completed on 2026-10-14 America/Chicago, was automatically disabled afterward, and the operator supplied its result link and confirmed 'compatibility requirements satisfied'. Treat this as an operator-confirmed scheduled compatibility PASS; the detailed shared task output was not independently retrievable through connected tools in this review. Do not treat this probe as controlled mailbox or queue-delivery acceptance.
 
 ## Staged Apps Script deployment (required order)
 
@@ -45,6 +47,8 @@ This allows safe runtime installation before the 08:00 generator and avoids acti
 ## Release and runtime sync — approval gate
 
 - [ ] Confirm PR CI passes, including reference HTML/text and negative/positive contract tests.
+- [x] One-time scheduled JavaScript compatibility probe completed; operator confirmed PASS. See task evidence.
+- [ ] Perform [one-recipient controlled Resend inbox QA](daily-newsletter-controlled-inbox-qa.md) using synthetic renderer-generated HTML/text. Review actually received message; sender/proxy acceptance is not inbox proof.
 - [ ] Inspect rendered output for a controlled current-day **dynamic** edition, not just the static approved sample; verify color, typography, source links, text parity, narrow mobile and desktop clients (Gmail, Yahoo, Outlook), image blocking, dark mode.
 - [ ] Confirm current subscriber-management URL is appropriate for PROD; do **not** assume DEV native management was promoted.
 - [ ] Merge approved PR to main only after review. Before updating Apps Script, read the exact merged revision and check production deployment/source parity.

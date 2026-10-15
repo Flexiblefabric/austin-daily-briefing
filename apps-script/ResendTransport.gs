@@ -537,6 +537,13 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
     const props = PropertiesService.getScriptProperties();
     const mode = String(props.getProperty(ADB_RESEND.DAILY_MODE_PROPERTY) || 'CONTROLLED').toUpperCase();
     if (['CONTROLLED', 'LIVE'].indexOf(mode) < 0) throw new Error('Unsupported ADB_RESEND_DAILY_MODE: ' + mode);
+    // Safe two-phase cutover: replacement dispatcher is inert with respect to
+    // editorial layout until the approved generator has passed controlled QA.
+    // Missing property defaults to STAGED; only explicit ENFORCE activates guard.
+    const layoutGuardMode = String(props.getProperty('ADB_DAILY_LAYOUT_GUARD_MODE') || 'STAGED').trim().toUpperCase();
+    if (['STAGED', 'ENFORCE'].indexOf(layoutGuardMode) < 0) {
+      throw new Error('Unsupported ADB_DAILY_LAYOUT_GUARD_MODE: ' + layoutGuardMode);
+    }
     const allowlist = new Set(String(props.getProperty(ADB_RESEND.DAILY_ALLOWLIST_PROPERTY) || '')
       .split(',').map(function(value) { return value.trim().toLowerCase(); }).filter(Boolean));
     if (mode === 'CONTROLLED' && !allowlist.size) {
@@ -589,75 +596,77 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
     const queueColumns = adbHeaderColumns_(queue.headers);
     const historyColumns = adbHeaderColumns_(history.headers);
 
-    // Release guard ADB-DAILY-HTML-1.0: check all pending HTML/text pairs
-    // BEFORE any provider call. Invalid payloads fail the whole pending batch,
-    // preventing the next hourly pass from partially delivering the same batch.
-    if (typeof adbValidateDailyNewsletterPayload_ !== 'function') {
-      throw new Error('Missing DailyNewsletterContract.gs: production dispatcher source parity failure.');
-    }
-    // An interrupted FAIL-all pass must never let a previously blocked Run ID
-    // send on the next hourly invocation. The Notes marker persists independently
-    // of partial queue status updates; write Notes before Status below.
-    const previouslyBlockedRuns = new Set(queue.rows.filter(function(entry) {
-      const row = entry.values;
-      return row['Template ID'] === ADB_RESEND.DAILY_TEMPLATE_ID &&
-        /^Rendering validation blocked delivery \(ADB-DAILY-HTML-1\.0\):/.test(
-          String(row.Notes || ''));
-    }).map(function(entry) {
-      return String(entry.values['Run ID'] || '').trim();
-    }).filter(Boolean));
-    const invalidLayouts = [];
-    const pendingLayouts = queue.rows.filter(function(entry) {
-      const row = entry.values;
-      return String(row.Status || '').trim() === 'Queued' &&
-        row['Template ID'] === ADB_RESEND.DAILY_TEMPLATE_ID;
-    });
-    pendingLayouts.forEach(function(entry) {
-      const queuedRunId = String(entry.values['Run ID'] || '').trim();
-      if (queuedRunId && previouslyBlockedRuns.has(queuedRunId)) {
-        invalidLayouts.push({
-          sheetRow: entry.sheetRow,
-          profileId: String(entry.values['Profile ID'] || '').trim(),
-          runId: queuedRunId,
-          problem: 'Run previously blocked by newsletter rendering validation.'
-        });
-        return;
+    if (layoutGuardMode === 'ENFORCE') {
+      // Release guard ADB-DAILY-HTML-1.0: check all pending HTML/text pairs
+      // BEFORE any provider call. Invalid payloads fail the whole pending batch,
+      // preventing the next hourly pass from partially delivering the same batch.
+      if (typeof adbValidateDailyNewsletterPayload_ !== 'function') {
+        throw new Error('Missing DailyNewsletterContract.gs: production dispatcher source parity failure.');
       }
-      try {
-        adbValidateDailyNewsletterPayload_(
-          String(entry.values.HTML || ''), String(entry.values['Plain Text'] || ''));
-      } catch (error) {
-        invalidLayouts.push({
-          sheetRow: entry.sheetRow,
-          profileId: String(entry.values['Profile ID'] || '').trim(),
-          runId: String(entry.values['Run ID'] || '').trim(),
-          problem: String(error.message || error)
-        });
-      }
-    });
-    if (invalidLayouts.length) {
-      pendingLayouts.forEach(function(entry) {
+      // An interrupted FAIL-all pass must never let a previously blocked Run ID
+      // send on the next hourly invocation. The Notes marker persists independently
+      // of partial queue status updates; write Notes before Status below.
+      const previouslyBlockedRuns = new Set(queue.rows.filter(function(entry) {
         const row = entry.values;
-        const failed = invalidLayouts.find(function(bad) { return bad.sheetRow === entry.sheetRow; });
-        const reason = failed ? failed.problem :
-          'Batch blocked because another queued daily payload violated the newsletter contract.';
-        // Fail ALL Queued daily rows in this invocation, never an existing Sent row.
-        queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
-          .setValue(('Rendering validation blocked delivery (ADB-DAILY-HTML-1.0): ' + reason).slice(0,1000));
-        queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Failed');
-        history.rows.forEach(function(item) {
-          const h = item.values;
-          if (String(h['Profile ID'] || '').trim() !== String(row['Profile ID'] || '').trim() ||
-              String(h['Run ID'] || '').trim() !== String(row['Run ID'] || '').trim() ||
-              String(h['Delivery Status'] || '').trim().toUpperCase() !== 'PENDING' ||
-              String(h['Provider Message ID'] || '').trim()) return;
-          historySheet.getRange(item.sheetRow, historyColumns['Delivery Status']).setValue('Failed');
-        });
+        return row['Template ID'] === ADB_RESEND.DAILY_TEMPLATE_ID &&
+          /^Rendering validation blocked delivery \(ADB-DAILY-HTML-1\.0\):/.test(
+            String(row.Notes || ''));
+      }).map(function(entry) {
+        return String(entry.values['Run ID'] || '').trim();
+      }).filter(Boolean));
+      const invalidLayouts = [];
+      const pendingLayouts = queue.rows.filter(function(entry) {
+        const row = entry.values;
+        return String(row.Status || '').trim() === 'Queued' &&
+          row['Template ID'] === ADB_RESEND.DAILY_TEMPLATE_ID;
       });
-      throw new Error('Daily newsletter contract rejected ' + invalidLayouts.length +
-        ' of ' + pendingLayouts.length + ' queued editions; entire batch blocked before Resend: ' +
-        invalidLayouts.map(function(bad) { return bad.runId + '/' + bad.profileId + ': ' + bad.problem; })
-          .join(' || ').slice(0,1400));
+      pendingLayouts.forEach(function(entry) {
+        const queuedRunId = String(entry.values['Run ID'] || '').trim();
+        if (queuedRunId && previouslyBlockedRuns.has(queuedRunId)) {
+          invalidLayouts.push({
+            sheetRow: entry.sheetRow,
+            profileId: String(entry.values['Profile ID'] || '').trim(),
+            runId: queuedRunId,
+            problem: 'Run previously blocked by newsletter rendering validation.'
+          });
+          return;
+        }
+        try {
+          adbValidateDailyNewsletterPayload_(
+            String(entry.values.HTML || ''), String(entry.values['Plain Text'] || ''));
+        } catch (error) {
+          invalidLayouts.push({
+            sheetRow: entry.sheetRow,
+            profileId: String(entry.values['Profile ID'] || '').trim(),
+            runId: String(entry.values['Run ID'] || '').trim(),
+            problem: String(error.message || error)
+          });
+        }
+      });
+      if (invalidLayouts.length) {
+        pendingLayouts.forEach(function(entry) {
+          const row = entry.values;
+          const failed = invalidLayouts.find(function(bad) { return bad.sheetRow === entry.sheetRow; });
+          const reason = failed ? failed.problem :
+            'Batch blocked because another queued daily payload violated the newsletter contract.';
+          // Fail ALL Queued daily rows in this invocation, never an existing Sent row.
+          queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
+            .setValue(('Rendering validation blocked delivery (ADB-DAILY-HTML-1.0): ' + reason).slice(0,1000));
+          queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Failed');
+          history.rows.forEach(function(item) {
+            const h = item.values;
+            if (String(h['Profile ID'] || '').trim() !== String(row['Profile ID'] || '').trim() ||
+                String(h['Run ID'] || '').trim() !== String(row['Run ID'] || '').trim() ||
+                String(h['Delivery Status'] || '').trim().toUpperCase() !== 'PENDING' ||
+                String(h['Provider Message ID'] || '').trim()) return;
+            historySheet.getRange(item.sheetRow, historyColumns['Delivery Status']).setValue('Failed');
+          });
+        });
+        throw new Error('Daily newsletter contract rejected ' + invalidLayouts.length +
+          ' of ' + pendingLayouts.length + ' queued editions; entire batch blocked before Resend: ' +
+          invalidLayouts.map(function(bad) { return bad.runId + '/' + bad.profileId + ': ' + bad.problem; })
+            .join(' || ').slice(0,1400));
+      }
     }
     let sent = 0;
     let skipped = 0;

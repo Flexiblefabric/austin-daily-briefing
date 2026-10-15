@@ -10,6 +10,10 @@ on:
       - "scripts/render_daily_newsletter.py"
       - "scripts/daily_newsletter_renderer.js"
       - "tests/daily-newsletter-code-mode.test.js"
+      - "apps-script/DailyNewsletterDeliveryQa.gs"
+      - "tests/daily-newsletter-controlled-delivery.test.js"
+      - "tests/fixtures/daily-newsletter-controlled-send.html"
+      - "tests/fixtures/daily-newsletter-controlled-send.txt"
       - "tests/fixtures/daily-newsletter-example.json"
       - "tests/test_daily_newsletter_renderer.py"
       - "tests/daily-newsletter-contract.test.js"
@@ -39,6 +43,10 @@ jobs:
         run: node --test tests/daily-newsletter-contract.test.js
       - name: Pure JS renderer integration tests
         run: node --test tests/daily-newsletter-code-mode.test.js
+      - name: Synthetic one-recipient QA safety tests
+        run: |
+          node --test tests/daily-newsletter-controlled-delivery.test.js
+          node scripts/validate_daily_newsletter.js tests/fixtures/daily-newsletter-controlled-send.html tests/fixtures/daily-newsletter-controlled-send.txt
       - name: Structured renderer variants
         run: python3 -m unittest discover -s tests -p 'test_daily_newsletter_renderer.py' -v
       - name: Production-reference prequeue check (HTML and text)

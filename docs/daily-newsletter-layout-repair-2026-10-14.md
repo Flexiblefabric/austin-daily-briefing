@@ -36,6 +36,19 @@ The operator confirmed receipt of the one-recipient synthetic Resend edition (HT
 
 After operator deletes the temporary `DailyNewsletterDeliveryQa.gs` Apps Script module, and confirms `ADB_DAILY_LAYOUT_QA_SEND_APPROVAL` has been consumed/removed, leave `ADB_DAILY_LAYOUT_GUARD_MODE=STAGED` pending live-content, no-write generation rehearsal and coordinated production cutover.
 
+## Historical full-edition no-write integration rehearsal (Oct 14)
+
+Using one previously Sent `2026-10-14-morning-resend-live` publication's editorial text and already-published public source/event URLs as **historic fixtures in memory**, the connected GitHub execution tool fetched the pure JS renderer and production contract from the same PR head and regenerated the full issue. This was **not** fresh editorial selection, link recertification, personal data exposure or approval to republish yesterday's news.
+
+- Real editorial assembly: featured + four standard shared Top Stories, one Under the Radar, four historical More for You stories, four Austin Ahead entries, Weather and approved published Manage/feedback destinations.
+- `ADB-DAILY-HTML-1.0` HTML/text verification: **PASS**, 10 named publisher source links and 22 URL destinations; rendered HTML 22,935 characters; plain text 7,827 characters.
+- Twelve content/structure/reconciliation assertions: **12/12 PASS**, including source and title preservation, all eligible section counts, source/event/weather URLs, observed production footer management URL, no QA placeholder stories, no recipient-email leakage, and character limits.
+- Live queue safety check: production Outbound Messages **zero matching Queued rows** at this read-only check. No production Sheet updates, queue/history mutations, external emails, or replays.
+- Source parity: `ResendTransport.gs` and `DailyNewsletterContract.gs` have identical GitHub blob hashes at the previously operator-installed commit `167d9756378692c6a56b52ee3aecd06fa4b8512f` and the PR rehearsal commit `576fa330be8f38791a6cdb69838a1c5d34c83aea`. Operator already reported the paired-file deployment and successful read-only Apps Script runtime check.
+- This dry run verifies **rendering compatibility with previously published real editorial shapes**, not independent current-day source review, all subscribers' live personalization, or a new 08:00 production cycle.
+
+**Remaining release coordination:** secure explicit approval to merge PR #115 and immediately coordinate Script Property `ADB_DAILY_LAYOUT_GUARD_MODE=ENFORCE` at a safe time (no pending legacy daily batches), run read-only contract preflight again to confirm mode `ENFORCE`, then closely observe the next scheduled generation→queue→Resend→monitoring cycle. Do not leave a partially activated release overnight. No existing Sent row may be replayed.
+
 ## Staged Apps Script deployment (required order)
 
 The updated dispatcher has a safe switch, Script Property `ADB_DAILY_LAYOUT_GUARD_MODE`:
@@ -63,7 +76,8 @@ This allows safe runtime installation before the 08:00 generator and avoids acti
 - [ ] Update the production Apps Script project with **both** `DailyNewsletterContract.gs` and changed `ResendTransport.gs` from the **same commit**. Never install the modified dispatcher without its helper.
 - [ ] Run read-only Apps Script `validateAdbDailyNewsletterContractDeploymentV1()` immediately after syncing; require approved-reference PASS, negative-control REJECTED, destination parity PASS, and zero queue/provider writes.
 - [ ] Run a controlled queue-path test with an approved test profile. Confirm the approved edition is accepted and a deliberately invalid queued QA payload is blocked with no provider handoff; use isolated controlled test records and maintain idempotency.
-- [ ] Verify current main's canonical daily automation prompt is the one the morning automation fetches; run a controlled generator dry run with a real, dynamic issue and prove CLI PASS **before** queue/history writes.
+- [x] Connected-tool no-write rehearsal with previously published real October 14 editorial content: shared `adbRenderDailyNewsletter` + `adbValidateDailyNewsletterPayload_` PASS, 12/12 checks and zero production writes; synthetic-only offline Python CLI is no longer the production dependency.
+- [ ] Verify next scheduled production task selects new-day sources, applies all real profile preferences safely, queues correctly and is independently blocked by dispatcher on invalid HTML (first-live-cycle observation).
 - [ ] Observe the next scheduled normal edition end to end. If live rendering fails, stop the new edition, report Morning Briefing validation failure, and fix source/template; **do not** resend existing Sent records.
 
 ## Limitations and monitoring

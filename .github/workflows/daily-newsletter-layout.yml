@@ -8,6 +8,8 @@ on:
       - "design/newsletter-renderer-qa.txt"
       - "scripts/validate_daily_newsletter.js"
       - "scripts/render_daily_newsletter.py"
+      - "scripts/daily_newsletter_renderer.js"
+      - "tests/daily-newsletter-code-mode.test.js"
       - "tests/fixtures/daily-newsletter-example.json"
       - "tests/test_daily_newsletter_renderer.py"
       - "tests/daily-newsletter-contract.test.js"
@@ -35,6 +37,8 @@ jobs:
           node-version: "22"
       - name: Structural and dispatch regression tests
         run: node --test tests/daily-newsletter-contract.test.js
+      - name: Pure JS renderer integration tests
+        run: node --test tests/daily-newsletter-code-mode.test.js
       - name: Structured renderer variants
         run: python3 -m unittest discover -s tests -p 'test_daily_newsletter_renderer.py' -v
       - name: Production-reference prequeue check (HTML and text)

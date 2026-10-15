@@ -95,7 +95,7 @@ test('rejects missing footer mark',()=>{
   rejected(approved.replace('adb-mark-reversed@2x.png','not-the-footer.png'),/footer mark/);
 });
 
-function simulateDispatch(htmlBodies, withContract=true, previousBlockedIndex=null) {
+function simulateDispatch(htmlBodies, withContract=true, previousBlockedIndex=null, layoutGuardMode='ENFORCE') {
   const sent=[], writes=[];
   const profiles=htmlBodies.map((h,i)=>({
     email:'test'+i+'@example.org',profile:'P'+(i+1),run:'RUN-'+(i+1),
@@ -141,7 +141,7 @@ function simulateDispatch(htmlBodies, withContract=true, previousBlockedIndex=nu
   });
   const context=vm.createContext({
     LockService:{getScriptLock:()=>({waitLock(){},releaseLock(){}})},
-    PropertiesService:{getScriptProperties:()=>({getProperty:()=> 'LIVE'})},
+    PropertiesService:{getScriptProperties:()=>({getProperty:(key)=> key==='ADB_DAILY_LAYOUT_GUARD_MODE'?layoutGuardMode:'LIVE'})},
     SpreadsheetApp:{openById:()=>({getSheetByName:sheet})},
     Logger:{log(){}},Set,Date,JSON
   });
@@ -210,4 +210,25 @@ test('persisted rejected-run marker prevents a later hourly partial dispatch',()
   assert.equal(run.queue[0].values.Status,'Failed');
   assert.equal(run.queue[1].values.Status,'Failed');
   assert.equal(run.history[1].values['Delivery Status'],'Failed');
+});
+
+test('staged layout switch defaults to no layout enforcement on dispatcher',()=>{
+  // This is only for installation safety; not production acceptance.
+  const defective = approved.replace(/color:#8f1717/g,'color:#1f2933');
+  const run=simulateDispatch([defective],true,null,null);
+  if(run.error) throw run.error;
+  assert.equal(run.sent.length,1);
+  assert.equal(run.queue[0].values.Status,'Sent');
+});
+test('explicit ENFORCE blocks defective queued content',()=>{
+  const defective = approved.replace(/color:#8f1717/g,'color:#1f2933');
+  const run=simulateDispatch([defective],true,null,'ENFORCE');
+  assert.match(String(run.error),/contract rejected/);
+  assert.equal(run.sent.length,0);
+});
+test('unknown layout switch fails closed without queue mutation or send',()=>{
+  const run=simulateDispatch([approved],true,null,'BROKEN');
+  assert.match(String(run.error),/Unsupported ADB_DAILY_LAYOUT_GUARD_MODE/);
+  assert.equal(run.sent.length,0);
+  assert.equal(run.writes.length,0);
 });

@@ -14,6 +14,22 @@ The original delivered email contains five shared stories **before** the masthea
 4. `docs/automation-prompts/austin-daily-briefing.md`: generation must produce structured JSON and use the deterministic renderer. `design/newsletter-renderer-qa.html` remains the controlled visual reference, not an editorial source. A renderer/validator failure stops writes.
 5. `tests/daily-newsletter-contract.test.js`, `tests/fixtures/daily-newsletter-example.json`, and `.github/workflows/daily-newsletter-layout.yml`: positive/negative HTML, text parity, simulated dispatcher, and synthetic deterministic-renderer acceptance.
 
+## Staged Apps Script deployment (required order)
+
+The updated dispatcher has a safe switch, Script Property `ADB_DAILY_LAYOUT_GUARD_MODE`:
+- **Absent or `STAGED` (default):** the existing live daily dispatch path behaves as before; editorial HTML validation is not yet enforced. This is an installation-only state; it **does not prevent another malformed edition**.
+- **`ENFORCE`:** for each daily dispatcher invocation, all Queued daily HTML + text are checked before Resend; one failure blocks the entire pending batch.
+- Any other value fails closed with an exception before sending.
+
+1. Back up the existing deployed `ResendTransport.gs` outside the Apps Script project; do not create a duplicate `.gs` module in production.
+2. Install current PR revision's `DailyNewsletterContract.gs` and the matching entire `ResendTransport.gs` source from the **same reviewed commit**. Do not add `ADB_DAILY_LAYOUT_GUARD_MODE=ENFORCE` at installation time.
+3. From the Apps Script editor, run the read-only `validateAdbDailyNewsletterContractDeploymentV1()`. Require approved reference PASS, negative control rejected, text parity PASS, `layoutGuardMode=STAGED`, no Sheet writes or Resend emails.
+4. Verify a complete **dynamic** production-shape edition can be generated from the new structured renderer with the production automation execution environment, including real management links, customization, verified source attribution and history constraints. Perform controlled mailbox acceptance in Gmail/Yahoo/Outlook and mobile. This requires independent proof; GitHub CI alone is insufficient.
+5. Only after controlled gate success, coordinate the main-branch canonical generator cutover and set `ADB_DAILY_LAYOUT_GUARD_MODE=ENFORCE` immediately before the first new production dispatch. Re-run the preflight and require `layoutGuardMode=ENFORCE`.
+6. Observe the first live edition; preserve no-replay rules and explicit failure monitoring. Do not assume `STAGED` is protective.
+
+This allows safe runtime installation before the 08:00 generator and avoids activating a guard against the still-current free-form HTML publisher prematurely. There is no unattended automatic cutover.
+
 ## Release and runtime sync — approval gate
 
 - [ ] Confirm PR CI passes, including reference HTML/text and negative/positive contract tests.

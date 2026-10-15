@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-14",
+  "preheader": "Controlled rendering fixture — not a live briefing.",
+  "pulse": "A local decision and a transit update lead the day; readers can also plan for an upcoming meeting.",
+  "weather": {
+    "summary": "Partly cloudy with an afternoon chance of rain.",
+    "high": 89,
+    "low": 70,
+    "url": "https://forecast.weather.gov/"
+  },
+  "featured": {
+    "headline": "Sample city budget decision for controlled rendering",
+    "metadata": "AUSTIN · GOVERNMENT",
+    "summary": "This is a synthetic editorial test, not a current news item.",
+    "why": "The sample demonstrates a consequence box under the approved headline hierarchy.",
+    "sources": [
+      {
+        "publisher": "City of Austin",
+        "url": "https://www.austintexas.gov/"
+      }
+    ]
+  },
+  "topStories": [
+    {
+      "headline": "Transit sample confirms story presentation",
+      "metadata": "AUSTIN · TRANSPORTATION",
+      "summary": "A second synthetic story exercises the standard item component.",
+      "why": "Readers need context distinguishing the policy from practical effects.",
+      "sources": [
+        {
+          "publisher": "KUT",
+          "url": "https://www.kut.org/"
+        }
+      ]
+    },
+    {
+      "headline": "Public meeting sample exercises source attribution",
+      "summary": "A third synthetic example provides another independent source area.",
+      "why": "The example allows a source-link style check.",
+      "sources": [
+        {
+          "publisher": "Travis County",
+          "url": "https://www.traviscountytx.gov/"
+        }
+      ]
+    }
+  ],
+  "underTheRadar": {
+    "headline": "Sample discovery item",
+    "summary": "This is intentionally synthetic and may be omitted for other editions.",
+    "why": "The red-top band should not become a full beige card.",
+    "sources": [
+      {
+        "publisher": "Austin Water",
+        "url": "https://www.austintexas.gov/department/austin-water"
+      }
+    ]
+  },
+  "moreForYou": [
+    {
+      "headline": "Science and technology personalized sample",
+      "summary": "A sample selected under reader interests.",
+      "why": "This is only controlled QA content.",
+      "sources": [
+        {
+          "publisher": "UT News",
+          "url": "https://news.utexas.edu/"
+        }
+      ]
+    }
+  ],
+  "austinAhead": [
+    {
+      "action": "WATCH",
+      "when": "THURSDAY, 9 AM",
+      "title": "Sample public meeting",
+      "description": "Check the public agenda before attending.",
+      "organizer": "City of Austin",
+      "url": "https://www.austintexas.gov/"
+    },
+    {
+      "action": "PLAN",
+      "when": "MONDAY, 10 AM",
+      "title": "Sample registration deadline",
+      "organizer": "City of Austin",
+      "url": "https://www.austintexas.gov/council/meetings"
+    }
+  ],
+  "footer": {
+    "manageUrl": "https://example.org/manage",
+    "feedbackUrl": "https://docs.google.com/forms/d/e/1FAIpQLSc_0-djww4qboFaEn9k-nEponrCBBqz-MCB81sOUtLjVsOZ7w/viewform"
+  }
+}

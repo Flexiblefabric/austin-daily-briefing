@@ -28,6 +28,14 @@ A pure JavaScript version of the renderer was fetched from the branch commit wit
 
 **Scheduled capability probe:** One-time task `ADB Renderer Capability Probe` ran and completed on 2026-10-14 America/Chicago, was automatically disabled afterward, and the operator supplied its result link and confirmed 'compatibility requirements satisfied'. Treat this as an operator-confirmed scheduled compatibility PASS; the detailed shared task output was not independently retrievable through connected tools in this review. Do not treat this probe as controlled mailbox or queue-delivery acceptance.
 
+## Controlled received-email visual acceptance (Oct 14, 2026)
+
+The operator confirmed receipt of the one-recipient synthetic Resend edition (HTTP 200 acceptance, recipientCount=1, zero queue/history writes). Submitted screenshots and a four-page Gmail print/PDF show the brand masthead, date, Pulse, Weather, Featured Top Story, other Top Stories, Under the Radar, More for You, Austin Ahead, and footer in the approved sequence. Serif headlines, left-aligned story copy, underlined red publisher links, red-rule Why It Matters fields, Under the Radar red-top header, and footer brand are visually present. Operator reports that the received email looks appropriate on iPhone in both light and dark mode.
+
+**Acceptance scope:** Gmail desktop PDF and operator-observed iPhone light/dark rendering PASS. No evidence yet for Outlook/Yahoo-specific rendering, click-through testing, or fully populated live-source personalization. The **synthetic** fixture's footer.manageUrl uses an example.org placeholder, so this test must NOT be cited as production management-link validation. Live generator must independently insert/verify the approved production Manage URL.
+
+After operator deletes the temporary `DailyNewsletterDeliveryQa.gs` Apps Script module, and confirms `ADB_DAILY_LAYOUT_QA_SEND_APPROVAL` has been consumed/removed, leave `ADB_DAILY_LAYOUT_GUARD_MODE=STAGED` pending live-content, no-write generation rehearsal and coordinated production cutover.
+
 ## Staged Apps Script deployment (required order)
 
 The updated dispatcher has a safe switch, Script Property `ADB_DAILY_LAYOUT_GUARD_MODE`:
@@ -48,7 +56,7 @@ This allows safe runtime installation before the 08:00 generator and avoids acti
 
 - [ ] Confirm PR CI passes, including reference HTML/text and negative/positive contract tests.
 - [x] One-time scheduled JavaScript compatibility probe completed; operator confirmed PASS. See task evidence.
-- [ ] Perform [one-recipient controlled Resend inbox QA](daily-newsletter-controlled-inbox-qa.md) using synthetic renderer-generated HTML/text. Review actually received message; sender/proxy acceptance is not inbox proof.
+- [x] One-recipient controlled Resend inbox QA: Gmail desktop PDF PASS, user-reported iPhone light/dark PASS; other clients and actual production URLs not verified.
 - [ ] Inspect rendered output for a controlled current-day **dynamic** edition, not just the static approved sample; verify color, typography, source links, text parity, narrow mobile and desktop clients (Gmail, Yahoo, Outlook), image blocking, dark mode.
 - [ ] Confirm current subscriber-management URL is appropriate for PROD; do **not** assume DEV native management was promoted.
 - [ ] Merge approved PR to main only after review. Before updating Apps Script, read the exact merged revision and check production deployment/source parity.

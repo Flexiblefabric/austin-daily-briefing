@@ -213,8 +213,14 @@ function validateAdbDailyNewsletterContractDeploymentV1() {
     correctlyRejected = /Required component missing: TOP STORIES/.test(String(expected));
   }
   if (!correctlyRejected) throw new Error('Negative control was not rejected.');
+  const layoutGuardMode = String(PropertiesService.getScriptProperties()
+    .getProperty('ADB_DAILY_LAYOUT_GUARD_MODE') || 'STAGED').trim().toUpperCase();
+  if (['STAGED', 'ENFORCE'].indexOf(layoutGuardMode) < 0) {
+    throw new Error('Unsupported ADB_DAILY_LAYOUT_GUARD_MODE: ' + layoutGuardMode);
+  }
   const report = {
     contract: result.contract,
+    layoutGuardMode: layoutGuardMode,
     approvedReference: 'PASS',
     negativeControl: 'REJECTED',
     linkParity: 'PASS',

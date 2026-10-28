@@ -60,5 +60,16 @@ Local verification: all 15 new workflow tests passed, including a functional
 integration with the existing publisher planner. The combined publisher,
 selection-parity, preflight and workflow command passed all 81 tests and compared
 54 established JSON-only evidence vectors. CI includes the new source and suite.
-These fixture tests and the local runtime mock are separate from the manual Apps
-Script run, which remains pending until the user's execution log arrives.
+The user supplied the manual Apps Script execution log for build
+ADB-PUBLISHER-DEV-WORKFLOW-0.1 on October 28, 2026 at 3:02:04 PM Central; execution
+completed at 3:02:05 PM. Result PASS, scope synthetic in-memory lifecycle only,
+writes=false and emails=false. All reported checks were true: draftReadyRoundTrip,
+tamperRejected, failureSuppression, earliestIncidentPreserved, silentRecovery,
+exactReplay and telemetryReconciled. realPermissionsVerified remained false.
+
+This establishes the synthetic helper's Apps Script runtime behavior, not a
+persisted monitoring integration, actual alert suppression, enforced file
+permissions or a production release. No workbook/property/trigger change or
+production activation was performed. The next DEV implementation step is durable
+monitoring/reconciliation with failure injection in an isolated synthetic target;
+the production writer and real permission boundary remain unresolved.

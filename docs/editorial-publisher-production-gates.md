@@ -1,9 +1,10 @@
 # Production publisher adapter and release gates
 
 Status: read-only preflight executed in Apps Script; production gates remain blocked.
-Production publication is not implemented or enabled by this source. No live
-generator, dispatcher, trigger, property, production ledger or status row has
-been changed. DEV 0.2 and its passed tests remain intact.
+Production publication is not implemented or enabled by this source. Read-only
+diagnostic code was installed in the production project. No generator cutover,
+trigger/property changes, production ledger provisioning or status writes were
+performed by the preflight. DEV 0.2 and its passed tests remain intact.
 
 ## Current production compatibility audit
 
@@ -43,7 +44,10 @@ repeat policy, not approval to weaken evergreen checks.
 
 ## Read-only Apps Script preflight
 
-Add `apps-script/EditorialPublisherProdPreflight.gs` to the EXISTING Apps Script
+First check whether the preflight constant/functions already exist in the
+project, including inside another source file. Apps Script shares a global
+namespace: adding a second copy causes a duplicate-identifier load error. When
+absent, add `apps-script/EditorialPublisherProdPreflight.gs` to the EXISTING Apps Script
 project that contains `ResendTransport.gs` and owns its hourly daily dispatcher
 trigger. Run `checkEditorialPublisherProductionReadinessV1`. This standalone file
 does not require installing DEV writer files into production and makes no
@@ -79,8 +83,9 @@ were snapshots and are not substituted for them.
 Blocked: publisher_ledger, dispatcher_colocation, layout_guard, private_staging,
 publisher_monitoring_integration and production_commit_adapter. Unknown:
 published_history_extended, generator_capability_separation and
-immutable_ready_permissions. This does not activate publication or diagnose
-current delivery as unhealthy.
+immutable_ready_permissions. Later screenshots established this execution was
+in the isolated DEV project, so its dispatcher/project-property failures were
+not evidence of production misconfiguration.
 
 Run `inspectEditorialPublisherProjectReadinessV1` in the same project next. This
 read-only diagnostic reports whether the dispatcher function exists, its source
@@ -92,8 +97,41 @@ project triggers. A source reference is an inspection heuristic, not proof of
 runtime lock coverage. Do not add triggers, change properties or copy dispatcher
 code to clear these checks before the project and owner are established.
 
-The diagnostic and preflight have 25 local regression tests. The diagnostic's
-Apps Script execution remains pending.
+The diagnostic and preflight have 25 local regression tests.
+
+### Confirmed production execution, 2:44:01 PM Central
+
+The user ran the existing preflight through `runAdbProductionPreflightV2` in
+`ADB PROD Scripts`. It completed at 2:44:02 PM. The earlier project-only check at
+2:37:32 PM confirmed the expected dispatcher exists, its source references
+ScriptLock, exactly one matching trigger is visible to the executing user, and
+the layout-guard property is present and ENFORCE. The full production preflight
+no longer reports dispatcher_colocation or layout_guard as blocked.
+
+Result remains BLOCKED with productionPublishingEnabled=false, writes=false and
+emails=false. The runtime metrics remain 12 eligible profiles, 345 preferences,
+6,849 Sent rows, 3,155 legacy Sent rows, zero malformed structured Sent rows,
+recentHistoryComplete=true and extendedHistoryKnown=false.
+
+The four remaining blocked gates are publisher_ledger, private_staging,
+publisher_monitoring_integration and production_commit_adapter. The three
+unknown gates remain published_history_extended, generator_capability_separation
+and immutable_ready_permissions. Recent ordinary-news history passed; extended
+resource history is still unresolved and cannot silently pass candidate checks.
+
+Installation note: production already contained the preflight declaration in
+another file. A second standalone copy caused a duplicate-constant error; that
+new copy was removed and the existing function executed successfully through a
+small wrapper in ADBProjectCheck.gs. The existing ResendTransport.gs must be
+inspected before any later source cleanup; do not replace or remove its content
+based on the function-dropdown listing. No further diagnostic rerun is needed
+without a configuration or source change.
+
+Next preparation is the enforced draft/READY capability boundary and private
+staging design, followed by the disabled production adapter and idempotent
+monitoring implementation. Provisioning a production ledger or activating a
+writer is not authorized merely by this read-only result. Same-owner connector
+prompts cannot substitute for actual restricted access.
 
 ## Permission and staging gate
 

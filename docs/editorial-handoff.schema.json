@@ -56,7 +56,7 @@
     },
     "selection_bundle": {
       "type": "object",
-      "description": "Existing docs/selection-notes.md bundle. JSON-only ADB-SELECTION-NOTE-1 envelopes; publisher generates transport suffix. Profiles include volume, preferences, summary_style and why_it_matters_length read from DEV. Semantic JS gate and established Python gate apply. Zero audience requires empty profiles and rows.",
+      "description": "Existing docs/selection-notes.md bundle. JSON-only ADB-SELECTION-NOTE-1 envelopes; publisher generates transport suffix. Profiles include volume, preferences, summary_style and why_it_matters_length read from DEV. Construct exact scoped prior references using adbBuildSelectionPriorReferencesV1; retain stable topic identifiers and separate shared Top/UTR from profile-specific MFY repeats. Semantic JS gate and established Python gate apply. Zero audience requires empty profiles and rows.",
       "required": ["run_id", "cutoff", "history_complete", "history_window_start", "published_history", "profiles", "rows"]
     }
   }

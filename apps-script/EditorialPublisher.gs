@@ -1,10 +1,10 @@
-/** ADB-PUBLISHER-DEV-0.1. DEV only. No send API or trigger installation.
+/** ADB-PUBLISHER-DEV-0.2. DEV only. No send API or trigger installation.
  * Install alongside pinned daily_newsletter_renderer.js (as .gs),
  * DailyNewsletterContract.gs and SelectionEvidenceContract.gs.
  * Advanced Sheets service is required for one atomic target batch.
  */
 const ADB_PUBLISHER = Object.freeze({
-  SCHEMA:'ADB-EDITORIAL-HANDOFF-1', BUILD:'ADB-PUBLISHER-DEV-0.1',
+  SCHEMA:'ADB-EDITORIAL-HANDOFF-1', BUILD:'ADB-PUBLISHER-DEV-0.2',
   DEV_ID_PROPERTY:'ADB_PUBLISHER_DEV_DATABASE_ID',
   REVISION_PROPERTY:'ADB_PUBLISHER_SOURCE_REVISION',
   PRODUCTION_IDS:['1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0','1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho'],
@@ -23,6 +23,18 @@ function adbPublisherCanonical_(v){
 }
 function adbPublisherKeys_(v,keys){adbPublisherRequire_(v&&typeof v==='object'&&!Array.isArray(v)&&adbPublisherCanonical_(Object.keys(v).sort())===adbPublisherCanonical_(keys.slice().sort()),'unexpected or missing fields');}
 function adbPublisherDigest_(s){return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,s,Utilities.Charset.UTF_8).map(b=>(b+256).toString(16).slice(-2)).join('');}
+
+function adbPublisherHistoryHeadline_(section,item) {
+  if (section === 'Austin Ahead') {
+    const action = String(item.action || '').trim().toUpperCase();
+    const when = String(item.when || '').trim();
+    const title = String(item.title || '').trim();
+    adbPublisherRequire_(['GO','WATCH','PLAN'].includes(action) && when && title,
+      'Austin Ahead history requires action, timing and title');
+    return action + ' · ' + when + ' · ' + title;
+  }
+  return item.headline || item.title || item.text;
+}
 
 /** Pure planning boundary. No storage writes, transport calls or clock reads. */
 function adbPlanEditorialPublication(pkg,state,clock,sha256){
@@ -85,7 +97,7 @@ function adbPlanEditorialPublication(pkg,state,clock,sha256){
       const rows=notes.filter(r=>r.section===m.section&&r.key===binding.key);R(rows.length===1&&!bound.has(binding.key),'evidence binding missing/duplicate');bound.add(binding.key);const row=rows[0],note=JSON.parse(row.notes.slice('ADB-SELECTION-NOTE-1 '.length));
       const item=m.item,urls=item.sources?item.sources.map(s=>s.url):[item.url];
       R(urls.includes(row.source_url)&&urls.every(u=>note.candidate.sources.some(s=>s.url===u)),'rendered sources differ from selection');
-      const headline=item.headline||item.title||item.text;R(typeof headline==='string'&&headline.trim(),'history headline missing');
+      const headline=adbPublisherHistoryHeadline_(m.section,item);R(typeof headline==='string'&&headline.trim(),'history headline missing');
       const finalNote='ADB-SELECTION-NOTE-1 '+JSON.stringify(note)+C.SUFFIX;R(finalNote.length<45000,'history note size limit');
       history.push({'Run ID':runId,'Run Date':pkg.edition_date,'Profile ID':e.profile_id,'Section':m.section,'Category':binding.category,'Normalized Key':binding.key,'Headline':headline,'Source URL':row.source_url,'Material Update':row.material_update?'TRUE':'FALSE','Notes':finalNote,'Delivery Status':'Pending','Provider Message ID':''});
     });

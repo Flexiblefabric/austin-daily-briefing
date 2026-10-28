@@ -64,6 +64,10 @@ The JS selection gate agrees with 54 JSON-only vectors captured from the establi
 
 October 28: all 12 archived HTML/plain-text pairs reproduced exactly, and all 145 rendered items were bound to saved history. The full selection gate and pure publisher plan were blocked by invalid shared-story repeat provenance (exact fact, lane scope and stable topic binding). A further history-format difference affects the 36 Austin Ahead headlines. See [the read-only comparison report](editorial-publisher-real-edition-shadow-2026-10-28.md). Synthetic QA results remain valid, but they do not clear these real-content gates.
 
+## DEV 0.2 correction prepared
+
+The exact-prior construction helper and actionable binding errors are implemented in SelectionEvidenceContract.gs. EditorialPublisher.gs now preserves `ACTION · WHEN · TITLE` for Austin Ahead history; all 36 archived history titles match. See [future handoff authoring](editorial-handoff-authoring.md). 78 Node checks passed, including a fresh valid synthetic handoff. The original real-edition package remains blocked; no delivered records were repaired. DEV 0.2 installation and its pure runtime QA are pending; the previously tested installed source remains DEV 0.1 until the operator updates both files and the source pin.
+
 ## Remaining rollout work
 
 Remaining runtime QA beyond the passed checks; measured full-audience size and execution time; permission separation and immutable READY enforcement; production legacy-history normalization; approved release-notice eligibility; operational error/result recording; and a controlled shadow comparison precede a separate production adapter and generator/publisher cutover. Existing Resend dispatch remains the sole delivery owner. These limitations are recorded explicitly so a source implementation is never mistaken for a live migration.

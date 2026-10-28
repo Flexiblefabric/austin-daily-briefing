@@ -111,3 +111,59 @@ test('batch QA refuses real subscriber fixture and unbounded counts',()=>{
  x.state.subscribers[0].Email='real@example.org';
  assert.throws(()=>ctx.adbPublisherSyntheticQaInput_(x.pkg,x.state,12),/real subscriber/);
 });
+
+test('future prior references copy exact archived facts without mutating history',()=>{
+ const c={key:'updated-key',topic:'stable-topic',lane:'top'};
+ const record={key:'prior-key',topic:'stable-topic',lane:'utr',date:'2026-10-06',facts:'The service opens October 8 with accessible entry and free admission.',delivered:true,profile_id:'ANOTHER'};
+ const history=[record,clone(record)],before=JSON.stringify(history);
+ const refs=clone(ctx.adbBuildSelectionPriorReferencesV1(c,history,'SYNTHETIC','2026-09-23'));
+ assert.deepEqual(refs,[{key:record.key,date:record.date,facts:record.facts}]);
+ refs[0].facts='Changed copy';assert.equal(JSON.stringify(history),before);
+});
+test('repeat provenance rejects paraphrase, cross-lane references and unstable topics',()=>{
+ const c={key:'updated-key',topic:'stable-topic',lane:'top'};
+ const history=[{key:'prior-key',topic:'stable-topic',lane:'mfy',profile_id:'SYNTHETIC',date:'2026-10-06',facts:'A full exact archived fact about a scheduled closure.',delivered:true}];
+ const prior={key:'prior-key',date:'2026-10-06',facts:'A scheduled closure.'};
+ assert.throws(()=>ctx.adbValidateSelectionPriorReferenceV1(c,prior,history,'SYNTHETIC','2026-09-23'),/copied exactly/);
+ prior.facts=history[0].facts;
+ assert.throws(()=>ctx.adbValidateSelectionPriorReferenceV1(c,prior,history,'SYNTHETIC','2026-09-23'),/repeat lane\/profile scope/);
+ assert.deepEqual(clone(ctx.adbBuildSelectionPriorReferencesV1(c,history,'SYNTHETIC','2026-09-23')),[]);
+ history[0].lane='top';c.topic='new descriptive phrase';
+ assert.throws(()=>ctx.adbValidateSelectionPriorReferenceV1(c,prior,history,'SYNTHETIC','2026-09-23'),/stable topic\/key/);
+ c.topic='stable-topic';assert.equal(ctx.adbValidateSelectionPriorReferenceV1(c,prior,history,'SYNTHETIC','2026-09-23'),true);
+});
+test('MFY references stay profile-specific and old history requires evergreen scope',()=>{
+ const c={key:'updated-key',topic:'stable-topic',lane:'mfy'};
+ const r={key:'old',topic:'stable-topic',lane:'mfy',date:'2026-09-01',facts:'An established resource has published accessibility details.',delivered:true,profile_id:'SYNTHETIC'};
+ assert.equal(ctx.adbBuildSelectionPriorReferencesV1(c,[r],'SYNTHETIC','2026-09-23').length,0);
+ c.evergreen=true;assert.equal(ctx.adbBuildSelectionPriorReferencesV1(c,[r],'SYNTHETIC','2026-09-23').length,1);
+ assert.equal(ctx.adbBuildSelectionPriorReferencesV1(c,[r],'ANOTHER','2026-09-23').length,0);
+});
+test('conflicting copies of a prior fact are not silently resolved',()=>{
+ const c={key:'new',topic:'stable-topic',lane:'top'},r={key:'old',topic:'stable-topic',lane:'top',date:'2026-10-06',facts:'The previous scheduled service announcement.',delivered:true};
+ assert.throws(()=>ctx.adbBuildSelectionPriorReferencesV1(c,[r,{...r,facts:'A conflicting archived fact.'}],'SYNTHETIC','2026-09-23'),/conflicting published facts/);
+});
+test('Austin Ahead history retains action, time and title while rendered bodies stay exact',()=>{
+ const x=sample(),p=plan(x),ahead=p.history.filter(r=>r.Section==='Austin Ahead');
+ assert.equal(ahead.length,2);
+ x.pkg.editions[0].editorial.austinAhead.forEach((item,i)=>assert.equal(ahead[i].Headline,item.action+' · '+item.when+' · '+item.title));
+ assert.equal(p.queue[0].HTML,ctx.adbRenderDailyNewsletter(x.pkg.editions[0].editorial).html);
+ assert.equal(ctx.adbPublisherHistoryHeadline_('Austin Ahead',{action:'watch',when:'  TODAY, NOON  ',title:'  Public meeting  '}),'WATCH · TODAY, NOON · Public meeting');
+ assert.throws(()=>ctx.adbPublisherHistoryHeadline_('Austin Ahead',{action:'WATCH',title:'Missing time'}),/requires action, timing and title/);
+});
+test('fresh handoff using scoped exact prior facts passes the complete planner',()=>{
+ const x=sample();const r=x.pkg.selection_bundle.rows[0],n=JSON.parse(r.notes.slice('ADB-SELECTION-NOTE-1 '.length));
+ const history=[{key:'prior-service',topic:n.candidate.topic,lane:'top',date:'2026-10-06',facts:'The previous notice announced a future service review.',delivered:true,profile_id:'SYNTHETIC'}];
+ const refs=clone(ctx.adbBuildSelectionPriorReferencesV1(n.candidate,history,'SYNTHETIC','2026-09-23'));
+ n.candidate.history.prior=refs;n.candidate.history.material_update=true;
+ n.candidate.history.change={before:refs[0].facts,after:'A new decision adopts the service with a specific opening date.',incremental_value:'The adopted service gives residents an actionable opening date.',locator:'Page 2, decision paragraph',basis:'opening_closure',calendar_only:false,source_url:r.source_url,verified_at:'2026-10-07T07:40:00-05:00'};
+ n.context.top.ranked[0]=clone(n.candidate);r.material_update=true;r.notes='ADB-SELECTION-NOTE-1 '+JSON.stringify(n);
+ x.pkg.selection_bundle.published_history=history;x.state.publishedHistory=clone(history);
+ assert.equal(plan(x).result,'READY');
+});
+test('manual DEV handoff QA entry point executes its six pure-function checks',()=>{
+ const logs=[];ctx.Logger={log:value=>logs.push(value)};
+ const result=clone(ctx.runPublisherDevHandoffQaV1());
+ assert.deepEqual(result,{result:'PASS',build:'ADB-PUBLISHER-DEV-0.2',checks:6,writes:false,emails:false});
+ assert.equal(logs.filter(v=>v.startsWith('PASS')).length,6);
+});

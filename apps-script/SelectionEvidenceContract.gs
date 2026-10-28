@@ -1,7 +1,109 @@
-/** ADB-SELECTION-JS-1.0. Pure JS counterpart of validate_selection_notes.py.
+/** ADB-SELECTION-JS-1.1. Pure JS counterpart of validate_selection_notes.py.
  * Evidence is checked mechanically; source truth still requires editorial review.
  * No network, delivery, or storage side effects.
  */
+function adbSelectionScopeMatches_(candidate, record, profileId) {
+  return (candidate.lane === 'mfy' && record.lane === 'mfy' && record.profile_id === profileId) ||
+    (['top','utr'].includes(candidate.lane) && ['top','utr'].includes(record.lane)) ||
+    (candidate.lane === 'utility' && record.profile_id === profileId);
+}
+
+function adbSelectionApplicableHistory_(candidate, history, profileId, windowStart) {
+  return history.filter(record => record.delivered === true &&
+    adbSelectionScopeMatches_(candidate, record, profileId) &&
+    (record.key === candidate.key || record.topic === candidate.topic) &&
+    (record.date >= windowStart || candidate.evergreen === true));
+}
+
+/** Build future handoff references directly from normalized published records.
+ * Does not infer a new topic identifier, material change, or editorial approval.
+ * Duplicate copies of shared coverage collapse only when their facts agree.
+ */
+function adbBuildSelectionPriorReferencesV1(candidate, history, profileId, windowStart) {
+  if (!candidate || !['top','utr','mfy','utility'].includes(candidate.lane) ||
+      !candidate.key || !candidate.topic || !Array.isArray(history) ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(windowStart) || !profileId) {
+    throw new Error('Selection: invalid prior-reference construction input');
+  }
+  const refs = new Map();
+  adbSelectionApplicableHistory_(candidate, history, profileId, windowStart).forEach(record => {
+    if (typeof record.facts !== 'string' || !record.facts.trim()) {
+      throw new Error('Selection: published prior fact missing');
+    }
+    const identity = JSON.stringify([record.key, record.date]);
+    if (refs.has(identity) && refs.get(identity).facts !== record.facts) {
+      throw new Error('Selection: conflicting published facts for prior key/date');
+    }
+    refs.set(identity, {key:record.key, date:record.date, facts:record.facts});
+  });
+  return Array.from(refs.values()).sort((a,b) =>
+    a.date.localeCompare(b.date) || a.key.localeCompare(b.key));
+}
+
+/** Rejects claimed references; never silently rewrites delivered evidence. */
+function adbValidateSelectionPriorReferenceV1(candidate, prior, history, profileId, windowStart) {
+  const sameRecord = history.filter(record => record.delivered === true &&
+    record.key === prior.key && record.date === prior.date);
+  if (!sameRecord.length) throw new Error('Selection: prior key/date is absent from published history');
+  if (!sameRecord.some(record => record.facts === prior.facts)) {
+    throw new Error('Selection: prior fact must be copied exactly from published history');
+  }
+  if (!sameRecord.some(record => record.facts === prior.facts &&
+      adbSelectionScopeMatches_(candidate, record, profileId))) {
+    throw new Error('Selection: prior record is outside the repeat lane/profile scope');
+  }
+  if (!adbSelectionApplicableHistory_(candidate, sameRecord, profileId, windowStart)
+      .some(record => record.facts === prior.facts)) {
+    throw new Error('Selection: prior record does not bind to the stable topic/key and history window');
+  }
+  return true;
+}
+
+/** Manual pure-function QA for the DEV 0.2 update; no Sheets or delivery access. */
+function runPublisherDevHandoffQaV1() {
+  const R = (ok,message) => { if (!ok) throw new Error('Handoff QA: ' + message); };
+  R(ADB_PUBLISHER.BUILD === 'ADB-PUBLISHER-DEV-0.2', 'updated publisher file missing');
+  const candidate = {key:'synthetic-update', topic:'synthetic-stable-topic', lane:'top'};
+  const prior = {key:'synthetic-prior', topic:'synthetic-stable-topic', lane:'top',
+    profile_id:'SYNTHETIC', date:'2026-10-27', delivered:true,
+    facts:'The original notice scheduled a service opening with accessibility details.'};
+  const otherLane = Object.assign({},prior,{key:'synthetic-mfy',lane:'mfy'});
+  const refs = adbBuildSelectionPriorReferencesV1(candidate,[prior,otherLane],
+    'SYNTHETIC','2026-10-14');
+  R(refs.length === 1 && refs[0].facts === prior.facts && refs[0].key === prior.key,
+    'exact scoped references differ');
+  Logger.log('PASS — exact archived fact copied; MFY excluded from shared scope');
+  function reject(label,callback,expected) {
+    try { callback(); } catch (error) {
+      if (!String(error.message).includes(expected)) throw error;
+      Logger.log('PASS — ' + label);
+      return;
+    }
+    throw new Error('Handoff QA: accepted ' + label);
+  }
+  reject('paraphrased prior fact rejected', () =>
+    adbValidateSelectionPriorReferenceV1(candidate,
+      {key:prior.key,date:prior.date,facts:'A service opening was scheduled.'},
+      [prior],'SYNTHETIC','2026-10-14'), 'copied exactly');
+  reject('cross-lane prior rejected', () =>
+    adbValidateSelectionPriorReferenceV1(candidate,
+      {key:otherLane.key,date:otherLane.date,facts:otherLane.facts},
+      [otherLane],'SYNTHETIC','2026-10-14'), 'repeat lane/profile scope');
+  reject('changed topic identifier rejected', () =>
+    adbValidateSelectionPriorReferenceV1(Object.assign({},candidate,{topic:'changed-topic'}),
+      refs[0],[prior],'SYNTHETIC','2026-10-14'), 'stable topic/key');
+  R(adbValidateSelectionPriorReferenceV1(candidate,refs[0],[prior],
+    'SYNTHETIC','2026-10-14') === true, 'valid exact prior rejected');
+  Logger.log('PASS — valid exact prior accepted');
+  R(adbPublisherHistoryHeadline_('Austin Ahead',
+    {action:'WATCH',when:'TODAY, NOON',title:'Synthetic public meeting'}) ===
+    'WATCH · TODAY, NOON · Synthetic public meeting', 'Austin Ahead history format differs');
+  Logger.log('PASS — Austin Ahead action/time/title preserved');
+  const report = {result:'PASS',build:ADB_PUBLISHER.BUILD,checks:6,writes:false,emails:false};
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
 function adbValidateSelectionEvidence(b) {
   const R=(ok,msg)=>{if(!ok)throw Error('Selection: '+msg);};
   const obj=x=>x && typeof x==='object' && !Array.isArray(x);
@@ -32,10 +134,10 @@ function adbValidateSelectionEvidence(b) {
     R(Array.isArray(c.sources)&&c.sources.length,'sources missing');c.sources.forEach(source);
     R(obj(c.gates)&&eq(Object.keys(c.gates).sort(),['fit','repeat','section','source'])&&Object.values(c.gates).every(v=>v===true),'eligibility gate failed');
     const h=c.history||{};R(h.key_checked===true&&h.topic_checked===true,'history checks missing');R(meaningful(h.search_reason),'history search reason missing');R(typeof h.material_update==='boolean','material update boolean missing');
-    const applicable=b.published_history.filter(r=>r.delivered===true&&((lane==='mfy'&&r.lane==='mfy'&&r.profile_id===p)||(['top','utr'].includes(lane)&&['top','utr'].includes(r.lane))||(lane==='utility'&&r.profile_id===p))&&(r.key===c.key||r.topic===c.topic)&&(r.date>=b.history_window_start||c.evergreen===true));
+    const applicable=adbSelectionApplicableHistory_(c,b.published_history,p,b.history_window_start);
     R(Array.isArray(h.prior),'prior array missing');
     applicable.forEach(r=>R(h.prior.some(v=>v.key===r.key&&v.date===r.date),'known repeat missing'));
-    h.prior.forEach(v=>R(applicable.some(r=>r.key===v.key&&r.date===v.date&&r.facts===v.facts),'prior fact unbound'));
+    h.prior.forEach(v=>adbValidateSelectionPriorReferenceV1(c,v,b.published_history,p,b.history_window_start));
     if(c.evergreen===true)R(h.resource_history_known===true,'evergreen history unknown');
     if(h.prior.length&&lane!=='utility'){
       const ch=h.change||{};R(h.material_update===true,'unchanged ranked repeat');['before','after','incremental_value','locator'].forEach(k=>R(meaningful(ch[k]),'repeat change missing '+k));
@@ -104,5 +206,5 @@ function adbValidateSelectionEvidence(b) {
     R(new Set(notes.map(n=>n.candidate.key)).size===notes.length,'same item in multiple sections');const topics=notes.filter(n=>['top','utr'].includes(n.candidate.lane)).map(n=>n.candidate.topic);
     notes.forEach(n=>{if(n.candidate.lane==='mfy'&&topics.includes(n.candidate.topic))R(meaningful(n.candidate.distinct_shared_angle),'MFY retelling lacks distinct angle');});
   });
-  return {contract:'ADB-SELECTION-JS-1.0',rows:b.rows.length};
+  return {contract:'ADB-SELECTION-JS-1.1',rows:b.rows.length};
 }

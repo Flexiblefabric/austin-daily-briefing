@@ -5,6 +5,7 @@ on:
       - 'apps-script/EditorialPublisher.gs'
       - 'apps-script/EditorialPublisherProdPreflight.gs'
       - 'apps-script/EditorialPublisherBatchQa.gs'
+      - 'apps-script/EditorialPublisherDevWorkflow.gs'
       - 'apps-script/SelectionEvidenceContract.gs'
       - 'apps-script/DailyNewsletterContract.gs'
       - 'scripts/daily_newsletter_renderer.js'
@@ -28,7 +29,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Publisher and evidence parity
-        run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js tests/editorial-publisher-prod-preflight.test.js
+        run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js tests/editorial-publisher-prod-preflight.test.js tests/editorial-publisher-dev-workflow.test.js
       - name: Established selection evidence suite
         run: python -m unittest discover -s scripts -p test_selection_notes.py
       - name: Validate schema JSON

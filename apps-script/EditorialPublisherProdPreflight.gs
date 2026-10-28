@@ -202,6 +202,9 @@ function checkEditorialPublisherProductionReadinessV1() {
     publisherMode:String(props.getProperty('ADB_PUBLISHER_PROD_MODE')||'DISABLED').toUpperCase(),
     stagingConfigured:!!stageId,stagingValid:stageValid};
   const report=adbEvaluateProdPublisherPreflightV1(input);
-  Logger.log(JSON.stringify(report));
+  Logger.log(JSON.stringify({build:report.build,result:report.result,
+    productionPublishingEnabled:false,writes:false,emails:false,metrics:report.metrics,
+    blocked:report.checks.filter(c=>c.status==='BLOCKED').map(c=>c.id),
+    unknown:report.checks.filter(c=>c.status==='UNKNOWN').map(c=>c.id)}));
   return report;
 }

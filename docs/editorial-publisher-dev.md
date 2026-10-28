@@ -66,7 +66,7 @@ October 28: all 12 archived HTML/plain-text pairs reproduced exactly, and all 14
 
 ## DEV 0.2 correction prepared
 
-The exact-prior construction helper and actionable binding errors are implemented in SelectionEvidenceContract.gs. EditorialPublisher.gs now preserves `ACTION · WHEN · TITLE` for Austin Ahead history; all 36 archived history titles match. See [future handoff authoring](editorial-handoff-authoring.md). 78 Node checks passed, including a fresh valid synthetic handoff. The original real-edition package remains blocked; no delivered records were repaired. DEV 0.2 installation and its pure runtime QA are pending; the previously tested installed source remains DEV 0.1 until the operator updates both files and the source pin.
+The exact-prior construction helper and actionable binding errors are implemented in SelectionEvidenceContract.gs. EditorialPublisher.gs now preserves `ACTION · WHEN · TITLE` for Austin Ahead history; all 36 archived history titles match. See [future handoff authoring](editorial-handoff-authoring.md). 78 Node checks passed, including a fresh valid synthetic handoff. The original real-edition package remains blocked; no delivered records were repaired. DEV 0.2 is installed and its six-check pure runtime QA passed at 11:27 CT. A new corrected real-input retrospective proposal then passed the planner for 12 profiles and 145 history rows, with exact payload/history-title parity and approximately 1.05 MB typed request size. The proposal remained private, unsealed and unsubmitted; see the updated runtime evidence.
 
 ## Remaining rollout work
 

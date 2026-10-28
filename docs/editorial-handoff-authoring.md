@@ -75,12 +75,12 @@ the manual QA entry point. The established 54 applicable JSON-only Python vector
 still agree with the JS gate. The original real-edition handoff remains rejected;
 it was not rewritten into a passing package.
 
-DEV 0.2 source is prepared in the review branch. The operator must replace the
-DEV project's EditorialPublisher and SelectionEvidenceContract files together,
-set ADB_PUBLISHER_SOURCE_REVISION to that reviewed code commit, and run
-`runPublisherDevHandoffQaV1`. Expected: six PASS checks and a final PASS report
-with build ADB-PUBLISHER-DEV-0.2, writes=false, emails=false. This check is pure
-and does not depend on today's date or touch a workbook.
+DEV 0.2 was installed by the operator and `runPublisherDevHandoffQaV1` passed
+all six checks at 11:27 CT on October 28. The reviewed code revision is
+`a1fe5514f362719c0e379ccb2276d7df3492737a`. The final report confirms build
+ADB-PUBLISHER-DEV-0.2, writes=false and emails=false. This check is pure and does
+not depend on today's date or touch a workbook. Keep the configured source pin
+on the reviewed code commit when later commits change documentation only.
 
 Keep the old sealed package and its successful commit as historical evidence.
 Changing the installed source pin deliberately makes that earlier package stale
@@ -89,5 +89,7 @@ are historical test procedures, not the DEV 0.2 test entry point. A coordinated
 fresh package is required for another data-bearing commit test.
 
 Production remains on the existing generator/dispatcher. Permission separation,
-legacy-history normalization, monitoring integration and a fresh valid real-input
-shadow comparison remain ahead of any production promotion.
+legacy-history normalization, monitoring integration and a coordinated fresh-package commit remain ahead of any production promotion.
+A corrected real-input retrospective proposal has passed the pure planner with
+12/12 exact payload pairs and 145/145 history-title matches, but was not sealed,
+staged with real subscribers, committed or sent.

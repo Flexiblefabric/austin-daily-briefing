@@ -56,3 +56,49 @@ than one. They exclude the Sheets commit and provider delivery and do not
 exercise a full production historical database. Exact renderer parity compares
 planned payloads against the approved renderer for the same synthetic input; it
 does not constitute a production editorial shadow comparison.
+
+## DEV 0.2 runtime check — 11:27 CT
+
+The operator's Apps Script log at 11:27:44 America/Chicago shows all six
+`runPublisherDevHandoffQaV1` checks passing and the final report:
+`result=PASS, build=ADB-PUBLISHER-DEV-0.2, checks=6, writes=false, emails=false`.
+
+The checks establish exact scoped fact construction; rejection of paraphrased,
+cross-lane and changed-topic references; acceptance of a valid exact prior; and
+preservation of Austin Ahead action/time/title. Both updated source files are
+therefore present for this pure runtime test. The reviewed code revision is
+`a1fe5514f362719c0e379ccb2276d7df3492737a`; documentation-only commits afterward
+do not require a code-pin change. The helper does not independently read back
+Script Properties or execute a data-bearing publication.
+
+## Corrected real-input retrospective proposal — DEV 0.2
+
+After that runtime result, the agent constructed a new proposed handoff in
+private memory from the same October 28 archived editorial content. It retained
+the historical topic identifier for the Wheatsville story and used
+`adbBuildSelectionPriorReferencesV1` against the independently read 2,320 prior
+Sent history records. That lookup found no applicable shared Top/UTR prior;
+the earlier 13 MFY records remain outside shared-repeat scope.
+
+In the new proposal only, the 12 shared story references therefore use an empty
+scoped prior, material_update=false, no material-change claim, and an explicit
+scoped lookup reason. The stable topic/corrected evidence was applied consistently
+to the selected candidate and original ranked slate (24 candidate occurrences).
+The old delivered handoff and its 12 material-update flags were not modified.
+
+The pure DEV 0.2 planner accepted the corrected proposal:
+12 queue rows and 145 history rows. All 12 HTML/text pairs match the originals
+exactly; all 145 history headlines match the archive, including all 36 decorated
+Austin Ahead titles. This is a passing newly constructed retrospective proposal,
+not a claim that the original rejected evidence passed.
+
+A serialized typed queue/history/ledger request measured approximately 1,049,352
+UTF-8 bytes (58.3% of the 1,800,000-byte safeguard). Sizing used a 64-character
+placeholder hash so digest length matches a real SHA-256, but no package seal was
+created and no request was submitted. Tool-context planning took 147 ms; this is
+not an Apps Script commit timing measurement.
+
+No real subscriber package was copied to the DEV workbook, no production row or
+scheduler was changed, and no message was queued or sent. Production adapter,
+access-control separation/immutable READY, legacy-history handling, monitoring
+integration and a coordinated fresh-package commit remain separate release gates.

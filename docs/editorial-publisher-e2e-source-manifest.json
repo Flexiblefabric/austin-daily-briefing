@@ -1,0 +1,40 @@
+{
+  "database": "1XZCcNUCSkCU68HY9DMgjbyKgQRXDGkVjf0Q3uz1QXrY",
+  "edition": "2026-10-28",
+  "core_revision": "a1fe5514f362719c0e379ccb2276d7df3492737a",
+  "transformation": "Replace the monitor DATABASE constant with the isolated E2E ID; delegate the core table reader to the E2E fresh Sheets API reader. Publication/selection/rendering logic is unchanged.",
+  "sources": [
+    {
+      "path": "scripts/daily_newsletter_renderer.js",
+      "sha256": "1b56789c6438681fe98c18ccc8edca498999e103fdf0859d09c78517ae591380"
+    },
+    {
+      "path": "apps-script/DailyNewsletterContract.gs",
+      "sha256": "dfc996c4ad2268a8d8fdd895a9c5e030c70c6688a72412e6b596c4502565886c"
+    },
+    {
+      "path": "apps-script/SelectionEvidenceContract.gs",
+      "sha256": "4f269e64db2ee59949f6051251df4f3dd1424234b1a169f3b07f273848456650"
+    },
+    {
+      "path": "apps-script/EditorialPublisher.gs",
+      "sha256": "25148d9ad76b6cf3b1c1850238f9c84ceb51b94d714e0d27269a61f1a90535ef"
+    },
+    {
+      "path": "apps-script/EditorialPublisherDevWorkflow.gs",
+      "sha256": "4eba30e843d44a344f2df412304e14ac562985fc18b627803664c62594693836"
+    },
+    {
+      "path": "apps-script/EditorialPublisherDevMonitor.gs",
+      "sha256": "d5a80997403ea2550680e7dbe436e1ac478bb27b7f4b8827dd722ffb7d601e86"
+    },
+    {
+      "path": "apps-script/EditorialPublisherDevIntegration.gs",
+      "sha256": "a2bb1cd0927fd5a971d762dc6106088911ca545f45c930623274e5fb4bd0e6fa"
+    },
+    {
+      "path": "apps-script/EditorialPublisherEndToEndRunner.gs",
+      "sha256": "7e35a111fa167b2f5ab6f6d32b14c9ea20d3b94ff696a3cbc7501535d9b0f4ce"
+    }
+  ]
+}

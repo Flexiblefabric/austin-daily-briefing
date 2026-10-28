@@ -53,7 +53,7 @@ function adbDevIntegrationVerify_(context) {
     const values=Sheets.Spreadsheets.Values.batchGet(ADB_DEV_MONITOR.DATABASE,{
       ranges:names.map(n=>"'"+n+"'!A:M"),valueRenderOption:'FORMATTED_VALUE'}).valueRanges;
     adbDevWorkflowRequire_(values && values.length===names.length,'missing verification ranges');
-    const facade={getSheetByName:function(name){
+    const facade={getId:()=>ADB_DEV_MONITOR.DATABASE,getSheetByName:function(name){
       const index=names.indexOf(name),sheet=metadata.sheets.find(s=>s.properties.title===name);
       if(index<0 || !sheet)return null;
       return {getSheetId:()=>sheet.properties.sheetId,getDataRange:()=>({getDisplayValues:()=>values[index].values||[]})};

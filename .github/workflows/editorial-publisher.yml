@@ -8,6 +8,11 @@ on:
       - 'apps-script/EditorialPublisherDevWorkflow.gs'
       - 'apps-script/EditorialPublisherDevMonitor.gs'
       - 'apps-script/EditorialPublisherDevIntegration.gs'
+      - 'apps-script/EditorialPublisherEndToEndRunner.gs'
+      - 'apps-script/EditorialPublisherEndToEndQa.gs'
+      - 'scripts/build_publisher_e2e_qa.py'
+      - 'tests/fixtures/editorial-publisher-e2e.json'
+      - 'docs/editorial-publisher-e2e-source-manifest.json'
       - 'apps-script/SelectionEvidenceContract.gs'
       - 'apps-script/DailyNewsletterContract.gs'
       - 'scripts/daily_newsletter_renderer.js'
@@ -30,6 +35,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Verify generated isolated E2E bundle
+        run: |
+          python scripts/build_publisher_e2e_qa.py
+          git diff --exit-code -- apps-script/EditorialPublisherEndToEndQa.gs tests/fixtures/editorial-publisher-e2e.json docs/editorial-publisher-e2e-source-manifest.json
       - name: Publisher and evidence parity
         run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js tests/editorial-publisher-prod-preflight.test.js tests/editorial-publisher-dev-workflow.test.js tests/editorial-publisher-dev-monitor.test.js tests/editorial-publisher-dev-integration.test.js
       - name: Established selection evidence suite

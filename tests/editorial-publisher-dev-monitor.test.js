@@ -57,12 +57,17 @@ function appsMock(){
  sheet(2,'Outbound Messages',[['Message ID','Status'],['existing-synthetic','Queued']]);
  sheet(3,'Briefing History',[['Run ID','Delivery Status'],['existing-synthetic','Pending']]);
  sheet(4,'Publisher Ledger',[['Edition Key'],['daily:synthetic']]);
- const book={getSheetByName:n=>sheets.get(n)||null,getSheets:()=>[...sheets.values()]};
+ // Reproduce Apps Script's stale metadata after Sheets API provisioning:
+ // SpreadsheetApp never sees the monitor tabs during this mocked execution.
+ const book={getSheetByName:n=>n.startsWith('DEV Monitor ')?null:sheets.get(n)||null,getSheets:()=>[...sheets.values()].filter(s=>!s.title.startsWith('DEV Monitor '))};
  c.PropertiesService={getScriptProperties:()=>({getProperty:key=>{assert.equal(key,'ADB_PUBLISHER_DEV_DATABASE_ID');return prop;}})};
  c.SpreadsheetApp={openById:id=>{opens.push(id);assert.equal(id,C.DATABASE);sheets.get('Environment').values=[['Setting','Value'],['Environment',environment],['Allow External Delivery',external]];return book;}};
  let locked=false;
  c.LockService={getScriptLock:()=>({waitLock:()=>{assert.equal(locked,false);locked=true;},releaseLock:()=>{locked=false;}})};
- c.Sheets={Spreadsheets:{batchUpdate:(request,id)=>{
+ c.Sheets={Spreadsheets:{
+ get:(id,options)=>{assert.equal(id,C.DATABASE);assert.equal(options.fields,'sheets(properties(sheetId,title))');return {sheets:[...sheets.values()].map(s=>({properties:{sheetId:s.id,title:s.title}}))};},
+ Values:{batchGet:(id,options)=>{assert.equal(id,C.DATABASE);assert.equal(options.valueRenderOption,'FORMATTED_VALUE');return {valueRanges:options.ranges.map(range=>{const title=range.slice(1,range.indexOf("'!"));return {values:clone(sheets.get(title).values)};})};}},
+ batchUpdate:(request,id)=>{
    assert.equal(locked,true);assert.equal(id,C.DATABASE);
    // Apply to a cloned working set, then swap, modelling Sheets batch atomicity.
    const next=new Map([...sheets].map(([n,s])=>[n,{id:s.id,title:s.title,values:clone(s.values)}]));
@@ -80,7 +85,7 @@ function appsMock(){
  c.adbPublisherDigest_=sha;c.Logger={log:s=>logs.push(JSON.parse(s))};
  return {c,sheets,logs,batches,opens,setProperty:v=>prop=v,setEnvironment:v=>environment=v,setExternal:v=>external=v,loseProvision:()=>lostProvision=true,isLocked:()=>locked};
 }
-test('actual DEV adapter provisions and atomically persists six events; rerun adds nothing and leaves target tables unchanged',()=>{
+test('actual DEV adapter persists despite stale SpreadsheetApp metadata; rerun adds nothing and leaves target tables unchanged',()=>{
  const m=appsMock(),targets=['Outbound Messages','Briefing History','Publisher Ledger'];
  const before=JSON.stringify(targets.map(n=>m.sheets.get(n).values));
  m.c.runPublisherDevMonitorPersistenceQaV1();
@@ -104,7 +109,7 @@ test('wrong environment or enabled delivery blocks before any write',()=>{
  }
 });
 test('partial provisioning and schema drift never reset existing monitor data',()=>{
- const partial=appsMock();partial.sheets.set(C.STATE,{getSheetId:()=>99});
+ const partial=appsMock();partial.sheets.set(C.STATE,{id:99,title:C.STATE,values:[C.STATE_HEADERS],getSheetId:()=>99});
  assert.throws(()=>partial.c.runPublisherDevMonitorPersistenceQaV1(),/partial monitor/);assert.equal(partial.batches.length,0);
  const m=appsMock();m.c.runPublisherDevMonitorPersistenceQaV1();m.sheets.get(C.EVENTS).values[0][0]='Changed';
  const before=JSON.stringify(m.sheets.get(C.EVENTS).values),writes=m.batches.length;

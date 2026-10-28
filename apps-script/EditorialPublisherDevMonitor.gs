@@ -1,4 +1,4 @@
-/** ADB-PUBLISHER-DEV-MONITOR-0.1. Synthetic DEV monitoring persistence only.
+/** ADB-PUBLISHER-DEV-MONITOR-0.2. Synthetic DEV monitoring persistence only.
  * Writes only two named QA tabs in the fixed publisher sandbox. No transport,
  * alert delivery, production entry point, trigger or property mutation.
  * Requires EditorialPublisher.gs and EditorialPublisherDevWorkflow.gs.
@@ -74,10 +74,12 @@ function adbDevMonitorOpen_() {
 /** Atomic provisioning of only the two QA tabs; existing tabs are never reset. */
 function adbDevMonitorProvision_(book) {
   const R=adbDevWorkflowRequire_,C=ADB_DEV_MONITOR;
-  const state=book.getSheetByName(C.STATE),events=book.getSheetByName(C.EVENTS);
+  const metadata=Sheets.Spreadsheets.get(C.DATABASE,{fields:'sheets(properties(sheetId,title))'});
+  const properties=metadata.sheets.map(s=>s.properties);
+  const state=properties.find(s=>s.title===C.STATE),events=properties.find(s=>s.title===C.EVENTS);
   R(Boolean(state)===Boolean(events),'partial monitor provisioning requires inspection');
   if(state) return false;
-  const ids=new Set(book.getSheets().map(s=>s.getSheetId()));
+  const ids=new Set(properties.map(s=>s.sheetId));
   let stateId=190028001;while(ids.has(stateId))stateId++;
   let eventId=stateId+1;while(ids.has(eventId))eventId++;
   const headers=(sheetId,values)=>({updateCells:{range:{sheetId:sheetId,startRowIndex:0,endRowIndex:1,startColumnIndex:0,endColumnIndex:values.length},rows:[{values:values.map(v=>({userEnteredValue:{stringValue:v}}))}],fields:'userEnteredValue'}});
@@ -91,14 +93,22 @@ function adbDevMonitorProvision_(book) {
 
 function adbDevMonitorIo_() {
   const C=ADB_DEV_MONITOR,R=adbDevWorkflowRequire_;
-  function table(book,name,headers) {
-    const sheet=book.getSheetByName(name);R(sheet,'missing monitor tab');
-    const values=sheet.getDataRange().getDisplayValues();
+  function table(properties,name,headers,values) {
+    const sheet=properties.find(s=>s.title===name);R(sheet,'missing monitor tab');
     R(adbPublisherCanonical_(values[0])===adbPublisherCanonical_(headers),'monitor schema drift');
-    return {sheetId:sheet.getSheetId(),rows:values.slice(1).filter(r=>r.some(v=>v!==''))};
+    return {sheetId:sheet.sheetId,rows:values.slice(1).filter(r=>r.some(v=>v!==''))};
   }
-  function readTables(){const book=adbDevMonitorOpen_();return {
-    state:table(book,C.STATE,C.STATE_HEADERS),events:table(book,C.EVENTS,C.EVENT_HEADERS)};}
+  function readTables(){
+    adbDevMonitorOpen_();
+    // Use the same API for writes and subsequent metadata/value reads. The
+    // SpreadsheetApp object can retain metadata from before addSheet completed.
+    const properties=Sheets.Spreadsheets.get(C.DATABASE,{fields:'sheets(properties(sheetId,title))'}).sheets.map(s=>s.properties);
+    const result=Sheets.Spreadsheets.Values.batchGet(C.DATABASE,{
+      ranges:["'DEV Monitor State'!A:A","'DEV Monitor Events'!A:D"],valueRenderOption:'FORMATTED_VALUE'});
+    R(result.valueRanges && result.valueRanges.length===2,'missing monitor ranges');
+    return {state:table(properties,C.STATE,C.STATE_HEADERS,result.valueRanges[0].values||[]),
+      events:table(properties,C.EVENTS,C.EVENT_HEADERS,result.valueRanges[1].values||[])};
+  }
   return {
     read:function(){const t=readTables();R(t.state.rows.length<=1,'duplicate monitor checkpoint');
       return {stateJson:t.state.rows.length?t.state.rows[0][0]:'',events:t.events.rows};},
@@ -150,7 +160,7 @@ function runPublisherDevMonitorPersistenceQaV1() {
     R(state.status==='Healthy' && state.lastSuccess===ledger['Committed At'] && !state.incident,'persisted recovery');
     R(snapshot.events.length===6 && snapshot.events.filter(r=>r[3]!=='null').length===1,'duplicate journal/intent');
     R(before===target(),'existing target changed during QA; inspect concurrent activity');
-    Logger.log(JSON.stringify({result:'PASS',build:'ADB-PUBLISHER-DEV-MONITOR-0.1',
+    Logger.log(JSON.stringify({result:'PASS',build:'ADB-PUBLISHER-DEV-MONITOR-0.2',
       scope:'synthetic DEV monitor tabs only',writes:persistedBatches>0,devBatches:persistedBatches,productionWrites:false,emails:false,
       persistedEvents:6,persistedFailureAlertIntents:1,alertsSent:0,
       lostResponseInjected:injected,exactReplay:true,silentRecovery:true,

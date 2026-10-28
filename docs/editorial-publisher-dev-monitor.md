@@ -56,7 +56,22 @@ lostResponseInjected=true, exactReplay=true, silentRecovery=true and
 targetRowsUnchanged=true. A repeat run reports writes=false, devBatches=0 and
 lostResponseInjected=false because those exact events are already durable.
 
-Local validation passed all 17 new persistence tests and all 98 tests in the
+### Runtime fix, build 0.2
+
+The first manual run on October 28 at 3:10:28 PM Central failed with "missing
+monitor tab" after provisioning. Independent DEV-only connector reads confirmed
+both tabs and their correct headers existed and no events/checkpoint were saved.
+The original adapter used SpreadsheetApp metadata immediately after a Sheets API
+addSheet batch. Build 0.2 uses the Sheets API for monitor metadata and value reads
+as well as writes, avoiding that cross-service cache dependency. The functional
+mock now deliberately hides the monitoring tabs from SpreadsheetApp and verifies
+the adapter succeeds using API metadata. Existing tabs are reused, never reset.
+
+On retry after this failed provisioning-only run, expect devBatches=6 rather
+than 7, because the two tabs already exist. The six events still need saving.
+The corrected manual run remains pending; production was not accessed.
+
+Local validation passed all 17 persistence tests and all 98 tests in the
 combined publisher/evidence/preflight/workflow/persistence suite. Tests cover
 pre-write failure, post-write lost response, process restart,
 journal/checkpoint/intent corruption, cell-size limits, typed atomic requests,

@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'apps-script/EditorialPublisher.gs'
+      - 'apps-script/EditorialPublisherProdPreflight.gs'
       - 'apps-script/EditorialPublisherBatchQa.gs'
       - 'apps-script/SelectionEvidenceContract.gs'
       - 'apps-script/DailyNewsletterContract.gs'
@@ -27,7 +28,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Publisher and evidence parity
-        run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js
+        run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js tests/editorial-publisher-prod-preflight.test.js
       - name: Established selection evidence suite
         run: python -m unittest discover -s scripts -p test_selection_notes.py
       - name: Validate schema JSON

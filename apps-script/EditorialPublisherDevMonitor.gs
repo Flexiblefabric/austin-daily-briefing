@@ -1,5 +1,5 @@
-/** ADB-PUBLISHER-DEV-MONITOR-0.2. Synthetic DEV monitoring persistence only.
- * Writes only two named QA tabs in the fixed publisher sandbox. No transport,
+/** ADB-PUBLISHER-DEV-MONITOR-0.3. DEV monitoring persistence only.
+ * Writes only a fixed pair of QA or publisher monitor tabs in the sandbox. No transport,
  * alert delivery, production entry point, trigger or property mutation.
  * Requires EditorialPublisher.gs and EditorialPublisherDevWorkflow.gs.
  */
@@ -10,6 +10,13 @@ const ADB_DEV_MONITOR = Object.freeze({
   EVENT_HEADERS:['Event ID','Event JSON','State SHA-256','Alert Intent JSON'],
   MAX_CELL:40000
 });
+
+/** Fixed namespaces isolate synthetic QA from actual DEV publisher attempts. */
+function adbDevMonitorConfig_(purpose) {
+  adbDevWorkflowRequire_(purpose===undefined || purpose==='publisher','unknown monitor namespace');
+  return purpose==='publisher'?Object.assign({},ADB_DEV_MONITOR,{
+    STATE:'DEV Publisher State',EVENTS:'DEV Publisher Events'}):ADB_DEV_MONITOR;
+}
 
 /** Validate the persisted checkpoint against its atomic event journal. */
 function adbDevMonitorSnapshotV1(snapshot,sha256) {
@@ -72,8 +79,8 @@ function adbDevMonitorOpen_() {
 }
 
 /** Atomic provisioning of only the two QA tabs; existing tabs are never reset. */
-function adbDevMonitorProvision_(book) {
-  const R=adbDevWorkflowRequire_,C=ADB_DEV_MONITOR;
+function adbDevMonitorProvision_(book,purpose) {
+  const R=adbDevWorkflowRequire_,C=adbDevMonitorConfig_(purpose);
   const metadata=Sheets.Spreadsheets.get(C.DATABASE,{fields:'sheets(properties(sheetId,title))'});
   const properties=metadata.sheets.map(s=>s.properties);
   const state=properties.find(s=>s.title===C.STATE),events=properties.find(s=>s.title===C.EVENTS);
@@ -91,8 +98,8 @@ function adbDevMonitorProvision_(book) {
   return true;
 }
 
-function adbDevMonitorIo_() {
-  const C=ADB_DEV_MONITOR,R=adbDevWorkflowRequire_;
+function adbDevMonitorIo_(purpose) {
+  const C=adbDevMonitorConfig_(purpose),R=adbDevWorkflowRequire_;
   function table(properties,name,headers,values) {
     const sheet=properties.find(s=>s.title===name);R(sheet,'missing monitor tab');
     R(adbPublisherCanonical_(values[0])===adbPublisherCanonical_(headers),'monitor schema drift');
@@ -104,7 +111,7 @@ function adbDevMonitorIo_() {
     // SpreadsheetApp object can retain metadata from before addSheet completed.
     const properties=Sheets.Spreadsheets.get(C.DATABASE,{fields:'sheets(properties(sheetId,title))'}).sheets.map(s=>s.properties);
     const result=Sheets.Spreadsheets.Values.batchGet(C.DATABASE,{
-      ranges:["'DEV Monitor State'!A:A","'DEV Monitor Events'!A:D"],valueRenderOption:'FORMATTED_VALUE'});
+      ranges:["'"+C.STATE+"'!A:A","'"+C.EVENTS+"'!A:D"],valueRenderOption:'FORMATTED_VALUE'});
     R(result.valueRanges && result.valueRanges.length===2,'missing monitor ranges');
     return {state:table(properties,C.STATE,C.STATE_HEADERS,result.valueRanges[0].values||[]),
       events:table(properties,C.EVENTS,C.EVENT_HEADERS,result.valueRanges[1].values||[])};
@@ -160,7 +167,7 @@ function runPublisherDevMonitorPersistenceQaV1() {
     R(state.status==='Healthy' && state.lastSuccess===ledger['Committed At'] && !state.incident,'persisted recovery');
     R(snapshot.events.length===6 && snapshot.events.filter(r=>r[3]!=='null').length===1,'duplicate journal/intent');
     R(before===target(),'existing target changed during QA; inspect concurrent activity');
-    Logger.log(JSON.stringify({result:'PASS',build:'ADB-PUBLISHER-DEV-MONITOR-0.2',
+    Logger.log(JSON.stringify({result:'PASS',build:'ADB-PUBLISHER-DEV-MONITOR-0.3',
       scope:'synthetic DEV monitor tabs only',writes:persistedBatches>0,devBatches:persistedBatches,productionWrites:false,emails:false,
       persistedEvents:6,persistedFailureAlertIntents:1,alertsSent:0,
       lostResponseInjected:injected,exactReplay:true,silentRecovery:true,

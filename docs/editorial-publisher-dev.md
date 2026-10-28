@@ -60,6 +60,10 @@ The publisher suite covers deterministic payload/schema construction, note suffi
 
 The JS selection gate agrees with 54 JSON-only vectors captured from the established Python selection regression suite. Two deliberate format distinctions are excluded: transport-suffixed notes are invalid as handoff input, and JavaScript/JSON Schema treat mathematically integral numbers as integers even if their original JSON spelling used `.0`; Python distinguishes integer and float runtime types. No live evidence was backfilled and no failed production edition was replayed.
 
+## Real-edition retrospective comparison
+
+October 28: all 12 archived HTML/plain-text pairs reproduced exactly, and all 145 rendered items were bound to saved history. The full selection gate and pure publisher plan were blocked by invalid shared-story repeat provenance (exact fact, lane scope and stable topic binding). A further history-format difference affects the 36 Austin Ahead headlines. See [the read-only comparison report](editorial-publisher-real-edition-shadow-2026-10-28.md). Synthetic QA results remain valid, but they do not clear these real-content gates.
+
 ## Remaining rollout work
 
 Remaining runtime QA beyond the passed checks; measured full-audience size and execution time; permission separation and immutable READY enforcement; production legacy-history normalization; approved release-notice eligibility; operational error/result recording; and a controlled shadow comparison precede a separate production adapter and generator/publisher cutover. Existing Resend dispatch remains the sole delivery owner. These limitations are recorded explicitly so a source implementation is never mistaken for a live migration.

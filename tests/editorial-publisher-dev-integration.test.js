@@ -5,7 +5,8 @@ const fixture=JSON.parse(cp.execFileSync('python',['tests/publisher-fixture.py']
 function runtime(bundle){const c=vm.createContext({Intl});if(bundle){vm.runInContext(bundle,c);return c;}for(const p of ['scripts/daily_newsletter_renderer.js','apps-script/DailyNewsletterContract.gs','apps-script/SelectionEvidenceContract.gs','apps-script/EditorialPublisher.gs','apps-script/EditorialPublisherDevWorkflow.gs','apps-script/EditorialPublisherDevMonitor.gs','apps-script/EditorialPublisherDevIntegration.gs'])vm.runInContext(fs.readFileSync(p,'utf8'),c);return c;}
 function harness(failure,options={}){
  const c=runtime(options.bundle),C=clone(vm.runInContext('ADB_PUBLISHER',c)),M=clone(vm.runInContext('ADB_DEV_MONITOR',c));
- const pkg=clone(options.pkg||fixture),sheets=new Map(),logs=[];let nextId=1,locked=false,ticks=0,targetWrites=0,monitorWrites=0,injected=false,dbId=options.blankProperties?null:M.DATABASE,sourcePin=options.blankProperties?null:pkg.source_revision,verificationCorrupt=false;
+ const pkg=clone(options.pkg||fixture),sheets=new Map(),logs=[];let nextId=1,locked=false,ticks=0,targetWrites=0,monitorWrites=0,injected=false,dbId=options.blankProperties?null:M.DATABASE,sourcePin=options.blankProperties?null:pkg.source_revision,verificationCorrupt=false,apiReads=0,failReadsAfterCommit=!!options.failReadsAfterCommit,snapshotReads=0;
+ const countRead=()=>{apiReads++;if(apiReads>(options.readLimit||Infinity) || (failReadsAfterCommit && targetWrites>0))throw Error('simulated Sheets read quota');};
  const add=(name,values,id=nextId++)=>sheets.set(name,{id,title:name,values:clone(values)});
  add('Environment',[['Setting','Value'],['Environment','DEVELOPMENT'],['Allow External Delivery','FALSE'],['Manage URL','https://example.org/manage'],['Production Writes','FORBIDDEN'],['QA Purpose','ISOLATED_E2E']]);
  const email=options.email||'synthetic@example.invalid';
@@ -28,8 +29,10 @@ function harness(failure,options={}){
  c.Date=class extends Date{constructor(...args){super(...(args.length?args:[Date.parse(pkg.edition_date+'T13:01:00.000Z')+ticks++]));}};
  c.Utilities={DigestAlgorithm:{SHA_256:'sha256'},Charset:{UTF_8:'utf8'},computeDigest:(a,s)=>Array.from(crypto.createHash('sha256').update(s).digest()),formatDate:()=>pkg.edition_date,newBlob:s=>({getBytes:()=>Buffer.from(s)})};
  c.Sheets={Spreadsheets:{
- get:(id)=>{assert.equal(id,M.DATABASE);return {sheets:[...sheets.values()].map(s=>({properties:{sheetId:s.id,title:s.title}}))};},
- Values:{batchGet:(id,options)=>{assert.equal(id,M.DATABASE);return {valueRanges:options.ranges.map(range=>{
+ get:(id)=>{countRead();assert.equal(id,M.DATABASE);return {sheets:[...sheets.values()].map(s=>({properties:{sheetId:s.id,title:s.title}}))};},
+ Values:{batchGet:(id,requestOptions)=>{countRead();assert.equal(id,M.DATABASE);
+ if(requestOptions.ranges.length===10 && targetWrites===0){snapshotReads++;if(options.mutatePrecommit && snapshotReads===3)sheets.get('Preferences').values[1][2]='Off';}
+ return {valueRanges:requestOptions.ranges.map(range=>{
    const name=range.slice(1,range.indexOf("'!")),values=clone(sheets.get(name).values);
    if(verificationCorrupt && name==='Outbound Messages' && values.length>1)values[1][C.QUEUE.indexOf('HTML')]+='CORRUPTED READ';
    return {values};
@@ -52,7 +55,7 @@ function harness(failure,options={}){
  }
  }};
  return {c,C,M,pkg,sheets,logs,run:()=>clone(c.publishReadyEditorialPackageDevMonitoredV1('QA','attempt-1')),
- counts:()=>({targetWrites,monitorWrites,locked}),setDb:id=>dbId=id,corruptVerification:()=>verificationCorrupt=true};
+ counts:()=>({targetWrites,monitorWrites,locked}),reads:()=>apiReads,resetReadWindow:()=>{apiReads=0;failReadsAfterCommit=false;},setDb:id=>dbId=id,corruptVerification:()=>verificationCorrupt=true};
 }
 test('opt-in wrapper executes actual publisher and persistent monitor adapters; exact replay never appends target or monitor rows',()=>{
  const h=harness(),before=JSON.stringify(h.sheets.get(h.M.STATE).values),result=h.run();
@@ -91,14 +94,32 @@ test('monitor namespaces are fixed and unsupported purpose cannot redirect write
  const c=runtime();assert.equal(c.adbDevMonitorConfig_('publisher').STATE,'DEV Publisher State');assert.equal(c.adbDevMonitorConfig_().STATE,'DEV Monitor State');
  assert.throws(()=>c.adbDevMonitorConfig_('production'),/namespace/);
 });
-function e2eOptions(extra={}){return {bundle:fs.readFileSync('apps-script/EditorialPublisherEndToEndQa.gs','utf8'),pkg:JSON.parse(fs.readFileSync('tests/fixtures/editorial-publisher-e2e.json','utf8')),packageId:'E2E-2026-10-28',email:'publisher-qa@example.invalid',blankProperties:true,forbidSpreadsheetReads:true,...extra};}
+function e2eOptions(extra={}){return {bundle:fs.readFileSync('apps-script/EditorialPublisherEndToEndQa.gs','utf8'),pkg:JSON.parse(fs.readFileSync('tests/fixtures/editorial-publisher-e2e.json','utf8')),packageId:'E2E-2026-10-28',email:'publisher-qa@example.invalid',blankProperties:true,forbidSpreadsheetReads:true,readLimit:60,...extra};}
 test('generated single-file E2E bundle boots a blank bound project, commits once and reconciles lost monitor response',()=>{
  const h=harness(undefined,e2eOptions());h.c.runPublisherDevEndToEndQaV1();
  assert.equal(h.logs[0].result,'PASS');assert.equal(h.logs[0].lostMonitorResponseInjected,true);
  assert.deepEqual(h.logs[0].publicationResults,['COMMITTED','ALREADY_COMMITTED']);assert.equal(h.logs[0].monitorEvents,2);
  assert.equal(h.counts().targetWrites,1);assert.equal(h.counts().monitorWrites,2);
+ assert(h.reads()<=30,'one fresh E2E run must stay below 30 Sheets API reads');
+ const firstReads=h.reads();
  h.c.runPublisherDevEndToEndQaV1();assert.equal(h.logs[1].result,'PASS');assert.equal(h.logs[1].lostMonitorResponseInjected,false);
  assert.equal(h.counts().targetWrites,1);assert.equal(h.counts().monitorWrites,2);
+ assert(h.reads()<=60,'two immediate runs must fit one 60-read minute');
+ console.log('E2E read requests: first='+firstReads+', replay='+(h.reads()-firstReads));
+});
+test('generated bundle resumes a target commit interrupted by read quota with only the start event saved',()=>{
+ const h=harness(undefined,e2eOptions({failReadsAfterCommit:true}));
+ assert.throws(()=>h.c.runPublisherDevEndToEndQaV1(),/read quota/);
+ assert.equal(h.counts().targetWrites,1);assert.equal(h.sheets.get('DEV Publisher Events').values.length,2);
+ assert.equal(JSON.parse(h.sheets.get('DEV Publisher State').values[1][0]).status,'Running');
+ h.resetReadWindow();h.c.runPublisherDevEndToEndQaV1();
+ assert.equal(h.logs[0].result,'PASS');assert.deepEqual(h.logs[0].publicationResults,['ALREADY_COMMITTED','ALREADY_COMMITTED']);
+ assert.equal(h.counts().targetWrites,1);assert.equal(h.sheets.get('DEV Publisher Events').values.length,3);assert(h.reads()<=30);
+});
+test('batched snapshots still detect preferences changed between initial plan and pre-commit validation',()=>{
+ const h=harness(undefined,e2eOptions({mutatePrecommit:true}));
+ assert.throws(()=>h.c.runPublisherDevEndToEndQaV1(),/database changed during validation/);
+ assert.equal(h.counts().targetWrites,0);assert.equal(h.sheets.get('Outbound Messages').values.length,1);
 });
 test('generated E2E bundle rejects the original DEV or production project before setup',()=>{
  for(const activeId of ['1I9UAR6kabPt0P_lvDiJX_oskPeCVcVI64_vTbwEOF2I','1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0']){

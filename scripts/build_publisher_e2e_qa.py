@@ -41,6 +41,9 @@ def build():
                 'function adbPublisherTable_(book,name){return adbE2eReadTable_(book,name);}\nfunction adbPublisherState_',
                 source, count=1, flags=re.S)
             assert count==1
+            assert source.count('function adbPublisherState_(book){')==1
+            source = source.replace('function adbPublisherState_(book){',
+                'function adbPublisherState_(book){adbE2eRefreshSnapshot_();',1)
         parts.append('// Bundled source: '+path+'\n'+source+'\n')
     runner_path = 'apps-script/EditorialPublisherEndToEndRunner.gs'
     runner = (ROOT/runner_path).read_text()
@@ -50,7 +53,7 @@ def build():
     (ROOT/'tests/fixtures/editorial-publisher-e2e.json').write_text(json.dumps(package(),indent=2)+'\n')
     (ROOT/'docs/editorial-publisher-e2e-source-manifest.json').write_text(json.dumps({
         'database':DATABASE,'edition':EDITION,'core_revision':CORE_REVISION,
-        'transformation':'Replace the monitor DATABASE constant with the isolated E2E ID; delegate the core table reader to the E2E fresh Sheets API reader. Publication/selection/rendering logic is unchanged.',
+        'transformation':'Replace the monitor DATABASE constant with the isolated E2E ID; delegate the core table reader to a phase-scoped batched Sheets API snapshot and refresh it on every state read. The E2E runner batches its own monitoring reads and verifies publication against fresh state. Publication/selection/rendering logic is unchanged.',
         'sources':manifest},indent=2)+'\n')
 
 if __name__ == '__main__':

@@ -68,3 +68,39 @@ generated bundle with SpreadsheetApp value reads deliberately disabled. The
 verification facade now also exposes its fixed spreadsheet ID for that reader.
 Production migration, alerts, durable retention, abandoned-attempt watchdogs,
 zero-audience monitoring and real capability separation remain outside this QA.
+
+## Quota correction, build 0.2
+
+The first Apps Script E2E run on October 28 from 3:54:33–3:54:53 PM Central hit
+the Sheets API per-minute read quota. Independent connector reads confirmed
+publication had committed (one queue row, six history rows, one ledger) but
+monitoring had only its start event. No rows were cleared or recreated.
+
+The per-table fresh reader caused excessive metadata/value calls. Build 0.2
+reads all ten target/staging tables in one batch per validation phase. A new
+metadata+values snapshot is required at each state read: initial validation,
+pre-commit state comparison and post-commit verification. This is not an
+execution-wide cache that could skip freshness. The monitoring IO reuses its
+snapshot only within one locked event operation; it invalidates before writes
+and reads back afterward. Each subsequent event begins with a fresh read.
+
+Mock read accounting measures 27 read requests for a fresh complete run and 21
+for a whole QA replay. A quota-enforcing regression requires both to fit one
+60-read window. Another test reproduces the observed committed-target/one-start-
+event state and resumes it without another target write. A preference mutation
+between planning and pre-commit validation still blocks before target writes.
+The corrected suite passes 111 local tests; runtime build 0.2 remains pending.
+
+Replace only Code.gs in ADB E2E DEV with the corrected generated bundle and run
+the same runner once. The existing committed target is the authority; expected
+publicationResults now [ALREADY_COMMITTED, ALREADY_COMMITTED], followed by two
+monitor events and Healthy status. A monitoring-success response is still
+intentionally lost once to exercise reconciliation. No new service/property
+setup, workbook replacement, quota increase, row clearing or production edit is
+needed.
+
+Google documents a default 60 read requests per minute per user per project,
+refilled each minute, and counts each batch as one request:
+https://developers.google.com/workspace/sheets/api/limits . Other activity can
+consume the same quota; the local accounting is not a guarantee of spare quota
+in every remote execution.

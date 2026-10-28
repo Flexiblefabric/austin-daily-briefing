@@ -2,7 +2,7 @@
   "database": "1XZCcNUCSkCU68HY9DMgjbyKgQRXDGkVjf0Q3uz1QXrY",
   "edition": "2026-10-28",
   "core_revision": "a1fe5514f362719c0e379ccb2276d7df3492737a",
-  "transformation": "Replace the monitor DATABASE constant with the isolated E2E ID; delegate the core table reader to the E2E fresh Sheets API reader. Publication/selection/rendering logic is unchanged.",
+  "transformation": "Replace the monitor DATABASE constant with the isolated E2E ID; delegate the core table reader to a phase-scoped batched Sheets API snapshot and refresh it on every state read. The E2E runner batches its own monitoring reads and verifies publication against fresh state. Publication/selection/rendering logic is unchanged.",
   "sources": [
     {
       "path": "scripts/daily_newsletter_renderer.js",
@@ -34,7 +34,7 @@
     },
     {
       "path": "apps-script/EditorialPublisherEndToEndRunner.gs",
-      "sha256": "7e35a111fa167b2f5ab6f6d32b14c9ea20d3b94ff696a3cbc7501535d9b0f4ce"
+      "sha256": "1c8d74eab77a2ab37da710bb7ce63c71cc798199f9dc12d6e4be5c1f79c27579"
     }
   ]
 }

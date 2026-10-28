@@ -29,4 +29,30 @@ External delivery remains FALSE. This DEV module contains no delivery API or tri
 
 ## Remaining gates
 
-Full-audience payload-size/execution-time measurements, live partial/timeout/concurrency scenarios beyond offline mocks, immutable READY permissions and separate writer identity, legacy production-history normalization, approved release-notice policy, operational error recording, shadow comparison and a separate controlled production adapter/cutover remain outstanding. The four rejection checks do not establish those broader properties.
+Real-content full-audience sizing (synthetic 12/24-profile sizing passed below), live partial/timeout/concurrency scenarios beyond offline mocks, immutable READY permissions and separate writer identity, legacy production-history normalization, approved release-notice policy, operational error recording, shadow comparison and a separate controlled production adapter/cutover remain outstanding. The four rejection checks do not establish those broader properties.
+
+## Apps Script synthetic batch sizing — 10:58 CT
+
+The operator ran `runPublisherDevBatchQaV1` with helper source
+`e0ba6e0ab05e3a6bf4ef43a83a95d289c4bbeae9` alongside the unchanged publisher
+source pin `27c484eca26c2da77f594c31373ae479ae7c93f1`.
+The execution log began at 10:58:36 and completed at 10:58:42 America/Chicago.
+
+| Synthetic profiles | Proposed history rows | Request bytes | Writer limit used | Plan/render/validate | Total measurement | Renderer parity |
+| ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 1 | 6 | 34,931 | 1.9% | 62 ms | 73 ms | 1/1 |
+| 12 | 72 | 412,379 | 22.9% | 39 ms | 156 ms | 12/12 |
+| 24 | 144 | 824,148 | 45.8% | 78 ms | 291 ms | 24/24 |
+
+All three request sizes were below the writer's 1,800,000-byte safeguard.
+The final report returned `PASS`, `syntheticOnly:true`, `writes:false`,
+`emails:false`, `twelveProfileBatchFits:true` and
+`doubleAudienceBatchFits:true`. Overall measured elapsed time was 5,191 ms,
+including DEV reads and in-memory work.
+
+These are small synthetic six-item editions. The timings are single-run
+observations, not a benchmark establishing that 12 or 24 profiles execute faster
+than one. They exclude the Sheets commit and provider delivery and do not
+exercise a full production historical database. Exact renderer parity compares
+planned payloads against the approved renderer for the same synthetic input; it
+does not constitute a production editorial shadow comparison.

@@ -27,7 +27,7 @@ fixture, not a maximum-size real briefing. Twelve profiles is the previously
 observed audience-size baseline; this test does not read or recount production
 subscribers.
 
-Apps Script execution remains pending until the operator runs the new helper.
+Apps Script execution passed on October 28 at 10:58 CT; see the [runtime evidence](editorial-publisher-dev-runtime-2026-10-28.md). Actual request sizes were 34,931, 412,379 and 824,148 bytes for 1, 12 and 24 profiles respectively. Overall elapsed time was 5,191 ms, and all renderer parity checks passed.
 Its logs report `profiles`, `historyRows`, `requestBytes`, `withinByteLimit`,
 `planRenderValidateMs`, `totalMeasureMs` and `syntheticRendererParity`, followed by
 a compact overall result. Expect 6, 72 and 144 proposed history rows respectively,

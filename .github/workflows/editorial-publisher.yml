@@ -1,0 +1,33 @@
+name: Editorial publisher DEV checks
+on:
+  pull_request:
+    paths:
+      - 'apps-script/EditorialPublisher.gs'
+      - 'apps-script/SelectionEvidenceContract.gs'
+      - 'apps-script/DailyNewsletterContract.gs'
+      - 'scripts/daily_newsletter_renderer.js'
+      - 'scripts/validate_selection_notes.py'
+      - 'scripts/test_selection_notes.py'
+      - 'tests/*publisher*'
+      - 'tests/selection-*'
+      - 'docs/editorial-handoff.schema.json'
+      - '.github/workflows/editorial-publisher.yml'
+permissions:
+  contents: read
+jobs:
+  dev-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Publisher and evidence parity
+        run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js
+      - name: Established selection evidence suite
+        run: python -m unittest discover -s scripts -p test_selection_notes.py
+      - name: Validate schema JSON
+        run: python -m json.tool docs/editorial-handoff.schema.json > /dev/null

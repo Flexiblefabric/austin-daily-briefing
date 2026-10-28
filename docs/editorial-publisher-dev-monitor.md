@@ -79,3 +79,25 @@ wrong target/environment/delivery rejection, partial provisioning, changed
 headers, lost provisioning response and two complete runs of the actual adapter
 under functional Apps Script/Sheets mocks. Manual Apps Script execution is
 pending; passing mocks do not establish the remote workbook result.
+
+## Corrected manual run verified
+
+On October 28, 2026 the user executed build ADB-PUBLISHER-DEV-MONITOR-0.2
+from 3:13:41 to 3:13:58 PM Central. Result PASS; writes=true, devBatches=6,
+productionWrites=false, emails=false, persistedEvents=6,
+persistedFailureAlertIntents=1, alertsSent=0, lostResponseInjected=true,
+exactReplay=true, silentRecovery=true and targetRowsUnchanged=true.
+realPermissionsVerified remained false. The six batches reused the tabs created
+by the earlier provisioning-only attempt.
+
+Independent DEV-only connector readback confirmed six journal events, one stored
+failure-alert intent, status Healthy, stage complete, no unresolved incident and
+Last Success equal to the synthetic ledger timestamp 2026-10-28T20:00:03.000Z.
+That timestamp belongs to the fixed QA fixture, not a live publication. The
+queue/history/ledger unchanged assertion is from the runtime before/after check;
+this readback did not re-run publication or inspect production.
+
+The persistence module now has manual Apps Script runtime evidence. It remains a
+standalone synthetic QA adapter: actual publisher integration, external alert
+transport, durable retention, zero-audience monitoring and real permission
+separation are not implemented by this passing test.

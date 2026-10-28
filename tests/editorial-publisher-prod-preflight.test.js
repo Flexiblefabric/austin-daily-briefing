@@ -79,6 +79,27 @@ test('short windows and invalid/future dates cannot appear complete',()=>{
  const r=ctx.adbProdPublisherNormalizeHistoryV1([{'Run Date':'2026-10-29','Delivery Status':'Sent'}],'2026-10-28','2026-10-14',false);
  assert.equal(r.recentComplete,false);assert.equal(r.invalidDates,1);
 });
+test('project diagnostics distinguish function, lock, user-owned trigger and guard without writes',()=>{
+ const c=runtime(),logs=[];let guard=null,handlers=[];
+ c.PropertiesService={getScriptProperties:()=>({getProperty:key=>{assert.equal(key,'ADB_DAILY_LAYOUT_GUARD_MODE');return guard;}})};
+ c.ScriptApp={getProjectTriggers:()=>handlers.map(name=>({getHandlerFunction:()=>name}))};
+ c.Logger={log:value=>logs.push(value)};
+ let r=clone(c.inspectEditorialPublisherProjectReadinessV1());
+ assert.equal(r.dispatcherPresent,false);assert.equal(r.dispatcherScriptLockReference,false);
+ assert.equal(r.visibleDailyDispatcherTriggers,0);assert.equal(r.layoutGuardPropertyPresent,false);
+ assert.equal(r.preflightEffectiveLayoutGuard,'STAGED');assert.equal(r.layoutGuardPass,false);
+ vm.runInContext('function dispatchQueuedDailyBriefingsViaResendV1(){ const lock=LockService.getScriptLock(); throw Error("Must not invoke"); }',c);
+ handlers=['dispatchQueuedDailyBriefingsViaResendV1','PRIVATE-OTHER-HANDLER'];guard='enforce';
+ r=clone(c.inspectEditorialPublisherProjectReadinessV1());
+ assert.equal(r.dispatcherPresent,true);assert.equal(r.dispatcherScriptLockReference,true);
+ assert.equal(r.visibleDailyDispatcherTriggers,1);assert.equal(r.layoutGuardPass,true);
+ assert.equal(r.writes,false);assert.equal(r.emails,false);assert.match(r.triggerVisibility,/other owners are not visible/);
+ guard='PRIVATE-UNEXPECTED-VALUE';r=clone(c.inspectEditorialPublisherProjectReadinessV1());
+ assert.equal(r.preflightEffectiveLayoutGuard,'OTHER');assert.equal(r.layoutGuardPass,false);
+ assert(!logs.join('').includes('PRIVATE'));
+ vm.runInContext('dispatchQueuedDailyBriefingsViaResendV1=function(){throw Error("Must not invoke");}',c);
+ assert.equal(c.inspectEditorialPublisherProjectReadinessV1().dispatcherScriptLockReference,false);
+});
 test('current-date Sent records are not misclassified as prior history',()=>{
  const rows=fixture().history;rows[0]['Run Date']='2026-10-28';
  const r=ctx.adbProdPublisherNormalizeHistoryV1(rows,'2026-10-28','2026-10-14',false);

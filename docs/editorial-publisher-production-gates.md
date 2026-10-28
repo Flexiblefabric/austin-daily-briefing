@@ -1,6 +1,6 @@
 # Production publisher adapter and release gates
 
-Status: read-only adapter/preflight foundation prepared and locally tested.
+Status: read-only preflight executed in Apps Script; production gates remain blocked.
 Production publication is not implemented or enabled by this source. No live
 generator, dispatcher, trigger, property, production ledger or status row has
 been changed. DEV 0.2 and its passed tests remain intact.
@@ -64,9 +64,36 @@ delivery is unhealthy.
 
 Do not change production properties or create triggers for this preflight. The
 default new-publisher mode is DISABLED. An existing LIVE value is flagged because
-this preflight build does not supply a production writer. Apps Script execution
-of the new preflight is pending; connector reads and 24 local regression tests
-are the current evidence.
+this preflight build does not supply a production writer.
+
+### October 28 runtime evidence
+
+The user supplied an Apps Script execution log at 1:27:51 PM Central for build
+`ADB-PUBLISHER-PROD-PREFLIGHT-0.1`. It completed with result BLOCKED,
+productionPublishingEnabled=false, writes=false and emails=false. Metrics:
+12 eligible profiles, 345 preference rows, 6,849 Sent history rows, 3,155 legacy
+Sent rows, zero malformed structured Sent rows, recentHistoryComplete=true and
+extendedHistoryKnown=false. These are runtime counts; earlier connector reads
+were snapshots and are not substituted for them.
+
+Blocked: publisher_ledger, dispatcher_colocation, layout_guard, private_staging,
+publisher_monitoring_integration and production_commit_adapter. Unknown:
+published_history_extended, generator_capability_separation and
+immutable_ready_permissions. This does not activate publication or diagnose
+current delivery as unhealthy.
+
+Run `inspectEditorialPublisherProjectReadinessV1` in the same project next. This
+read-only diagnostic reports whether the dispatcher function exists, its source
+contains the ScriptLock reference, the executing user owns exactly one matching
+trigger, and the preflight's effective layout guard is ENFORCE. It opens no
+workbooks and never invokes delivery. A missing visible trigger does not prove
+the trigger is absent for another owner: Apps Script only exposes this user's
+project triggers. A source reference is an inspection heuristic, not proof of
+runtime lock coverage. Do not add triggers, change properties or copy dispatcher
+code to clear these checks before the project and owner are established.
+
+The diagnostic and preflight have 25 local regression tests. The diagnostic's
+Apps Script execution remains pending.
 
 ## Permission and staging gate
 

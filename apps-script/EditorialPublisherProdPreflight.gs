@@ -167,6 +167,24 @@ function adbEvaluateProdPublisherPreflightV1(input) {
       recentHistoryComplete:history.recentComplete,extendedHistoryKnown:history.extendedHistoryKnown},checks:checks};
 }
 
+/** Inspect only this project and the executing user's triggers. Never invokes delivery. */
+function inspectEditorialPublisherProjectReadinessV1() {
+  const guard=PropertiesService.getScriptProperties().getProperty('ADB_DAILY_LAYOUT_GUARD_MODE');
+  const normalizedGuard=String(guard||'STAGED').toUpperCase();
+  const present=typeof dispatchQueuedDailyBriefingsViaResendV1==='function';
+  const handlers=ScriptApp.getProjectTriggers().map(t=>t.getHandlerFunction());
+  const report={build:ADB_PUBLISHER_PROD_PREFLIGHT.BUILD,scope:'current project and executing user',
+    writes:false,emails:false,dispatcherPresent:present,
+    dispatcherScriptLockReference:present && /LockService\.getScriptLock/.test(String(dispatchQueuedDailyBriefingsViaResendV1)),
+    visibleDailyDispatcherTriggers:handlers.filter(n=>n==='dispatchQueuedDailyBriefingsViaResendV1').length,
+    triggerVisibility:'executing user only; other owners are not visible',
+    layoutGuardPropertyPresent:guard!==null,
+    preflightEffectiveLayoutGuard:['ENFORCE','STAGED','DISABLED'].includes(normalizedGuard)?normalizedGuard:'OTHER',
+    layoutGuardPass:normalizedGuard==='ENFORCE'};
+  Logger.log(JSON.stringify(report));
+  return report;
+}
+
 function checkEditorialPublisherProductionReadinessV1() {
   const C=ADB_PUBLISHER_PROD_PREFLIGHT,props=PropertiesService.getScriptProperties();
   const database=SpreadsheetApp.openById(C.DATABASE_ID),intake=SpreadsheetApp.openById(C.INTAKE_ID);

@@ -85,3 +85,29 @@ test('Apps Script adapter commits atomically, reads back and safely reconciles a
  }
 });
 module.exports={sample,plan};
+
+vm.runInContext(fs.readFileSync('apps-script/EditorialPublisherBatchQa.gs','utf8'),ctx);
+test('12-profile synthetic batch preserves committed originals and exact renderer parity',()=>{
+ const x=sample();x.state.subscribers[0].Email='publisher-qa@example.invalid';const before=JSON.stringify(x);
+ const input=ctx.adbPublisherSyntheticQaInput_(x.pkg,x.state,12);
+ ctx.adbPublisherDigest_=sha;
+ ctx.Utilities={newBlob:s=>({getBytes:()=>Buffer.from(s)})};
+ const report=ctx.adbPublisherMeasureSyntheticQa_(input.pkg,input.state,x.clock);
+ assert.equal(report.profiles,12);assert.equal(report.historyRows,72);
+ assert.equal(report.syntheticRendererParity,'12/12');assert(report.withinByteLimit);
+ assert.equal(JSON.stringify(x),before);
+ console.log('12 synthetic profiles: '+report.requestBytes+' bytes, '+report.limitUsedPercent+'% of limit.');
+});
+test('24-profile synthetic batch reports double-audience headroom',()=>{
+ const x=sample();x.state.subscribers[0].Email='publisher-qa@example.invalid';const input=ctx.adbPublisherSyntheticQaInput_(x.pkg,x.state,24);
+ ctx.adbPublisherDigest_=sha;ctx.Utilities={newBlob:s=>({getBytes:()=>Buffer.from(s)})};
+ const r=ctx.adbPublisherMeasureSyntheticQa_(input.pkg,input.state,x.clock);
+ assert.equal(r.historyRows,144);assert.equal(r.syntheticRendererParity,'24/24');assert(r.withinByteLimit);
+ console.log('24 synthetic profiles: '+r.requestBytes+' bytes, '+r.limitUsedPercent+'% of limit.');
+});
+test('batch QA refuses real subscriber fixture and unbounded counts',()=>{
+ const x=sample();x.state.subscribers[0].Email='publisher-qa@example.invalid';
+ assert.throws(()=>ctx.adbPublisherSyntheticQaInput_(x.pkg,x.state,49));
+ x.state.subscribers[0].Email='real@example.org';
+ assert.throws(()=>ctx.adbPublisherSyntheticQaInput_(x.pkg,x.state,12),/real subscriber/);
+});

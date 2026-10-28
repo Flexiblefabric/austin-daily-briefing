@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'apps-script/EditorialPublisher.gs'
+      - 'apps-script/EditorialPublisherBatchQa.gs'
       - 'apps-script/SelectionEvidenceContract.gs'
       - 'apps-script/DailyNewsletterContract.gs'
       - 'scripts/daily_newsletter_renderer.js'

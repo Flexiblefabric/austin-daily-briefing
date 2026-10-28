@@ -1,10 +1,10 @@
 # Option A — editorial handoff and deterministic publisher
 
-Status as of October 27, 2026, America/Chicago: **phase 1 contract defined; phase 2 DEV source implemented and offline tested. Not installed in Apps Script, runtime QA pending, not production active.**
+Status as of October 28, 2026, America/Chicago: **phase 1 contract defined; phase 2 DEV source installed, with setup, synthetic commit, replay and four rejection checks passed in Apps Script. Broader rollout gates remain open; not production active.**
 
 Private DEV workbook: https://docs.google.com/spreadsheets/d/1I9UAR6kabPt0P_lvDiJX_oskPeCVcVI64_vTbwEOF2I/edit?usp=drivesdk
 
-The source baseline is `57f028105dd9450b95c519ee33ef8d3382c98b77`. The sandbox contains no real subscribers, editorial packages, queued messages or sent messages. Production generation, its scheduler prompt, dispatch, queue, history and monitoring were not changed by this work.
+The source baseline is `57f028105dd9450b95c519ee33ef8d3382c98b77`. The sandbox contains only synthetic QA data: one READY package, one Queued message, six Pending history rows and one commit ledger row. No real subscriber data or recorded sends are present. Production generation, its scheduler prompt, dispatch, queue, history and monitoring were not changed by this work.
 
 ## Phase 1: editorial handoff
 
@@ -37,7 +37,7 @@ One target Sheets `batchUpdate` appends queue, history and the publisher ledger 
 
 The Apps Script lock coordinates this publisher project. It does not isolate other Apps Script projects or human edits. Fresh eligibility/schema/data reads reduce races; Sheets does not provide a transactional compare-and-swap for those reads. Production promotion needs a single writer owner, coordinated locks where possible, protected operational ranges and the existing dispatcher eligibility recheck. DEV has external delivery disabled and this module has no mail/provider API or trigger installer.
 
-### Install and runtime QA still pending
+### Installation procedure and remaining runtime QA
 
 1. Review the source change, then install the exact reviewed versions of `EditorialPublisher.gs`, `SelectionEvidenceContract.gs`, `DailyNewsletterContract.gs`, and `scripts/daily_newsletter_renderer.js` (as an Apps Script `.gs` file) in an isolated DEV project.
 2. Enable the Advanced Sheets service. Set `ADB_PUBLISHER_DEV_DATABASE_ID` to the private publisher sandbox ID above and `ADB_PUBLISHER_SOURCE_REVISION` to the reviewed source commit. These are configuration names, not secrets. Never target either production workbook. Verify environment DEVELOPMENT and external delivery FALSE.
@@ -45,7 +45,7 @@ The Apps Script lock coordinates this publisher project. It does not isolate oth
 4. Verify source digests and Apps Script V8 support, including `Intl` Chicago offset handling. Stage DRAFT chunks; seal a READY manifest using the canonical digest. Run the DEV entry point manually. Inspect one atomic queue/history/ledger result and readback, then replay and require zero additional rows.
 5. Test changed package rejection, missing chunk, blocked schema, paused/held recipient, changed personalization, size limit and simulated interrupted response. Record actual runtime evidence separately from offline test results.
 
-The currently connected Drive tools do not install or execute Apps Script source. Native workbook creation and connector readback are verified; Apps Script runtime validation is not claimed. No production scheduler/prompt change, deployment, trigger, permission cutover or message send belongs to this stage.
+The connected Drive tools do not install or execute Apps Script source. The operator installed the reviewed files and ran the setup, commit/replay and rejection functions in Apps Script. Live workbook readback confirms the committed synthetic records and matching package digest. See [October 28 runtime evidence](editorial-publisher-dev-runtime-2026-10-28.md). Size-limit, concurrency, permission, and broader rollout checks remain open. No production scheduler/prompt change, production deployment, trigger, permission cutover or message send was performed.
 
 ## Offline verification
 
@@ -62,4 +62,4 @@ The JS selection gate agrees with 54 JSON-only vectors captured from the establi
 
 ## Remaining rollout work
 
-Runtime installation/QA; measured full-audience size and execution time; permission separation and immutable READY enforcement; production legacy-history normalization; approved release-notice eligibility; operational error/result recording; and a controlled shadow comparison precede a separate production adapter and generator/publisher cutover. Existing Resend dispatch remains the sole delivery owner. These limitations are recorded explicitly so a source implementation is never mistaken for a live migration.
+Remaining runtime QA beyond the passed checks; measured full-audience size and execution time; permission separation and immutable READY enforcement; production legacy-history normalization; approved release-notice eligibility; operational error/result recording; and a controlled shadow comparison precede a separate production adapter and generator/publisher cutover. Existing Resend dispatch remains the sole delivery owner. These limitations are recorded explicitly so a source implementation is never mistaken for a live migration.

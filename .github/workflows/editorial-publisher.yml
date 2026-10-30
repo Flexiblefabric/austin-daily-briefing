@@ -13,6 +13,7 @@ on:
       - 'scripts/build_publisher_e2e_qa.py'
       - 'tests/fixtures/editorial-publisher-e2e.json'
       - 'docs/editorial-publisher-e2e-source-manifest.json'
+      - 'docs/editorial-publisher-e2e-config.json'
       - 'apps-script/SelectionEvidenceContract.gs'
       - 'apps-script/DailyNewsletterContract.gs'
       - 'scripts/daily_newsletter_renderer.js'

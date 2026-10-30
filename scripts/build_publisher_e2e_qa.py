@@ -6,12 +6,18 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
-DATABASE = '1XZCcNUCSkCU68HY9DMgjbyKgQRXDGkVjf0Q3uz1QXrY'
+CONFIG = json.loads((ROOT/'docs/editorial-publisher-e2e-config.json').read_text())
+DATABASE = CONFIG['database']
 ORIGINAL_DEV = '1I9UAR6kabPt0P_lvDiJX_oskPeCVcVI64_vTbwEOF2I'
-EDITION = '2026-10-28'
-CORE_REVISION = 'a1fe5514f362719c0e379ccb2276d7df3492737a'
+EDITION = CONFIG['edition']
+CORE_REVISION = CONFIG['core_revision']
+assert dt.date.fromisoformat(EDITION).isoformat()==EDITION
+assert re.fullmatch(r'[A-Za-z0-9_-]{20,100}',DATABASE)
+assert DATABASE not in [ORIGINAL_DEV,'1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0','1zL3og3MOXgm5LdUF2VfIN4Sh9oFss6NVzAGRa-Zlmho']
+assert re.fullmatch(r'[a-f0-9]{40}',CORE_REVISION)
 SOURCES = ['scripts/daily_newsletter_renderer.js', 'apps-script/DailyNewsletterContract.gs',
            'apps-script/SelectionEvidenceContract.gs', 'apps-script/EditorialPublisher.gs',
            'apps-script/EditorialPublisherDevWorkflow.gs', 'apps-script/EditorialPublisherDevMonitor.gs',
@@ -21,6 +27,8 @@ def package():
     original = subprocess.check_output([sys.executable, str(ROOT/'tests/publisher-fixture.py')], text=True)
     delta = dt.date.fromisoformat(EDITION) - dt.date(2026, 10, 7)
     shifted = re.sub(r'2026-\d{2}-\d{2}', lambda m: (dt.date.fromisoformat(m[0])+delta).isoformat(), original)
+    shifted = re.sub(r'(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})[+-]\d{2}:\d{2}',
+        lambda m: dt.datetime.fromisoformat(m[1]).replace(tzinfo=ZoneInfo('America/Chicago')).isoformat(),shifted)
     result = json.loads(shifted)
     result['source_revision'] = CORE_REVISION
     return result
@@ -48,11 +56,16 @@ def build():
     runner_path = 'apps-script/EditorialPublisherEndToEndRunner.gs'
     runner = (ROOT/runner_path).read_text()
     manifest.append({'path':runner_path,'sha256':hashlib.sha256(runner.encode()).hexdigest()})
+    for placeholder,value in [('__ADB_E2E_DATABASE__',DATABASE),('__ADB_E2E_EDITION__',EDITION),('__ADB_E2E_REVISION__',CORE_REVISION)]:
+        assert placeholder in runner
+        runner = runner.replace(placeholder,value)
     parts.append(runner)
     (ROOT/'apps-script/EditorialPublisherEndToEndQa.gs').write_text('\n'.join(parts))
-    (ROOT/'tests/fixtures/editorial-publisher-e2e.json').write_text(json.dumps(package(),indent=2)+'\n')
+    pkg=package()
+    (ROOT/'tests/fixtures/editorial-publisher-e2e.json').write_text(json.dumps(pkg,indent=2)+'\n')
     (ROOT/'docs/editorial-publisher-e2e-source-manifest.json').write_text(json.dumps({
         'database':DATABASE,'edition':EDITION,'core_revision':CORE_REVISION,
+        'package_sha256':hashlib.sha256(json.dumps(pkg,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest(),
         'transformation':'Replace the monitor DATABASE constant with the isolated E2E ID; delegate the core table reader to a phase-scoped batched Sheets API snapshot and refresh it on every state read. The E2E runner batches its own monitoring reads and verifies publication against fresh state. Publication/selection/rendering logic is unchanged.',
         'sources':manifest},indent=2)+'\n')
 

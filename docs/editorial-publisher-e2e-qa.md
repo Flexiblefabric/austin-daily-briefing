@@ -1,5 +1,10 @@
 # Isolated end-to-end DEV runtime check
 
+Historical October 28 preparation and quota investigation. The current generated
+bundle and fixture are configured for October 30; use
+[the October 30 instructions](editorial-publisher-e2e-2026-10-30.md) for the fresh
+runtime test. Do not install that bundle into the earlier October 28 project.
+
 Prepared October 28, 2026. Runtime execution is pending. The new workbook is:
 https://docs.google.com/spreadsheets/d/1XZCcNUCSkCU68HY9DMgjbyKgQRXDGkVjf0Q3uz1QXrY/edit
 

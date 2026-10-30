@@ -1,7 +1,8 @@
 {
-  "database": "1XZCcNUCSkCU68HY9DMgjbyKgQRXDGkVjf0Q3uz1QXrY",
-  "edition": "2026-10-28",
+  "database": "1K5iBARfGpUGdM-fKWdZANXjpsyuPcAaa-oVPy8RDNd0",
+  "edition": "2026-10-30",
   "core_revision": "a1fe5514f362719c0e379ccb2276d7df3492737a",
+  "package_sha256": "1ef0368ef0fe2358e1755467c0914e212c9793741992a145fa950dab835ca048",
   "transformation": "Replace the monitor DATABASE constant with the isolated E2E ID; delegate the core table reader to a phase-scoped batched Sheets API snapshot and refresh it on every state read. The E2E runner batches its own monitoring reads and verifies publication against fresh state. Publication/selection/rendering logic is unchanged.",
   "sources": [
     {
@@ -34,7 +35,7 @@
     },
     {
       "path": "apps-script/EditorialPublisherEndToEndRunner.gs",
-      "sha256": "1c8d74eab77a2ab37da710bb7ce63c71cc798199f9dc12d6e4be5c1f79c27579"
+      "sha256": "43d5b9963ea3e31900bc433be6aefd464f1cd9cb52bce5b9744bd457c991765c"
     }
   ]
 }

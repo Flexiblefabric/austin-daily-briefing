@@ -23,8 +23,8 @@ function harness(failure,options={}){
  add(M.STATE,[M.STATE_HEADERS,['unrelated QA checkpoint']]);add(M.EVENTS,[M.EVENT_HEADERS]);
  c.PropertiesService={getScriptProperties:()=>({getProperty:key=>key===C.DEV_ID_PROPERTY?dbId:key===C.REVISION_PROPERTY?sourcePin:null,setProperties:(values,remove)=>{assert.equal(remove,false);assert.equal(values.ADB_PUBLISHER_DEV_DATABASE_ID,M.DATABASE);propertyWrites++;dbId=values.ADB_PUBLISHER_DEV_DATABASE_ID;sourcePin=values.ADB_PUBLISHER_SOURCE_REVISION;}})};
  const book={getId:()=>options.activeId||M.DATABASE,getSheetByName:name=>{if(options.forbidSpreadsheetReads)throw Error('Cached SpreadsheetApp values forbidden');const s=sheets.get(name);return s?{getSheetId:()=>s.id,getDataRange:()=>({getDisplayValues:()=>clone(s.values)})}:null;}};
- c.SpreadsheetApp={getActiveSpreadsheet:()=>book,openById:id=>{assert.equal(id,M.DATABASE);return book;}};
- c.ScriptApp={getProjectTriggers:()=>[]};c.Logger={log:value=>logs.push(JSON.parse(value))};
+ c.SpreadsheetApp={getActiveSpreadsheet:()=>options.standalone?null:book,openById:id=>{assert.equal(id,M.DATABASE);return book;}};
+ c.ScriptApp={getProjectTriggers:()=>options.triggers||[]};c.Logger={log:value=>logs.push(JSON.parse(value))};
  c.LockService={getScriptLock:()=>({waitLock:()=>{assert.equal(locked,false,'nested ScriptLock acquisition');locked=true;},releaseLock:()=>{assert(locked);locked=false;}})};
  c.Date=class extends Date{constructor(...args){super(...(args.length?args:[Date.parse(pkg.edition_date+'T13:01:00.000Z')+ticks++]));}};
  c.Utilities={DigestAlgorithm:{SHA_256:'sha256'},Charset:{UTF_8:'utf8'},computeDigest:(a,s)=>Array.from(crypto.createHash('sha256').update(s).digest()),formatDate:()=>options.currentDate||pkg.edition_date,newBlob:s=>({getBytes:()=>Buffer.from(s)})};
@@ -94,8 +94,8 @@ test('monitor namespaces are fixed and unsupported purpose cannot redirect write
  const c=runtime();assert.equal(c.adbDevMonitorConfig_('publisher').STATE,'DEV Publisher State');assert.equal(c.adbDevMonitorConfig_().STATE,'DEV Monitor State');
  assert.throws(()=>c.adbDevMonitorConfig_('production'),/namespace/);
 });
-function e2eOptions(extra={}){const pkg=JSON.parse(fs.readFileSync('tests/fixtures/editorial-publisher-e2e.json','utf8'));return {bundle:fs.readFileSync('apps-script/EditorialPublisherEndToEndQa.gs','utf8'),pkg,packageId:'E2E-'+pkg.edition_date,email:'publisher-qa@example.invalid',blankProperties:true,forbidSpreadsheetReads:true,readLimit:60,...extra};}
-test('generated single-file E2E bundle boots a blank bound project, commits once and reconciles lost monitor response',()=>{
+function e2eOptions(extra={}){const pkg=JSON.parse(fs.readFileSync('tests/fixtures/editorial-publisher-e2e.json','utf8'));return {bundle:fs.readFileSync('apps-script/EditorialPublisherEndToEndQa.gs','utf8'),pkg,packageId:'E2E-'+pkg.edition_date,email:'publisher-qa@example.invalid',blankProperties:true,standalone:true,forbidSpreadsheetReads:true,readLimit:60,...extra};}
+test('generated single-file E2E bundle boots a blank standalone project, commits once and reconciles lost monitor response',()=>{
  const h=harness(undefined,e2eOptions());h.c.runPublisherDevEndToEndQaV1();
  assert.equal(h.logs[0].result,'PASS');assert.equal(h.logs[0].lostMonitorResponseInjected,true);
  assert.deepEqual(h.logs[0].publicationResults,['COMMITTED','ALREADY_COMMITTED']);assert.equal(h.logs[0].monitorEvents,2);
@@ -121,11 +121,21 @@ test('batched snapshots still detect preferences changed between initial plan an
  assert.throws(()=>h.c.runPublisherDevEndToEndQaV1(),/database changed during validation/);
  assert.equal(h.counts().targetWrites,0);assert.equal(h.sheets.get('Outbound Messages').values.length,1);
 });
-test('generated E2E bundle rejects the original DEV or production project before setup',()=>{
- for(const activeId of ['1I9UAR6kabPt0P_lvDiJX_oskPeCVcVI64_vTbwEOF2I','1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0','1XZCcNUCSkCU68HY9DMgjbyKgQRXDGkVjf0Q3uz1QXrY']){
-   const h=harness(undefined,e2eOptions({activeId}));assert.throws(()=>h.c.runPublisherDevEndToEndQaV1(),/bound to the isolated/);
-   assert.equal(h.counts().targetWrites,0);assert.equal(h.counts().monitorWrites,0);
+test('generated E2E bundle rejects all bound projects including a copied script attached to the correct sandbox',()=>{
+ const config=JSON.parse(fs.readFileSync('docs/editorial-publisher-e2e-config.json','utf8'));
+ for(const activeId of ['1I9UAR6kabPt0P_lvDiJX_oskPeCVcVI64_vTbwEOF2I','1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0','1XZCcNUCSkCU68HY9DMgjbyKgQRXDGkVjf0Q3uz1QXrY',config.database]){
+   const h=harness(undefined,e2eOptions({activeId,standalone:false}));assert.throws(()=>h.c.runPublisherDevEndToEndQaV1(),/new standalone E2E project/);
+   assert.equal(h.counts().targetWrites,0);assert.equal(h.counts().monitorWrites,0);assert.equal(h.propertyWrites(),0);
  }
+});
+test('standalone E2E rejects existing configuration, dispatcher code and triggers before writes',()=>{
+ const existing=harness(undefined,e2eOptions());existing.setDb('existing-dev-id');
+ assert.throws(()=>existing.c.runPublisherDevEndToEndQaV1(),/configuration must not be overwritten/);
+ assert.equal(existing.propertyWrites(),0);assert.equal(existing.reads(),0);
+ const triggered=harness(undefined,e2eOptions({triggers:[{}]}));
+ assert.throws(()=>triggered.c.runPublisherDevEndToEndQaV1(),/must have no triggers/);assert.equal(triggered.propertyWrites(),0);
+ const dispatcher=harness(undefined,e2eOptions());vm.runInContext('function dispatchQueuedDailyBriefingsViaResendV1(){}',dispatcher.c);
+ assert.throws(()=>dispatcher.c.runPublisherDevEndToEndQaV1(),/dispatcher project forbidden/);assert.equal(dispatcher.propertyWrites(),0);
 });
 test('generated E2E bundle source manifest and core source pin match the reviewed sources',()=>{
  const manifest=JSON.parse(fs.readFileSync('docs/editorial-publisher-e2e-source-manifest.json','utf8'));

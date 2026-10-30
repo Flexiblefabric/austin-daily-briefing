@@ -84,7 +84,7 @@ function runPublisherDevEndToEndQaV1() {
   const R=adbDevWorkflowRequire_,id=ADB_E2E_RUN_CONFIG.database;
   const revision=ADB_E2E_RUN_CONFIG.revision;
   const active=SpreadsheetApp.getActiveSpreadsheet();
-  R(active && active.getId()===id && ADB_DEV_MONITOR.DATABASE===id,'use only the project bound to the isolated E2E workbook');
+  R(!active && ADB_DEV_MONITOR.DATABASE===id,'use a new standalone E2E project; bound projects are not supported');
   R(typeof dispatchQueuedDailyBriefingsViaResendV1==='undefined','dispatcher project forbidden');
   R(ScriptApp.getProjectTriggers().length===0,'E2E project must have no triggers');
   R(typeof Sheets!=='undefined' && Sheets.Spreadsheets,'Advanced Sheets service required');
@@ -130,7 +130,7 @@ function runPublisherDevEndToEndQaV1() {
   R(adbPublisherCanonical_(counts)==='[1,6,1]' && snapshot.events.length===2 && monitor.status==='Healthy' &&
     !monitor.incident && snapshot.events.every(r=>r[3]==='null'),'unexpected E2E target/monitor results');
   if(initial===0)R(injected && outcomes[0]==='COMMITTED','fresh test did not commit');
-  Logger.log(JSON.stringify({result:'PASS',build:'ADB-PUBLISHER-E2E-DEV-0.3',
+  Logger.log(JSON.stringify({result:'PASS',build:'ADB-PUBLISHER-E2E-DEV-0.4',
     scope:'isolated synthetic E2E workbook only',publicationResults:outcomes,
     queueRows:1,historyRows:6,ledgerRows:1,monitorEvents:2,monitorStatus:monitor.status,
     lostMonitorResponseInjected:injected,exactReplay:true,productionWrites:false,emails:false,

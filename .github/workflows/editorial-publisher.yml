@@ -1,0 +1,58 @@
+name: Editorial publisher DEV checks
+on:
+  pull_request:
+    paths:
+      - 'apps-script/EditorialPublisher.gs'
+      - 'apps-script/EditorialPublisherProdPreflight.gs'
+      - 'apps-script/EditorialPublisherBatchQa.gs'
+      - 'apps-script/EditorialPublisherDevWorkflow.gs'
+      - 'apps-script/EditorialPublisherDevHandoff.gs'
+      - 'apps-script/EditorialPublisherDevReviewHost.gs'
+      - 'apps-script/EditorialPublisherDevReviewSetup.gs'
+      - 'apps-script/EditorialPublisherDevReviewBundle.gs'
+      - 'apps-script/EditorialPublisherDevReview.html'
+      - 'scripts/build_publisher_dev_review.py'
+      - 'apps-script/EditorialPublisherDevMonitor.gs'
+      - 'apps-script/EditorialPublisherDevIntegration.gs'
+      - 'apps-script/EditorialPublisherEndToEndRunner.gs'
+      - 'apps-script/EditorialPublisherEndToEndQa.gs'
+      - 'scripts/build_publisher_e2e_qa.py'
+      - 'tests/fixtures/editorial-publisher-e2e.json'
+      - 'docs/editorial-publisher-e2e-source-manifest.json'
+      - 'docs/editorial-publisher-e2e-config.json'
+      - 'apps-script/SelectionEvidenceContract.gs'
+      - 'apps-script/DailyNewsletterContract.gs'
+      - 'scripts/daily_newsletter_renderer.js'
+      - 'scripts/validate_selection_notes.py'
+      - 'scripts/test_selection_notes.py'
+      - 'tests/*publisher*'
+      - 'tests/selection-*'
+      - 'docs/editorial-handoff.schema.json'
+      - '.github/workflows/editorial-publisher.yml'
+permissions:
+  contents: read
+jobs:
+  dev-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify generated isolated E2E bundle
+        run: |
+          python scripts/build_publisher_e2e_qa.py
+          git diff --exit-code -- apps-script/EditorialPublisherEndToEndQa.gs tests/fixtures/editorial-publisher-e2e.json docs/editorial-publisher-e2e-source-manifest.json
+      - name: Verify generated review-only bundle
+        run: |
+          python scripts/build_publisher_dev_review.py
+          git diff --exit-code -- apps-script/EditorialPublisherDevReviewBundle.gs
+      - name: Publisher and evidence parity
+        run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js tests/editorial-publisher-prod-preflight.test.js tests/editorial-publisher-dev-workflow.test.js tests/editorial-publisher-dev-monitor.test.js tests/editorial-publisher-dev-integration.test.js tests/editorial-publisher-dev-handoff.test.js tests/editorial-publisher-dev-review-host.test.js tests/editorial-publisher-dev-review-ui.test.js
+      - name: Established selection evidence suite
+        run: python -m unittest discover -s scripts -p test_selection_notes.py
+      - name: Validate schema JSON
+        run: python -m json.tool docs/editorial-handoff.schema.json > /dev/null

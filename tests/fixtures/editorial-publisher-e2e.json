@@ -1,0 +1,198 @@
+{
+  "schema": "ADB-EDITORIAL-HANDOFF-1",
+  "edition_date": "2026-10-30",
+  "source_revision": "a1fe5514f362719c0e379ccb2276d7df3492737a",
+  "expected_profile_count": 1,
+  "editions": [
+    {
+      "profile_id": "SYNTHETIC",
+      "editorial": {
+        "date": "2026-10-30",
+        "preheader": "Controlled rendering fixture \u2014 not a live briefing.",
+        "pulse": "A local decision and a transit update lead the day; readers can also plan for an upcoming meeting.",
+        "weather": {
+          "summary": "Partly cloudy with an afternoon chance of rain.",
+          "high": 89,
+          "low": 70,
+          "url": "https://forecast.weather.gov/"
+        },
+        "featured": {
+          "headline": "Sample city budget decision for controlled rendering",
+          "metadata": "AUSTIN \u00b7 GOVERNMENT",
+          "summary": "This is a synthetic editorial test, not a current news item.",
+          "why": "The sample demonstrates a consequence box under the approved headline hierarchy.",
+          "sources": [
+            {
+              "publisher": "City of Austin",
+              "url": "https://www.austintexas.gov/"
+            }
+          ]
+        },
+        "topStories": [
+          {
+            "headline": "Transit sample confirms story presentation",
+            "metadata": "AUSTIN \u00b7 TRANSPORTATION",
+            "summary": "A second synthetic story exercises the standard item component.",
+            "why": "Readers need context distinguishing the policy from practical effects.",
+            "sources": [
+              {
+                "publisher": "KUT",
+                "url": "https://www.kut.org/"
+              }
+            ]
+          },
+          {
+            "headline": "Public meeting sample exercises source attribution",
+            "summary": "A third synthetic example provides another independent source area.",
+            "why": "The example allows a source-link style check.",
+            "sources": [
+              {
+                "publisher": "Travis County",
+                "url": "https://www.traviscountytx.gov/"
+              }
+            ]
+          }
+        ],
+        "moreForYou": [
+          {
+            "headline": "Science and technology personalized sample",
+            "summary": "A sample selected under reader interests.",
+            "why": "This is only controlled QA content.",
+            "sources": [
+              {
+                "publisher": "UT News",
+                "url": "https://news.utexas.edu/"
+              }
+            ]
+          }
+        ],
+        "austinAhead": [
+          {
+            "action": "WATCH",
+            "when": "THURSDAY, 9 AM",
+            "title": "Sample public meeting",
+            "description": "Check the public agenda before attending.",
+            "organizer": "City of Austin",
+            "url": "https://www.austintexas.gov/"
+          },
+          {
+            "action": "PLAN",
+            "when": "MONDAY, 10 AM",
+            "title": "Sample registration deadline",
+            "organizer": "City of Austin",
+            "url": "https://www.austintexas.gov/council/meetings"
+          }
+        ],
+        "footer": {
+          "manageUrl": "https://example.org/manage",
+          "feedbackUrl": "https://docs.google.com/forms/d/e/1FAIpQLSc_0-djww4qboFaEn9k-nEponrCBBqz-MCB81sOUtLjVsOZ7w/viewform"
+        }
+      },
+      "bindings": [
+        {
+          "section": "Featured Top Story",
+          "index": 0,
+          "key": "fixture-0",
+          "category": "Synthetic QA"
+        },
+        {
+          "section": "Top Story",
+          "index": 0,
+          "key": "fixture-1",
+          "category": "Synthetic QA"
+        },
+        {
+          "section": "Top Story",
+          "index": 1,
+          "key": "fixture-2",
+          "category": "Synthetic QA"
+        },
+        {
+          "section": "More for You",
+          "index": 0,
+          "key": "fixture-3",
+          "category": "Synthetic QA"
+        },
+        {
+          "section": "Austin Ahead",
+          "index": 0,
+          "key": "fixture-4",
+          "category": "Synthetic QA"
+        },
+        {
+          "section": "Austin Ahead",
+          "index": 1,
+          "key": "fixture-5",
+          "category": "Synthetic QA"
+        }
+      ]
+    }
+  ],
+  "selection_bundle": {
+    "run_id": "2026-10-30-publisher-v1",
+    "cutoff": "2026-10-30T08:00:00-05:00",
+    "history_complete": true,
+    "history_window_start": "2026-10-16",
+    "published_history": [],
+    "profiles": {
+      "SYNTHETIC": {
+        "volume": "Standard",
+        "summary_style": "Standard",
+        "why_it_matters_length": "Standard",
+        "preferences": {
+          "TEST_INTEREST": "Normal"
+        }
+      }
+    },
+    "rows": [
+      {
+        "profile_id": "SYNTHETIC",
+        "section": "Featured Top Story",
+        "key": "fixture-0",
+        "material_update": false,
+        "source_url": "https://www.austintexas.gov/",
+        "notes": "ADB-SELECTION-NOTE-1 {\"schema\":\"ADB-SELECTION-NOTE-1\",\"production_spec\":\"ADB-DAILY-PROD-2.0\",\"selection_spec\":\"ADB-V2-SELECT-1.0\",\"run_id\":\"2026-10-30-publisher-v1\",\"cutoff\":\"2026-10-30T08:00:00-05:00\",\"candidate\":{\"key\":\"fixture-0\",\"topic\":\"fixture-0\",\"lane\":\"top\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://www.austintexas.gov/\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":[16,16,12,12,8,8,8],\"total\":80,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"]},\"context\":{\"volume\":\"Standard\",\"shared_weights\":[20,20,15,15,10,10,10],\"mfy_weights\":[25,25,20,10,10,10],\"history_window_start\":\"2026-10-16\",\"top\":{\"complete_eligible_pool\":true,\"ranked\":[{\"key\":\"fixture-0\",\"topic\":\"fixture-0\",\"lane\":\"top\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://www.austintexas.gov/\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":[16,16,12,12,8,8,8],\"total\":80,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"]},{\"key\":\"fixture-1\",\"topic\":\"fixture-1\",\"lane\":\"top\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://www.kut.org/\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":[16,16,12,12,8,8,8],\"total\":80,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"]},{\"key\":\"fixture-2\",\"topic\":\"fixture-2\",\"lane\":\"top\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://www.traviscountytx.gov/\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":[16,16,12,12,8,8,8],\"total\":80,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"]}],\"slots\":3,\"capacity_reason\":\"Standard volume; only useful eligible items included.\",\"control_status\":\"none\",\"decisions\":[]},\"mfy\":{\"complete_eligible_pool\":true,\"ranked\":[{\"key\":\"fixture-3\",\"topic\":\"fixture-3\",\"lane\":\"mfy\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://news.utexas.edu/\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":[20,22,16,8,8,6],\"total\":80,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"],\"fit\":{\"interest_id\":\"TEST_INTEREST\",\"saved_preference\":\"Normal\",\"match\":\"direct_normal\",\"source_feature\":\"A usable service guide with concrete instructions.\",\"reader_payoff\":\"Readers can use the service immediately.\",\"catalog_scope\":\"Synthetic enabled interest scope.\",\"off_topic_relabel\":false}}],\"slots\":1,\"capacity_reason\":\"Standard volume; only useful eligible items included.\",\"control_status\":\"none\",\"decisions\":[]},\"rejected\":[],\"utr_search\":{\"independent\":true,\"outcome\":\"none_qualified\",\"reason\":\"Synthetic search found no consequential overlooked development.\",\"checks\":[{\"query_or_path\":\"Synthetic agenda review\",\"finding\":\"Only procedural approvals in this fixture.\",\"source\":{\"url\":\"https://example.org/record\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}}]}}}"
+      },
+      {
+        "profile_id": "SYNTHETIC",
+        "section": "Top Story",
+        "key": "fixture-1",
+        "material_update": false,
+        "source_url": "https://www.kut.org/",
+        "notes": "ADB-SELECTION-NOTE-1 {\"schema\":\"ADB-SELECTION-NOTE-1\",\"production_spec\":\"ADB-DAILY-PROD-2.0\",\"selection_spec\":\"ADB-V2-SELECT-1.0\",\"run_id\":\"2026-10-30-publisher-v1\",\"cutoff\":\"2026-10-30T08:00:00-05:00\",\"candidate\":{\"key\":\"fixture-1\",\"topic\":\"fixture-1\",\"lane\":\"top\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://www.kut.org/\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":[16,16,12,12,8,8,8],\"total\":80,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"]}}"
+      },
+      {
+        "profile_id": "SYNTHETIC",
+        "section": "Top Story",
+        "key": "fixture-2",
+        "material_update": false,
+        "source_url": "https://www.traviscountytx.gov/",
+        "notes": "ADB-SELECTION-NOTE-1 {\"schema\":\"ADB-SELECTION-NOTE-1\",\"production_spec\":\"ADB-DAILY-PROD-2.0\",\"selection_spec\":\"ADB-V2-SELECT-1.0\",\"run_id\":\"2026-10-30-publisher-v1\",\"cutoff\":\"2026-10-30T08:00:00-05:00\",\"candidate\":{\"key\":\"fixture-2\",\"topic\":\"fixture-2\",\"lane\":\"top\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://www.traviscountytx.gov/\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":[16,16,12,12,8,8,8],\"total\":80,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"]}}"
+      },
+      {
+        "profile_id": "SYNTHETIC",
+        "section": "More for You",
+        "key": "fixture-3",
+        "material_update": false,
+        "source_url": "https://news.utexas.edu/",
+        "notes": "ADB-SELECTION-NOTE-1 {\"schema\":\"ADB-SELECTION-NOTE-1\",\"production_spec\":\"ADB-DAILY-PROD-2.0\",\"selection_spec\":\"ADB-V2-SELECT-1.0\",\"run_id\":\"2026-10-30-publisher-v1\",\"cutoff\":\"2026-10-30T08:00:00-05:00\",\"candidate\":{\"key\":\"fixture-3\",\"topic\":\"fixture-3\",\"lane\":\"mfy\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://news.utexas.edu/\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":[20,22,16,8,8,6],\"total\":80,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"],\"fit\":{\"interest_id\":\"TEST_INTEREST\",\"saved_preference\":\"Normal\",\"match\":\"direct_normal\",\"source_feature\":\"A usable service guide with concrete instructions.\",\"reader_payoff\":\"Readers can use the service immediately.\",\"catalog_scope\":\"Synthetic enabled interest scope.\",\"off_topic_relabel\":false}}}"
+      },
+      {
+        "profile_id": "SYNTHETIC",
+        "section": "Austin Ahead",
+        "key": "fixture-4",
+        "material_update": false,
+        "source_url": "https://www.austintexas.gov/",
+        "notes": "ADB-SELECTION-NOTE-1 {\"schema\":\"ADB-SELECTION-NOTE-1\",\"production_spec\":\"ADB-DAILY-PROD-2.0\",\"selection_spec\":\"ADB-V2-SELECT-1.0\",\"run_id\":\"2026-10-30-publisher-v1\",\"cutoff\":\"2026-10-30T08:00:00-05:00\",\"candidate\":{\"key\":\"fixture-4\",\"topic\":\"fixture-4\",\"lane\":\"utility\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://www.austintexas.gov/\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":null,\"total\":null,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"]}}"
+      },
+      {
+        "profile_id": "SYNTHETIC",
+        "section": "Austin Ahead",
+        "key": "fixture-5",
+        "material_update": false,
+        "source_url": "https://www.austintexas.gov/council/meetings",
+        "notes": "ADB-SELECTION-NOTE-1 {\"schema\":\"ADB-SELECTION-NOTE-1\",\"production_spec\":\"ADB-DAILY-PROD-2.0\",\"selection_spec\":\"ADB-V2-SELECT-1.0\",\"run_id\":\"2026-10-30-publisher-v1\",\"cutoff\":\"2026-10-30T08:00:00-05:00\",\"candidate\":{\"key\":\"fixture-5\",\"topic\":\"fixture-5\",\"lane\":\"utility\",\"fact\":\"A newly published decision adds a service.\",\"procedural_status\":\"adopted\",\"placement_reason\":\"A concrete decision readers can act on.\",\"event_timing\":\"completed\",\"sources\":[{\"url\":\"https://www.austintexas.gov/council/meetings\",\"access\":\"read\",\"accessed_at\":\"2026-10-30T07:30:00-05:00\",\"published_at\":\"2026-10-29T15:00:00-05:00\",\"locator\":\"Page 2, decision paragraph\"}],\"gates\":{\"source\":true,\"fit\":true,\"repeat\":true,\"section\":true},\"history\":{\"key_checked\":true,\"topic_checked\":true,\"search_reason\":\"Searched aliases and prior service coverage in delivered history.\",\"material_update\":false,\"prior\":[]},\"scores\":null,\"total\":null,\"score_reasons\":[\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\",\"The source establishes a specific benefit for this component.\"]}}"
+      }
+    ]
+  }
+}

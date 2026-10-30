@@ -1,0 +1,81 @@
+# Option A — editorial handoff and deterministic publisher
+
+Status as of October 30, 2026, America/Chicago: **phases 1–2 implemented and end-to-end validated in DEV. Standalone E2E build 0.4 passed in Apps Script with independent readback; 113 local tests passed. Production cutover has not occurred.**
+
+Private DEV workbook: https://docs.google.com/spreadsheets/d/1I9UAR6kabPt0P_lvDiJX_oskPeCVcVI64_vTbwEOF2I/edit?usp=drivesdk
+
+The initial source baseline was `57f028105dd9450b95c519ee33ef8d3382c98b77`; the reviewed DEV 0.2 core-logic pin is `a1fe5514f362719c0e379ccb2276d7df3492737a`. DEV workbooks contain synthetic fixtures and retained committed QA evidence, not real subscribers. Production generation, its scheduler prompt and operational records remain unchanged. See [October 30 runtime evidence](editorial-publisher-e2e-2026-10-30.md) and the [proposed rollout/access design](editorial-publisher-rollout-design.md).
+
+## Phase 1: editorial handoff
+
+`editorial-handoff.schema.json` defines `ADB-EDITORIAL-HANDOFF-1`. One package covers one Chicago edition date and its entire eligible audience. Editorial generation supplies approved structured articles, per-profile editorial payloads, selection evidence, personalization snapshots, a verified source revision and an expected profile count. It supplies no queue status, provider IDs, operational timestamps, HTML/plain-text payloads, positional row arrays or message identifiers. Source-access timestamps and editorial cutoff remain part of the editorial evidence.
+
+The writer derives run ID `YYYY-MM-DD-publisher-v1`, unique edition key `daily:YYYY-MM-DD`, and message ID `DAILY-LIVE:[Profile ID]:[Run ID]`. `selection_bundle.run_id` must match that derived run. `editions[].bindings` maps every rendered section/index to exactly one selection-evidence key and editorial category; no unseen history rows or untracked rendered items are allowed. Source destinations must match the evidence. Only More for You may vary among profile editions; the shared core must be identical.
+
+Personalization is checked against saved DEV data immediately before commit, including volume, topic preferences, summary style and Why It Matters length. Mechanical checks establish the snapshot and selection rules; editorial review still decides whether prose reflects the intended depth and whether source claims are true. The package's `published_history` must exactly match the writer's independently read normalized Sent history. Legacy history without structured facts fails closed and needs an explicit migration decision before production support.
+
+All editorial envelopes are JSON-only at handoff. The writer serializes them and appends exactly ` Awaiting Resend dispatcher delivery.`. Caller-provided delivery prose is rejected. This removes the October 27 missing-suffix failure mode. Queue `Queued`, history `Pending`, fixed schemas and transport template `DAILY_BRIEFING_V1` are constants.
+
+### Private staging layout
+
+`Packages` uses `Package ID | State | Chunk Count | Package SHA-256`.
+`Package Chunks` uses `Package ID | Sequence | JSON`.
+
+Keep JSON chunks below 40,000 characters each, numbered consecutively from 1. The digest is SHA-256 over `adbPublisherCanonical_(JSON.parse(joinedChunks))`, UTF-8 encoded; object keys are sorted recursively and array order is preserved. A sealed READY manifest must match the package bytes both before validation and immediately before the target commit. Missing/duplicated chunks, changed digests and duplicate manifests block publication.
+
+Drafting identity owns only DRAFT input. Before enabling a polling workflow, a distinct operator/publisher identity must seal READY packages and enforce write restrictions for READY manifests/chunks and all operational tables. A digest detects edits but is not an access-control boundary when one identity can edit both payload and digest. The current private, owner-only DEV workbook does not claim that production permission separation has been implemented. No automatic READY transition or polling trigger is installed in phases 1–2.
+
+The zero-recipient path returns `NO_ELIGIBLE_PROFILES` with no queue/history/ledger write and requires empty profile/row evidence. It does not invent a context carrier or send an email.
+
+## Phase 2: writer implementation
+
+`apps-script/EditorialPublisher.gs` exposes `publishReadyEditorialPackageDevV1(packageId)`. It uses the existing pure JS renderer, the independently approved `DailyNewsletterContract.gs` payload validator and a JS evidence gate in `SelectionEvidenceContract.gs`. It validates the whole proposed audience and all content before writing anything.
+
+The writer rejects schema drift, duplicate or ambiguous subscriber/profile identities, Admin Status other than OK, missing/inactive daily template, stale source revision, stale date, changed preferences/history, Off-topic MFY, score or material-update violations, missing UTR research, and mismatched rendered/history bindings. New release notices remain blocked until their distinct eligibility policy is implemented; do not bypass that gate by putting notices in another field.
+
+One target Sheets `batchUpdate` appends queue, history and the publisher ledger together. Values use typed `stringValue`/`numberValue`, so leading `=` is data rather than a formula. The request is measured in UTF-8 bytes and rejected at 1.8 MB; never split a package into partial commits to evade this bound. The target ledger is the completion authority: a timeout after a successful commit can be reconciled by rerunning the same package. Exact replay returns `ALREADY_COMMITTED`; another digest for the same edition or a partial prior state blocks without repair or append. Readback checks persisted payloads, identities and exact evidence.
+
+The Apps Script lock coordinates this publisher project. It does not isolate other Apps Script projects or human edits. Fresh eligibility/schema/data reads reduce races; Sheets does not provide a transactional compare-and-swap for those reads. Production promotion needs a single writer owner, coordinated locks where possible, protected operational ranges and the existing dispatcher eligibility recheck. DEV has external delivery disabled and this module has no mail/provider API or trigger installer.
+
+### Historical installation procedure — DEV runtime QA now complete
+
+The steps below document the original isolated module installation. They are not a request to rerun old fixtures or paste the all-in-one E2E bundle into a project with these modules. The later standalone E2E run passed on October 30; no further manual run is needed for that milestone.
+
+1. Review the source change, then install the exact reviewed versions of `EditorialPublisher.gs`, `SelectionEvidenceContract.gs`, `DailyNewsletterContract.gs`, and `scripts/daily_newsletter_renderer.js` (as an Apps Script `.gs` file) in an isolated DEV project.
+2. Enable the Advanced Sheets service. Set `ADB_PUBLISHER_DEV_DATABASE_ID` to the private publisher sandbox ID above and `ADB_PUBLISHER_SOURCE_REVISION` to the reviewed source commit. These are configuration names, not secrets. Never target either production workbook. Verify environment DEVELOPMENT and external delivery FALSE.
+3. Use synthetic reserved-domain identities only. Seed matching Subscribers, Profiles, Preferences and Active DEVELOPMENT template. Keep production data out of this workbook. Read the fixture generator for package shape; generate a fresh-date synthetic package, never a live-news issue from fixtures.
+4. Verify source digests and Apps Script V8 support, including `Intl` Chicago offset handling. Stage DRAFT chunks; seal a READY manifest using the canonical digest. Run the DEV entry point manually. Inspect one atomic queue/history/ledger result and readback, then replay and require zero additional rows.
+5. Test changed package rejection, missing chunk, blocked schema, paused/held recipient, changed personalization, size limit and simulated interrupted response. Record actual runtime evidence separately from offline test results.
+
+The connected Drive tools do not install or execute Apps Script source. The operator installed the reviewed files and ran the setup, commit/replay and rejection functions in Apps Script. Live workbook readback confirms the committed synthetic records and matching package digest. See [October 28 runtime evidence](editorial-publisher-dev-runtime-2026-10-28.md). Size-limit, concurrency, permission, and broader rollout checks remain open. No production scheduler/prompt change, production deployment, trigger, permission cutover or message send was performed.
+
+## Offline verification
+
+Run from repository root:
+
+```sh
+node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js
+python -m unittest discover -s scripts -p test_selection_notes.py
+```
+
+The publisher suite covers deterministic payload/schema construction, note suffixes, readback corruption, exact replay, changed-package conflict, partial state, source/audience/preferences/history/schema gates, zero recipients and a functional Apps Script adapter mock. The mock exercises a single atomic request plus successful-response and lost-response reconciliation. It is not a live Google Apps Script test.
+
+The JS selection gate agrees with 54 JSON-only vectors captured from the established Python selection regression suite. Two deliberate format distinctions are excluded: transport-suffixed notes are invalid as handoff input, and JavaScript/JSON Schema treat mathematically integral numbers as integers even if their original JSON spelling used `.0`; Python distinguishes integer and float runtime types. No live evidence was backfilled and no failed production edition was replayed.
+
+## Real-edition retrospective comparison
+
+October 28: all 12 archived HTML/plain-text pairs reproduced exactly, and all 145 rendered items were bound to saved history. The full selection gate and pure publisher plan were blocked by invalid shared-story repeat provenance (exact fact, lane scope and stable topic binding). A further history-format difference affects the 36 Austin Ahead headlines. See [the read-only comparison report](editorial-publisher-real-edition-shadow-2026-10-28.md). Synthetic QA results remain valid, but they do not clear these real-content gates.
+
+## DEV 0.2 correction prepared
+
+The exact-prior construction helper and actionable binding errors are implemented in SelectionEvidenceContract.gs. EditorialPublisher.gs now preserves `ACTION · WHEN · TITLE` for Austin Ahead history; all 36 archived history titles match. See [future handoff authoring](editorial-handoff-authoring.md). 78 Node checks passed, including a fresh valid synthetic handoff. The original real-edition package remains blocked; no delivered records were repaired. DEV 0.2 is installed and its six-check pure runtime QA passed at 11:27 CT. A new corrected real-input retrospective proposal then passed the planner for 12 profiles and 145 history rows, with exact payload/history-title parity and approximately 1.05 MB typed request size. The proposal remained private, unsealed and unsubmitted; see the updated runtime evidence.
+
+## Production preflight foundation prepared
+
+A standalone, read-only production preflight and production normalization helpers are prepared in EditorialPublisherProdPreflight.gs; 24 local tests passed. The audit identified Active=TRUE template flags, a canonical/mirrored Preferences profile ID and 3,155 older unstructured Sent rows. Scoped history normalization preserves the recent news lookup while blocking unresolved extended-resource history. See [production adapter/release gates](editorial-publisher-production-gates.md). The source has no production commit function, sends or trigger creation. Its October 28 production Apps Script inspection completed with expected BLOCKED status: dispatcher/layout checks passed, while production staging/ledger/adapter/monitoring and access evidence remain unresolved. No production settings or operational rows were changed by the inspection.
+
+## Remaining rollout work
+
+DEV staging, publisher, monitoring persistence and end-to-end replay now have runtime evidence. Production release still needs an actual drafting capability boundary; private draft/sealed staging; an explicit production writer and monitoring adapter; zero-audience monitoring; abandoned-attempt reconciliation; durable retention; fresh real-input shadow evidence; and an approved controlled cutover. Existing Resend dispatch remains the sole delivery owner.
+
+The [rollout/access design](editorial-publisher-rollout-design.md) proposes two handoff files and describes supervised-pilot versus unattended-runtime paths. That operating-mode choice is not yet adopted. A supervised pilot does not automatically clear permission gates. No new account, OAuth scope, sharing rule, global connector setting, task schedule or production property was changed.

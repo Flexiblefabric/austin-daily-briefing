@@ -1,0 +1,53 @@
+<!doctype html>
+<html><head><base target="_top"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+:root{font:16px system-ui,sans-serif;color:#183044;background:#f4f6f8}body{max-width:1080px;margin:auto;padding:24px}h1{margin-bottom:6px}p{line-height:1.5}label{display:block;margin:16px 0 8px}input,button,select{font:inherit;padding:10px;border:1px solid #9cabb7;border-radius:6px}button{cursor:pointer;background:#143e53;color:white}button:disabled{opacity:.45;cursor:default}section{background:white;padding:20px;margin:20px 0;border-radius:10px;border:1px solid #d9e0e5}#status{padding:12px;border-left:4px solid #36788f;white-space:pre-wrap}#metadata{white-space:pre-wrap;overflow-wrap:anywhere}iframe{width:100%;height:680px;border:1px solid #d9e0e5;background:white}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}details{margin:16px 0}input[type=checkbox]{margin-right:10px}#approval label{line-height:1.6}small{color:#526878}@media(max-width:600px){body{padding:12px}section{padding:12px}iframe{height:560px}}
+</style></head><body>
+<h1>Editorial review <small>DEV</small></h1>
+<p>Review the newsletter and selection evidence, then seal the exact version. Publication is a separate operator action.</p>
+<label for="package">Draft package ID</label><input id="package" maxlength="100" autocomplete="off"><button id="load" type="button">Load review</button>
+<p id="status" role="status" aria-live="polite">No draft loaded.</p>
+<div id="review" hidden>
+<section><h2>Edition and validation</h2><p id="metadata"></p><details><summary>Version fingerprints</summary><pre id="fingerprints"></pre></details></section>
+<section><h2>Newsletter preview</h2><label for="profile">Reader profile</label><select id="profile"></select><p>Shared sections appear in every preview. Check each profile’s More for You and utility selections.</p><iframe id="preview" title="Newsletter preview" sandbox="" referrerpolicy="no-referrer"></iframe><details><summary>Plain-text version</summary><pre id="plain"></pre></details></section>
+<section><h2>Editorial attention</h2><p>Check repeat stories and material changes, source support, and each personalized selection. Validation checks structure and consistency; it does not replace your editorial judgment.</p><details><summary>Selection evidence, source URLs and prior facts</summary><pre id="evidence"></pre></details><details><summary>Trusted history bounds and drafting inputs</summary><pre id="snapshot"></pre></details></section>
+<section id="approval"><h2>Approve this version</h2><label><input id="checked" type="checkbox">I reviewed this version and its personalized selections.</label><button id="seal" type="button" disabled>Approve and seal</button><p>Sealing saves a separate copy. If content or trusted inputs change, a new review is required. No email is sent here.</p></section>
+</div>
+<script>
+'use strict';
+let loaded=null,busy=false,version=0;
+const el=id=>document.getElementById(id);
+function status(message){el('status').textContent=message;}
+function lock(value){busy=value;el('load').disabled=value;el('package').disabled=value;el('profile').disabled=value;el('checked').disabled=value;el('seal').disabled=value||!loaded||!el('checked').checked;}
+function clear(){loaded=null;el('checked').checked=false;el('review').hidden=true;el('seal').disabled=true;el('preview').srcdoc='';}
+function fail(error){clear();lock(false);status('Stopped: '+String(error&&error.message||error)+'\nLoad a fresh review before trying again.');}
+function showPreview(){
+ if(!loaded)return;
+ const p=loaded.previews[Number(el('profile').value)];
+ // Empty iframe sandbox prevents scripts/forms/navigation. CSP also blocks remote
+ // image/font loads and tracking requests from draft-supplied HTML.
+ el('preview').srcdoc='<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; img-src data:; font-src \'none\'; base-uri \'none\'; form-action \'none\'">'+p.rendered.html;
+ el('plain').textContent=p.rendered.text;
+}
+el('load').addEventListener('click',()=>{
+ if(busy)return;clear();const id=el('package').value.trim();
+ if(!/^[A-Za-z0-9_-]{1,100}$/.test(id)){status('Enter a valid package ID.');return;}
+ const request=++version;lock(true);status('Validating current draft and trusted inputs…');
+ google.script.run.withFailureHandler(fail).withSuccessHandler(result=>{
+  if(request!==version)return;loaded=result;el('profile').replaceChildren();
+  result.previews.forEach((p,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=p.profileId;el('profile').appendChild(option);});
+  const t=result.ticket;el('metadata').textContent='Edition: '+t.editionDate+' (America/Chicago)\nAudience: '+result.profiles+'\nValidation: passed at load time\nHistory cutoff: '+result.snapshot.cutoff+'\nHistory window starts: '+result.snapshot.history_window_start+'\nRecent and extended history: complete';
+  el('fingerprints').textContent=JSON.stringify(t,null,2);el('evidence').textContent=JSON.stringify(result.selectionEvidence,null,2);el('snapshot').textContent=JSON.stringify(result.snapshot,null,2);
+  el('review').hidden=false;showPreview();lock(false);status('Ready for your review. This version has not been approved by loading it.');
+ }).adbDevReviewLoadV1(id);
+});
+el('package').addEventListener('input',()=>{version++;clear();status('Load the selected package to review it.');});
+el('profile').addEventListener('change',showPreview);
+el('checked').addEventListener('change',()=>lock(busy));
+el('seal').addEventListener('click',()=>{
+ if(busy||!loaded||!el('checked').checked)return;
+ const ticket=loaded.ticket;lock(true);status('Revalidating and sealing the reviewed version…');
+ google.script.run.withFailureHandler(fail).withSuccessHandler(result=>{
+  clear();lock(false);status((result.result==='ALREADY_SEALED'?'This exact version was already sealed.':'Reviewed version sealed successfully.')+'\nDigest: '+result.digest+'\nPublication has not been started.');
+ }).adbDevReviewSealV1(ticket);
+});
+</script></body></html>

@@ -1,6 +1,7 @@
 # Option A rollout design and access decision
 
-Status: proposed design for review, October 30, 2026. No production activation,
+Status: supervised first-pilot mode selected by the owner, October 30, 2026.
+The storage/adapter design below remains to be implemented and verified. No production activation,
 account creation, sharing/permission change, new endpoint, task edit or deployment
 is performed by this document. The DEV end-to-end milestone is complete; the
 production credential boundary and adapter are not.
@@ -85,18 +86,17 @@ None was changed or attested as passing during this review.
 | Supervised handoff using the current ChatGPT workflow | Preserves the existing editorial workflow and avoids committing to another runtime now | An operator reviews/transfers the JSON and seals it; this is a supervised pilot, not proof of enforced generator isolation or an unattended production release |
 | Unattended handoff from a restricted drafting runtime | Preserves automatic daily operation with an enforceable boundary | Establish an execution context limited to snapshots/drafts; verify actual identity, tool grants and denied operations; a separate runtime may be needed if current task restrictions cannot be proven |
 
-Recommendation: retain ChatGPT editorial authoring during preparation. Use a
-supervised handoff for any first controlled pilot rather than prematurely adding
-an unverified service or claiming the current connection is restricted. Keep
-automatic production cutover blocked. If unattended publication is required for
-the first release, establish the restricted execution boundary first; do not
-silently convert the current scheduled task or create paid infrastructure.
+Owner decision, October 30: use a supervised first pilot. Retain ChatGPT editorial
+authoring; the operator reviews and transfers one exact package into
+publisher-owned staging. Prepare this workflow in DEV first. See the
+[supervised pilot runbook](editorial-publisher-supervised-pilot.md).
 
-This recommendation is proposed, not adopted. The owner must choose the intended
-initial operating mode. A supervised pilot would require an explicit review of
-the current release requirements: it does not turn the existing permission
-UNKNOWN checks into PASS. The live process continues until a concrete cutover is
-reviewed and authorized.
+This selection authorizes preparation of the supervised path, not production
+activation, new sharing/credentials, a schedule change or automatic publication.
+It does not turn the existing permission UNKNOWN checks into PASS. Before a live
+pilot, explicitly review the release requirements and any proposed supervised
+exception; there is no implicit waiver. The current live process continues until
+a concrete cutover is reviewed and authorized.
 
 ## Required access evidence before unattended cutover
 

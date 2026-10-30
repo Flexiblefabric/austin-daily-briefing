@@ -1,10 +1,10 @@
 # Option A — editorial handoff and deterministic publisher
 
-Status as of October 28, 2026, America/Chicago: **phase 1 contract defined; phase 2 DEV source installed, with setup, synthetic commit, replay and four rejection checks passed in Apps Script. Broader rollout gates remain open; not production active.**
+Status as of October 30, 2026, America/Chicago: **phases 1–2 implemented and end-to-end validated in DEV. Standalone E2E build 0.4 passed in Apps Script with independent readback; 113 local tests passed. Production cutover has not occurred.**
 
 Private DEV workbook: https://docs.google.com/spreadsheets/d/1I9UAR6kabPt0P_lvDiJX_oskPeCVcVI64_vTbwEOF2I/edit?usp=drivesdk
 
-The source baseline is `57f028105dd9450b95c519ee33ef8d3382c98b77`. The sandbox contains only synthetic QA data: one READY package, one Queued message, six Pending history rows and one commit ledger row. No real subscriber data or recorded sends are present. Production generation, its scheduler prompt, dispatch, queue, history and monitoring were not changed by this work.
+The initial source baseline was `57f028105dd9450b95c519ee33ef8d3382c98b77`; the reviewed DEV 0.2 core-logic pin is `a1fe5514f362719c0e379ccb2276d7df3492737a`. DEV workbooks contain synthetic fixtures and retained committed QA evidence, not real subscribers. Production generation, its scheduler prompt and operational records remain unchanged. See [October 30 runtime evidence](editorial-publisher-e2e-2026-10-30.md) and the [proposed rollout/access design](editorial-publisher-rollout-design.md).
 
 ## Phase 1: editorial handoff
 
@@ -37,7 +37,9 @@ One target Sheets `batchUpdate` appends queue, history and the publisher ledger 
 
 The Apps Script lock coordinates this publisher project. It does not isolate other Apps Script projects or human edits. Fresh eligibility/schema/data reads reduce races; Sheets does not provide a transactional compare-and-swap for those reads. Production promotion needs a single writer owner, coordinated locks where possible, protected operational ranges and the existing dispatcher eligibility recheck. DEV has external delivery disabled and this module has no mail/provider API or trigger installer.
 
-### Installation procedure and remaining runtime QA
+### Historical installation procedure — DEV runtime QA now complete
+
+The steps below document the original isolated module installation. They are not a request to rerun old fixtures or paste the all-in-one E2E bundle into a project with these modules. The later standalone E2E run passed on October 30; no further manual run is needed for that milestone.
 
 1. Review the source change, then install the exact reviewed versions of `EditorialPublisher.gs`, `SelectionEvidenceContract.gs`, `DailyNewsletterContract.gs`, and `scripts/daily_newsletter_renderer.js` (as an Apps Script `.gs` file) in an isolated DEV project.
 2. Enable the Advanced Sheets service. Set `ADB_PUBLISHER_DEV_DATABASE_ID` to the private publisher sandbox ID above and `ADB_PUBLISHER_SOURCE_REVISION` to the reviewed source commit. These are configuration names, not secrets. Never target either production workbook. Verify environment DEVELOPMENT and external delivery FALSE.
@@ -70,8 +72,10 @@ The exact-prior construction helper and actionable binding errors are implemente
 
 ## Production preflight foundation prepared
 
-A standalone, read-only production preflight and production normalization helpers are prepared in EditorialPublisherProdPreflight.gs; 24 local tests passed. The audit identified Active=TRUE template flags, a canonical/mirrored Preferences profile ID and 3,155 older unstructured Sent rows. Scoped history normalization preserves the recent news lookup while blocking unresolved extended-resource history. See [production adapter/release gates](editorial-publisher-production-gates.md). The source has no production commit function, sends or trigger creation; its Apps Script runtime inspection is pending. No production settings or operational rows were changed.
+A standalone, read-only production preflight and production normalization helpers are prepared in EditorialPublisherProdPreflight.gs; 24 local tests passed. The audit identified Active=TRUE template flags, a canonical/mirrored Preferences profile ID and 3,155 older unstructured Sent rows. Scoped history normalization preserves the recent news lookup while blocking unresolved extended-resource history. See [production adapter/release gates](editorial-publisher-production-gates.md). The source has no production commit function, sends or trigger creation. Its October 28 production Apps Script inspection completed with expected BLOCKED status: dispatcher/layout checks passed, while production staging/ledger/adapter/monitoring and access evidence remain unresolved. No production settings or operational rows were changed by the inspection.
 
 ## Remaining rollout work
 
-Remaining runtime QA beyond the passed checks; measured full-audience size and execution time; permission separation and immutable READY enforcement; production legacy-history normalization; approved release-notice eligibility; operational error/result recording; and a controlled shadow comparison precede a separate production adapter and generator/publisher cutover. Existing Resend dispatch remains the sole delivery owner. These limitations are recorded explicitly so a source implementation is never mistaken for a live migration.
+DEV staging, publisher, monitoring persistence and end-to-end replay now have runtime evidence. Production release still needs an actual drafting capability boundary; private draft/sealed staging; an explicit production writer and monitoring adapter; zero-audience monitoring; abandoned-attempt reconciliation; durable retention; fresh real-input shadow evidence; and an approved controlled cutover. Existing Resend dispatch remains the sole delivery owner.
+
+The [rollout/access design](editorial-publisher-rollout-design.md) proposes two handoff files and describes supervised-pilot versus unattended-runtime paths. That operating-mode choice is not yet adopted. A supervised pilot does not automatically clear permission gates. No new account, OAuth scope, sharing rule, global connector setting, task schedule or production property was changed.

@@ -6,6 +6,12 @@ diagnostic code was installed in the production project. No generator cutover,
 trigger/property changes, production ledger provisioning or status writes were
 performed by the preflight. DEV 0.2 and its passed tests remain intact.
 
+## October 30 DEV milestone and next design decision
+
+Standalone E2E build 0.4 passed in Apps Script at 8:40:24 AM Central and independent readback confirmed one queue row, six history rows, one ledger and two monitor events ending Healthy. Exact replay and an intentionally lost monitoring response produced no duplicate publication. There were no emails, alerts or production writes. This completes the DEV milestone, not these production gates.
+
+The [proposed rollout/access design](editorial-publisher-rollout-design.md) recommends a mutable draft inbox and a separate publisher-owned sealed store. It presents a supervised first-pilot option and an unattended restricted-runtime option. Neither is activated; a supervised pilot does not silently waive the existing permission requirements. No account, sharing, task or production configuration changes are authorized by this document update.
+
 ## Current production compatibility audit
 
 The October 28 connector read confirmed the production queue/history schemas,

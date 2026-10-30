@@ -1,9 +1,10 @@
 # Supervised first-pilot runbook
 
 Status: operating mode selected by the owner on October 30, 2026.
-This is the preparation and acceptance plan. The two-file adapter has not been
-implemented or installed, and no pilot edition or production activation has been
-approved. The October 30 E2E result remains completed historical DEV evidence.
+The dependency-injected snapshot/review/sealing adapter is implemented and locally
+tested; native Sheets IO, authenticated operator wiring and installation remain.
+No pilot edition or production activation has been approved. See the
+[DEV adapter implementation](editorial-publisher-dev-handoff.md). The October 30 E2E result remains completed historical DEV evidence.
 
 ## Operating agreement
 
@@ -114,8 +115,8 @@ rows for the existing dispatcher.
 ## Current operator action
 
 None. No new Apps Script installation, property change, production edit or
-manual rerun is needed to record this decision. The next implementation is the
-isolated DEV exporter and reviewed two-file transfer described above.
+manual rerun is needed to record this decision. The next implementation is fresh-file DEV persistence and authenticated operator
+wiring for the tested adapter, followed by a new two-file runtime rehearsal.
 
 See [rollout design](editorial-publisher-rollout-design.md),
 [production gates](editorial-publisher-production-gates.md) and

@@ -6,6 +6,7 @@ on:
       - 'apps-script/EditorialPublisherProdPreflight.gs'
       - 'apps-script/EditorialPublisherBatchQa.gs'
       - 'apps-script/EditorialPublisherDevWorkflow.gs'
+      - 'apps-script/EditorialPublisherDevHandoff.gs'
       - 'apps-script/EditorialPublisherDevMonitor.gs'
       - 'apps-script/EditorialPublisherDevIntegration.gs'
       - 'apps-script/EditorialPublisherEndToEndRunner.gs'
@@ -41,7 +42,7 @@ jobs:
           python scripts/build_publisher_e2e_qa.py
           git diff --exit-code -- apps-script/EditorialPublisherEndToEndQa.gs tests/fixtures/editorial-publisher-e2e.json docs/editorial-publisher-e2e-source-manifest.json
       - name: Publisher and evidence parity
-        run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js tests/editorial-publisher-prod-preflight.test.js tests/editorial-publisher-dev-workflow.test.js tests/editorial-publisher-dev-monitor.test.js tests/editorial-publisher-dev-integration.test.js
+        run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js tests/editorial-publisher-prod-preflight.test.js tests/editorial-publisher-dev-workflow.test.js tests/editorial-publisher-dev-monitor.test.js tests/editorial-publisher-dev-integration.test.js tests/editorial-publisher-dev-handoff.test.js
       - name: Established selection evidence suite
         run: python -m unittest discover -s scripts -p test_selection_notes.py
       - name: Validate schema JSON

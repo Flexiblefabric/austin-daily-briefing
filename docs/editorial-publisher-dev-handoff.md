@@ -1,9 +1,10 @@
 # Reviewed handoff DEV adapter 0.1
 
 October 30, 2026. Implemented as a dependency-injected, locally tested adapter in
-`apps-script/EditorialPublisherDevHandoff.gs`. No file provisioning, native Sheets
-IO binding, authenticated operator deployment, runtime installation or production
-change is included. The successful October 30 standalone E2E bundle is unchanged.
+`apps-script/EditorialPublisherDevHandoff.gs`. Native Sheets IO, authenticated operator checks, a review screen and one-time
+fresh-file setup are now prepared in a separate unconfigured review-only bundle.
+Actual provisioning, deployment and runtime verification have not occurred. See
+[setup and runtime instructions](editorial-publisher-dev-review-install.md). The successful October 30 standalone E2E bundle is unchanged.
 
 ## Implemented behavior
 
@@ -39,7 +40,7 @@ Package Chunks structure. The sealed-file host must store receipt, manifest and
 all chunks atomically in one file. The draft file is read, never rewritten by the
 sealer. A cross-file transfer is not an atomic cross-file transaction.
 
-## Trusted host contract still to implement
+## Trusted host contract and native implementation
 
 Policy is immutable after factory creation and must be supplied from reviewed
 host configuration, never from draft JSON or request-selected spreadsheet IDs:
@@ -50,7 +51,9 @@ host configuration, never from draft JSON or request-selected spreadsheet IDs:
 - operator: expected authenticated operator principal
 
 Production DB/intake and all three historical publisher/E2E workbooks are rejected.
-No actual new file IDs or principal have been selected. String checks and a purpose
+No actual new file IDs or principal have been selected yet; the one-time setup
+creates fresh files and captures the authenticated operator in the new project's
+configuration. String checks and a purpose
 marker do not attest to a file's ACL or environment; the concrete host must verify
 those independently before enabling IO. The policy is not a deployment manifest.
 
@@ -115,7 +118,8 @@ or evidence of actual operator permissions. CI now includes this module and test
 
 ## Next step
 
-Implement fresh-file DEV Sheets IO and authenticated manual operator wiring, then
-run a new two-file synthetic rehearsal through publication and monitored readback.
-Prepare fixed targets and concise instructions before requesting installation.
-No operator action is needed for this locally tested implementation.
+Run the new standalone review-only setup, verify its native planner readback, then
+inspect and seal the synthetic draft through the owner UI. The exact installation
+and staged runtime checkpoints are in the [review setup guide](editorial-publisher-dev-review-install.md).
+A later separate publication binding and monitored rehearsal remain outstanding;
+this screen deliberately cannot publish.

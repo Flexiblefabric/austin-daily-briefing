@@ -2,7 +2,9 @@
 
 Status: operating mode selected by the owner on October 30, 2026.
 The dependency-injected snapshot/review/sealing adapter is implemented and locally
-tested; native Sheets IO, authenticated operator wiring and installation remain.
+tested; native Sheets IO, operator checks, review UI and one-time setup are now prepared.
+Installation and actual runtime verification remain. See the
+[setup guide](editorial-publisher-dev-review-install.md).
 No pilot edition or production activation has been approved. See the
 [DEV adapter implementation](editorial-publisher-dev-handoff.md). The October 30 E2E result remains completed historical DEV evidence.
 
@@ -114,9 +116,11 @@ rows for the existing dispatcher.
 
 ## Current operator action
 
-None. No new Apps Script installation, property change, production edit or
-manual rerun is needed to record this decision. The next implementation is fresh-file DEV persistence and authenticated operator
-wiring for the tested adapter, followed by a new two-file runtime rehearsal.
+Follow the [new standalone review setup](editorial-publisher-dev-review-install.md).
+Run setup once and verify READY_FOR_REVIEW before deploying the owner review
+screen. The seed is dated October 30, 2026 in America/Chicago. Do not reuse the
+completed E2E workbook, add code to production or clear properties after a
+partial setup. The screen seals only; publication integration comes later.
 
 See [rollout design](editorial-publisher-rollout-design.md),
 [production gates](editorial-publisher-production-gates.md) and

@@ -1,6 +1,6 @@
 # October 30 isolated end-to-end DEV test
 
-Prepared October 30, 2026. Apps Script execution of this fresh fixture is pending.
+Prepared October 30, 2026. Standalone build 0.4 passed in Apps Script and its stored target/monitor state was independently verified.
 The October 28 runner correctly rejected the October 30 attempt at 8:12:54 AM
 Central before property/workbook writes. The earlier committed edition and its
 unfinished monitoring remain unchanged; its date guard was not bypassed.
@@ -76,7 +76,33 @@ Build 0.4 explicitly requires a clean standalone project, while retaining the
 fixed database ID, strict date/environment checks, synthetic-only recipient,
 no-trigger requirement and existing-configuration guard. No workbook needs
 replacing and no inherited source files need deleting. The same prepared
-October 30 sandbox is reused; runtime build 0.4 remains pending. The complete
+October 30 sandbox is reused; runtime build 0.4 subsequently passed as recorded below. The complete
 bundle passes the standalone bootstrap/replay test, while inherited bound
 projects, conflicting settings, dispatcher code and triggers are rejected
 before any writes. Mock request counts remain 27 fresh and 21 replay.
+
+## Runtime PASS and independent readback
+
+The user supplied the standalone Apps Script log for October 30, 2026:
+execution started 8:40:13 AM Central and completed 8:40:24 AM. Build
+ADB-PUBLISHER-E2E-DEV-0.4 returned PASS, publicationResults
+[COMMITTED, ALREADY_COMMITTED], queueRows=1, historyRows=6, ledgerRows=1,
+monitorEvents=2, monitorStatus=Healthy, lostMonitorResponseInjected=true,
+exactReplay=true, productionWrites=false, emails=false, alertsSent=0 and
+realPermissionsVerified=false. This is a fresh runtime commit followed by an
+exact replay, including recovery after an intentionally lost monitoring response.
+
+Independent connector readback confirmed exactly one Queued message, six Pending
+history rows, one ledger row and two monitoring events. Provider fields are
+empty, neither monitoring event contains a failure-alert intent, status is
+Healthy, stage is complete and no incident is unresolved. The ledger digest is
+1ef0368ef0fe2358e1755467c0914e212c9793741992a145fa950dab835ca048 and both
+Committed At and monitoring Last Success equal 2026-10-30T13:40:18.261Z.
+
+This completes the isolated DEV end-to-end validation milestone for the editorial
+handoff, atomic writer, durable monitoring and replay integration. No additional
+manual run is needed for this fixture. Production remains unchanged and no
+merge, generator/task cutover, transport send or publisher activation occurred.
+Real capability separation, production write/monitoring integration, retention,
+zero-audience monitoring and abandoned-attempt recovery remain rollout work;
+this PASS does not clear those gates.

@@ -1,8 +1,8 @@
 # Subscriber Security Access Audit — 2026-09-23
 
 **Workstream:** SEC-2 — Subscriber data security  
-**Baseline:** [subscriber-data-security-baseline.md](subscriber-data-security-baseline.md)  
-**Retention policy:** [data-retention.md](data-retention.md)  
+**Baseline:** [subscriber-data-security-baseline.md](../subscriber-data-security-baseline.md)  
+**Retention policy:** [data-retention.md](../data-retention.md)  
 **Scope:** Production Drive/Sheets/Forms, access inheritance, Apps Script, GitHub, Resend, Cloudflare, and operator account controls  
 **Audit mode:** Read-only where connector evidence is available; owner confirmation where provider ACL/MFA metadata is not exposed
 

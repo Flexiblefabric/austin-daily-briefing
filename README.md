@@ -109,7 +109,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the generated architectur
 | [`apps-script/`](apps-script/) | Production Resend transport, native-customization endpoints, and controlled QA helpers |
 | [`assets/brand/`](assets/brand/) | Approved production masthead and compact brand assets |
 | [`design/`](design/) | Static newsletter and Welcome reference/QA payloads |
-| [`docs/`](docs/) | Editorial, design, component, operational, release, and governance documentation |
+| [`docs/`](docs/README.md) | Documentation index, canonical specifications, and organized workstream histories |
 | [`docs/ROADMAP.md`](docs/ROADMAP.md) | Canonical cross-project backlog and current work status |
 | [`docs/automation-prompts/`](docs/automation-prompts/) | Durable canonical copies of active automation prompts |
 | [`docs/snapshots/`](docs/snapshots/) | Immutable point-in-time captures of material technical state |

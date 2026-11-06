@@ -12,7 +12,7 @@ This prompt defines the reusable read-only signup-to-Welcome reconciliation pass
 Read:
 
 - `docs/end-to-end-completion-spec.md` and require `ADB-COMPLETION-0.2`;
-- `docs/end-to-end-completion-test-vectors.md`;
+- `docs/operations/end-to-end-completion-test-vectors.md`;
 - `docs/native-signup-completion-monitoring.md` and require `ADB-NATIVE-SIGNUP-MONITOR-0.1` when Native Signup Mode is CONTROLLED or LIVE.
 
 Use only the production subscriber database and production intake workbook registered in `PROJECT_STATE.json`. Verify workbook title and visible production tab names before reading records.

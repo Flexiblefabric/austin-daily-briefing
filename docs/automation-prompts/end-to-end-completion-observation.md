@@ -7,7 +7,7 @@
 **Canonical contract:** `docs/end-to-end-completion-spec.md`  
 **Production writes, repairs, sends, or alerts:** Prohibited
 
-This prompt is the durable execution copy for the first 24-hour production observation. The one-time scheduler run completed and this prompt is now preserved for audit only. Do not recreate it without a new explicit observation plan. Durable closeout evidence is recorded in [`../end-to-end-completion-observation-result.md`](../end-to-end-completion-observation-result.md).
+This prompt is the durable execution copy for the first 24-hour production observation. The one-time scheduler run completed and this prompt is now preserved for audit only. Do not recreate it without a new explicit observation plan. Durable closeout evidence is recorded in [`../end-to-end-completion-observation-result.md`](../operations/end-to-end-completion-observation-result.md).
 
 ## Execution prompt
 

@@ -116,7 +116,7 @@ Staged artifacts:
 - DEV `Native Signup Requests` and `Native Signup Diagnostics` tables;
 - CI guards that keep the preview unlinked, the endpoint configuration in development mode, and the DEV Apps Script source behind explicit production-ID refusal checks.
 
-Repository runtime QA now exercises the actual DEV Apps Script source under a mocked Apps Script runtime for valid staging, validation failure, honeypot no-op, same-nonce replay, recent-equivalent suppression, cooldown handling and production-ID refusal. The remaining Gate B dependency is the dedicated DEV web-app deployment and controlled browser/intake QA described in `docs/native-signup-dev-deployment.md`. No production routing or subscriber writes are authorized yet.
+Repository runtime QA now exercises the actual DEV Apps Script source under a mocked Apps Script runtime for valid staging, validation failure, honeypot no-op, same-nonce replay, recent-equivalent suppression, cooldown handling and production-ID refusal. The remaining Gate B dependency is the dedicated DEV web-app deployment and controlled browser/intake QA described in `docs/subscriber/native-signup/native-signup-dev-deployment.md`. No production routing or subscriber writes are authorized yet.
 
 ## Gate A decisions — approved 2026-10-04
 
@@ -132,12 +132,12 @@ Repository runtime QA now exercises the actual DEV Apps Script source under a mo
 - **DEV posture:** use the eventual signup.html route with noindex/nofollow, no primary-navigation links and a DEV-only endpoint.
 - **Data minimization:** dedicated Native Signup Requests and Native Signup Diagnostics tables; store only data necessary for intake, idempotency, processing and privacy-safe diagnostics.
 
-Detailed processor state transitions are defined in `docs/native-signup-processor-contract.md`.
+Detailed processor state transitions are defined in `docs/subscriber/native-signup/native-signup-processor-contract.md`.
 
 ## Gate B result
 
-Gate B passed on 2026-10-04. Repository runtime QA and the corrected live DEV smoke verified staging, validation, replay suppression, honeypot behavior, and the DEV-only production boundary. See `docs/native-signup-gate-b-result.md`.
+Gate B passed on 2026-10-04. Repository runtime QA and the corrected live DEV smoke verified staging, validation, replay suppression, honeypot behavior, and the DEV-only production boundary. See `docs/subscriber/native-signup/native-signup-gate-b-result.md`.
 
-Gate C passed subscriber-state resolution, new subscriber creation, re-subscription, preference preservation, deterministic Welcome queue ownership, and replay protection. Durable result: `docs/native-signup-gate-c-result.md`.
+Gate C passed subscriber-state resolution, new subscriber creation, re-subscription, preference preservation, deterministic Welcome queue ownership, and replay protection. Durable result: `docs/subscriber/native-signup/native-signup-gate-c-result.md`.
 
-Gate D is complete; durable controlled-production evidence is recorded in `docs/native-signup-gate-d-result.md`. Gate E public cutover is staged in `docs/native-signup-gate-e.md` and preserves the Google signup form as fallback.
+Gate D is complete; durable controlled-production evidence is recorded in `docs/subscriber/native-signup/native-signup-gate-d-result.md`. Gate E public cutover is staged in `docs/subscriber/native-signup/native-signup-gate-e.md` and preserves the Google signup form as fallback.

@@ -183,7 +183,7 @@ Before changing the public Customize route:
 - reconcile `PROJECT_STATE.json`, generated internal documentation, changelog, and immutable snapshot;
 - preserve Production Subscriber Operations as the only owner that applies confirmed native payloads to Profiles / Preferences;
 - keep the Google customization form available as fallback during observation;
-- complete the mandatory [Production change compatibility checklist](production-change-compatibility-checklist.md), including executable downstream consumers and manually deployed runtime parity;
+- complete the mandatory [Production change compatibility checklist](../../production-change-compatibility-checklist.md), including executable downstream consumers and manually deployed runtime parity;
 - for this cutover specifically, verify both Resend dispatch validators accept the proposed Intake Mode / Processor Mode combination before changing production from `GOOGLE ONLY`.
 
 Any FAIL or UNKNOWN compatibility result blocks Gate E even when the canonical Daily Briefing and Watchdog prompts accept the proposed state.

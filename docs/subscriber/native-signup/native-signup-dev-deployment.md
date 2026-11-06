@@ -92,7 +92,7 @@ Gate B passes only when:
 - the page remains noindex and unlinked;
 - the deployment URL recorded in `signup-config.js` is the dedicated DEV web-app URL.
 
-After Gate B passes, proceed to Gate C processor parity using `docs/native-signup-processor-contract.md`.
+After Gate B passes, proceed to Gate C processor parity using `docs/subscriber/native-signup/native-signup-processor-contract.md`.
 
 ## Automated live-smoke support
 

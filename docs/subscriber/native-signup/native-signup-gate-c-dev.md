@@ -90,4 +90,4 @@ The original failed re-subscribe request remains preserved as evidence. A fresh 
 
 The parser-corrected re-subscribe retest completed successfully on 2026-10-04. The existing Unsubscribed subscriber became Active while retaining Profile ID `PDEV004` and all 23 historical preference rows. Exactly one re-subscribe Signup Action and one deterministic Queued `WELCOME_V1` were created. The immediate replay run processed zero rows and created no duplicates.
 
-Gate C is complete. Durable evidence is recorded in `docs/native-signup-gate-c-result.md`.
+Gate C is complete. Durable evidence is recorded in `docs/subscriber/native-signup/native-signup-gate-c-result.md`.

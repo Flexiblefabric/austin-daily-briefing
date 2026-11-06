@@ -4,7 +4,7 @@
 **Weight fingerprint:** `20-20-15-15-10-10-10`  
 **Status:** Archived evaluation specification; production promoted 2026-10-03, effective 2026-10-04  
 **Adopted:** 2026-09-22  
-**Canonical repository path:** `docs/v2-shadow-review-prompt.md`
+**Canonical repository path:** `docs/editorial/evidence/v2-shadow-review-prompt.md`
 
 This file preserves the historical scoring contract for the completed manual V2 shadow reviews. Production uses docs/v2-selection-spec.md; do not use the rules below as production instructions. The saved ChatGPT task is an execution copy. If the task prompt, a prior chat, or a run-time interpretation conflicts with this file, this file controls. Do not change scoring weights, thresholds, override meanings, section boundaries, or output requirements during a run. Proposed changes belong in the evaluation notes and require an explicit revision to this file.
 
@@ -28,7 +28,7 @@ If the weights used do not exactly match the fingerprint, stop and report a spec
 - Read the active Interest Catalog and current default profile/preference structure needed to construct one generic test profile.
 - Read the current-day production Briefing History and, only if needed to reconstruct the production slate, the matching daily briefing queue record.
 - Review at least the previous 14 days of Briefing History for actual production repeat control.
-- Read `docs/v2-shadow-review-log.md` for prior V2 shadow selections in the same observation window so the run can simulate what V2 itself would already have shown readers. Do not infer shadow history from memory when the log is unavailable.
+- Read `docs/editorial/evidence/v2-shadow-review-log.md` for prior V2 shadow selections in the same observation window so the run can simulate what V2 itself would already have shown readers. Do not infer shadow history from memory when the log is unavailable.
 - Never use or expose subscriber email addresses, tokens, delivery addresses, or private profile data.
 - If no current-day production slate exists, still run V2 and label the production comparison `Not available`. Never create or repair production output.
 

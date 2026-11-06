@@ -112,7 +112,7 @@ Current executable-consumer result:
 
 The production Integration Config remains `Native Signup Mode = DISABLED` with blank controlled email, and both native-signup production sheets remain header-only.
 
-Runtime parity must use the repository status probes documented in `docs/native-signup-gate-d-runtime-preflight.md`. No dispatcher invocation is required merely to prove source/config parity.
+Runtime parity must use the repository status probes documented in `docs/subscriber/native-signup/native-signup-gate-d-runtime-preflight.md`. No dispatcher invocation is required merely to prove source/config parity.
 
 ### D6 readiness update — 2026-10-05
 

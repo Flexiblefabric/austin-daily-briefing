@@ -10,7 +10,7 @@ ADB will retain Google Sheets and the existing Google-only Apps Script processor
 
 ## Ongoing production compatibility gate
 
-Any later production change that modifies Intake Mode, Processor Mode, Delivery Mode, queue ownership, template identity, or another value read by the transport must complete the [Production change compatibility checklist](production-change-compatibility-checklist.md) before promotion.
+Any later production change that modifies Intake Mode, Processor Mode, Delivery Mode, queue ownership, template identity, or another value read by the transport must complete the [Production change compatibility checklist](../production-change-compatibility-checklist.md) before promotion.
 
 For Resend specifically, promotion evidence must include the executable validators in `apps-script/ResendTransport.gs`, not only the Daily Briefing, Subscriber Operations, or Watchdog prompts. Shared production transport gates are centralized in `adbValidateResendDeliveryGates_`; both daily and Welcome delivery must pass through that helper, with only delivery-type-specific checks remaining in their wrappers. Any future shared transport gate belongs in the unified helper rather than in one dispatcher path. Because this Apps Script is manually installed, also establish that the deployed `ResendTransport.gs` is current with the approved repository revision.
 

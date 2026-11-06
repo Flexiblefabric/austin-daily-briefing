@@ -37,7 +37,7 @@ ADB reserves scheduler capacity deliberately. Production Daily Briefing, Product
 - [End-to-end Completion Observation](end-to-end-completion-observation.md) — retired; one-time observation completed 2026-09-20
 - [End-to-end Completion Reconciliation](end-to-end-completion-reconcile.md) — development/manual read-only (`ADB-COMPLETION-RECON-0.2`)
 - [V2 Selection](../v2-selection-spec.md) — active production dependency (`ADB-V2-SELECT-1.0`), effective 2026-10-04
-- [V2 Shadow Review](../v2-shadow-review-prompt.md) — archived evaluation; evidence collection complete
+- [V2 Shadow Review](../editorial/evidence/v2-shadow-review-prompt.md) — archived evaluation; evidence collection complete
 - [Domain Health Check](../domain-health-check.md) — manual runbook
 
 ## Shared presentation standards

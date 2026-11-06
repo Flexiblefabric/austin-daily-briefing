@@ -720,7 +720,7 @@ The future expanded Friday version is outside this specification until separatel
 
 **Conditional. Omit entirely when there is no meaningful subscriber-facing product update.**
 
-Use the release-surface rules in [`reader-change-communications.md`](reader-change-communications.md) to decide when this component is appropriate.
+Use the release-surface rules in [`reader-change-communications.md`](subscriber/reader-change-communications.md) to decide when this component is appropriate.
 
 ### Purpose
 

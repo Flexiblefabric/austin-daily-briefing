@@ -13,7 +13,7 @@
 
 ## Phase 1 — Define the completion contract (completed 2026-09-19)
 
-The production signup path, join keys, timing states, privacy boundaries, baseline, and test gate are defined in [the end-to-end completion contract](end-to-end-completion-spec.md). Use the recorded Response Key and source tuple for an already ledgered intake response; do not derive a second identity. Use deterministic Message ID for each welcome and Run ID + Profile ID for daily history.
+The production signup path, join keys, timing states, privacy boundaries, baseline, and test gate are defined in [the end-to-end completion contract](../end-to-end-completion-spec.md). Use the recorded Response Key and source tuple for an already ledgered intake response; do not derive a second identity. Use deterministic Message ID for each welcome and Run ID + Profile ID for daily history.
 
 | Journey | Expected terminal evidence | Explicit exceptions |
 |---|---|---|
@@ -42,7 +42,7 @@ This baseline validates the current production joins and classifications. The co
 
 ## Phase 3 — Task and trigger reconciliation (manual scheduler baseline complete; trigger visibility pending)
 
-1. A manual read-only baseline on 2026-09-22 reconciled all three registered active ADB ChatGPT tasks by exact task ID, enabled state, recurrence/timezone, and recent-run plausibility. All three matched. The reusable rules and baseline are recorded in [task-reconciliation.md](task-reconciliation.md).
+1. A manual read-only baseline on 2026-09-22 reconciled all three registered active ADB ChatGPT tasks by exact task ID, enabled state, recurrence/timezone, and recent-run plausibility. All three matched. The reusable rules and baseline are recorded in [task-reconciliation.md](../task-reconciliation.md).
 2. The current operator connection can read scheduler state interactively. Unattended scheduler-read capability has not yet been proven; any monitor run that cannot read it must report `Unknown — scheduler state unavailable`. The available scheduler metadata also does not guarantee an authoritative expected-next-run field, so the runbook forbids inventing one.
 3. Apps Script trigger state remains unresolved. Inspect the installed hourly Welcome/Daily dispatcher triggers through an authoritative Apps Script runtime interface when available. Historical Sent rows/provider IDs prove execution occurred previously but do not prove the triggers remain installed now.
 4. Test missing task, disabled task, changed schedule, stale/failed last run, missing next run, Held task absent, duplicate active task, missing Apps Script trigger, and temporary API read failure in a controlled environment. Do not disable a production task to manufacture a test.
@@ -52,7 +52,7 @@ This baseline validates the current production joins and classifications. The co
 
 ## Phase 4 — Production rollout and review
 
-- Follow [the short release checklist](release-checklist.md). Snapshot and changelog are required when the promotion changes the production monitoring subsystem or registry; prompt, code, and registry edits must agree before release.
+- Follow [the short release checklist](../release-checklist.md). Snapshot and changelog are required when the promotion changes the production monitoring subsystem or registry; prompt, code, and registry edits must agree before release.
 - Run controlled DEV cases, then a read-only production observation across at least one signup processor cycle and one daily briefing cycle. Compare counts by hand before enabling new alerts.
 - Promote one reconciliation path at a time. Preserve existing component alerts and daily per-component deduplication. Monitor the first two live cycles and verify one genuine or controlled failure/recovery path without sending a duplicate subscriber message.
 - Roll back new alerting/check logic independently of the intake processor and dispatchers if it generates false positives. Keep any recorded incident history for audit.

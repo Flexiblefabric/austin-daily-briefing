@@ -60,7 +60,7 @@ Additional specification review:
 |---|---|
 | docs/v2-selection-spec.md | Consolidated staged selection contract, ADB-V2-SELECT-1.0 |
 | docs/release-candidates/austin-daily-briefing-v2.md | Complete staged production prompt, ADB-DAILY-PROD-2.0 |
-| docs/v2-focused-validation-2026-10-03.md | This evidence, integration and rollback record |
+| docs/editorial/evidence/v2-focused-validation-2026-10-03.md | This evidence, integration and rollback record |
 | scripts/validate_v2_rules.py | Reproducible editorial boundary checks |
 
 Baseline daily prompt inspected: ADB-DAILY-PROD-1.3, blob a4f7c252f8c158172e680e42bc95ea10d9aed5c7. The staged copy changes only version/lifecycle metadata, the selection dependency, news/repeat instructions and the additional selection pre-queue check. Safety gates, eligibility, message IDs, DAILY_BRIEFING_V1, rendering, dispatcher ownership, queue/history reconciliation and monitoring are preserved byte-for-byte. During October 3 merge reconciliation, the staged introduction and Customize destination were updated to match the already-live native customization route, with the Google Form retained explicitly as fallback.

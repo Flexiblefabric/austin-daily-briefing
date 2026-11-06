@@ -16,20 +16,20 @@
 - **domain_health_check** — available — manual only — `docs/domain-health-check.md`
   - Reporting: compact pass/fail table with a brief explanation for each failure.
   - Form validation: after form changes only.
-- **v2_shadow_review** — retired — manual only — `docs/v2-shadow-review-prompt.md`
+- **v2_shadow_review** — retired — manual only — `docs/editorial/evidence/v2-shadow-review-prompt.md`
   - Reporting: V2 Top 10, live-production comparison, material-update audit, notable rejects, and evaluation.
 - **completion_observation** — retired — one-time; completed 2026-09-20 — `docs/automation-prompts/end-to-end-completion-observation.md`
 - **task_reconciliation** — available — manual/read-only — `docs/task-reconciliation.md`
   - Reporting: exact registered task ID, enabled state, recurrence/timezone, recent-run plausibility, and Unknown when scheduler evidence is unavailable.
 - **completion_reconciliation** — development — manual/read-only — `docs/automation-prompts/end-to-end-completion-reconcile.md`
   - Reporting: privacy-safe full-scan Google plus feature-gated native signup-to-Welcome classification using ADB-COMPLETION-0.2.
-- **native_customization_cutover** — complete — completed gated rollout — `docs/native-customization-production-cutover.md`
+- **native_customization_cutover** — complete — completed gated rollout — `docs/subscriber/native-customization/native-customization-production-cutover.md`
   - Reporting: Gates A–F passed; Gate G closeout recorded 2026-10-04; public native customization is live with Google fallback retained pending FORM-10.
 - **v2_production_observation** — observation — Normal-cycle observation; next check follows structured-notes merge — `docs/v2-promotion-2026-10-03.md`
   - Reporting: Verify editorial selection, one-time notice, queue/history and downstream delivery; no automatic replay or resend.
-- **native_signup_development** — observation — Gate F normal-cycle observation — `docs/native-signup-gate-e.md`
+- **native_signup_development** — observation — Gate F normal-cycle observation — `docs/subscriber/native-signup/native-signup-gate-e.md`
   - Reporting: FORM-7 Gates A-E complete. First-party native signup is public, Google signup remains fallback, and Gate F observation is active before Gate G closeout.
-- **native_management_development** — development — manual gated rollout — `docs/native-management-design.md`
+- **native_management_development** — development — manual gated rollout — `docs/subscriber/native-management-design.md`
   - Reporting: FORM-9 Gate A design and Gate B static/unit/processor parity validation; public Manage remains the Google form until controlled production promotion.
 
 ## Runtime configuration

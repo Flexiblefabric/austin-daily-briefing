@@ -70,7 +70,7 @@ An unsubscribe request honors explicit withdrawal of delivery consent **without 
 
 **Schema migration completed 2026-10-12:** production Subscribers has a separate validated `Admin Status` column, backfilled across all existing subscribers. After the updated Resend transport build was copied and read back in the live Apps Script runtime, the single legacy held subscriber and its linked Profile were both converted to `Paused`, keeping `Admin Status=Hold`. All subscriber/profile delivery statuses now reconcile; 15 linked profiles retain 345 unique preferences.
 
-**Gate E remains blocked.** The revised Resend source is loaded in the production Apps Script runtime; production Subscriber Operations and daily generation canonical prompts were updated in GitHub main without changing scheduler versions. Their next naturally scheduled cycles still require observation. FORM-9 production intake, confirmed request processing, controlled QA and public cutover have not been activated. See `docs/admin-status-production-migration.md`.
+**Gate E remains blocked.** The revised Resend source is loaded in the production Apps Script runtime; production Subscriber Operations and daily generation canonical prompts were updated in GitHub main without changing scheduler versions. Their next naturally scheduled cycles still require observation. FORM-9 production intake, confirmed request processing, controlled QA and public cutover have not been activated. See `docs/subscriber/admin-status-production-migration.md`.
 
 ## Browser and endpoint privacy
 

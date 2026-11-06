@@ -289,7 +289,7 @@ The native form should not create a second long-term database.
 
 Use the existing production control plane and existing verification/audit structures.
 
-The proposed project-wide retention baseline is now defined in [subscriber-data-security-baseline.md](subscriber-data-security-baseline.md). Native customization must inherit that policy rather than create its own second retention model.
+The proposed project-wide retention baseline is now defined in [subscriber-data-security-baseline.md](../../subscriber-data-security-baseline.md). Native customization must inherit that policy rather than create its own second retention model.
 
 Before promotion, confirm implementation can meet the adopted targets for:
 

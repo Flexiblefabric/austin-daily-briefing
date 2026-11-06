@@ -185,7 +185,7 @@ Repository source now exposes harmless runtime status probes:
 - `getNativeSignupProdRuntimeStatusV1`;
 - `getAdbResendRuntimeStatusV1`.
 
-These allow D3/D5 runtime parity to be demonstrated without sending mail or mutating subscriber state. Exact manual install/parity steps and current blockers are recorded in `docs/native-signup-gate-d-runtime-preflight.md`.
+These allow D3/D5 runtime parity to be demonstrated without sending mail or mutating subscriber state. Exact manual install/parity steps and current blockers are recorded in `docs/subscriber/native-signup/native-signup-gate-d-runtime-preflight.md`.
 
 Controlled activation remains blocked until the separate production endpoint is deployed disabled, Resend runtime parity passes, and a mutating operator-owned controlled address is selected.
 
@@ -257,7 +257,7 @@ Readback confirmed the administrative hold remained intact, the existing profile
 
 After the pass, Sheet-side `Native Signup Mode` was returned to `DISABLED`. The operator-owned mutating QA identity was verified absent from production Subscribers, Signup Actions and Outbound Messages and is prepared privately for the next controlled test.
 
-Durable evidence: `docs/native-signup-gate-d-safety-result.md`.
+Durable evidence: `docs/subscriber/native-signup/native-signup-gate-d-safety-result.md`.
 
 ## D7 mutating controlled production — PASS
 
@@ -267,7 +267,7 @@ Canonical Subscriber Operations produced exactly one Active subscriber/profile, 
 
 The live hourly Resend Welcome dispatcher subsequently delivered the single queued Welcome and recorded exactly one provider ID. A later manual dispatcher invocation returned `mode=LIVE, sent=0, skipped=0`, providing the required zero-send replay verification. Post-run readback found no duplicate subscriber, profile, action, Welcome or provider handoff.
 
-Sheet-side `Native Signup Mode` was returned to `DISABLED` immediately after processing. Durable evidence: `docs/native-signup-gate-d-result.md`.
+Sheet-side `Native Signup Mode` was returned to `DISABLED` immediately after processing. Durable evidence: `docs/subscriber/native-signup/native-signup-gate-d-result.md`.
 
 Gate D controlled-production behavior passes. Final closeout remains the endpoint Script Property disarm: set `ADB_NATIVE_SIGNUP_PROD_ENABLED=FALSE`, remove `ADB_NATIVE_SIGNUP_PROD_ALLOWLIST`, and verify the v1.1 runtime reports enabled=false, allowlistConfigured=false and integrationNativeSignupMode=DISABLED. Gate E remains separate.
 
@@ -288,4 +288,4 @@ The Script Property allowlist was removed rather than stored blank, matching App
 
 **Gate D result: COMPLETE.**
 
-Gate E is now the active FORM-7 gate. Its cutover sequence and rollback controls are defined in `docs/native-signup-gate-e.md`.
+Gate E is now the active FORM-7 gate. Its cutover sequence and rollback controls are defined in `docs/subscriber/native-signup/native-signup-gate-e.md`.

@@ -685,7 +685,7 @@ Operational mechanics should not be copied into this document unless they change
 
 ### Corrections operation
 
-`docs/feedback-corrections-promotion.md` records the current live feedback and corrections workflow.
+`docs/subscriber/feedback-corrections-promotion.md` records the current live feedback and corrections workflow.
 
 ## 28. Governance
 

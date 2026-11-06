@@ -15,7 +15,7 @@ Preserve production gates, native-compatible intake, current native Customize li
 
 ## Reader communication
 
-Level 3 under docs/reader-change-communications.md: update How ADB Works, permanent What's New entry, homepage update preview, and one concise notice in the October 4 normal briefing. No separate email, new labels, required reader action or Welcome release-history insert.
+Level 3 under docs/subscriber/reader-change-communications.md: update How ADB Works, permanent What's New entry, homepage update preview, and one concise notice in the October 4 normal briefing. No separate email, new labels, required reader action or Welcome release-history insert.
 
 Release key: `v2-selection-2026-10-04`. The canonical daily prompt contains the exact approved copy, exact date gate, expiry and profile-history deduplication. Preserve the quiet existing newsletter component. The website says when the first edition starts rather than claiming an October 3 V2 briefing was delivered.
 

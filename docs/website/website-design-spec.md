@@ -3,7 +3,7 @@
 **Status:** Approved and implemented in production  
 **Scope:** Public website redesign  
 **Applies to:** `site/`  
-**Related systems:** [Design System](design-system.md), [Editorial System](editorial-system.md), [Newsletter Component Specification](newsletter-component-spec.md)
+**Related systems:** [Design System](../design-system.md), [Editorial System](../editorial-system.md), [Newsletter Component Specification](../newsletter-component-spec.md)
 
 ## 1. Purpose
 

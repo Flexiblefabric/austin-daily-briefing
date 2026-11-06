@@ -6,7 +6,7 @@
 **Control plane:** Google Forms + Google Sheets + Google Apps Script  
 **Related public policy:** `site/privacy.html`  
 **Authoritative retention policy:** `docs/data-retention.md`  
-**Related design:** `docs/native-customization-design.md`
+**Related design:** `docs/subscriber/native-customization/native-customization-design.md`
 
 ## 1. Purpose
 

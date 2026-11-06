@@ -1,6 +1,6 @@
 # SUPERSEDED — Subscriber Data Security Baseline
 
-> This document is historical. The approved and authoritative subscriber-data security standard is [`subscriber-data-security-baseline.md`](subscriber-data-security-baseline.md), with retention governed by [`data-retention.md`](data-retention.md). Do not use this file as a current policy source.
+> This document is historical. The approved and authoritative subscriber-data security standard is [`subscriber-data-security-baseline.md`](../subscriber-data-security-baseline.md), with retention governed by [`data-retention.md`](../data-retention.md). Do not use this file as a current policy source.
 
 
 **Status:** Active baseline  
@@ -105,7 +105,7 @@ Do not enrich subscriber profiles with inferred demographic, behavioral, health,
 
 ## 6. Retention baseline
 
-The operational retention schedule is defined in [data-retention.md](data-retention.md).
+The operational retention schedule is defined in [data-retention.md](../data-retention.md).
 
 Key limits include:
 

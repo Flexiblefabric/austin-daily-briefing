@@ -1,6 +1,15 @@
 # Option A — editorial handoff and deterministic publisher
 
-Status as of October 30, 2026, America/Chicago: **phases 1–2 implemented and end-to-end validated in DEV. Standalone E2E build 0.4 passed in Apps Script with independent readback; 113 local tests passed. Production cutover has not occurred.**
+Latest checkpoint — November 6, 2026: the supervised positive-audience DEV workflow
+passed native draft review/seal, publication (COMMITTED / SUCCESS) and exact replay
+(ALREADY_COMMITTED / REPLAY). Independent readback remained exactly 1 Queued,
+6 Pending history, 1 ledger and 2 monitor events ending Healthy, unchanged on retry.
+See [native publication evidence](editorial-publisher-dev-publication-2026-11-06.md#actual-native-execution-and-independent-replay-evidence).
+No further setup/publication rerun is needed for that fixture. Branding visual
+confirmation and the documented production gates remain outstanding.
+
+
+Historical October 30 milestone (America/Chicago): **phases 1–2 implemented and end-to-end validated in DEV. Standalone E2E build 0.4 passed in Apps Script with independent readback; 113 local tests passed. Production cutover has not occurred.**
 
 Private DEV workbook: https://docs.google.com/spreadsheets/d/1I9UAR6kabPt0P_lvDiJX_oskPeCVcVI64_vTbwEOF2I/edit?usp=drivesdk
 

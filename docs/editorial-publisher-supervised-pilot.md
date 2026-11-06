@@ -1,9 +1,15 @@
 # Supervised first-pilot runbook
 
+November 6 native checkpoint: the supervised DEV path has completed review, seal,
+publication and exact replay with independent readback and no duplicates. See
+[publication/replay evidence](editorial-publisher-dev-publication-2026-11-06.md#actual-native-execution-and-independent-replay-evidence).
+This is a synthetic DEV result, not approval of a live pilot or production cutover.
+
+
 Status: operating mode selected by the owner on October 30, 2026.
 The dependency-injected snapshot/review/sealing adapter is implemented and locally
-tested; native Sheets IO, operator checks, review UI and one-time setup are now prepared.
-Installation and actual runtime verification remain. See the
+tested. Native Sheets IO, operator checks, review UI, setup, publication and
+exact replay have now succeeded in the November 6 synthetic runtime rehearsal. See the
 [setup guide](editorial-publisher-dev-review-install.md).
 No pilot edition or production activation has been approved. See the
 [DEV adapter implementation](editorial-publisher-dev-handoff.md). The October 30 E2E result remains completed historical DEV evidence.
@@ -20,7 +26,7 @@ rules. The existing pure adbDevSealDraftV1 helper only models a canonical copy
 and digest. It does not validate a full handoff, provide review authorization,
 persist two separate files or enforce access separation.
 
-## Next DEV deliverable
+## DEV deliverable and acceptance requirements
 
 Prepare a snapshot exporter and two-file handoff adapter with synthetic inputs.
 Use fresh isolated DEV artifacts; preserve the committed October 30 E2E workbook.
@@ -116,12 +122,6 @@ rows for the existing dispatcher.
 
 ## Current operator action
 
-Follow the [new standalone review setup](editorial-publisher-dev-review-install.md).
-Run setup once and verify READY_FOR_REVIEW before deploying the owner review
-screen. The seed is dated October 30, 2026 in America/Chicago. Do not reuse the
-completed E2E workbook, add code to production or clear properties after a
-partial setup. The screen seals only; publication integration comes later.
-
-See [rollout design](editorial-publisher-rollout-design.md),
-[production gates](editorial-publisher-production-gates.md) and
-[completed October 30 evidence](editorial-publisher-e2e-2026-10-30.md).
+No additional setup or publication run is needed for the completed November 6
+fixture. Preserve its sealed package and ledger. Confirm the updated branding
+preview when convenient; production-readiness work remains separate.

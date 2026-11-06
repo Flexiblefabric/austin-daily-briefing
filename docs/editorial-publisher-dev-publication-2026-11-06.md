@@ -1,9 +1,10 @@
 # November 6 DEV publication from the reviewed sealed store
 
-Prepared November 6, 2026. Code and local automated checks are complete; the new
-native publication action has not been installed or executed. The earlier native
-review/seal checkpoint and independent digest readback remain valid evidence.
-Production release gates remain in force.
+Updated November 6, 2026. Native publication and exact replay have now passed,
+with independent connector readback. This completes the positive-audience supervised
+DEV workflow from draft through review, seal, publication and verified monitoring.
+The installation steps below are historical instructions; no further rerun or
+setup is required for this committed fixture. Production release gates remain in force.
 
 ## Operator update in the existing ADB REVIEW DEV project
 
@@ -153,3 +154,50 @@ https://developers.google.com/apps-script/concepts/deployments
 The eventual production adapter, dispatcher colocation, real history completeness,
 monitoring lifecycle/retention and enforced access boundaries are not cleared by
 this DEV implementation or its pending native rehearsal.
+
+## Actual native execution and independent replay evidence
+
+Installed operator source: d9ed337020dfcab791957d7b10b876edba81c5fb.
+The operator supplied two Apps Script execution logs:
+
+| Run | Central time, November 6 | Publication | Monitoring |
+| --- | --- | --- | --- |
+| First | 10:47:43–10:47:52 AM | COMMITTED | SUCCESS |
+| Exact replay | 10:49:25–10:49:30 AM | ALREADY_COMMITTED | REPLAY |
+
+Both reported the expected package/digest/run ID, profiles=1, historyRows=6,
+productionWrites=false, emails=false, alertsSent=0 and
+realPermissionsVerified=false. Persisted target commit timestamp:
+2026-11-06T16:47:49.358Z (10:47:49 AM Central).
+
+Independent Google Sheets connector reads before and after the replay confirmed:
+
+| Target | Persisted result |
+| --- | --- |
+| Outbound Messages | Exactly 1 Queued message for synthetic@example.invalid; provider field blank |
+| Briefing History | Exactly 6 Pending rows; provider message IDs blank |
+| Publisher Ledger | Exactly 1 ledger with the reviewed digest and counts 1 / 6 |
+| DEV Publisher Events | Exactly 2 events; no failure alert intents |
+| DEV Publisher State | Healthy, incident=null; Last Success equals the original ledger commit time |
+
+The complete returned values in all five rectangles were identical before and
+after replay, including message/history payloads, ledger timestamp, checkpoint and
+journal. Thus this native replay appended no records and did not rewrite monitor
+success time. The monitor journal/checkpoint hashes were also independently
+replayed with the existing pure validator and passed.
+
+Metadata confirmed the 100-row target grids, 10-row state grid and 1000-row event
+grid. Reads covered all populated target columns across those full small grids,
+so later duplicate/orphan positions were included. No connector writes occurred.
+This evidence concerns only the fixed synthetic DEV database above.
+
+The masthead allowlist fix is implemented and its assets fetched successfully,
+but a screenshot of the updated deployed branding has not yet been supplied.
+Do not mark full desktop/mobile visual approval complete. Native other-identity
+denial, tamper/stale-review failure demonstrations and lost-response injection
+remain covered by local automated tests rather than newly executed native cases.
+No production ACL/capability attestation, full history normalization, zero-audience
+monitoring, durable retention or production cutover is established by this PASS.
+
+Preserve this committed fixture and its sealed review as historical evidence.
+No additional run of setup or publication is required for the completed milestone.

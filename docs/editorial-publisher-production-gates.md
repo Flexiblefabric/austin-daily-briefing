@@ -1,5 +1,19 @@
 # Production publisher adapter and release gates
 
+November 6 readiness update: native supervised DEV review/seal/publication/replay
+has passed, and the owner confirmed masthead/footer branding. A new read-only
+production inventory still finds 12 eligible readers, 345 populated preference
+rows, no Publisher Ledger and 8,418 history records. Existing current-day status
+rows report generation and delivery Healthy. This does not clear the new writer.
+
+The [capacity and quota-recovery audit](editorial-publisher-production-capacity-2026-11-06.md)
+adds an explicit OPEN release requirement for request/runtime headroom, bounded
+transient retry/deadline behavior and dispatcher send-result reconciliation.
+This is a preparation requirement, not a new PASS claim from the existing
+preflight function, which has not been rerun or changed. All existing production
+gates remain in force; no production configuration/data changes were made.
+
+
 Status: read-only preflight executed in Apps Script; production gates remain blocked.
 Production publication is not implemented or enabled by this source. Read-only
 diagnostic code was installed in the production project. No generator cutover,

@@ -111,3 +111,14 @@ test('ambiguous file creation leaves started marker and refuses duplicate provis
  assert.throws(()=>h.c.setupDevEditorialReviewV1(),/response lost/);assert.equal(h.creates(),1);assert(h.props.ADB_DEV_REVIEW_BOOTSTRAP_STARTED);assert(!h.props.ADB_DEV_REVIEW_POLICY_JSON);
  assert.throws(()=>h.c.setupDevEditorialReviewV1(),/already started/);assert.equal(h.creates(),1);assert.equal(h.locked(),false);
 });
+
+test('review seed uses its independent edition and correct Chicago DST offset without rewriting historical fixture',()=>{
+ const h=harness(),seed=JSON.parse(vm.runInContext('ADB_DEV_REVIEW_SEED_JSON',h.c));
+ const config=JSON.parse(fs.readFileSync('docs/editorial-publisher-dev-review-config.json','utf8'));
+ const historical=JSON.parse(fs.readFileSync('tests/fixtures/editorial-publisher-e2e.json','utf8'));
+ assert.equal(seed.edition_date,config.edition);
+ assert.equal(seed.selection_bundle.run_id,config.edition+'-publisher-v1');
+ const clock=cp.execFileSync('python',['-c',"import datetime as d;from zoneinfo import ZoneInfo;print(d.datetime.fromisoformat('"+config.edition+"T08:00:00').replace(tzinfo=ZoneInfo('America/Chicago')).isoformat())"],{encoding:'utf8'}).trim();
+ assert.equal(seed.selection_bundle.cutoff,clock);
+ assert.equal(historical.edition_date,'2026-10-30');assert.equal(seed.source_revision,historical.source_revision);
+});

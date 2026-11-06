@@ -1,9 +1,9 @@
 # DEV review screen: setup and runtime check
 
-Prepared October 30, 2026. This is a synthetic review/sealing rehearsal, not a
+Updated November 6, 2026. This is a synthetic review/sealing rehearsal, not a
 production deployment. Local automated checks pass; actual Apps Script identity,
 file creation, UI rendering and sealing still require the operator runtime check.
-The seed is dated October 30 in America/Chicago. Running setup on a later day
+The seed is dated November 6 in America/Chicago. Running setup on a later day
 stops before creating files; rebuild the dated fixture/bundle instead of changing
 the guard or backdating the clock.
 
@@ -35,7 +35,7 @@ Expected execution-log report:
 
 - result: READY_FOR_REVIEW
 - createdFiles: 3
-- packageId: REVIEW-2026-10-30
+- packageId: REVIEW-2026-11-06
 - sealed: false; published: false
 - productionWrites: false; emails: false; alertsSent: 0
 - realPermissionsVerified: false
@@ -57,7 +57,7 @@ First checkpoint: verify READY_FOR_REVIEW before deploying the screen.
 3. Open the deployment URL while signed into the same Google account used for
    setup. An unavailable or mismatched active/effective identity stops access;
    the code does not fall back to trusting a client-supplied identity.
-4. Enter **REVIEW-2026-10-30** and choose **Load review**.
+4. Enter **REVIEW-2026-11-06** and choose **Load review**.
 
 You should see edition date, audience count 1, validation-at-load status and
 history bounds first. The newsletter preview and reader selector follow, then
@@ -110,8 +110,8 @@ actual editorial package or a production cutover.
 
 ## Validation and reproducibility
 
-Combined local Node suite: **161 passed, 1 browser-only test skipped**, including
-22 native-host/setup tests and a UI-handler test. The browser test could not run
+Combined local Node suite: **162 passed, 1 browser-only test skipped**, including
+23 native-host/setup tests and a UI-handler test. The browser test could not run
 under the local process restrictions; it has not been reported as passing.
 Existing Python selection suite: 23 passed in the preceding implementation check;
 this change does not modify Python selection logic. Native host tests mock Google
@@ -122,3 +122,20 @@ Build with `python scripts/build_publisher_dev_review.py`. The builder reads the
 reviewed E2E synthetic fixture and removes the publication entry point from the
 core before concatenating the review-only sources. CI checks reproducibility and
 runs the new host/UI tests. Keep the old successful E2E bundle unchanged.
+
+## Resuming after the expired October fixture
+
+The November 6 error `dated synthetic seed expired; rebuild before creating files`
+occurs before the setup-started marker, file creation and property writes. For
+this specific error, replace only Code.gs in the existing **ADB REVIEW DEV**
+project with the refreshed bundle, save, and rerun setupDevEditorialReviewV1.
+Keep the HTML file and Advanced Sheets service. There is no property reset or
+workbook cleanup required. If a different error reports setup already started,
+preserve its properties and returned IDs and inspect it before retrying.
+
+The review builder now reads its own
+`docs/editorial-publisher-dev-review-config.json`. Its November 6 fixture shifts
+all synthetic evidence consistently and accounts for Chicago's change to standard
+time. The October 30 E2E bundle, fixture and completed workbook remain historical.
+To prepare another date, change the review config and rebuild; do not change the
+runtime date guard, edit only the top-level date, or repoint old committed tests.

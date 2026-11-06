@@ -12,6 +12,11 @@ on:
       - 'apps-script/EditorialPublisherDevReviewBundle.gs'
       - 'apps-script/EditorialPublisherDevReview.html'
       - 'scripts/build_publisher_dev_review.py'
+      - 'scripts/build_publisher_dev_publication.py'
+      - 'apps-script/EditorialPublisherDevSealedPublication.gs'
+      - 'apps-script/EditorialPublisherDevPublicationBundle.gs'
+      - 'apps-script/EditorialPublisherDevOperatorBundle.gs'
+      - 'tests/helpers/review-host-harness.js'
       - 'docs/editorial-publisher-dev-review-config.json'
       - 'apps-script/EditorialPublisherDevMonitor.gs'
       - 'apps-script/EditorialPublisherDevIntegration.gs'
@@ -51,8 +56,12 @@ jobs:
         run: |
           python scripts/build_publisher_dev_review.py
           git diff --exit-code -- apps-script/EditorialPublisherDevReviewBundle.gs
+      - name: Verify generated manual publication add-on
+        run: |
+          python scripts/build_publisher_dev_publication.py
+          git diff --exit-code -- apps-script/EditorialPublisherDevPublicationBundle.gs apps-script/EditorialPublisherDevOperatorBundle.gs
       - name: Publisher and evidence parity
-        run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js tests/editorial-publisher-prod-preflight.test.js tests/editorial-publisher-dev-workflow.test.js tests/editorial-publisher-dev-monitor.test.js tests/editorial-publisher-dev-integration.test.js tests/editorial-publisher-dev-handoff.test.js tests/editorial-publisher-dev-review-host.test.js tests/editorial-publisher-dev-review-ui.test.js
+        run: node --test tests/editorial-publisher.test.js tests/selection-evidence-parity.test.js tests/editorial-publisher-prod-preflight.test.js tests/editorial-publisher-dev-workflow.test.js tests/editorial-publisher-dev-monitor.test.js tests/editorial-publisher-dev-integration.test.js tests/editorial-publisher-dev-handoff.test.js tests/editorial-publisher-dev-review-host.test.js tests/editorial-publisher-dev-review-ui.test.js tests/editorial-publisher-dev-sealed-publication.test.js
       - name: Established selection evidence suite
         run: python -m unittest discover -s scripts -p test_selection_notes.py
       - name: Validate schema JSON

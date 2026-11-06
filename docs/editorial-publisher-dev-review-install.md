@@ -1,5 +1,10 @@
 # DEV review screen: setup and runtime check
 
+November 6 update: native setup, review and sealing have passed. For the next
+manual publication rehearsal and masthead preview update, follow
+[the DEV publication guide](editorial-publisher-dev-publication-2026-11-06.md).
+Keep the existing files/properties; do not repeat the initial setup.
+
 Updated November 6, 2026. This is a synthetic review/sealing rehearsal, not a
 production deployment. Local automated checks pass; actual Apps Script identity,
 file creation, UI rendering and sealing still require the operator runtime check.

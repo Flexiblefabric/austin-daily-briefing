@@ -88,8 +88,8 @@ function adbDevReviewStages_(snapshot,sealed) {
   return records;
 }
 
-function adbDevReviewHost_() {
-  const policy=adbDevReviewPolicy_(),R=adbDevHandoffRequire_,C=ADB_DEV_REVIEW_HOST;
+function adbDevReviewIo_(policy) {
+  const R=adbDevHandoffRequire_,C=ADB_DEV_REVIEW_HOST;
   const io={
     operatorIdentity:function(){return adbDevReviewIdentity_(policy);},
     withLock:function(fn){const lock=LockService.getScriptLock();lock.waitLock(30000);try{return fn();}finally{lock.releaseLock();}},
@@ -100,6 +100,7 @@ function adbDevReviewHost_() {
       const state=adbPublisherState_(facade);delete state.tables;
       const now=new Date(),env=snapshot.env;
       return {databaseId:id,state:state,clock:{iso:now.toISOString(),editionDate:Utilities.formatDate(now,'America/Chicago','yyyy-MM-dd')},
+        tableIds:Object.fromEntries(Object.entries(snapshot.tables).map(([name,t])=>[name,t.sheetId])),
         history:{cutoff:env['History Cutoff'],windowStart:env['History Window Start'],recentComplete:env['Recent History Complete']==='TRUE',extendedComplete:env['Extended History Complete']==='TRUE'}};
     },
     readDraft:function(id,key){R(id===policy.draftId,'unconfigured draft target');const rows=adbDevReviewStages_(adbDevReviewStageTables_(id,'DRAFT_INBOX'),false).filter(r=>r.stage.manifest['Package ID']===key);R(rows.length===1,'draft not unique');return rows[0].stage;},
@@ -124,8 +125,13 @@ function adbDevReviewHost_() {
       Sheets.Spreadsheets.batchUpdate(request,id);
     }
   };
+  return io;
+}
+
+function adbDevReviewHost_() {
+  const policy=adbDevReviewPolicy_();
   // Factory validates all fixed targets before any file access is possible.
-  return adbCreateDevReviewedHandoffV1(policy,io,adbPublisherDigest_);
+  return adbCreateDevReviewedHandoffV1(policy,adbDevReviewIo_(policy),adbPublisherDigest_);
 }
 
 /** Owner-only web app, execute as user accessing. No parameter-triggered action. */

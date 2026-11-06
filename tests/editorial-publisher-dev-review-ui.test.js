@@ -12,7 +12,11 @@ test('review browser requires an explicit check/click; stale errors clear approv
    snapshot:{cutoff:pkg.selection_bundle.cutoff,history_window_start:pkg.selection_bundle.history_window_start},selectionEvidence:pkg.selection_bundle,
    previews:[{profileId:'SYNTHETIC',rendered:JSON.parse(JSON.stringify(c.adbRenderDailyNewsletter(pkg.editions[0].editorial)))}]};
   review.previews[0].rendered.html+='<script>parent.window.previewExecuted=true</script><img src="https://tracking.invalid/pixel">';
-  const page=await browser.newPage({viewport:{width:1100,height:900}});let requests=0;await page.route('**/*',route=>{requests++;return route.abort();});
+  const page=await browser.newPage({viewport:{width:1100,height:900}});let unapprovedRequests=0;const branding=[];await page.route('**/*',route=>{
+   const url=route.request().url(),match=url.match(/^https:\/\/raw\.githubusercontent\.com\/Flexiblefabric\/austin-daily-briefing\/main\/assets\/brand\/(adb-masthead@2x|adb-mark-reversed@2x)\.png$/);
+   if(match){branding.push(url);const path='/tmp/'+match[1]+'.png';return route.fulfill({contentType:'image/png',body:fs.existsSync(path)?fs.readFileSync(path):Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jWZkAAAAASUVORK5CYII=','base64')});}
+   unapprovedRequests++;return route.abort();
+  });
   await page.addInitScript(()=>{});
   await page.setContent(fs.readFileSync('apps-script/EditorialPublisherDevReview.html','utf8'));
   await page.evaluate(data=>{
@@ -22,7 +26,9 @@ test('review browser requires an explicit check/click; stale errors clear approv
   assert.equal(await page.locator('#seal').isDisabled(),true);
   await page.fill('#package','REVIEW');await page.click('#load');await page.waitForFunction(()=>document.getElementById('review').hidden===false);
   assert.equal(await page.locator('#seal').isDisabled(),true);assert.equal(await page.evaluate(()=>mock.seals),0);
-  assert.equal(await page.locator('#preview').getAttribute('sandbox'),'');assert.equal(await page.evaluate(()=>window.previewExecuted),undefined);assert.equal(requests,0);
+  assert.equal(await page.locator('#preview').getAttribute('sandbox'),'');assert.equal(await page.evaluate(()=>window.previewExecuted),undefined);assert.equal(unapprovedRequests,0);
+  await page.waitForFunction(()=>{const f=document.getElementById('preview').contentWindow;return !!f;});
+  await page.waitForTimeout(100);assert.equal(branding.length,2);
   await page.locator('#checked').check();assert.equal(await page.locator('#seal').isEnabled(),true);
   await page.screenshot({path:'/tmp/adb-dev-review-desktop.png',fullPage:true});
   await page.click('#seal');await page.waitForFunction(()=>document.getElementById('status').textContent.includes('sealed successfully'));
@@ -48,6 +54,8 @@ test('review UI handlers bind the exact ticket, clear stale approval and expose 
  const ticket={packageId:'REVIEW',editionDate:'2026-10-30',sourceRevision:'a'.repeat(40),packageDigest:'b'.repeat(64)};
  callbacks.shift().success({ticket,profiles:1,previews:[{profileId:'SYNTHETIC',rendered:{html:'<h1>Preview</h1>',text:'Preview'}}],snapshot:{cutoff:'2026-10-30T08:00:00-05:00',history_window_start:'2026-10-16'},selectionEvidence:{rows:[]}});
  assert.equal(el('review').hidden,false);assert.equal(el('seal').disabled,true);assert.equal(calls.length,1);
+ const policy=el('preview').srcdoc.match(/img-src ([^;]+);/)[1].split(' ');
+ assert.deepEqual(policy,['data:','https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/assets/brand/adb-masthead@2x.png','https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/assets/brand/adb-mark-reversed@2x.png']);
  el('checked').checked=true;el('checked').handlers.change();assert.equal(el('seal').disabled,false);
  el('seal').handlers.click();el('seal').handlers.click();assert.equal(calls.length,2);assert.equal(calls[1][1],ticket);
  callbacks.shift().failure({message:'review expired'});assert.equal(el('checked').checked,false);assert.equal(el('review').hidden,true);assert.equal(el('seal').disabled,true);assert(el('status').textContent.includes('review expired'));

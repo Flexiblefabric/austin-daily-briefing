@@ -23,9 +23,10 @@ function fail(error){clear();lock(false);status('Stopped: '+String(error&&error.
 function showPreview(){
  if(!loaded)return;
  const p=loaded.previews[Number(el('profile').value)];
- // Empty iframe sandbox prevents scripts/forms/navigation. CSP also blocks remote
- // image/font loads and tracking requests from draft-supplied HTML.
- el('preview').srcdoc='<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; img-src data:; font-src \'none\'; base-uri \'none\'; form-action \'none\'">'+p.rendered.html;
+ const branding='https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/assets/brand/adb-masthead@2x.png https://raw.githubusercontent.com/Flexiblefabric/austin-daily-briefing/main/assets/brand/adb-mark-reversed@2x.png';
+ // The preview permits only the renderer's two fixed branding images. Other
+ // remote images/fonts and scripts remain blocked; editorial bytes are unchanged.
+ el('preview').srcdoc='<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; img-src data: '+branding+'; font-src \'none\'; base-uri \'none\'; form-action \'none\'">'+p.rendered.html;
  el('plain').textContent=p.rendered.text;
 }
 el('load').addEventListener('click',()=>{

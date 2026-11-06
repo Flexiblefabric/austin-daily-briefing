@@ -1,7 +1,7 @@
 # November 6 production readiness: capacity and quota recovery
 
 Status: read-only audit and release acceptance plan. No production source was
-installed, scripts executed, tasks/triggers/properties changed, data written,
+installed or production script executed, tasks/triggers/properties changed, data written,
 messages sent, schemas provisioned or publisher activated by this audit.
 
 ## Direct answer
@@ -195,3 +195,103 @@ waive them. Prepare exact provisioning, source/package pins, target IDs, cutover
 edition, old-generator ownership and rollback before any request to activate.
 
 No new production script installation is needed from Anthony for this audit.
+
+## Production-sized read-only capacity measurement — November 6
+
+This supplements the audit above with measured production inputs. The audience
+baseline is the current **12 eligible readers**. A 24-reader case is a headroom
+probe, not a growth requirement or a rollout target.
+
+### Capture and method
+
+Read all 8,418 history data rows A:L in 22 contiguous, bounded reads. Read current
+subscriber/profile/preference/template tables and the 12 current Sent daily queue
+rows with their 193 matching Sent history rows. Validate exact queue/history
+schemas, unique eligible identities, first-column Preferences identity, provider
+evidence pairing and the existing rendered HTML/text payload contract. No source
+recipients, profile IDs, editorial facts or provider identifiers are included in
+the committed aggregate report.
+
+The local runner loads the production normalizer and pinned deterministic
+planner/renderer. For wire sizing it makes **in-memory projections** of today's
+archived content into Queued/Pending rows, blank delivery evidence and a single
+typed three-append queue/history/ledger request. These projections are never
+submitted. The 24-reader case cycles the 12 archived editions and uses synthetic
+additional recipient identities. It does not claim realistic editorial diversity
+or validate a new production handoff.
+
+### Results
+
+| Check | Measured result | Interpretation |
+|---|---:|---|
+| Eligible audience | 12 | Baseline |
+| Populated Preferences | 345 | Mirror normalization passed |
+| Full captured history | 8,418 rows / 25,463,358 compact UTF-8 bytes | Full archive read, not a recent-only sample |
+| Sent history | 8,271 rows | Includes 193 current-edition rows excluded from prior history |
+| Known structured prior records | 4,923 / 1,626,489 normalized bytes | No invented legacy facts |
+| Recent structured prior records | 2,099 / 699,627 normalized bytes | Recent window complete; no recent malformed or legacy records |
+| Older unstructured Sent records | 3,155 | Extended history remains UNKNOWN |
+| Baseline atomic projection | 1,255,682 bytes / 193 history rows | Fits 1,800,000-byte application guard; 69.8% used |
+| Baseline byte headroom | 544,318 bytes | Content-dependent margin, not guaranteed for every future edition |
+| 24-reader atomic projection | 2,512,620 bytes / 386 history rows | Exceeds application guard by 712,620 bytes; must reject before commit |
+| Projected largest HTML / history note | 24,102 / 29,405 characters | Fits existing 40,000-character DEV guards |
+| Actual stored payload validation | 12 of 12 passed | Existing payload contract only; no visual or fresh editorial approval implied |
+
+Three local full-history normalizations took 187.72–217.04 ms. Synthetic full
+planning/rendering/validation with 4,923 actual known prior records returned READY
+for 12 and 24 synthetic profiles (72 and 144 synthetic history rows), taking
+464.53 ms and 329.30 ms respectively. These short, non-monotonic timings are local
+Node observations, not comparative benchmarks or Apps Script runtime promises.
+The synthetic identities do not recreate current readers' per-profile selection
+history. Real-content sizing above is the more relevant transaction boundary.
+
+Machine-readable aggregates:
+[editorial-publisher-capacity-results-2026-11-06.json](editorial-publisher-capacity-results-2026-11-06.json).
+
+### What this establishes and what remains open
+
+Today's content at the current audience fits the proposed atomic publication
+budget. The previous small synthetic fixture understated today's real-content
+request size. We should preserve the pre-commit byte guard and measure every real
+candidate package; increasing readership is not required to hit the guard if an
+edition becomes substantially larger. Do not split a failed atomic publication
+into independent queue/history/ledger writes or raise the guard based on this
+test alone. The 24-reader failure does not disqualify the current 12-reader sizing
+result.
+
+**Production capacity is not certified.** These measurements exclude Google I/O,
+Apps Script memory/runtime and actual shared owner/project quota usage. The
+capture spans multiple requests and is not an atomic database snapshot. This
+runner performs no Google API calls, writes, sends or publication. The capture
+itself used read-only connected Sheets calls.
+
+The next acceptance check is a native, read-only Apps Script timing/request-budget
+probe against the full archive and current audience, in a separate inspection
+project rather than an edit to the production sender. It must log aggregates only,
+include metadata/input reads and repeat/revalidation work, identify owner/project
+quota scope, and stop before the execution deadline. Read retries require bounded
+backoff. Publication/delivery retries must reconcile state and provider evidence
+before any further write or send; the existing recovery gaps described above
+remain release blockers. Full extended-history policy and the other production
+gates remain unresolved.
+
+### Reproduction and verification
+
+Run `node scripts/measure_publisher_capacity.js /private/capture/directory`.
+Input contract: `manifest.json`, `input-tables.json`, contiguous
+`history-NN.json` files and `current-queue.json`. Keep captures outside the
+repository. Manifest fixes edition/window/source ref, physical history ranges,
+grid row count and exact queue headers. The generated review seed must match the
+captured edition; the runner does not backdate the clock or rewrite production
+data.
+
+Regression coverage rejects incomplete/gapped captures and unstructured current
+history, checks typed numeric ledger cells, preserves the single three-append
+request, verifies over-budget detection and input immutability, and checks that
+projection reports omit private input values. No production source, properties,
+triggers, sharing or schema was changed.
+
+
+Validation: 179 Node tests passed; one browser-only test remained skipped. The
+54 established Python/JavaScript selection vectors matched. The private capture
+completed the measurement runner without errors.

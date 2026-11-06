@@ -1,0 +1,93 @@
+{
+  "scope": "read-only local measurement; no Google API calls or publication",
+  "editionDate": "2026-11-06",
+  "sourceRef": "19dd14a26cca1387cda864194116d13e4a27783d",
+  "audience": {
+    "eligibleProfiles": 12,
+    "subscriberRows": 15,
+    "profileRows": 15,
+    "preferenceRows": 345,
+    "currentQueueRows": 12,
+    "currentHistoryRows": 193
+  },
+  "history": {
+    "rows": 8418,
+    "sentRows": 8271,
+    "legacyOutsideWindow": 3155,
+    "recentLegacy": 0,
+    "recentMalformed": 0,
+    "malformedOutsideWindow": 0,
+    "invalidDates": 0,
+    "recentComplete": true,
+    "extendedHistoryKnown": false,
+    "knownPriorRecords": 4923,
+    "recentKnownPriorRecords": 2099,
+    "compactCapturedUtf8Bytes": 25463358,
+    "normalizedKnownPriorUtf8Bytes": 1626489,
+    "recentKnownPriorUtf8Bytes": 699627,
+    "maxArchivedNoteChars": 37091,
+    "historyReadChunks": 22,
+    "localNormalizeMs": [
+      217.04,
+      197.33,
+      187.72
+    ]
+  },
+  "archivedPayloadValidation": {
+    "passedProfiles": 12,
+    "localMs": 13.72
+  },
+  "projectedAtomicPayload": [
+    {
+      "profiles": 12,
+      "historyRows": 193,
+      "requestBytes": 1255682,
+      "applicationByteLimit": 1800000,
+      "withinApplicationLimit": true,
+      "limitUsedPercent": 69.8,
+      "headroomBytes": 544318,
+      "maxHtmlChars": 24102,
+      "maxHistoryNoteChars": 29405,
+      "withinDevCellGuard": true
+    },
+    {
+      "profiles": 24,
+      "historyRows": 386,
+      "requestBytes": 2512620,
+      "applicationByteLimit": 1800000,
+      "withinApplicationLimit": false,
+      "limitUsedPercent": 139.6,
+      "headroomBytes": -712620,
+      "maxHtmlChars": 24102,
+      "maxHistoryNoteChars": 29405,
+      "withinDevCellGuard": true
+    }
+  ],
+  "syntheticRenderWithKnownHistory": [
+    {
+      "profiles": 12,
+      "priorRecords": 4923,
+      "result": "READY",
+      "queueRows": 12,
+      "historyRows": 72,
+      "planRenderValidateMs": 464.53
+    },
+    {
+      "profiles": 24,
+      "priorRecords": 4923,
+      "result": "READY",
+      "queueRows": 24,
+      "historyRows": 144,
+      "planRenderValidateMs": 329.3
+    }
+  ],
+  "limitations": [
+    "Local Node timings exclude Apps Script/Google network latency and memory limits.",
+    "Archived-content byte projections are not a validated new production handoff.",
+    "24-profile case cycles archived content and uses synthetic additional recipients; it is a headroom probe.",
+    "Unknown extended history remains UNKNOWN; no selection-rule waiver.",
+    "Read capture spans multiple requests; no transactional snapshot isolation is claimed."
+  ],
+  "productionWrites": false,
+  "emails": false
+}

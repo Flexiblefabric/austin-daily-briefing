@@ -10,7 +10,7 @@ const config = fs.readFileSync('site/manage-config.js','utf8');
 const confirmHtml = fs.readFileSync('site/manage-confirm.html','utf8');
 const confirmConfig = fs.readFileSync('site/manage-confirm-config.js','utf8');
 const confirmBrowser = fs.readFileSync('site/manage-confirm.js','utf8');
-const design = fs.readFileSync('docs/native-management-design.md','utf8');
+const design = fs.readFileSync('docs/subscriber/native-management-design.md','utf8');
 const css = fs.readFileSync('site/styles.css','utf8');
 
 function digestBytes(value) {
@@ -154,7 +154,7 @@ function context() {
   assert(design.includes('converted to `Paused`, keeping `Admin Status=Hold`'));
   assert(design.includes('FORM-9 production intake, confirmed request processing, controlled QA and public cutover have not been activated'));
   assert(design.includes('Gate E remains blocked'));
-  assert(design.includes('docs/admin-status-production-migration.md'));
+  assert(design.includes('docs/subscriber/admin-status-production-migration.md'));
   assert(design.includes('32 random token bytes'));
   assert(design.includes('manage-confirm.html'));
   assert(design.includes('URL fragment'));

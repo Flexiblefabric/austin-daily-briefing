@@ -1,0 +1,29 @@
+name: Docs folder conventions
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docs-layout:
+    name: Enforce docs/ layout
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test documentation layout validator
+        run: python -m unittest discover -s tests -p "test_docs_layout.py" -v
+
+      - name: Enforce repository documentation layout
+        run: python scripts/check_docs_layout.py

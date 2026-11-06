@@ -25,8 +25,8 @@ This is the entry point for ADB's internal documentation. **Canonical production
 
 1. Keep live automation prompt files in `automation-prompts/` and all required production specification paths stable unless a separately tested migration explicitly updates every deployed consumer.
 2. Treat `PROJECT_STATE.json` as the source of truth for registered documentation paths. Use `python scripts/docs_sync.py audit` after any move; generated `ARCHITECTURE.md`, `OPERATIONS.md`, and `PROJECT_STATUS.md` are not hand-edited.
-3. File new workstream design, QA, migration and incident reports in the appropriate subfolder, not the `docs/` root. Prefer a new subfolder only when a workstream has enough documents to justify it.
+3. File new workstream design, QA, migration and incident reports in the appropriate subfolder, not the `docs/` root. Existing root files are grandfathered by `scripts/check_docs_layout.py`; adding a new canonical root file requires an explicit, reviewed allowlist change. Each top-level workstream folder needs its own `README.md` index (except historical `release-candidates/` and immutable `snapshots/`). Prefer a new subfolder only when the workstream justifies it.
 4. Preserve historical experiment results; do not reclassify them as currently approved procedures. Do not alter immutable `snapshots/`.
 5. Before moving a document, update repository links, registry references, scripts/tests, and any scheduled task that consumes its exact path.
 
-**Current exception:** Friday synthesis and editorial-publisher work in open pull requests remains at its existing paths until those branches can be reconciled safely.
+**Pull-request enforcement:** The [Docs folder conventions](../.github/workflows/docs-layout.yml) workflow checks every pull request and push to `main`. It runs unit tests and rejects unapproved root-level documents or new unindexed workstreams. Existing open pull requests, including editorial-publisher and Friday-evidence changes, must follow these rules before merging. To block merges when this check fails, configure `Enforce docs/ layout` as a required status check in branch protection for `main`.

@@ -20,10 +20,10 @@ into ADB PROD Scripts, or install separate copies of the bundled modules.
 
 1. Create a new project named **ADB REVIEW DEV**.
 2. Replace its sole Code.gs contents with the complete generated file
-   [EditorialPublisherDevReviewBundle.gs](../apps-script/EditorialPublisherDevReviewBundle.gs).
+   [EditorialPublisherDevReviewBundle.gs](../../../apps-script/EditorialPublisherDevReviewBundle.gs).
 3. Add one HTML file named **EditorialPublisherDevReview** (Apps Script adds the
    .html extension), using the complete contents of
-   [EditorialPublisherDevReview.html](../apps-script/EditorialPublisherDevReview.html).
+   [EditorialPublisherDevReview.html](../../../apps-script/EditorialPublisherDevReview.html).
 4. Under Services, add **Google Sheets API**, identifier **Sheets**. Save.
 5. Select **setupDevEditorialReviewV1** and run it once. Authorize the requested
    Sheets, identity and script-trigger inspection access for this new project.
@@ -139,7 +139,7 @@ workbook cleanup required. If a different error reports setup already started,
 preserve its properties and returned IDs and inspect it before retrying.
 
 The review builder now reads its own
-`docs/editorial-publisher-dev-review-config.json`. Its November 6 fixture shifts
+`docs/editorial/publisher/editorial-publisher-dev-review-config.json`. Its November 6 fixture shifts
 all synthetic evidence consistently and accounts for Chicago's change to standard
 time. The October 30 E2E bundle, fixture and completed workbook remain historical.
 To prepare another date, change the review config and rebuild; do not change the

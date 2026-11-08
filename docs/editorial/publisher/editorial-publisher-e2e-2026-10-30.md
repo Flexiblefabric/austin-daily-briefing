@@ -44,7 +44,7 @@ No quota increase, production edit or clock/date bypass is needed.
 
 ## Repeatable preparation and evidence
 
-docs/editorial-publisher-e2e-config.json is the single source of the isolated
+docs/editorial/publisher/editorial-publisher-e2e-config.json is the single source of the isolated
 database ID, edition date and reviewed core-logic revision. The builder substitutes
 these into the runner template and emits the bundle, fixture and source manifest.
 Synthetic source/cutoff/history dates shift together; Chicago timestamp offsets

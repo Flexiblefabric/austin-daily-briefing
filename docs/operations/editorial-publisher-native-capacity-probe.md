@@ -39,5 +39,5 @@ project contention, complete publisher runtime, write timing and send recovery
 remain separate acceptance checks. The queue header read does not include live
 message payloads. No deployment or trigger is needed.
 
-See the [November 6 capacity results](../editorial-publisher-production-capacity-2026-11-06.md)
+See the [November 6 capacity results](../editorial/publisher/editorial-publisher-production-capacity-2026-11-06.md)
 for archived-content payload sizing and the remaining rollout gates.

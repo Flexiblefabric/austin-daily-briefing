@@ -9,7 +9,7 @@ import sys
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG = json.loads((ROOT/'docs/editorial-publisher-e2e-config.json').read_text())
+CONFIG = json.loads((ROOT/'docs/editorial/publisher/editorial-publisher-e2e-config.json').read_text())
 DATABASE = CONFIG['database']
 ORIGINAL_DEV = '1I9UAR6kabPt0P_lvDiJX_oskPeCVcVI64_vTbwEOF2I'
 EDITION = CONFIG['edition']
@@ -63,7 +63,7 @@ def build():
     (ROOT/'apps-script/EditorialPublisherEndToEndQa.gs').write_text('\n'.join(parts))
     pkg=package()
     (ROOT/'tests/fixtures/editorial-publisher-e2e.json').write_text(json.dumps(pkg,indent=2)+'\n')
-    (ROOT/'docs/editorial-publisher-e2e-source-manifest.json').write_text(json.dumps({
+    (ROOT/'docs/editorial/publisher/editorial-publisher-e2e-source-manifest.json').write_text(json.dumps({
         'database':DATABASE,'edition':EDITION,'core_revision':CORE_REVISION,
         'package_sha256':hashlib.sha256(json.dumps(pkg,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest(),
         'transformation':'Replace the monitor DATABASE constant with the isolated E2E ID; delegate the core table reader to a phase-scoped batched Sheets API snapshot and refresh it on every state read. The E2E runner batches its own monitoring reads and verifies publication against fresh state. Publication/selection/rendering logic is unchanged.',

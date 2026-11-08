@@ -1,3 +1,4 @@
+const crypto = require('node:crypto');
 /* Regression tests for ADB-DAILY-HTML-1.0; run with node --test. */
 'use strict';
 const test = require('node:test');
@@ -139,10 +140,16 @@ function simulateDispatch(htmlBodies, withContract=true, previousBlockedIndex=nu
       }};
     }
   });
+  const journal = {};
   const context=vm.createContext({
     LockService:{getScriptLock:()=>({waitLock(){},releaseLock(){}})},
-    PropertiesService:{getScriptProperties:()=>({getProperty:(key)=> key==='ADB_DAILY_LAYOUT_GUARD_MODE'?layoutGuardMode:'LIVE'})},
-    SpreadsheetApp:{openById:()=>({getSheetByName:sheet})},
+    PropertiesService:{getScriptProperties:()=>({getProperty:(key)=> key==='ADB_DAILY_LAYOUT_GUARD_MODE'?layoutGuardMode:'LIVE',
+      getProperties:()=>({...journal}), setProperty:(key,value)=>{journal[key]=value;},
+      deleteProperty:key=>{delete journal[key];}})},
+    SpreadsheetApp:{openById:()=>({getSheetByName:sheet}),flush(){}},
+    Utilities:{DigestAlgorithm:{SHA_256:'sha256'},Charset:{UTF_8:'utf8'},
+      computeDigest:(algorithm,value)=>crypto.createHash(algorithm).update(value).digest(),
+      base64EncodeWebSafe:bytes=>Buffer.from(bytes).toString('base64url')},
     Logger:{log(){}},Set,Date,JSON
   });
   vm.runInContext(transport,context);

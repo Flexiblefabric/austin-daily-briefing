@@ -5,7 +5,7 @@ import json
 import re
 from zoneinfo import ZoneInfo
 root=Path(__file__).resolve().parents[1]
-config=json.loads((root/'docs/editorial-publisher-dev-review-config.json').read_text())
+config=json.loads((root/'docs/editorial/publisher/editorial-publisher-dev-review-config.json').read_text())
 edition=dt.date.fromisoformat(config['edition'])
 assert edition.isoformat()==config['edition']
 files=['scripts/daily_newsletter_renderer.js','apps-script/DailyNewsletterContract.gs',

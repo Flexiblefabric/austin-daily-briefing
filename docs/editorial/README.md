@@ -2,6 +2,7 @@
 
 Supporting editorial research, experiments, selection-engine evidence, and future editorial-publisher development belong here.
 
+- [Editorial publisher](publisher/README.md)
 - [V2 evidence and calibration](evidence/README.md)
 - [Canonical editorial system](../editorial-system.md)
 - [Production V2 selection specification](../v2-selection-spec.md)

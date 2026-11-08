@@ -13,11 +13,11 @@ its Script Properties, Advanced Sheets service and three existing DEV files.
 There is no new setup, file copy, property edit or reseal operation.
 
 1. Replace the complete Code.gs contents with
-   [EditorialPublisherDevOperatorBundle.gs](../apps-script/EditorialPublisherDevOperatorBundle.gs).
+   [EditorialPublisherDevOperatorBundle.gs](../../../apps-script/EditorialPublisherDevOperatorBundle.gs).
    This combines the updated review host and manual publication add-on once.
    Do not add it alongside separate copies of those bundled modules.
 2. Replace the complete EditorialPublisherDevReview.html contents with the
-   [updated HTML](../apps-script/EditorialPublisherDevReview.html). Save both files.
+   [updated HTML](../../../apps-script/EditorialPublisherDevReview.html). Save both files.
 3. To check branding at the existing web app URL, choose Deploy → Manage
    deployments, select the existing DEV deployment, click Edit, select a new
    version and deploy it. Preserve its current private access/execution settings.

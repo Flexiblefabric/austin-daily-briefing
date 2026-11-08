@@ -81,7 +81,7 @@ test('ambiguous file creation leaves started marker and refuses duplicate provis
 
 test('review seed uses its independent edition and correct Chicago DST offset without rewriting historical fixture',()=>{
  const h=harness(),seed=JSON.parse(vm.runInContext('ADB_DEV_REVIEW_SEED_JSON',h.c));
- const config=JSON.parse(fs.readFileSync('docs/editorial-publisher-dev-review-config.json','utf8'));
+ const config=JSON.parse(fs.readFileSync('docs/editorial/publisher/editorial-publisher-dev-review-config.json','utf8'));
  const historical=JSON.parse(fs.readFileSync('tests/fixtures/editorial-publisher-e2e.json','utf8'));
  assert.equal(seed.edition_date,config.edition);
  assert.equal(seed.selection_bundle.run_id,config.edition+'-publisher-v1');

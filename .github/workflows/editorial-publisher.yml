@@ -18,15 +18,15 @@ on:
       - 'apps-script/EditorialPublisherDevPublicationBundle.gs'
       - 'apps-script/EditorialPublisherDevOperatorBundle.gs'
       - 'tests/helpers/review-host-harness.js'
-      - 'docs/editorial-publisher-dev-review-config.json'
+      - 'docs/editorial/publisher/editorial-publisher-dev-review-config.json'
       - 'apps-script/EditorialPublisherDevMonitor.gs'
       - 'apps-script/EditorialPublisherDevIntegration.gs'
       - 'apps-script/EditorialPublisherEndToEndRunner.gs'
       - 'apps-script/EditorialPublisherEndToEndQa.gs'
       - 'scripts/build_publisher_e2e_qa.py'
       - 'tests/fixtures/editorial-publisher-e2e.json'
-      - 'docs/editorial-publisher-e2e-source-manifest.json'
-      - 'docs/editorial-publisher-e2e-config.json'
+      - 'docs/editorial/publisher/editorial-publisher-e2e-source-manifest.json'
+      - 'docs/editorial/publisher/editorial-publisher-e2e-config.json'
       - 'apps-script/SelectionEvidenceContract.gs'
       - 'apps-script/DailyNewsletterContract.gs'
       - 'scripts/daily_newsletter_renderer.js'
@@ -34,7 +34,7 @@ on:
       - 'scripts/test_selection_notes.py'
       - 'tests/*publisher*'
       - 'tests/selection-*'
-      - 'docs/editorial-handoff.schema.json'
+      - 'docs/editorial/publisher/editorial-handoff.schema.json'
       - '.github/workflows/editorial-publisher.yml'
 permissions:
   contents: read
@@ -52,7 +52,7 @@ jobs:
       - name: Verify generated isolated E2E bundle
         run: |
           python scripts/build_publisher_e2e_qa.py
-          git diff --exit-code -- apps-script/EditorialPublisherEndToEndQa.gs tests/fixtures/editorial-publisher-e2e.json docs/editorial-publisher-e2e-source-manifest.json
+          git diff --exit-code -- apps-script/EditorialPublisherEndToEndQa.gs tests/fixtures/editorial-publisher-e2e.json docs/editorial/publisher/editorial-publisher-e2e-source-manifest.json
       - name: Verify generated review-only bundle
         run: |
           python scripts/build_publisher_dev_review.py
@@ -66,4 +66,4 @@ jobs:
       - name: Established selection evidence suite
         run: python -m unittest discover -s scripts -p test_selection_notes.py
       - name: Validate schema JSON
-        run: python -m json.tool docs/editorial-handoff.schema.json > /dev/null
+        run: python -m json.tool docs/editorial/publisher/editorial-handoff.schema.json > /dev/null

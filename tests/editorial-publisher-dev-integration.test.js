@@ -122,7 +122,7 @@ test('batched snapshots still detect preferences changed between initial plan an
  assert.equal(h.counts().targetWrites,0);assert.equal(h.sheets.get('Outbound Messages').values.length,1);
 });
 test('generated E2E bundle rejects all bound projects including a copied script attached to the correct sandbox',()=>{
- const config=JSON.parse(fs.readFileSync('docs/editorial-publisher-e2e-config.json','utf8'));
+ const config=JSON.parse(fs.readFileSync('docs/editorial/publisher/editorial-publisher-e2e-config.json','utf8'));
  for(const activeId of ['1I9UAR6kabPt0P_lvDiJX_oskPeCVcVI64_vTbwEOF2I','1pqVjQFqWoRb24jn86lOq6LoYjzBccf4WpE1kOI8_Jk0','1XZCcNUCSkCU68HY9DMgjbyKgQRXDGkVjf0Q3uz1QXrY',config.database]){
    const h=harness(undefined,e2eOptions({activeId,standalone:false}));assert.throws(()=>h.c.runPublisherDevEndToEndQaV1(),/new standalone E2E project/);
    assert.equal(h.counts().targetWrites,0);assert.equal(h.counts().monitorWrites,0);assert.equal(h.propertyWrites(),0);
@@ -138,10 +138,10 @@ test('standalone E2E rejects existing configuration, dispatcher code and trigger
  assert.throws(()=>dispatcher.c.runPublisherDevEndToEndQaV1(),/dispatcher project forbidden/);assert.equal(dispatcher.propertyWrites(),0);
 });
 test('generated E2E bundle source manifest and core source pin match the reviewed sources',()=>{
- const manifest=JSON.parse(fs.readFileSync('docs/editorial-publisher-e2e-source-manifest.json','utf8'));
+ const manifest=JSON.parse(fs.readFileSync('docs/editorial/publisher/editorial-publisher-e2e-source-manifest.json','utf8'));
  for(const entry of manifest.sources)assert.equal(crypto.createHash('sha256').update(fs.readFileSync(entry.path)).digest('hex'),entry.sha256);
  assert.equal(manifest.core_revision,e2eOptions().pkg.source_revision);
- const config=JSON.parse(fs.readFileSync('docs/editorial-publisher-e2e-config.json','utf8'));
+ const config=JSON.parse(fs.readFileSync('docs/editorial/publisher/editorial-publisher-e2e-config.json','utf8'));
  assert.equal(manifest.database,config.database);assert.equal(manifest.edition,config.edition);
  const c=runtime(e2eOptions().bundle);
  assert.equal(crypto.createHash('sha256').update(c.adbPublisherCanonical_(e2eOptions().pkg)).digest('hex'),manifest.package_sha256);

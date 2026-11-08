@@ -146,11 +146,7 @@ function validateForm7GateDTransportCompatibilityV1() {
   return report;
 }
 
-function adbSendEmailViaResend_(message) {
-  const apiKey = PropertiesService.getScriptProperties()
-    .getProperty(ADB_RESEND.API_KEY_PROPERTY);
-  if (!apiKey) throw new Error('Missing Apps Script property RESEND_API_KEY.');
-
+function adbResendPayload_(message) {
   const recipients = Array.isArray(message.to) ? message.to : [message.to];
   if (!recipients.length || recipients.some(function(value) { return !String(value).trim(); })) {
     throw new Error('At least one valid recipient is required.');
@@ -171,6 +167,15 @@ function adbSendEmailViaResend_(message) {
       return {name: String(name), value: String(message.tags[name])};
     });
   }
+  return payload;
+}
+
+function adbSendEmailViaResend_(message) {
+  const apiKey = PropertiesService.getScriptProperties()
+    .getProperty(ADB_RESEND.API_KEY_PROPERTY);
+  if (!apiKey) throw new Error('Missing Apps Script property RESEND_API_KEY.');
+
+  const payload = adbResendPayload_(message);
 
   const headers = {
     Authorization: 'Bearer ' + apiKey,
@@ -194,7 +199,9 @@ function adbSendEmailViaResend_(message) {
 
   if (statusCode < 200 || statusCode >= 300 || !parsed.id) {
     const detail = parsed.message || parsed.name || body || 'Unknown Resend error';
-    throw new Error('Resend rejected the message (' + statusCode + '): ' + detail);
+    const error = new Error('Resend rejected the message (' + statusCode + '): ' + detail);
+    error.resendStatus = statusCode;
+    throw error;
   }
   return {id: String(parsed.id), statusCode: statusCode};
 }
@@ -530,6 +537,71 @@ function adbRemoveWelcomeTriggers_() {
  * Briefing History delivery status. It defaults to CONTROLLED and creates no
  * trigger until promoteAdbResendDailyV1 is run after controlled QA.
  */
+// Resend retains idempotency keys for 24 hours. Allow a one-hour margin
+// between our last permitted replay and the provider retention limit.
+const ADB_DAILY_ATTEMPT_PREFIX = 'ADB_RESEND_DAILY_ATTEMPT_V1_';
+const ADB_DAILY_REPLAY_MS = 23 * 60 * 60 * 1000;
+
+function adbDailyAttemptDigest_(value) {
+  return Utilities.base64EncodeWebSafe(
+    Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, value, Utilities.Charset.UTF_8));
+}
+
+function adbDailyDeliveryMessage_(row) {
+  return {
+    to: String(row.Email || '').trim().toLowerCase(),
+    subject: String(row.Subject || '').trim(),
+    text: String(row['Plain Text'] || ''),
+    html: String(row.HTML || ''),
+    idempotencyKey: String(row['Message ID'] || '').trim(),
+    tags: {
+      message_type: 'daily_briefing',
+      environment: 'production',
+      profile_id: String(row['Profile ID'] || '').trim()
+    }
+  };
+}
+
+function adbDailyAttemptFingerprint_(row) {
+  const message = adbDailyDeliveryMessage_(row);
+  return adbDailyAttemptDigest_(JSON.stringify([
+    ADB_RESEND.ENDPOINT, message.idempotencyKey, adbResendPayload_(message),
+    String(row['Run ID'] || '').trim()
+  ]));
+}
+
+function adbDailyRecordReceipt_(entry, matches, receipt, queueSheet, queueColumns, historySheet, historyColumns) {
+  const acceptedAt = receipt.acceptedAt;
+  const providerId = receipt.providerId;
+  const queueEvidence = acceptedAt + ' | Resend ID ' + providerId;
+  const oldQueueEvidence = String(entry.values['Sent At / Gmail ID'] || '').trim();
+  if (!matches.length || (oldQueueEvidence && oldQueueEvidence !== queueEvidence) ||
+      matches.some(function(item) {
+        const state = String(item.values['Delivery Status'] || '').trim().toUpperCase();
+        const id = String(item.values['Provider Message ID'] || '').trim();
+        return !['PENDING', 'SENT'].includes(state) || (id && id !== providerId);
+      })) {
+    throw new Error('Daily receipt conflicts with Sheets evidence at queue row ' + entry.sheetRow + '.');
+  }
+  const acceptanceNote = 'Resend accepted ' + acceptedAt + '.';
+  matches.forEach(function(item) {
+    const prior = String(item.values.Notes || '').trim();
+    const parts = prior ? prior.split(' | ') : [];
+    if (!parts.includes(acceptanceNote)) parts.push(acceptanceNote);
+    historySheet.getRange(item.sheetRow, historyColumns['Provider Message ID']).setValue(providerId);
+    historySheet.getRange(item.sheetRow, historyColumns.Notes).setValue(parts.join(' | '));
+    historySheet.getRange(item.sheetRow, historyColumns['Delivery Status']).setValue('Sent');
+    item.values['Provider Message ID'] = providerId;
+    item.values['Delivery Status'] = 'Sent';
+  });
+  queueSheet.getRange(entry.sheetRow, queueColumns['Sent At / Gmail ID']).setValue(queueEvidence);
+  queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
+    .setValue('Resend accepted; subscriber eligibility rechecked immediately before delivery.');
+  queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Sent');
+  SpreadsheetApp.flush();
+  entry.values.Status = 'Sent';
+}
+
 function dispatchQueuedDailyBriefingsViaResendV1() {
   const lock = LockService.getScriptLock();
   lock.waitLock(30000);
@@ -596,6 +668,80 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
     const queueColumns = adbHeaderColumns_(queue.headers);
     const historyColumns = adbHeaderColumns_(history.headers);
 
+    const dailyRows = queue.rows.filter(entry => entry.values['Template ID'] === ADB_RESEND.DAILY_TEMPLATE_ID);
+    const attempts = new Map();
+    const messageCounts = new Map();
+    const historyIdentityCounts = new Map();
+    function historyIdentity(row) {
+      return JSON.stringify([
+        String(row['Run ID'] || '').trim(), String(row['Profile ID'] || '').trim()
+      ]);
+    }
+    dailyRows.forEach(function(entry) {
+      const id = String(entry.values['Message ID'] || '').trim();
+      const identity = historyIdentity(entry.values);
+      messageCounts.set(id, (messageCounts.get(id) || 0) + 1);
+      historyIdentityCounts.set(identity, (historyIdentityCounts.get(identity) || 0) + 1);
+    });
+    const saved = props.getProperties();
+    const savedKeys = new Set(Object.keys(saved).filter(key => key.startsWith(ADB_DAILY_ATTEMPT_PREFIX)));
+    const reviewRows = [];
+    let reconciled = 0;
+
+    function matchingHistory(row) {
+      const runId = String(row['Run ID'] || '').trim();
+      const profileId = String(row['Profile ID'] || '').trim();
+      if (!runId || !profileId) return [];
+      return history.rows.filter(function(item) {
+        return String(item.values['Run ID'] || '').trim() === runId &&
+          String(item.values['Profile ID'] || '').trim() === profileId;
+      });
+    }
+
+    // Repair confirmed receipts even if the subscriber is no longer eligible
+    // or the layout guard blocks new sends. This path makes no provider call.
+    if (savedKeys.size) dailyRows.forEach(function(entry) {
+      const row = entry.values;
+      const id = String(row['Message ID'] || '').trim();
+      const key = ADB_DAILY_ATTEMPT_PREFIX + adbDailyAttemptDigest_(id);
+      if (!Object.prototype.hasOwnProperty.call(saved, key)) return;
+      savedKeys.delete(key);
+      let attempt;
+      try { attempt = JSON.parse(saved[key]); } catch (ignored) { attempt = null; }
+      attempts.set(entry.sheetRow, {key: key, record: attempt});
+      const validReceipt = attempt && typeof attempt.providerId === 'string' && attempt.providerId &&
+        typeof attempt.acceptedAt === 'string' && Number.isFinite(Date.parse(attempt.acceptedAt));
+      const pending = attempt && !Object.prototype.hasOwnProperty.call(attempt, 'providerId') &&
+        !Object.prototype.hasOwnProperty.call(attempt, 'acceptedAt');
+      let fingerprint;
+      try { fingerprint = adbDailyAttemptFingerprint_(row); } catch (ignored) {}
+      if (!attempt || !fingerprint || messageCounts.get(id) !== 1 ||
+          historyIdentityCounts.get(historyIdentity(row)) !== 1 || attempt.fingerprint !== fingerprint ||
+          !Number.isFinite(attempt.startedAt) || attempt.startedAt > Date.now() ||
+          (!validReceipt && (!pending || Date.now() - attempt.startedAt >= ADB_DAILY_REPLAY_MS))) {
+        reviewRows.push(entry.sheetRow);
+        return;
+      }
+      if (validReceipt) {
+        if (!['Queued', 'Sent'].includes(String(row.Status || '').trim())) {
+          reviewRows.push(entry.sheetRow);
+          return;
+        }
+        adbDailyRecordReceipt_(entry, matchingHistory(row), attempt,
+          queueSheet, queueColumns, historySheet, historyColumns);
+        props.deleteProperty(key);
+        reconciled++;
+      } else if (String(row.Status || '').trim() !== 'Queued') {
+        reviewRows.push(entry.sheetRow);
+      }
+    });
+
+    // A missing or renamed queue identity could otherwise appear to be a
+    // fresh message. Preserve the journal and stop before any new send.
+    if (savedKeys.size) {
+      throw new Error('Unmatched daily delivery attempts require review: ' + savedKeys.size + '.');
+    }
+
     if (layoutGuardMode === 'ENFORCE') {
       // Release guard ADB-DAILY-HTML-1.0: check all pending HTML/text pairs
       // BEFORE any provider call. Invalid payloads fail the whole pending batch,
@@ -645,6 +791,8 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
       });
       if (invalidLayouts.length) {
         pendingLayouts.forEach(function(entry) {
+          // An unresolved attempt may already have been accepted by Resend.
+          if (attempts.has(entry.sheetRow)) return;
           const row = entry.values;
           const failed = invalidLayouts.find(function(bad) { return bad.sheetRow === entry.sheetRow; });
           const reason = failed ? failed.problem :
@@ -673,7 +821,8 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
 
     queue.rows.forEach(function(entry) {
       const row = entry.values;
-      if (String(row.Status || '').trim() !== 'Queued' || row['Template ID'] !== ADB_RESEND.DAILY_TEMPLATE_ID) return;
+      if (String(row.Status || '').trim() !== 'Queued' || row['Template ID'] !== ADB_RESEND.DAILY_TEMPLATE_ID ||
+          reviewRows.includes(entry.sheetRow)) return;
 
       const messageId = String(row['Message ID'] || '').trim();
       const profileId = String(row['Profile ID'] || '').trim();
@@ -683,7 +832,8 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
       const htmlBody = String(row.HTML || '');
       const runId = String(row['Run ID'] || '').trim();
 
-      if (!messageId || !/^DAILY-(?:RESEND-QA|LIVE):/.test(messageId)) {
+      if (!messageId || messageId.length > 256 || messageCounts.get(messageId) !== 1 ||
+          !/^DAILY-(?:RESEND-QA|LIVE):/.test(messageId)) {
         throw new Error('Invalid daily Message ID at row ' + entry.sheetRow + '.');
       }
       if (!profileId || !email || !subject || !textBody.trim() || !htmlBody.trim() || !runId) {
@@ -695,21 +845,26 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
       if (String(row['Sent At / Gmail ID'] || '').trim()) {
         throw new Error('Queued daily row already has a provider ID at row ' + entry.sheetRow + '.');
       }
-      if (mode === 'CONTROLLED' && !allowlist.has(email)) { skipped++; return; }
+      if (mode === 'CONTROLLED' && !allowlist.has(email)) {
+        if (attempts.has(entry.sheetRow)) reviewRows.push(entry.sheetRow);
+        skipped++;
+        return;
+      }
 
       const emailMatches = activeByEmail[email] || [];
       const profileMatches = activeByProfile[profileId] || [];
       if (emailMatches.length !== 1 || profileMatches.length !== 1 ||
           String(emailMatches[0]['Profile ID'] || '').trim() !== profileId ||
           String(profileMatches[0].Email || '').trim().toLowerCase() !== email) {
+        if (attempts.has(entry.sheetRow)) reviewRows.push(entry.sheetRow);
         skipped++;
         return;
       }
 
-      const historyMatches = history.rows.filter(function(historyEntry) {
-        return String(historyEntry.values['Run ID'] || '').trim() === runId &&
-          String(historyEntry.values['Profile ID'] || '').trim() === profileId;
-      });
+      if (historyIdentityCounts.get(historyIdentity(row)) !== 1) {
+        throw new Error('Multiple daily queue rows share history at queue row ' + entry.sheetRow + '.');
+      }
+      const historyMatches = matchingHistory(row);
       if (!historyMatches.length) {
         throw new Error('No Briefing History rows match Run ID ' + runId + ' and Profile ID ' + profileId + '.');
       }
@@ -720,46 +875,52 @@ function dispatchQueuedDailyBriefingsViaResendV1() {
         throw new Error('Briefing History is not in a clean Pending state for Run ID ' + runId + '.');
       }
 
+      const prior = attempts.get(entry.sheetRow);
+      const key = prior ? prior.key : ADB_DAILY_ATTEMPT_PREFIX + adbDailyAttemptDigest_(messageId);
+      const attempt = prior ? prior.record : {
+        startedAt: Date.now(),
+        fingerprint: adbDailyAttemptFingerprint_(row)
+      };
+      // Recheck immediately before sending in case earlier rows consumed
+      // the remaining time on the provider key.
+      if (Date.now() - attempt.startedAt >= ADB_DAILY_REPLAY_MS) {
+        reviewRows.push(entry.sheetRow);
+        return;
+      }
+      if (!prior) props.setProperty(key, JSON.stringify(attempt));
+
+      // Any thrown response can leave acceptance uncertain. Preserve the
+      // attempt so a later invocation can replay the identical request.
       let result;
       try {
-        result = adbSendEmailViaResend_({
-          to: email,
-          subject: subject,
-          text: textBody,
-          html: htmlBody,
-          idempotencyKey: messageId,
-          tags: {message_type: 'daily_briefing', environment: 'production', profile_id: profileId}
-        });
+        result = adbSendEmailViaResend_(adbDailyDeliveryMessage_(row));
       } catch (error) {
-        queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Failed');
-        queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
-          .setValue('Resend failure: ' + String(error.message || error).slice(0, 500));
-        historyMatches.forEach(function(historyEntry) {
-          historySheet.getRange(historyEntry.sheetRow, historyColumns['Delivery Status']).setValue('Failed');
-        });
+        // A definite rejection on the first call keeps the established Failed
+        // behavior. A rejection during replay says nothing about the first call.
+        if (!prior && [400, 401, 403, 404, 422].includes(error.resendStatus)) {
+          queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Failed');
+          queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
+            .setValue('Resend failure: ' + String(error.message || error).slice(0, 500));
+          historyMatches.forEach(function(item) {
+            historySheet.getRange(item.sheetRow, historyColumns['Delivery Status']).setValue('Failed');
+          });
+          SpreadsheetApp.flush();
+          props.deleteProperty(key);
+        }
         throw error;
       }
+      attempt.providerId = result.id;
+      attempt.acceptedAt = new Date().toISOString();
+      props.setProperty(key, JSON.stringify(attempt));
 
-      // Record Sent before enriching history. If a later history write fails,
-      // the queue remains Sent and the provider handoff cannot be retried.
-      const acceptedAt = new Date().toISOString();
-      queueSheet.getRange(entry.sheetRow, queueColumns.Status).setValue('Sent');
-      queueSheet.getRange(entry.sheetRow, queueColumns['Sent At / Gmail ID'])
-        .setValue(acceptedAt + ' | Resend ID ' + result.id);
-      queueSheet.getRange(entry.sheetRow, queueColumns.Notes)
-        .setValue('Resend accepted; subscriber eligibility rechecked immediately before delivery.');
-
-      historyMatches.forEach(function(historyEntry) {
-        historySheet.getRange(historyEntry.sheetRow, historyColumns['Delivery Status']).setValue('Sent');
-        historySheet.getRange(historyEntry.sheetRow, historyColumns['Provider Message ID']).setValue(result.id);
-        const priorNotes = String(historyEntry.values.Notes || '').trim();
-        historySheet.getRange(historyEntry.sheetRow, historyColumns.Notes)
-          .setValue((priorNotes ? priorNotes + ' | ' : '') + 'Resend accepted ' + acceptedAt + '.');
-      });
+      adbDailyRecordReceipt_(entry, historyMatches, attempt,
+        queueSheet, queueColumns, historySheet, historyColumns);
+      props.deleteProperty(key);
       sent++;
     });
 
-    const report = {mode: mode, sent: sent, skipped: skipped, transport: 'Resend'};
+    const report = {mode: mode, sent: sent, skipped: skipped, transport: 'Resend',
+      reconciled: reconciled, reviewRows: reviewRows};
     Logger.log(JSON.stringify(report));
     return report;
   } finally {

@@ -115,7 +115,7 @@ Rank eligible items, then apply:
 - Discovery Promotion: at most one per profile/run, for a specific distinctive or surprising benefit. The replacement may be at most 10 total-score points below the displaced candidate and at most 3 reader-value points lower. Zero promotions is valid.
 - Both controls preserve scores, sourcing, Off, repeat, section and component gates. Record the displaced item and rationale. Do not label the same move as both controls or chain swaps to evade a limit; measure displacement against the original score-ranked eligible slate.
 
-Saved Fewer/Standard/More volume remains authoritative. Standard's roughly 3–5 useful items is a capacity guide, not a minimum. Shorter or empty is acceptable. Do not treat the three-slot calibration fixture as a new production setting.
+Saved Fewer/Standard/More volume remains authoritative. Standard's roughly 3–5 useful items is a capacity guide, not a minimum. Shorter or empty is acceptable after the separate enabled-interest research is complete and evidenced by `context.mfy_search` under the structured-notes contract. An unresearched empty pool is not a valid no-qualification result; a nonempty eligible pool cannot be suppressed with zero capacity. Do not treat the three-slot calibration fixture as a new production setting.
 
 Add no reader-facing labels or badges for evergreen, discovery, scoring or controls. Preserve existing section orientation and normal source attribution. Classifications and audit labels are internal.
 
@@ -141,3 +141,4 @@ Before queueing, confirm:
 - Existing production operational, template, rendering and queue validation also passes.
 
 Fail closed on an inconsistent scoring contract. Remove a failing optional item; do not lower thresholds to fill space. This specification is not permission to queue, send, schedule or promote by itself.
+

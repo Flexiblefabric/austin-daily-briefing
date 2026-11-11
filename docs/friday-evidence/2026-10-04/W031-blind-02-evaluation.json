@@ -1,0 +1,350 @@
+{
+  "schema_version": "1.0",
+  "run_id": "W031-blind-02",
+  "supersedes_run_id": null,
+  "mode": "synthetic",
+  "scenario": "quiet",
+  "variant": null,
+  "recorded_at": "2026-10-07T13:44:25.562545+00:00",
+  "week": {
+    "start": "2026-10-05",
+    "end": "2026-10-09",
+    "cutoff": "2026-10-09T08:00:00-05:00",
+    "timezone": "America/Chicago"
+  },
+  "versions": {
+    "repository_commit": "c0ef0fcf01d913661bf135d571c1ea723250deb2",
+    "v2_spec": "ADB-V2-SELECT-1.0",
+    "daily_prompt": "c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/automation-prompts/austin-daily-briefing.md",
+    "friday_spec": "ADB-FRI-SYNTH-1.0",
+    "rubric": "ADB-FRI-VALIDATE-1.0"
+  },
+  "inputs": {
+    "weekly_packet": {
+      "path": "docs/friday-evidence/2026-10-04/W031/packet.json",
+      "sha256": "f638a72aa2ef355603bb3c4ed6f7fe49d3e07911a936bfffb3181ce892a63336"
+    },
+    "daily_v2_outputs": [
+      {
+        "path": "docs/friday-evidence/2026-10-04/W031/daily-v2.json",
+        "sha256": "afeeb701c127cde3d9a4422b608808716f1feada60875f57ca3d0edda8395dca"
+      }
+    ],
+    "history_seed": {
+      "path": "docs/friday-evidence/2026-10-04/W031/history.json",
+      "sha256": "f3373faeecfc17e1e30f9a0e3e42025864081cd3fe36672eac91b6106edd29a5"
+    },
+    "synthesis_prompt": {
+      "path": "docs/friday-evidence/2026-10-04/synthesis-instructions.txt",
+      "sha256": "5a8a2c5e9ff897a8eb4e15a4f8faf0e584659a984deaf99eac0254cc067bdbac"
+    },
+    "reviewer_key": {
+      "path": "docs/friday-evidence/2026-10-04/W031/reviewer-key.json",
+      "sha256": "986c60e53d037749312bfacaa1a0c3f3db297f348ced8fc9a7a8e7c2ba718b47"
+    }
+  },
+  "separation": {
+    "constructor": "Prior fixture construction context recorded in manifest-v2.json / omission-variant-manifest.json; distinct from blind-02 writer and this evaluator",
+    "synthesizer": "/root/blind_resume_a",
+    "evaluator": "/root/evaluate_resume_base",
+    "method": "Fresh separate evaluator context after output freeze. Read only pinned contracts, current schema, allowed fixtures/manifests and frozen blind-02 outputs; keys withheld from writers per preserved task instructions/files_read. No writer communication; no exploratory outputs/scores or other evaluation results read.",
+    "key_withheld": true,
+    "limitations": [
+      "Recorded role/access attestations; no OS-level isolation attestation. Synthetic source corpus and same model family do not establish statistically independent performance."
+    ]
+  },
+  "output": {
+    "section_included": true,
+    "omission_reason": null,
+    "opening": "",
+    "arcs": [
+      {
+        "arc_id": "A1",
+        "heading": "A wider trial, with results still unknown",
+        "text": "The appointment-free document-check trial grew from a plan for one center into an operating option at three, with a commitment to keep it through October 30. Monday’s announcement contemplated a Wednesday test at one center; the revised plan expanded that same trial to three centers starting Wednesday. By Friday’s cutoff, those centers had completed two operating days.\n\nThe change is in where visitors can seek checks without an appointment. Existing hours and eligibility remain unchanged. The longer commitment does not yet establish better outcomes: measured wait-time and application-completion results are not available."
+      }
+    ],
+    "exact_recap": "THIS WEEK IN AUSTIN\n\nA wider trial, with results still unknown\n\nThe appointment-free document-check trial grew from a plan for one center into an operating option at three, with a commitment to keep it through October 30. Monday’s announcement contemplated a Wednesday test at one center; the revised plan expanded that same trial to three centers starting Wednesday. By Friday’s cutoff, those centers had completed two operating days.\n\nThe change is in where visitors can seek checks without an appointment. Existing hours and eligibility remain unchanged. The longer commitment does not yet establish better outcomes: measured wait-time and application-completion results are not available.\n\nSources: Synthetic service access memo; Synthetic service access revision; Synthetic service access operations note",
+    "word_count": 117,
+    "full_edition_word_count": null,
+    "reading_time_method": "Whitespace-delimited exact_recap tokens including label, headings and source labels; section estimate at 200 words/minute. Full-edition count unavailable (shared extracts only). Omitted section adds zero words."
+  },
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access memo",
+      "locator": "docs/friday-evidence/2026-10-04/W031/sources.json#S01",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.562326+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. A municipal benefits desk will test appointment-free document checks on Wednesday at one service center. The trial adds no evening hours and changes no eligibility rules.",
+      "used_for": [
+        "CL01",
+        "CL02",
+        "CL04"
+      ]
+    },
+    {
+      "source_id": "S02",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access revision",
+      "locator": "docs/friday-evidence/2026-10-04/W031/sources.json#S02",
+      "publication_time": "2026-10-07T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.562388+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. The same trial is expanded to three service centers starting Wednesday. Existing daytime hours and eligibility rules remain unchanged.",
+      "used_for": [
+        "CL01",
+        "CL02",
+        "CL04"
+      ]
+    },
+    {
+      "source_id": "S03",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access operations note",
+      "locator": "docs/friday-evidence/2026-10-04/W031/sources.json#S03",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.562429+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. The three centers completed their first two days of appointment-free document checks. The office commits to keeping that option through October 30. There are no measured wait-time or application-completion results yet.",
+      "used_for": [
+        "CL01",
+        "CL03",
+        "CL05"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "CL01",
+      "location": "arcs.A1.text",
+      "text": "The appointment-free document-check trial grew from a plan for one center into an operating option at three, with a commitment to keep it through October 30.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03",
+        "C05"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The sources identify the same trial, its enlarged geographic scope, and its subsequent operating status and continuation; no relationship to other projects is asserted.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Audit normalization: producer supplied null; no additional uncertainty representation is claimed for this entry. See scorecard and hard-fail review."
+    },
+    {
+      "claim_id": "CL02",
+      "location": "arcs.A1.text",
+      "text": "Monday’s announcement contemplated a Wednesday test at one center; the revised plan expanded that same trial to three centers starting Wednesday.",
+      "kind": "fact",
+      "development_ids": [
+        "D01",
+        "D02"
+      ],
+      "source_ids": [
+        "S01",
+        "S02"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Audit normalization: producer supplied null; no additional uncertainty representation is claimed for this entry. See scorecard and hard-fail review."
+    },
+    {
+      "claim_id": "CL03",
+      "location": "arcs.A1.text",
+      "text": "By Friday’s cutoff, those centers had completed two operating days.",
+      "kind": "fact",
+      "development_ids": [
+        "D03"
+      ],
+      "source_ids": [
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C05"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Audit normalization: producer supplied null; no additional uncertainty representation is claimed for this entry. See scorecard and hard-fail review."
+    },
+    {
+      "claim_id": "CL04",
+      "location": "arcs.A1.text",
+      "text": "The change is in where visitors can seek checks without an appointment. Existing hours and eligibility remain unchanged.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D01",
+        "D02"
+      ],
+      "source_ids": [
+        "S01",
+        "S02"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Same-service revision changes the number of centers while expressly preserving hours and eligibility.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Audit normalization: producer supplied null; no additional uncertainty representation is claimed for this entry. See scorecard and hard-fail review."
+    },
+    {
+      "claim_id": "CL05",
+      "location": "arcs.A1.text",
+      "text": "The longer commitment does not yet establish better outcomes: measured wait-time and application-completion results are not available.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D03"
+      ],
+      "source_ids": [
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C05"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Explicitly separates continuation from demonstrated improvement; no outcome or causal claim is inferred."
+    }
+  ],
+  "displayed_source_groups": [
+    {
+      "group_id": "G1",
+      "supports_locations": [
+        "arcs.A1.heading",
+        "arcs.A1.text"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "labels": [
+        "Synthetic service access memo",
+        "Synthetic service access revision",
+        "Synthetic service access operations note"
+      ]
+    }
+  ],
+  "scorecard": {
+    "factual_fidelity": {
+      "weight": 20,
+      "rating": 4,
+      "points": 20.0,
+      "reason": "CL01–CL05 match S01–S03: one-center plan, three-center Wednesday operation, two completed days and October 30 commitment; unchanged hours/eligibility and absent outcomes are exact. Heading accurately describes scope and uncertainty."
+    },
+    "narrative_usefulness": {
+      "weight": 15,
+      "rating": 4,
+      "points": 15.0,
+      "reason": "One short arc links planned scope, expanded operation and continuation, with the useful distinction between access and outcomes; no isolated headlines replayed."
+    },
+    "unsupported_inference_control": {
+      "weight": 15,
+      "rating": 4,
+      "points": 15.0,
+      "reason": "CL05 explicitly refuses to infer better outcomes from continuation; no motives or sentiment inferred."
+    },
+    "source_traceability": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "All three materially used sources are declared, mapped and visibly named in G1. No opening. Source metadata expansion is audit packaging only."
+    },
+    "pattern_causation_discipline": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "D01/D02/D03 are actual changes to the same trial; no link to bridge or parking and no general citywide access trend."
+    },
+    "material_uncertainty": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "CL05 preserves missing wait-time/completion measurements; the shared no-outcome-measurements statement already entails this absence. No success, permanence or eligibility expansion implied."
+    },
+    "no_filler": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "Two paragraphs carry change and limits; no padded opening, second arc, calendar item or volunteer history."
+    },
+    "voice_restraint": {
+      "weight": 5,
+      "rating": 4,
+      "points": 5.0,
+      "reason": "Measured heading and concise factual prose; no hype or actor substitution."
+    },
+    "structure_readability": {
+      "weight": 5,
+      "rating": 3,
+      "points": 3.75,
+      "reason": "One descriptive heading and consolidated publisher labels; section-only burden measured. Full-edition length and rendered link/order QA remain outside fixture."
+    }
+  },
+  "total_score": 98.75,
+  "hard_fail_checks": {
+    "fabricated_fact": {
+      "result": "clear",
+      "reason": "CL01–CL05 match S01–S03: one-center plan, three-center Wednesday operation, two completed days and October 30 commitment; unchanged hours/eligibility and absent outcomes are exact. Heading accurately describes scope and uncertainty."
+    },
+    "material_unsupported_conclusion": {
+      "result": "clear",
+      "reason": "CL05 explicitly refuses to infer better outcomes from continuation; no motives or sentiment inferred. Material-uncertainty omissions were separately assessed: CL05 preserves missing wait-time/completion measurements; the shared no-outcome-measurements statement already entails this absence. No success, permanence or eligibility expansion implied."
+    },
+    "unsupported_causation": {
+      "result": "clear",
+      "reason": "D01/D02/D03 are actual changes to the same trial; no link to bridge or parking and no general citywide access trend."
+    },
+    "false_pattern": {
+      "result": "clear",
+      "reason": "D01/D02/D03 are actual changes to the same trial; no link to bridge or parking and no general citywide access trend."
+    },
+    "unlogged_source": {
+      "result": "clear",
+      "reason": "All three materially used sources are declared, mapped and visibly named in G1. No opening. Source metadata expansion is audit packaging only. Expanded metadata only; no undeclared source has been added to cure an omission."
+    },
+    "invalid_new_context": {
+      "result": "clear",
+      "reason": "All asserted material content is in or entailed by C01/C03/C05; naming absent outcome measurements does not introduce a positive unseen finding. S09 anecdote excluded."
+    }
+  },
+  "disposition": "pass_candidate",
+  "human_review": null,
+  "limitations": [
+    "Closed fictional corpus; no live research, subscriber history, delivery or production behavior tested.",
+    "Full-edition word count unavailable because fixtures contain shared editorial extracts only. HTML/plain-text source destinations, typography, section position and mobile/email integration remain promotion gates; fictional publisher labels are accepted for this synthetic prose test, not validated production links.",
+    "Audit normalization only: producer kind=synthesis/editorial_omission_rationale becomes interpretation; false context_exception becomes none, true becomes prevents_misleading_omission; null uncertainty_handling receives an explicit audit note. Producer sources_used IDs are expanded from frozen sources.json into source objects with locators and claim backreferences. No prose, source ID, coverage reference, exception rationale or displayed group was changed. Producer JSON is preserved separately; normalized classifications are evaluator packaging, not producer-compliant schema output.",
+    "Producer claims do not separately list headings; each heading is directly supported by the same arc sources. This review checks those implications explicitly; no evidence was silently invented.",
+    "Frozen producer: docs/friday-evidence/2026-10-04/W031-blind-02-output.json sha256=9f6a319ad2accc986bb2b7ece67c2dede3c5d99ade3975d00f299092affc1ffe"
+  ],
+  "next_action": "Retain as provisional synthetic pass candidate; complete suite, human review and integration/full-edition gates before any promotion."
+}

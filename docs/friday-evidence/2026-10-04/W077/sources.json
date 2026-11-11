@@ -1,0 +1,145 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "fixture_id": "W077",
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic recovery grant draft",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "development_id": "D01",
+      "topic_key": "repair-grants",
+      "facts": [
+        "A draft proposes a $12 million home-repair grant program.",
+        "Eligibility rules and funding remain unapproved."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S02",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic civic bulletin",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "development_id": "D01",
+      "topic_key": "repair-grants",
+      "facts": [
+        "The same $12 million draft is under consideration."
+      ],
+      "limits": "Repeats S01 without new facts.",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S03",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic staff revision",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "development_id": "D02",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Staff revise the draft to a $4 million pilot in two service areas.",
+        "The revision remains a recommendation, not an adopted program."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S04",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic hearing record",
+      "publication_time": "2026-10-07T07:00:00-05:00",
+      "development_id": "D03",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Speakers at a hearing disagree over limiting the pilot to two service areas.",
+        "No vote occurs.",
+        "The record does not measure wider resident opinion."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S05",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic adopted resolution",
+      "publication_time": "2026-10-08T07:00:00-05:00",
+      "development_id": "D04",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Council adopts a $4 million two-area pilot by a 7–4 vote.",
+        "The adopted version requires an evaluation before expansion.",
+        "Adoption does not open applications."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S06",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic implementation bulletin",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D05",
+      "topic_key": "repair-grants",
+      "facts": [
+        "The agency says application instructions and a launch date will be issued later.",
+        "No applications are open and no money has been disbursed.",
+        "The bulletin does not estimate the number of households served."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S07",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic appropriation appendix",
+      "publication_time": "2026-10-09T07:45:00-05:00",
+      "development_id": "D06",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Of the adopted $4 million, $600,000 is reserved for administration; $3.4 million is available for grants."
+      ],
+      "limits": "Not included in daily output; material to the meaning of the $4 million figure.",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S08",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic profile interview",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D07",
+      "topic_key": "director-profile",
+      "facts": [
+        "An agency director previously worked in another city."
+      ],
+      "limits": "No documented link between that biography and this program's decisions.",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S09",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic afternoon application update",
+      "publication_time": "2026-10-09T12:00:00-05:00",
+      "development_id": "D08",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Applications have opened."
+      ],
+      "limits": "After Friday generation; not available at cutoff.",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S10",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic neighborhood commentary",
+      "publication_time": "2026-10-09T07:15:00-05:00",
+      "development_id": "D09",
+      "topic_key": "director-profile",
+      "facts": [
+        "A commentator speculates that the director’s earlier employment explains the smaller pilot.",
+        "The commentary supplies no statement from the director or decision-makers and no records connecting the biography to the revision."
+      ],
+      "limits": "Uncorroborated interpretation, not evidence of motive or the cause of the pilot’s scale.",
+      "access_status": "fixture_read"
+    }
+  ]
+}

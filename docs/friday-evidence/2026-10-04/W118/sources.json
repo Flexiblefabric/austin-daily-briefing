@@ -1,0 +1,141 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "fixture_id": "W118",
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic bus disruption notice",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "development_id": "D01",
+      "topic_key": "bus-detours",
+      "facts": [
+        "Drivers are using detours on four bus routes because a maintenance project closes a corridor."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S02",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic bus access bulletin",
+      "publication_time": "2026-10-07T07:00:00-05:00",
+      "development_id": "D02",
+      "topic_key": "bus-detours",
+      "facts": [
+        "Two of the four routes return to normal paths after the north part of the corridor reopens.",
+        "The other two routes remain on detour."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S03",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic bus operations update",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D03",
+      "topic_key": "bus-detours",
+      "facts": [
+        "One more route returns to its normal path Thursday evening.",
+        "One route remains on detour at Friday cutoff; its return date is not set."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S04",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic clinic notice",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "development_id": "D04",
+      "topic_key": "clinic-transfer",
+      "facts": [
+        "A community clinic announces it will close at the end of the month after its lease ends."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S05",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic clinic transition agreement",
+      "publication_time": "2026-10-08T07:00:00-05:00",
+      "development_id": "D05",
+      "topic_key": "clinic-transfer",
+      "facts": [
+        "The clinic signs an agreement to transfer its existing patients to two partner sites.",
+        "The agreement does not guarantee that every appointment will keep its current date."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S06",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic waterworks inspection",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "development_id": "D06",
+      "topic_key": "filter-repair",
+      "facts": [
+        "Inspection finds a damaged filter at a neighborhood treatment facility.",
+        "The facility issues a boil-water notice while repairs and tests take place."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S07",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic waterworks clearance",
+      "publication_time": "2026-10-08T07:00:00-05:00",
+      "development_id": "D07",
+      "topic_key": "filter-repair",
+      "facts": [
+        "The filter is repaired, required samples meet the standard and the boil-water notice is lifted.",
+        "The clearance applies to this facility and does not evaluate other infrastructure."
+      ],
+      "limits": "",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S08",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic arts calendar",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D08",
+      "topic_key": "festival",
+      "facts": [
+        "A previously announced weekend festival remains scheduled."
+      ],
+      "limits": "Calendar reminder with no news update.",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S09",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic community commentary",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D09",
+      "topic_key": "D09",
+      "facts": [
+        "An opinion writer calls the bus, clinic and water developments a collapse of city services."
+      ],
+      "limits": "Offers no evidence of shared budget, authority, contractor, or cause.",
+      "access_status": "fixture_read"
+    },
+    {
+      "source_id": "S10",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic ribbon-cutting notice",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D10",
+      "topic_key": "D10",
+      "facts": [
+        "A small park bench dedication occurred Thursday."
+      ],
+      "limits": "No relationship to the other developments.",
+      "access_status": "fixture_read"
+    }
+  ]
+}

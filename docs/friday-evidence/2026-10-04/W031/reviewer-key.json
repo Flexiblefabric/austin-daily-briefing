@@ -1,0 +1,23 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "scenario": "quiet",
+  "fixture_id": "W031",
+  "expected_constraints": {
+    "eligible_arcs": [
+      "document-access: trial announced, expanded, and continued"
+    ],
+    "exclude": [
+      "Bridge and parking are one-day items without a meaningful weekly arc.",
+      "Unchanged housing proposal and hearing reminder.",
+      "Volunteer anecdote does not meet new-context exception."
+    ],
+    "material_uncertainty": [
+      "No wait-time or completion evidence; do not claim improved outcomes."
+    ],
+    "source_independence": [
+      "S04 and S06 report D04 once."
+    ],
+    "opening": "Optional and brief; no overarching civic theme required."
+  },
+  "not_a_model_answer": true
+}

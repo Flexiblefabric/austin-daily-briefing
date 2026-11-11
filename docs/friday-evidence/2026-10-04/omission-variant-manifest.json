@@ -1,0 +1,31 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "created_at": "2026-10-04T13:06:11.945473-05:00",
+  "baseline_commit": "c0ef0fcf01d913661bf135d571c1ea723250deb2",
+  "variant_of": "W031",
+  "fixture_ids": [
+    "W032"
+  ],
+  "artifacts": [
+    {
+      "path": "docs/friday-evidence/2026-10-04/W032/daily-v2.json",
+      "sha256": "5eb95854ac2bb808afd4c213a0f90b3d65c7e5fb9fa66101ab0c617a32786633"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W032/history.json",
+      "sha256": "824dc590582f7a116532878dd8cf068090a2b309550556942f34130af47cb218"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W032/packet.json",
+      "sha256": "5872e707124af78904f1a10fcc78221999c1f5f307d9246e122f34a1c430baaa"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W032/reviewer-key.json",
+      "sha256": "270224b12b155d5f131919e985c0461245df6587c9b4f8e0b37d84647a45496f"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W032/sources.json",
+      "sha256": "6b8d0f2fd96d52b58e1ea87b946ff6a94ef86d0157c0c358aa8b7ea32f0d6989"
+    }
+  ]
+}

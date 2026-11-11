@@ -1,0 +1,38 @@
+{
+  "created_date": "2026-10-07",
+  "purpose": "Controlled evaluator sensitivity, not independent generation",
+  "probes": [
+    {
+      "probe_id": "P201",
+      "fixture_id": "W075",
+      "baseline_path": "docs/friday-evidence/2026-10-04/W075-blind-02-output.json",
+      "baseline_sha256": "2d9cbd2dde56ff049ff86dda507df2645f0947242e40b267e20f2d74073bf0ec",
+      "probe_path": "docs/friday-evidence/2026-10-04/review-probes/P201.json",
+      "probe_sha256": "28e531bb1532f161b431991c9999a4f93eba6cd4316d38236ce74e061d60f3ba"
+    },
+    {
+      "probe_id": "P202",
+      "fixture_id": "W075",
+      "baseline_path": "docs/friday-evidence/2026-10-04/W075-blind-02-output.json",
+      "baseline_sha256": "2d9cbd2dde56ff049ff86dda507df2645f0947242e40b267e20f2d74073bf0ec",
+      "probe_path": "docs/friday-evidence/2026-10-04/review-probes/P202.json",
+      "probe_sha256": "d4e1229aacf2ed43592c14c24804d552ced45b0abc95684ca813210260213955"
+    },
+    {
+      "probe_id": "P203",
+      "fixture_id": "W118",
+      "baseline_path": "docs/friday-evidence/2026-10-04/W118-blind-02-output.json",
+      "baseline_sha256": "9c3d88a6747a2cadb0e571242562c1d0797f9e698f5f8ab99b3ca3b7e49141c4",
+      "probe_path": "docs/friday-evidence/2026-10-04/review-probes/P203.json",
+      "probe_sha256": "af2671e1d2b039ec7c0458d0a0ab4bbc8171fa3592580ee04b44eff06d858946"
+    },
+    {
+      "probe_id": "P204",
+      "fixture_id": "W118",
+      "baseline_path": "docs/friday-evidence/2026-10-04/W118-blind-02-output.json",
+      "baseline_sha256": "9c3d88a6747a2cadb0e571242562c1d0797f9e698f5f8ab99b3ca3b7e49141c4",
+      "probe_path": "docs/friday-evidence/2026-10-04/review-probes/P204.json",
+      "probe_sha256": "fb386d7a33675e65ee13b8097e07f90b3b0822000c8f295a8926b885519639af"
+    }
+  ]
+}

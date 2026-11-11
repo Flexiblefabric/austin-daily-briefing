@@ -1,0 +1,256 @@
+{
+  "exact_recap": "THIS WEEK IN AUSTIN\n\nA smaller pilot approved, with grants still ahead\n\nThe repair-grant plan ended the week with approval for a smaller pilot: council adopted a $4 million program in two service areas by a 7–4 vote, requiring an evaluation before expansion. Applications were not open at the Friday cutoff.\n\nThe adopted pilot followed staff’s revision of an initial $12 million draft to a $4 million recommendation. At the intervening hearing, speakers disagreed over the two-area limit; their views do not measure citywide opinion. The vote settled adoption of the limited pilot, while leaving expansion conditional on evaluation.\n\nNew context not included in the shared daily coverage: the appropriation appendix reserves $600,000 of the $4 million for administration, leaving $3.4 million available for grants. The approved program total therefore is not the amount available for direct grants.\n\nSources: Synthetic recovery grant draft [S01]; Synthetic staff revision [S03]; Synthetic hearing record [S04]; Synthetic adopted resolution [S05]; Synthetic appropriation appendix [S07].",
+  "opening": "",
+  "arcs": [
+    {
+      "arc_id": "A1",
+      "heading": "A smaller pilot approved, with grants still ahead",
+      "text": "The repair-grant plan ended the week with approval for a smaller pilot: council adopted a $4 million program in two service areas by a 7–4 vote, requiring an evaluation before expansion. Applications were not open at the Friday cutoff.\n\nThe adopted pilot followed staff’s revision of an initial $12 million draft to a $4 million recommendation. At the intervening hearing, speakers disagreed over the two-area limit; their views do not measure citywide opinion. The vote settled adoption of the limited pilot, while leaving expansion conditional on evaluation.\n\nNew context not included in the shared daily coverage: the appropriation appendix reserves $600,000 of the $4 million for administration, leaving $3.4 million available for grants. The approved program total therefore is not the amount available for direct grants."
+    }
+  ],
+  "section_included": true,
+  "omission_reason": null,
+  "sources_used": [
+    "S01",
+    "S03",
+    "S04",
+    "S05",
+    "S07"
+  ],
+  "displayed_source_groups": [
+    {
+      "group_id": "G1",
+      "supports_locations": [
+        "A1.heading",
+        "A1"
+      ],
+      "source_ids": [
+        "S01",
+        "S03",
+        "S04",
+        "S05",
+        "S07"
+      ],
+      "labels": [
+        "Synthetic recovery grant draft",
+        "Synthetic staff revision",
+        "Synthetic hearing record",
+        "Synthetic adopted resolution",
+        "Synthetic appropriation appendix"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "CL01",
+      "location": "A1.heading",
+      "text": "A smaller pilot approved, with grants still ahead",
+      "kind": "synthesis",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D04"
+      ],
+      "source_ids": [
+        "S01",
+        "S03",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "S03 reduces the proposal; S05 adopts that scale.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Approval is distinct from open applications."
+    },
+    {
+      "claim_id": "CL02",
+      "location": "A1.sentence1",
+      "text": "The repair-grant plan ended the week with approval for a smaller pilot: council adopted a $4 million program in two service areas by a 7–4 vote, requiring an evaluation before expansion.",
+      "kind": "fact",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D04"
+      ],
+      "source_ids": [
+        "S01",
+        "S03",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Same repair-grant proposal evolves from draft through recommendation to adoption.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Expansion requires evaluation; no claim that evaluation guarantees expansion."
+    },
+    {
+      "claim_id": "CL03",
+      "location": "A1.sentence2",
+      "text": "Applications were not open at the Friday cutoff.",
+      "kind": "fact",
+      "development_ids": [
+        "D04"
+      ],
+      "source_ids": [
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Latest shared status at the stipulated cutoff is unopened applications; the after-cutoff S09 is excluded."
+    },
+    {
+      "claim_id": "CL04",
+      "location": "A1.sentence3",
+      "text": "The adopted pilot followed staff’s revision of an initial $12 million draft to a $4 million recommendation.",
+      "kind": "fact",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D04"
+      ],
+      "source_ids": [
+        "S01",
+        "S03",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Explicit proposal revision followed by adoption; sequence is not assigned a motive.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL05",
+      "location": "A1.sentence4",
+      "text": "At the intervening hearing, speakers disagreed over the two-area limit; their views do not measure citywide opinion.",
+      "kind": "fact_and_evidence_limit",
+      "development_ids": [
+        "D03"
+      ],
+      "source_ids": [
+        "S04"
+      ],
+      "prior_shared_coverage_refs": [
+        "C04"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Hearing disagreement is confined to speakers, not all residents."
+    },
+    {
+      "claim_id": "CL06",
+      "location": "A1.sentence5",
+      "text": "The vote settled adoption of the limited pilot, while leaving expansion conditional on evaluation.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D04"
+      ],
+      "source_ids": [
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Restates adopted resolution status, not a broader pattern.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Adoption settled; expansion remains conditional."
+    },
+    {
+      "claim_id": "CL07",
+      "location": "A1.sentence6",
+      "text": "New context not included in the shared daily coverage: the appropriation appendix reserves $600,000 of the $4 million for administration, leaving $3.4 million available for grants.",
+      "kind": "new_context_fact",
+      "development_ids": [
+        "D06"
+      ],
+      "source_ids": [
+        "S07"
+      ],
+      "prior_shared_coverage_refs": [],
+      "context_exception": true,
+      "exception_reason": "The allocation materially changes what the headline $4 million means: only $3.4 million can fund grants. Omitting the 15% administrative reserve risks making the program total appear to be direct grant funding.",
+      "new_context_disclosure": "New context not included in the shared daily coverage: the appropriation appendix reserves $600,000 of the $4 million for administration, leaving $3.4 million available for grants.",
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL08",
+      "location": "A1.sentence7",
+      "text": "The approved program total therefore is not the amount available for direct grants.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D04",
+        "D06"
+      ],
+      "source_ids": [
+        "S05",
+        "S07"
+      ],
+      "prior_shared_coverage_refs": [
+        "C05"
+      ],
+      "context_exception": true,
+      "exception_reason": "Interpretation of the explicitly disclosed allocation; prevents conflating total program appropriation with grant funding.",
+      "new_context_disclosure": "New context not included in the shared daily coverage: the appropriation appendix reserves $600,000 of the $4 million for administration, leaving $3.4 million available for grants.",
+      "relationship_support": "S07 directly apportions the adopted amount stated in S05.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    }
+  ],
+  "execution_metadata": {
+    "agent": "/root/blind_resume_c",
+    "timestamp": "2026-10-07T13:40:11.145004+00:00",
+    "input_hashes": {
+      "git show c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/friday-synthesis-spec.md": "3f4e9db698d078c72a27bcdd0ef6aa41ada7672f6faac8c530cce2bcf524b566",
+      "docs/friday-evidence/2026-10-04/synthesis-instructions.txt": "5a8a2c5e9ff897a8eb4e15a4f8faf0e584659a984deaf99eac0254cc067bdbac",
+      "docs/friday-evidence/2026-10-04/W077/packet.json": "3ce63d6fcd1bbf431ece3d365b371c85d4244fc95b8b44359d703844e6b09274"
+    },
+    "exact_task_instructions": {
+      "assignment": "User authorizes blind FRI-5 synthesis. Repo /workspace/scratch/9aa1e270c37b/austin-daily-briefing. Read ONLY `git show c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/friday-synthesis-spec.md`, docs/friday-evidence/2026-10-04/synthesis-instructions.txt, and W076/packet.json and W077/packet.json within that directory. Do NOT read other conversations, README, reviewer keys, challenge notes/matrix, manifests, scores, old outputs or other agent work. Apply synthesis instructions separately per packet. Write W076-blind-02-output.json and W077-blind-02-output.json in evidence directory. JSON contains exact_recap, opening, arcs [{arc_id,heading,text}], section_included, omission_reason, sources_used IDs, displayed_source_groups [{group_id,supports_locations,source_ids,labels}], claims [{claim_id,location,text,kind,development_ids,source_ids,prior_shared_coverage_refs,context_exception,exception_reason,new_context_disclosure,relationship_support,pattern_minimum_departure_reason,uncertainty_handling}], execution_metadata {agent,timestamp,input_hashes,exact_task_instructions,files_read,context_isolation,limitations}. No scoring. Use fictional source names/IDs, not live facts. Hash frozen outputs and report. Do not modify other files, commit, publish, access external services or spawn agents.",
+      "synthesis_instructions": "SYNTHETIC — NOT FOR PUBLICATION\nRead only the supplied packet.json and the pinned ADB-FRI-SYNTH-1.0 product contract. The fixture describes a SIMULATED week; none of its assertions is real news. Do not search external sources or access production data. Synthesize THIS WEEK IN AUSTIN at the packet cutoff, using the simulated shared daily record as prior reader exposure. Additional available material is not previously published; apply the product's narrow context exception explicitly. Choose whether a qualifying arc exists and use one to three arcs or one continuous narrative. Do not fill a word quota or impose a common theme. Retain sources for every factual and interpretive claim, including opening context. Produce the exact prose and consolidated fictional source labels, then a claim/source map, any new-context exception rationale, and an omission rationale if appropriate. Record all materially used source IDs. Do not read the reviewer key, scenario names, past trial outputs, scoring results or expected answers. Freeze the output before evaluation. Never queue or publish the result.\n"
+    },
+    "files_read": [
+      "git show c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/friday-synthesis-spec.md",
+      "docs/friday-evidence/2026-10-04/synthesis-instructions.txt",
+      "docs/friday-evidence/2026-10-04/W076/packet.json",
+      "docs/friday-evidence/2026-10-04/W077/packet.json"
+    ],
+    "context_isolation": "Only the pinned specification, supplied synthesis instructions, and the two assigned packets were read. Each packet was synthesized independently. No reviewer material, scores, old outputs, other agent work, external services or production data were accessed.",
+    "limitations": [
+      "Synthetic fixture only; not real news or actual subscriber history.",
+      "No source URLs supplied; consolidated fictional publisher labels and IDs preserve the provided destinations without inventing links.",
+      "No evaluation or scoring performed."
+    ]
+  }
+}

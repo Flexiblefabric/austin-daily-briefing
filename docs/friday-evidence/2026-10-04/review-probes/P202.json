@@ -1,0 +1,147 @@
+{
+  "exact_recap": "THIS WEEK IN AUSTIN\n\nA smaller repair pilot wins approval\n\nThe repair-grant proposal ended the week as an adopted $4 million pilot in two service areas, rather than the $12 million draft introduced Monday. Staff recommended the smaller version Tuesday; council adopted it Thursday by a 7–4 vote, requiring evaluation before any expansion. The week resolved whether that limited pilot would be approved, but adoption did not open applications.\n\nHearing speakers disagreed over the two-area boundary before the vote. That record shows disagreement among those speakers, not a measure of opinion across Austin; it does not establish why individual council members voted as they did.\n\nNew context not included in the shared daily coverage: the appropriation appendix reserves $600,000 of the adopted $4 million for administration, leaving $3.4 million available for grants. That distinction matters when describing the size of the assistance: the full program appropriation is not the amount available for grants.\n\nSources: Synthetic recovery grant draft; Synthetic staff revision; Synthetic hearing record; Synthetic adopted resolution",
+  "opening": "",
+  "arcs": [
+    {
+      "arc_id": "A1",
+      "heading": "A smaller repair pilot wins approval",
+      "text": "The repair-grant proposal ended the week as an adopted $4 million pilot in two service areas, rather than the $12 million draft introduced Monday. Staff recommended the smaller version Tuesday; council adopted it Thursday by a 7–4 vote, requiring evaluation before any expansion. The week resolved whether that limited pilot would be approved, but adoption did not open applications.\n\nHearing speakers disagreed over the two-area boundary before the vote. That record shows disagreement among those speakers, not a measure of opinion across Austin; it does not establish why individual council members voted as they did.\n\nNew context not included in the shared daily coverage: the appropriation appendix reserves $600,000 of the adopted $4 million for administration, leaving $3.4 million available for grants. That distinction matters when describing the size of the assistance: the full program appropriation is not the amount available for grants."
+    }
+  ],
+  "section_included": true,
+  "omission_reason": null,
+  "sources_used": [
+    "S01",
+    "S03",
+    "S04",
+    "S05"
+  ],
+  "displayed_source_groups": [
+    {
+      "group_id": "G1",
+      "supports_locations": [
+        "arcs.A1.heading",
+        "arcs.A1.text"
+      ],
+      "source_ids": [
+        "S01",
+        "S03",
+        "S04",
+        "S05"
+      ],
+      "labels": [
+        "Synthetic recovery grant draft",
+        "Synthetic staff revision",
+        "Synthetic hearing record",
+        "Synthetic adopted resolution"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "CL01",
+      "location": "arcs.A1.text",
+      "text": "The repair-grant proposal ended the week as an adopted $4 million pilot in two service areas, rather than the $12 million draft introduced Monday.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D01",
+        "D04"
+      ],
+      "source_ids": [
+        "S01",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Draft and adopted resolution concern the same repair program and establish a change in scale and legal status.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL02",
+      "location": "arcs.A1.text",
+      "text": "Staff recommended the smaller version Tuesday; council adopted it Thursday by a 7–4 vote, requiring evaluation before any expansion.",
+      "kind": "fact",
+      "development_ids": [
+        "D02",
+        "D04"
+      ],
+      "source_ids": [
+        "S03",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C03",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The recommended and adopted versions share the $4 million two-area scope; chronology does not assert why council adopted it.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL03",
+      "location": "arcs.A1.text",
+      "text": "The week resolved whether that limited pilot would be approved, but adoption did not open applications.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D04"
+      ],
+      "source_ids": [
+        "S01",
+        "S03",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Pending draft and recommendation became an adopted pilot.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Approval is distinguished from implementation; no launch date, disbursement, or household impact is claimed."
+    },
+    {
+      "claim_id": "CL04",
+      "location": "arcs.A1.text",
+      "text": "Hearing speakers disagreed over the two-area boundary before the vote. That record shows disagreement among those speakers, not a measure of opinion across Austin; it does not establish why individual council members voted as they did.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D03",
+        "D04"
+      ],
+      "source_ids": [
+        "S04",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C04",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Hearing and vote concern the same two-area pilot, but the evidence does not link speaker comments causally to individual votes.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Limits attribution to speakers and preserves the absence of evidence about broader opinion or voting motives."
+    }
+  ],
+  "execution_metadata": {
+    "constructor": "/root",
+    "purpose": "Controlled evaluator sensitivity probe; not blind generation",
+    "baseline_path": "docs/friday-evidence/2026-10-04/W075-blind-02-output.json",
+    "baseline_sha256": "2d9cbd2dde56ff049ff86dda507df2645f0947242e40b267e20f2d74073bf0ec"
+  }
+}

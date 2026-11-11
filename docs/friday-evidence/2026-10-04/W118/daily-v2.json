@@ -1,0 +1,566 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "fixture_id": "W118",
+  "v2_spec": "ADB-V2-SELECT-1.0",
+  "shared_fingerprint": [
+    20,
+    20,
+    15,
+    15,
+    10,
+    10,
+    10
+  ],
+  "scope": "Shared editorial extracts authored from closed synthetic sources. MFY, weather, full-edition rendering and transport are outside this fixture.",
+  "days": [
+    {
+      "date": "2026-10-05",
+      "selection_cutoff": "2026-10-05T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-05T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C01",
+          "day": 5,
+          "source_ids": [
+            "S01"
+          ],
+          "headline": "Four bus routes detour",
+          "summary": "A corridor maintenance closure has placed four routes on detours.",
+          "components": {
+            "local_impact": 15,
+            "consequence": 13,
+            "new_information": 12,
+            "austin_relevance": 15,
+            "timeliness": 9,
+            "public_interest": 8,
+            "discovery": 3
+          },
+          "base_score": 75,
+          "score_rationale": {
+            "local_impact": "Four routes.",
+            "consequence": "Travel access changes.",
+            "new_information": "Active disruption.",
+            "austin_relevance": "Austin-area service in synthetic record.",
+            "timeliness": "Current service.",
+            "public_interest": "Public access or service reliability.",
+            "discovery": "Published operational record; no claim of being overlooked."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "bus-detours",
+          "development_ids": [
+            "D01"
+          ]
+        },
+        {
+          "candidate_id": "C02",
+          "day": 5,
+          "source_ids": [
+            "S06"
+          ],
+          "headline": "Filter damage triggers boil-water notice",
+          "summary": "A damaged filter prompts a facility-specific boil-water notice during repairs and testing.",
+          "components": {
+            "local_impact": 16,
+            "consequence": 18,
+            "new_information": 13,
+            "austin_relevance": 15,
+            "timeliness": 10,
+            "public_interest": 10,
+            "discovery": 3
+          },
+          "base_score": 85,
+          "score_rationale": {
+            "local_impact": "Affected facility's users.",
+            "consequence": "Health-related water restriction.",
+            "new_information": "Inspection and notice.",
+            "austin_relevance": "Austin-area service in synthetic record.",
+            "timeliness": "Current advisory.",
+            "public_interest": "Public access or service reliability.",
+            "discovery": "Published operational record; no claim of being overlooked."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "filter-repair",
+          "development_ids": [
+            "D06"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C02",
+        "C01"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C02",
+          "headline": "Filter damage triggers boil-water notice",
+          "text": "A damaged filter prompts a facility-specific boil-water notice during repairs and testing.",
+          "source_ids": [
+            "S06"
+          ],
+          "development_ids": [
+            "D06"
+          ],
+          "publication_state": "simulated_shared_published"
+        },
+        {
+          "item_id": "C01",
+          "headline": "Four bus routes detour",
+          "text": "A corridor maintenance closure has placed four routes on detours.",
+          "source_ids": [
+            "S01"
+          ],
+          "development_ids": [
+            "D01"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-06",
+      "selection_cutoff": "2026-10-06T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-06T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C03",
+          "day": 6,
+          "source_ids": [
+            "S04"
+          ],
+          "headline": "Clinic plans month-end closure",
+          "summary": "A clinic will close after its lease ends this month.",
+          "components": {
+            "local_impact": 14,
+            "consequence": 16,
+            "new_information": 13,
+            "austin_relevance": 15,
+            "timeliness": 8,
+            "public_interest": 9,
+            "discovery": 3
+          },
+          "base_score": 78,
+          "score_rationale": {
+            "local_impact": "Clinic patients.",
+            "consequence": "Care access affected.",
+            "new_information": "Closure announcement.",
+            "austin_relevance": "Austin-area service in synthetic record.",
+            "timeliness": "Time to arrange care.",
+            "public_interest": "Public access or service reliability.",
+            "discovery": "Published operational record; no claim of being overlooked."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "clinic-transfer",
+          "development_ids": [
+            "D04"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C03"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C03",
+          "headline": "Clinic plans month-end closure",
+          "text": "A clinic will close after its lease ends this month.",
+          "source_ids": [
+            "S04"
+          ],
+          "development_ids": [
+            "D04"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-07",
+      "selection_cutoff": "2026-10-07T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-07T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C04",
+          "day": 7,
+          "source_ids": [
+            "S02"
+          ],
+          "headline": "Two bus routes resume normal paths",
+          "summary": "Partial corridor reopening restores two routes; two remain on detour.",
+          "components": {
+            "local_impact": 14,
+            "consequence": 12,
+            "new_information": 12,
+            "austin_relevance": 15,
+            "timeliness": 9,
+            "public_interest": 8,
+            "discovery": 3
+          },
+          "base_score": 73,
+          "score_rationale": {
+            "local_impact": "Riders of four routes.",
+            "consequence": "Partial service recovery.",
+            "new_information": "Two restored.",
+            "austin_relevance": "Austin-area service in synthetic record.",
+            "timeliness": "Immediate trips.",
+            "public_interest": "Public access or service reliability.",
+            "discovery": "Published operational record; no claim of being overlooked."
+          },
+          "prior_coverage_refs": [
+            "C01"
+          ],
+          "material_update": true,
+          "exact_material_change": "Two of four routes return to normal.",
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "bus-detours",
+          "development_ids": [
+            "D02"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C04"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C04",
+          "headline": "Two bus routes resume normal paths",
+          "text": "Partial corridor reopening restores two routes; two remain on detour.",
+          "source_ids": [
+            "S02"
+          ],
+          "development_ids": [
+            "D02"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-08",
+      "selection_cutoff": "2026-10-08T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-08T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C05",
+          "day": 8,
+          "source_ids": [
+            "S05"
+          ],
+          "headline": "Clinic signs transfer agreement",
+          "summary": "Existing patients will transfer to two partners under a signed agreement; appointment dates are not guaranteed.",
+          "components": {
+            "local_impact": 14,
+            "consequence": 16,
+            "new_information": 13,
+            "austin_relevance": 15,
+            "timeliness": 8,
+            "public_interest": 9,
+            "discovery": 3
+          },
+          "base_score": 78,
+          "score_rationale": {
+            "local_impact": "Current patients.",
+            "consequence": "Access continuity plan.",
+            "new_information": "Signed transfer agreement.",
+            "austin_relevance": "Austin-area service in synthetic record.",
+            "timeliness": "Before closure.",
+            "public_interest": "Public access or service reliability.",
+            "discovery": "Published operational record; no claim of being overlooked."
+          },
+          "prior_coverage_refs": [
+            "C03"
+          ],
+          "material_update": true,
+          "exact_material_change": "Transfer agreement signed with two sites, with limits on appointment continuity.",
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "clinic-transfer",
+          "development_ids": [
+            "D05"
+          ]
+        },
+        {
+          "candidate_id": "C06",
+          "day": 8,
+          "source_ids": [
+            "S07"
+          ],
+          "headline": "Water notice lifted after repair and tests",
+          "summary": "Repairs and compliant samples allow the facility's boil-water notice to end; other infrastructure was not evaluated.",
+          "components": {
+            "local_impact": 16,
+            "consequence": 18,
+            "new_information": 13,
+            "austin_relevance": 15,
+            "timeliness": 10,
+            "public_interest": 10,
+            "discovery": 3
+          },
+          "base_score": 85,
+          "score_rationale": {
+            "local_impact": "Affected water users.",
+            "consequence": "Restriction resolved locally.",
+            "new_information": "Notice lifted.",
+            "austin_relevance": "Austin-area service in synthetic record.",
+            "timeliness": "Current water use.",
+            "public_interest": "Public access or service reliability.",
+            "discovery": "Published operational record; no claim of being overlooked."
+          },
+          "prior_coverage_refs": [
+            "C02"
+          ],
+          "material_update": true,
+          "exact_material_change": "Repair and required samples complete; notice lifted.",
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "filter-repair",
+          "development_ids": [
+            "D07"
+          ]
+        }
+      ],
+      "selected_ids": [
+        "C06",
+        "C05"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C06",
+          "headline": "Water notice lifted after repair and tests",
+          "text": "Repairs and compliant samples allow the facility's boil-water notice to end; other infrastructure was not evaluated.",
+          "source_ids": [
+            "S07"
+          ],
+          "development_ids": [
+            "D07"
+          ],
+          "publication_state": "simulated_shared_published"
+        },
+        {
+          "item_id": "C05",
+          "headline": "Clinic signs transfer agreement",
+          "text": "Existing patients will transfer to two partners under a signed agreement; appointment dates are not guaranteed.",
+          "source_ids": [
+            "S05"
+          ],
+          "development_ids": [
+            "D05"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    },
+    {
+      "date": "2026-10-09",
+      "selection_cutoff": "2026-10-09T07:30:00-05:00",
+      "simulated_shared_publication_time": "2026-10-09T08:00:00-05:00",
+      "candidates": [
+        {
+          "candidate_id": "C07",
+          "day": 9,
+          "source_ids": [
+            "S03"
+          ],
+          "headline": "One bus detour remains",
+          "summary": "A third route is back to normal. One detour remains without a return date.",
+          "components": {
+            "local_impact": 12,
+            "consequence": 11,
+            "new_information": 10,
+            "austin_relevance": 15,
+            "timeliness": 8,
+            "public_interest": 7,
+            "discovery": 3
+          },
+          "base_score": 66,
+          "score_rationale": {
+            "local_impact": "Remaining affected riders.",
+            "consequence": "Narrower service disruption.",
+            "new_information": "Third route restored.",
+            "austin_relevance": "Austin-area service in synthetic record.",
+            "timeliness": "Current service.",
+            "public_interest": "Public access or service reliability.",
+            "discovery": "Published operational record; no claim of being overlooked."
+          },
+          "prior_coverage_refs": [
+            "C01",
+            "C04"
+          ],
+          "material_update": true,
+          "exact_material_change": "Third route restored; one remains with no date.",
+          "disposition": "selected",
+          "section": "Top Stories",
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null,
+          "publication_state": "simulated_shared_published",
+          "normalized_key": "bus-detours",
+          "development_ids": [
+            "D03"
+          ]
+        },
+        {
+          "candidate_id": "C08",
+          "day": 9,
+          "source_ids": [
+            "S08"
+          ],
+          "headline": "Festival approaches",
+          "summary": "An unchanged calendar item.",
+          "components": null,
+          "base_score": null,
+          "score_rationale": {
+            "gate": "Calendar advancement belongs to Ahead utility."
+          },
+          "prior_coverage_refs": [
+            "H01"
+          ],
+          "material_update": false,
+          "exact_material_change": null,
+          "disposition": "rejected_calendar",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        },
+        {
+          "candidate_id": "C09",
+          "day": 9,
+          "source_ids": [
+            "S09"
+          ],
+          "headline": "Services collapse commentary",
+          "summary": "An unsupported common-cause interpretation.",
+          "components": null,
+          "base_score": null,
+          "score_rationale": {
+            "gate": "Opinion provides no factual support for a shared cause."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "rejected_unsupported",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        },
+        {
+          "candidate_id": "C10",
+          "day": 9,
+          "source_ids": [
+            "S10"
+          ],
+          "headline": "Bench dedication",
+          "summary": "A dedication with no further material consequence.",
+          "components": {
+            "local_impact": 2,
+            "consequence": 1,
+            "new_information": 3,
+            "austin_relevance": 15,
+            "timeliness": 2,
+            "public_interest": 1,
+            "discovery": 2
+          },
+          "base_score": 26,
+          "score_rationale": {
+            "local_impact": "Tiny site.",
+            "consequence": "No substantial service change.",
+            "new_information": "Dedication.",
+            "austin_relevance": "Austin-area service in synthetic record.",
+            "timeliness": "Already occurred.",
+            "public_interest": "Public access or service reliability.",
+            "discovery": "Published operational record; no claim of being overlooked."
+          },
+          "prior_coverage_refs": [],
+          "material_update": null,
+          "exact_material_change": null,
+          "disposition": "rejected_below_floor",
+          "section": null,
+          "source_eligibility": "fixture_read",
+          "freshness_veto": false,
+          "selection_control": null
+        }
+      ],
+      "selected_ids": [
+        "C07"
+      ],
+      "daily_shared_output": [
+        {
+          "item_id": "C07",
+          "headline": "One bus detour remains",
+          "text": "A third route is back to normal. One detour remains without a return date.",
+          "source_ids": [
+            "S03"
+          ],
+          "development_ids": [
+            "D03"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ],
+      "under_the_radar": {
+        "selected": [],
+        "discovery_scope": "Reviewed all authored primary records in this closed fixture. No separately evidenced overlooked item qualifies. This does not simulate a live web search."
+      },
+      "selection_balance": "No displacement needed; at most two selected items and each represents a distinct development."
+    }
+  ]
+}

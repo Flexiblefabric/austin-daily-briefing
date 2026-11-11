@@ -1,0 +1,241 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "fixture_id": "W074",
+  "week_start": "2026-10-05",
+  "week_end": "2026-10-09",
+  "cutoff": "2026-10-09T08:00:00-05:00",
+  "timezone": "America/Chicago",
+  "history_seed": {
+    "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+    "fixture_id": "W074",
+    "coverage_start": "2026-09-21",
+    "coverage_end": "2026-10-04",
+    "complete_for_fixture": true,
+    "items": [],
+    "note": "Complete authored seed for these candidate topics; no additional prior matches in this fictional universe. Not actual reader history."
+  },
+  "daily_shared_record": [
+    {
+      "date": "2026-10-05",
+      "items": [
+        {
+          "item_id": "C01",
+          "headline": "Repair grants proposed",
+          "text": "A $12 million draft repair-grant program awaits approval; eligibility is unsettled.",
+          "source_ids": [
+            "S01"
+          ],
+          "development_ids": [
+            "D01"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-06",
+      "items": [
+        {
+          "item_id": "C03",
+          "headline": "Staff recommend smaller repair pilot",
+          "text": "Staff replace the $12 million draft with a proposed $4 million pilot covering two service areas; no adoption yet.",
+          "source_ids": [
+            "S03"
+          ],
+          "development_ids": [
+            "D02"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-07",
+      "items": [
+        {
+          "item_id": "C04",
+          "headline": "Hearing reveals disagreement over pilot boundaries",
+          "text": "Speakers disagreed about the two-area limit; no vote occurred, and their views do not measure citywide opinion.",
+          "source_ids": [
+            "S04"
+          ],
+          "development_ids": [
+            "D03"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-08",
+      "items": [
+        {
+          "item_id": "C05",
+          "headline": "Limited repair pilot adopted",
+          "text": "A 7–4 vote adopts a $4 million two-area pilot, with evaluation required before expansion. Applications are not open.",
+          "source_ids": [
+            "S05"
+          ],
+          "development_ids": [
+            "D04"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-09",
+      "items": [
+        {
+          "item_id": "C06",
+          "headline": "Pilot approved; application launch still ahead",
+          "text": "The agency confirms that instructions and a launch date will come later. Applications remain closed and no funds have been disbursed.",
+          "source_ids": [
+            "S06"
+          ],
+          "development_ids": [
+            "D05"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic recovery grant draft",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "development_id": "D01",
+      "topic_key": "repair-grants",
+      "facts": [
+        "A draft proposes a $12 million home-repair grant program.",
+        "Eligibility rules and funding remain unapproved."
+      ],
+      "limits": "",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": true
+    },
+    {
+      "source_id": "S02",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic civic bulletin",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "development_id": "D01",
+      "topic_key": "repair-grants",
+      "facts": [
+        "The same $12 million draft is under consideration."
+      ],
+      "limits": "Repeats S01 without new facts.",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": false
+    },
+    {
+      "source_id": "S03",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic staff revision",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "development_id": "D02",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Staff revise the draft to a $4 million pilot in two service areas.",
+        "The revision remains a recommendation, not an adopted program."
+      ],
+      "limits": "",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": true
+    },
+    {
+      "source_id": "S04",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic hearing record",
+      "publication_time": "2026-10-07T07:00:00-05:00",
+      "development_id": "D03",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Speakers at a hearing disagree over limiting the pilot to two service areas.",
+        "No vote occurs.",
+        "The record does not measure wider resident opinion."
+      ],
+      "limits": "",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": true
+    },
+    {
+      "source_id": "S05",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic adopted resolution",
+      "publication_time": "2026-10-08T07:00:00-05:00",
+      "development_id": "D04",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Council adopts a $4 million two-area pilot by a 7–4 vote.",
+        "The adopted version requires an evaluation before expansion.",
+        "Adoption does not open applications."
+      ],
+      "limits": "",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": true
+    },
+    {
+      "source_id": "S06",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic implementation bulletin",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D05",
+      "topic_key": "repair-grants",
+      "facts": [
+        "The agency says application instructions and a launch date will be issued later.",
+        "No applications are open and no money has been disbursed.",
+        "The bulletin does not estimate the number of households served."
+      ],
+      "limits": "",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": true
+    },
+    {
+      "source_id": "S07",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic appropriation appendix",
+      "publication_time": "2026-10-09T07:45:00-05:00",
+      "development_id": "D06",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Of the adopted $4 million, $600,000 is reserved for administration; $3.4 million is available for grants."
+      ],
+      "limits": "Not included in daily output; material to the meaning of the $4 million figure.",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": false
+    },
+    {
+      "source_id": "S08",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic profile interview",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D07",
+      "topic_key": "director-profile",
+      "facts": [
+        "An agency director previously worked in another city."
+      ],
+      "limits": "No documented link between that biography and this program's decisions.",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": false
+    },
+    {
+      "source_id": "S09",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic afternoon application update",
+      "publication_time": "2026-10-09T12:00:00-05:00",
+      "development_id": "D08",
+      "topic_key": "repair-grants",
+      "facts": [
+        "Applications have opened."
+      ],
+      "limits": "After Friday generation; not available at cutoff.",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": false
+    }
+  ],
+  "coverage_note": "Friday daily selection is stipulated published at the same simulated 08:00 cutoff. Sources after cutoff are not usable. Source availability is distinct from shared exposure."
+}

@@ -1,0 +1,329 @@
+{
+  "schema_version": "1.0",
+  "run_id": "W032-blind-02",
+  "supersedes_run_id": null,
+  "mode": "synthetic",
+  "scenario": "quiet",
+  "variant": "zero-qualifying-arc omission",
+  "recorded_at": "2026-10-07T13:44:25.568719+00:00",
+  "week": {
+    "start": "2026-10-05",
+    "end": "2026-10-09",
+    "cutoff": "2026-10-09T08:00:00-05:00",
+    "timezone": "America/Chicago"
+  },
+  "versions": {
+    "repository_commit": "c0ef0fcf01d913661bf135d571c1ea723250deb2",
+    "v2_spec": "ADB-V2-SELECT-1.0",
+    "daily_prompt": "c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/automation-prompts/austin-daily-briefing.md",
+    "friday_spec": "ADB-FRI-SYNTH-1.0",
+    "rubric": "ADB-FRI-VALIDATE-1.0"
+  },
+  "inputs": {
+    "weekly_packet": {
+      "path": "docs/friday-evidence/2026-10-04/W032/packet.json",
+      "sha256": "5872e707124af78904f1a10fcc78221999c1f5f307d9246e122f34a1c430baaa"
+    },
+    "daily_v2_outputs": [
+      {
+        "path": "docs/friday-evidence/2026-10-04/W032/daily-v2.json",
+        "sha256": "5eb95854ac2bb808afd4c213a0f90b3d65c7e5fb9fa66101ab0c617a32786633"
+      }
+    ],
+    "history_seed": {
+      "path": "docs/friday-evidence/2026-10-04/W032/history.json",
+      "sha256": "824dc590582f7a116532878dd8cf068090a2b309550556942f34130af47cb218"
+    },
+    "synthesis_prompt": {
+      "path": "docs/friday-evidence/2026-10-04/synthesis-instructions.txt",
+      "sha256": "5a8a2c5e9ff897a8eb4e15a4f8faf0e584659a984deaf99eac0254cc067bdbac"
+    },
+    "reviewer_key": {
+      "path": "docs/friday-evidence/2026-10-04/W032/reviewer-key.json",
+      "sha256": "270224b12b155d5f131919e985c0461245df6587c9b4f8e0b37d84647a45496f"
+    }
+  },
+  "separation": {
+    "constructor": "Prior fixture construction context recorded in manifest-v2.json / omission-variant-manifest.json; distinct from blind-02 writer and this evaluator",
+    "synthesizer": "/root/blind_resume_b",
+    "evaluator": "/root/evaluate_resume_base",
+    "method": "Fresh separate evaluator context after output freeze. Read only pinned contracts, current schema, allowed fixtures/manifests and frozen blind-02 outputs; keys withheld from writers per preserved task instructions/files_read. No writer communication; no exploratory outputs/scores or other evaluation results read.",
+    "key_withheld": true,
+    "limitations": [
+      "Recorded role/access attestations; no OS-level isolation attestation. Synthetic source corpus and same model family do not establish statistically independent performance."
+    ]
+  },
+  "output": {
+    "section_included": false,
+    "omission_reason": "No qualifying weekly arc is evidenced at the cutoff. The shared record contains a one-center document-check trial announcement, a completed bridge repair and reopening, and an adopted parking designation on one block. It supplies no trial results or subsequent evolution of those items, and no evidenced relationship supports combining them into a broader access trend. The bridge digest repeats the same reopening; the hearing reminder and unchanged housing proposal add no weekly understanding. The volunteer recollection does not materially change understanding of the trial and does not qualify for the new-context exception. These isolated updates do not warrant a headline roundup or a padded weekly narrative.",
+    "opening": "",
+    "arcs": [],
+    "exact_recap": "",
+    "word_count": 0,
+    "full_edition_word_count": null,
+    "reading_time_method": "Whitespace-delimited exact_recap tokens including label, headings and source labels; section estimate at 200 words/minute. Full-edition count unavailable (shared extracts only). Omitted section adds zero words."
+  },
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access memo",
+      "locator": "docs/friday-evidence/2026-10-04/W032/sources.json#S01",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.568453+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. A municipal benefits desk will test appointment-free document checks on Wednesday at one service center. The trial adds no evening hours and changes no eligibility rules.",
+      "used_for": [
+        "K01"
+      ]
+    },
+    {
+      "source_id": "S04",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic bridge maintenance notice",
+      "locator": "docs/friday-evidence/2026-10-04/W032/sources.json#S04",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.568497+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. Repairs to a small pedestrian bridge are complete and the bridge has reopened. This is a separate maintenance project with no documented relationship to the benefits desk.",
+      "used_for": [
+        "K01"
+      ]
+    },
+    {
+      "source_id": "S05",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic parking order",
+      "locator": "docs/friday-evidence/2026-10-04/W032/sources.json#S05",
+      "publication_time": "2026-10-08T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.568536+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. One residential block receives an adopted accessible-parking designation, effective immediately.",
+      "used_for": [
+        "K01"
+      ]
+    },
+    {
+      "source_id": "S06",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic neighborhood digest",
+      "locator": "docs/friday-evidence/2026-10-04/W032/sources.json#S06",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.568571+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. The pedestrian bridge reopened Tuesday. Limits: A retelling of S04; no new development.",
+      "used_for": [
+        "K02"
+      ]
+    },
+    {
+      "source_id": "S07",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic hearing reminder",
+      "locator": "docs/friday-evidence/2026-10-04/W032/sources.json#S07",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.568606+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. A previously announced October 12 park hearing remains scheduled. Limits: Calendar reminder only.",
+      "used_for": [
+        "K02"
+      ]
+    },
+    {
+      "source_id": "S08",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic housing proposal status",
+      "locator": "docs/friday-evidence/2026-10-04/W032/sources.json#S08",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.568640+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. The housing proposal described on September 25 has no revision or vote. The decision-making council remains on its previously announced recess through October 12. Limits: No new information.",
+      "used_for": [
+        "K02"
+      ]
+    },
+    {
+      "source_id": "S09",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic neighborhood newsletter",
+      "locator": "docs/friday-evidence/2026-10-04/W032/sources.json#S09",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "access_time": "2026-10-07T13:44:25.568673+00:00",
+      "access_status": "fixture_read",
+      "supporting_note": "Audit-expanded from producer source ID. A retired volunteer recalls helping at the original benefits desk ten years ago. Limits: No change to access, current operations, or interpretation of the trial.",
+      "used_for": [
+        "K03"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "K01",
+      "location": "omission_reason",
+      "text": "The shared items are isolated updates without evidenced weekly evolution or a relationship supporting an access trend.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D01",
+        "D04",
+        "D05"
+      ],
+      "source_ids": [
+        "S01",
+        "S04",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C02",
+        "C04"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "No common relationship is evidenced; S04 explicitly describes a separate maintenance project.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "The planned trial is not treated as demonstrated successful implementation."
+    },
+    {
+      "claim_id": "K02",
+      "location": "omission_reason",
+      "text": "The additional bridge report, hearing reminder and housing status supply no new weekly development.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D04",
+        "D06",
+        "D07"
+      ],
+      "source_ids": [
+        "S06",
+        "S07",
+        "S08"
+      ],
+      "prior_shared_coverage_refs": [
+        "C02",
+        "H01",
+        "H02"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "S06 repeats D04; the hearing and housing statuses match the supplied history seed.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "No claim is made that the housing proposal is resolved."
+    },
+    {
+      "claim_id": "K03",
+      "location": "omission_reason",
+      "text": "The volunteer recollection does not materially change understanding of the trial and is excluded.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D08"
+      ],
+      "source_ids": [
+        "S09"
+      ],
+      "prior_shared_coverage_refs": [],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Audit normalization: producer supplied null; no additional uncertainty representation is claimed for this entry. See scorecard and hard-fail review."
+    }
+  ],
+  "displayed_source_groups": [],
+  "scorecard": {
+    "factual_fidelity": {
+      "weight": 20,
+      "rating": 4,
+      "points": 20.0,
+      "reason": "Omission rationale matches C01/C02/C04 and H01/H02: isolated announcement, reopening and designation; S06 repeats, S07/S08 stale and S09 anecdotal. No nonexistent implementation inferred."
+    },
+    "narrative_usefulness": {
+      "weight": 15,
+      "rating": 4,
+      "points": 15.0,
+      "reason": "Correctly concludes no qualifying weekly evolution or meaningful relationship; withholding a headline roundup is the useful product decision."
+    },
+    "unsupported_inference_control": {
+      "weight": 15,
+      "rating": 4,
+      "points": 15.0,
+      "reason": "No inference of trial results, common access trend or resolved housing proposal. Internal rationale carefully describes evidentiary absence."
+    },
+    "source_traceability": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "All seven sources materially used for the internal omission rationale are declared and mapped. No reader-facing source area is required for an absent section."
+    },
+    "pattern_causation_discipline": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "S04/S06 correctly treated as one development; isolated service facts are not combined into a trend."
+    },
+    "material_uncertainty": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "No unwarranted implementation or closure implied. An absent section does not require repetitive uncertainty prose."
+    },
+    "no_filler": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "Zero reader-facing words is appropriate; omission is not penalized for lacking prose."
+    },
+    "voice_restraint": {
+      "weight": 5,
+      "rating": 4,
+      "points": 5.0,
+      "reason": "Internal explanation is restrained; no speculative prose exposed to readers."
+    },
+    "structure_readability": {
+      "weight": 5,
+      "rating": 4,
+      "points": 5.0,
+      "reason": "Empty opening, arcs, exact recap and source groups with explicit internal reason correctly implement omission; zero incremental reader burden. This says nothing about whole-edition rendering."
+    }
+  },
+  "total_score": 100.0,
+  "hard_fail_checks": {
+    "fabricated_fact": {
+      "result": "clear",
+      "reason": "Omission rationale matches C01/C02/C04 and H01/H02: isolated announcement, reopening and designation; S06 repeats, S07/S08 stale and S09 anecdotal. No nonexistent implementation inferred."
+    },
+    "material_unsupported_conclusion": {
+      "result": "clear",
+      "reason": "No inference of trial results, common access trend or resolved housing proposal. Internal rationale carefully describes evidentiary absence. Material-uncertainty omissions were separately assessed: No unwarranted implementation or closure implied. An absent section does not require repetitive uncertainty prose."
+    },
+    "unsupported_causation": {
+      "result": "clear",
+      "reason": "S04/S06 correctly treated as one development; isolated service facts are not combined into a trend."
+    },
+    "false_pattern": {
+      "result": "clear",
+      "reason": "S04/S06 correctly treated as one development; isolated service facts are not combined into a trend."
+    },
+    "unlogged_source": {
+      "result": "clear",
+      "reason": "All seven sources materially used for the internal omission rationale are declared and mapped. No reader-facing source area is required for an absent section. Expanded metadata only; no undeclared source has been added to cure an omission."
+    },
+    "invalid_new_context": {
+      "result": "clear",
+      "reason": "No information is newly introduced to readers. Unpublished sources support internal exclusion reasoning only; S09 is explicitly rejected, not presented as contextual history."
+    }
+  },
+  "disposition": "pass_candidate",
+  "human_review": null,
+  "limitations": [
+    "Closed fictional corpus; no live research, subscriber history, delivery or production behavior tested.",
+    "Full-edition word count unavailable because fixtures contain shared editorial extracts only. HTML/plain-text source destinations, typography, section position and mobile/email integration remain promotion gates; fictional publisher labels are accepted for this synthetic prose test, not validated production links.",
+    "Audit normalization only: producer kind=synthesis/editorial_omission_rationale becomes interpretation; false context_exception becomes none, true becomes prevents_misleading_omission; null uncertainty_handling receives an explicit audit note. Producer sources_used IDs are expanded from frozen sources.json into source objects with locators and claim backreferences. No prose, source ID, coverage reference, exception rationale or displayed group was changed. Producer JSON is preserved separately; normalized classifications are evaluator packaging, not producer-compliant schema output.",
+    "Producer claims do not separately list headings; each heading is directly supported by the same arc sources. This review checks those implications explicitly; no evidence was silently invented.",
+    "Frozen producer: docs/friday-evidence/2026-10-04/W032-blind-02-output.json sha256=2e45dfb00f45d005fb28af3977fea777023174fafa31ab25595f2a732d3a0743",
+    "Embedded packet history fixture label differs from enclosing fixture; history content matches standalone history after excluding fixture_id. Used supplied content without repairing the frozen fixture."
+  ],
+  "next_action": "Retain as provisional synthetic pass candidate; complete suite, human review and integration/full-edition gates before any promotion."
+}

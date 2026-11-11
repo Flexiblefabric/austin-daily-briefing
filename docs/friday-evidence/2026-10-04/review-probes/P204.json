@@ -1,0 +1,182 @@
+{
+  "exact_recap": "THIS WEEK IN AUSTIN\n\nBus detours narrow to one route\n\nThree of the four bus routes diverted by a corridor maintenance closure are back on their normal paths by Friday’s cutoff. The north part of the corridor reopened first, restoring two routes; a third returned Thursday evening. That leaves a smaller disruption, but not a completed restoration: one route remains on detour without a return date.\n\nSources: Synthetic bus disruption notice (S01); Synthetic bus access bulletin (S02); Synthetic bus operations update (S03).\n\nA transfer plan for clinic patients\n\nThe initial closure announcement left patients without a transition plan. The community clinic’s month-end closure now has a patient-transfer agreement attached to it. After announcing that it would close when its lease ends, the clinic signed an agreement to move existing patients to two partner sites. The agreement establishes where those patients will transfer, but does not guarantee that every appointment will retain its current date.\n\nSources: Synthetic clinic notice (S04); Synthetic clinic transition agreement (S05).\n\nWater notice ends after repairs and testing\n\nThe damaged filter that prompted a neighborhood treatment facility’s boil-water notice has been repaired. Required samples met the standard, allowing the notice to be lifted Thursday. The week’s change is specific to that facility: the clearance does not evaluate other infrastructure.\n\nSources: Synthetic waterworks inspection (S06); Synthetic waterworks clearance (S07).",
+  "opening": "",
+  "arcs": [
+    {
+      "arc_id": "A1",
+      "heading": "Bus detours narrow to one route",
+      "text": "Three of the four bus routes diverted by a corridor maintenance closure are back on their normal paths by Friday’s cutoff. The north part of the corridor reopened first, restoring two routes; a third returned Thursday evening. That leaves a smaller disruption, but not a completed restoration: one route remains on detour without a return date."
+    },
+    {
+      "arc_id": "A2",
+      "heading": "A transfer plan for clinic patients",
+      "text": "The initial closure announcement left patients without a transition plan. The community clinic’s month-end closure now has a patient-transfer agreement attached to it. After announcing that it would close when its lease ends, the clinic signed an agreement to move existing patients to two partner sites. The agreement establishes where those patients will transfer, but does not guarantee that every appointment will retain its current date."
+    },
+    {
+      "arc_id": "A3",
+      "heading": "Water notice ends after repairs and testing",
+      "text": "The damaged filter that prompted a neighborhood treatment facility’s boil-water notice has been repaired. Required samples met the standard, allowing the notice to be lifted Thursday. The week’s change is specific to that facility: the clearance does not evaluate other infrastructure."
+    }
+  ],
+  "section_included": true,
+  "omission_reason": null,
+  "sources_used": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07"
+  ],
+  "displayed_source_groups": [
+    {
+      "group_id": "G1",
+      "supports_locations": [
+        "arcs.A1.text"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "labels": [
+        "Synthetic bus disruption notice",
+        "Synthetic bus access bulletin",
+        "Synthetic bus operations update"
+      ]
+    },
+    {
+      "group_id": "G2",
+      "supports_locations": [
+        "arcs.A2.text"
+      ],
+      "source_ids": [
+        "S04",
+        "S05"
+      ],
+      "labels": [
+        "Synthetic clinic notice",
+        "Synthetic clinic transition agreement"
+      ]
+    },
+    {
+      "group_id": "G3",
+      "supports_locations": [
+        "arcs.A3.text"
+      ],
+      "source_ids": [
+        "S06",
+        "S07"
+      ],
+      "labels": [
+        "Synthetic waterworks inspection",
+        "Synthetic waterworks clearance"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "K01",
+      "location": "arcs.A1.text",
+      "text": "Three of the four bus routes diverted by a corridor maintenance closure are back on their normal paths by Friday’s cutoff. The north part of the corridor reopened first, restoring two routes; a third returned Thursday evening. That leaves a smaller disruption, but not a completed restoration: one route remains on detour without a return date.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C04",
+        "C07"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The three notices explicitly follow the same four routes through the closure and staged restoration. The comparison is confined to those routes.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "One remaining detour and the absence of a return date are explicit."
+    },
+    {
+      "claim_id": "K02",
+      "location": "arcs.A2.text",
+      "text": "The community clinic’s month-end closure now has a patient-transfer agreement attached to it. After announcing that it would close when its lease ends, the clinic signed an agreement to move existing patients to two partner sites. The agreement establishes where those patients will transfer, but does not guarantee that every appointment will retain its current date.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D04",
+        "D05"
+      ],
+      "source_ids": [
+        "S04",
+        "S05"
+      ],
+      "prior_shared_coverage_refs": [
+        "C03",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The closure announcement and signed transfer agreement concern the same clinic and its existing patients. No completed transfers or wider service trend are asserted.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "The agreement does not guarantee unchanged appointment dates; the closure and transfers remain prospective."
+    },
+    {
+      "claim_id": "K03",
+      "location": "arcs.A3.text",
+      "text": "The damaged filter that prompted a neighborhood treatment facility’s boil-water notice has been repaired. Required samples met the standard, allowing the notice to be lifted Thursday. The week’s change is specific to that facility: the clearance does not evaluate other infrastructure.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D06",
+        "D07"
+      ],
+      "source_ids": [
+        "S06",
+        "S07"
+      ],
+      "prior_shared_coverage_refs": [
+        "C02",
+        "C06"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The inspection and clearance concern the same damaged filter and facility-specific notice.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Clearance is explicitly limited to the facility, with no assessment of other infrastructure."
+    },
+    {
+      "claim_id": "PROBE",
+      "location": "arcs.A2.text",
+      "text": "The initial closure announcement left patients without a transition plan.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D04"
+      ],
+      "source_ids": [
+        "S04"
+      ],
+      "prior_shared_coverage_refs": [
+        "C03"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Constructor-controlled claim under evaluation.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    }
+  ],
+  "execution_metadata": {
+    "constructor": "/root",
+    "purpose": "Controlled evaluator sensitivity probe; not blind generation",
+    "baseline_path": "docs/friday-evidence/2026-10-04/W118-blind-02-output.json",
+    "baseline_sha256": "9c3d88a6747a2cadb0e571242562c1d0797f9e698f5f8ab99b3ca3b7e49141c4"
+  }
+}

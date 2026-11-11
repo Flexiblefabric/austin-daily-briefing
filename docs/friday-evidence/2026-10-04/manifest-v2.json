@@ -1,0 +1,108 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "created_at": "2026-10-04T13:01:51.632682-05:00",
+  "baseline_commit": "c0ef0fcf01d913661bf135d571c1ea723250deb2",
+  "specifications": [
+    {
+      "path": "docs/v2-selection-spec.md",
+      "sha256": "d034e181094dc9f9ec204b4fbbdf7205f9295eadb3430117be6a33247ea8f798",
+      "git_blob": "12a2dcacdae62a644caf65995b8f9c96e5c23cf8"
+    },
+    {
+      "path": "docs/automation-prompts/austin-daily-briefing.md",
+      "sha256": "661a0e7d1b3c3869ac6a86a3fae8f61f3dba940c674b23b0596af88882f7a71b",
+      "git_blob": "6cb47fb2c67348f8b95e9fd0a3da4b95e5eecdd8"
+    },
+    {
+      "path": "docs/friday-synthesis-spec.md",
+      "sha256": "3f4e9db698d078c72a27bcdd0ef6aa41ada7672f6faac8c530cce2bcf524b566",
+      "git_blob": "160b50b9aed97c6f45ad40302a07b4838bb33789"
+    },
+    {
+      "path": "docs/friday-synthesis-validation.md",
+      "sha256": "eacd5f1fd16b7c5a853d69725e15431fc14d992e51dbc2766b0ff0880742ad12",
+      "git_blob": "8d6cdb41c46d1b2a0c20519dcf8b55093e56f746"
+    }
+  ],
+  "constructor_instructions": {
+    "path": "docs/friday-evidence/2026-10-04/constructor-instructions.txt",
+    "sha256": "60a28147c5f59b06f9d507b71de49b286383d3c29b708cd106c1b9f7e68ef015"
+  },
+  "synthesis_instructions": {
+    "path": "docs/friday-evidence/2026-10-04/synthesis-instructions.txt",
+    "sha256": "5a8a2c5e9ff897a8eb4e15a4f8faf0e584659a984deaf99eac0254cc067bdbac"
+  },
+  "fixture_ids": [
+    "W031",
+    "W075",
+    "W118"
+  ],
+  "artifacts": [
+    {
+      "path": "docs/friday-evidence/2026-10-04/W031/daily-v2.json",
+      "sha256": "afeeb701c127cde3d9a4422b608808716f1feada60875f57ca3d0edda8395dca"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W031/history.json",
+      "sha256": "f3373faeecfc17e1e30f9a0e3e42025864081cd3fe36672eac91b6106edd29a5"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W031/packet.json",
+      "sha256": "f638a72aa2ef355603bb3c4ed6f7fe49d3e07911a936bfffb3181ce892a63336"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W031/reviewer-key.json",
+      "sha256": "986c60e53d037749312bfacaa1a0c3f3db297f348ced8fc9a7a8e7c2ba718b47"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W031/sources.json",
+      "sha256": "36e9dfa3e858eb0b411b8e589551b744f1083e50de8be6566bdc8d6c4eb615d6"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W075/daily-v2.json",
+      "sha256": "52e927444ab979f160f19d221918e644c453dc59dc37ebe502d2d3c5d61f2938"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W075/history.json",
+      "sha256": "febca7194c5e6a36bbcd8645d9dbbb1670f4133b0c3a20fc18d7b60aa450556e"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W075/packet.json",
+      "sha256": "ea8ca35fdef3a38905993f6c8009a8e00e829976c1fdb1bce9ee98f47b3a5302"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W075/reviewer-key.json",
+      "sha256": "3d65db21b41e2bcbb06b7d540007c26673a489fbca09787bb88de4cd0e451aaf"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W075/sources.json",
+      "sha256": "ae5578eed593e7ca149d2f2f30af88d4095e2a1dd4e1618c4ad7c592f33a1024"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W118/daily-v2.json",
+      "sha256": "b069a846bcb24b4819e154eca5c187fddd95e141fa8d941db5fa837048a5067c"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W118/history.json",
+      "sha256": "5fb14847c802199f93fb387e9171fd12401f4e7274c07f37a08f5efe0079fdee"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W118/packet.json",
+      "sha256": "cca2e8390f8dc6086e87bb1bc33834a4dd421243ba95f26e6261c9bf9692d243"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W118/reviewer-key.json",
+      "sha256": "66b2b9849683b5d9350861a2d018abed6e5e4edb9b78809cbd5b7c546fad19db"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W118/sources.json",
+      "sha256": "960609d6ca415dce5d597ddcc6f5fe7ae650101ba6f92a4b7cdc4ade92c44b78"
+    }
+  ],
+  "limitations": [
+    "Closed fictional source corpus; not a deployed V2 engine or live-source test.",
+    "No MFY or transport execution.",
+    "Construction and exploratory prose in one context; no independent-review claim."
+  ],
+  "supersedes_manifest": "manifest.json"
+}

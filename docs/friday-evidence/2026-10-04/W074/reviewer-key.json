@@ -1,0 +1,27 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "scenario": "dominant",
+  "fixture_id": "W074",
+  "expected_constraints": {
+    "eligible_arcs": [
+      "One continuous repair-grant arc; do not split draft, vote and implementation into three stories."
+    ],
+    "material_uncertainty": [
+      "Adopted is not open; no household estimate or disbursement at cutoff."
+    ],
+    "context_exception": [
+      "S07 can materially correct the impression that all $4 million goes to grants; explicitly disclose new context."
+    ],
+    "exclude": [
+      "S08 biography; no documented policy motive.",
+      "S09 post-cutoff launch."
+    ],
+    "source_independence": [
+      "S01 and S02 are D01, not separate evidence of growing support."
+    ],
+    "tone": [
+      "A 7–4 vote and hearing speakers cannot be generalized into Austin consensus."
+    ]
+  },
+  "not_a_model_answer": true
+}

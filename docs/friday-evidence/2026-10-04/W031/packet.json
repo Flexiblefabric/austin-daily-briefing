@@ -1,0 +1,259 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "fixture_id": "W031",
+  "week_start": "2026-10-05",
+  "week_end": "2026-10-09",
+  "cutoff": "2026-10-09T08:00:00-05:00",
+  "timezone": "America/Chicago",
+  "history_seed": {
+    "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+    "fixture_id": "W031",
+    "coverage_start": "2026-09-21",
+    "coverage_end": "2026-10-04",
+    "complete_for_fixture": true,
+    "items": [
+      {
+        "item_id": "H01",
+        "date": "2026-09-28",
+        "topic_key": "park-hearing",
+        "facts": [
+          "Park hearing set for October 12."
+        ],
+        "publication_state": "simulated_shared_published"
+      },
+      {
+        "item_id": "H02",
+        "date": "2026-09-25",
+        "topic_key": "housing-proposal",
+        "facts": [
+          "Housing proposal remains pending.",
+          "Council recess lasts through October 12."
+        ],
+        "publication_state": "simulated_shared_published"
+      }
+    ],
+    "note": "Complete authored seed for these candidate topics; no additional prior matches in this fictional universe. Not actual reader history."
+  },
+  "daily_shared_record": [
+    {
+      "date": "2026-10-05",
+      "items": [
+        {
+          "item_id": "C01",
+          "headline": "Document-check trial starts at one center",
+          "text": "A Wednesday trial will let visitors seek document checks without an appointment at one center. Eligibility and opening hours stay the same.",
+          "source_ids": [
+            "S01"
+          ],
+          "development_ids": [
+            "D01"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-06",
+      "items": [
+        {
+          "item_id": "C02",
+          "headline": "Pedestrian bridge reopens",
+          "text": "Repairs are complete; the bridge is open again.",
+          "source_ids": [
+            "S04"
+          ],
+          "development_ids": [
+            "D04"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-07",
+      "items": [
+        {
+          "item_id": "C03",
+          "headline": "Document trial reaches three centers",
+          "text": "Appointment-free document checks now cover three centers. Hours and eligibility remain unchanged.",
+          "source_ids": [
+            "S02"
+          ],
+          "development_ids": [
+            "D02"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-08",
+      "items": [
+        {
+          "item_id": "C04",
+          "headline": "Accessible parking designation adopted",
+          "text": "An adopted order establishes accessible parking on one residential block immediately.",
+          "source_ids": [
+            "S05"
+          ],
+          "development_ids": [
+            "D05"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-09",
+      "items": [
+        {
+          "item_id": "C05",
+          "headline": "Walk-in option continues through October",
+          "text": "After two operating days at three centers, appointment-free document checks will continue through October 30. No outcome measurements are available.",
+          "source_ids": [
+            "S03"
+          ],
+          "development_ids": [
+            "D03"
+          ],
+          "publication_state": "simulated_shared_published"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access memo",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "development_id": "D01",
+      "topic_key": "document-access",
+      "facts": [
+        "A municipal benefits desk will test appointment-free document checks on Wednesday at one service center.",
+        "The trial adds no evening hours and changes no eligibility rules."
+      ],
+      "limits": "",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": true
+    },
+    {
+      "source_id": "S02",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access revision",
+      "publication_time": "2026-10-07T07:00:00-05:00",
+      "development_id": "D02",
+      "topic_key": "document-access",
+      "facts": [
+        "The same trial is expanded to three service centers starting Wednesday.",
+        "Existing daytime hours and eligibility rules remain unchanged."
+      ],
+      "limits": "",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": true
+    },
+    {
+      "source_id": "S03",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access operations note",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D03",
+      "topic_key": "document-access",
+      "facts": [
+        "The three centers completed their first two days of appointment-free document checks.",
+        "The office commits to keeping that option through October 30.",
+        "There are no measured wait-time or application-completion results yet."
+      ],
+      "limits": "",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": true
+    },
+    {
+      "source_id": "S04",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic bridge maintenance notice",
+      "publication_time": "2026-10-06T07:00:00-05:00",
+      "development_id": "D04",
+      "topic_key": "D04",
+      "facts": [
+        "Repairs to a small pedestrian bridge are complete and the bridge has reopened.",
+        "This is a separate maintenance project with no documented relationship to the benefits desk."
+      ],
+      "limits": "",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": true
+    },
+    {
+      "source_id": "S05",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic parking order",
+      "publication_time": "2026-10-08T07:00:00-05:00",
+      "development_id": "D05",
+      "topic_key": "D05",
+      "facts": [
+        "One residential block receives an adopted accessible-parking designation, effective immediately."
+      ],
+      "limits": "",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": true
+    },
+    {
+      "source_id": "S06",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic neighborhood digest",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D04",
+      "topic_key": "D04",
+      "facts": [
+        "The pedestrian bridge reopened Tuesday."
+      ],
+      "limits": "A retelling of S04; no new development.",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": false
+    },
+    {
+      "source_id": "S07",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic hearing reminder",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D06",
+      "topic_key": "park-hearing",
+      "facts": [
+        "A previously announced October 12 park hearing remains scheduled."
+      ],
+      "limits": "Calendar reminder only.",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": false
+    },
+    {
+      "source_id": "S08",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic housing proposal status",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D07",
+      "topic_key": "housing-proposal",
+      "facts": [
+        "The housing proposal described on September 25 has no revision or vote.",
+        "The decision-making council remains on its previously announced recess through October 12."
+      ],
+      "limits": "No new information.",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": false
+    },
+    {
+      "source_id": "S09",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic neighborhood newsletter",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "development_id": "D08",
+      "topic_key": "D08",
+      "facts": [
+        "A retired volunteer recalls helping at the original benefits desk ten years ago."
+      ],
+      "limits": "No change to access, current operations, or interpretation of the trial.",
+      "access_status": "fixture_read",
+      "prior_shared_exposure": false
+    }
+  ],
+  "coverage_note": "Friday daily selection is stipulated published at the same simulated 08:00 cutoff. Sources after cutoff are not usable. Source availability is distinct from shared exposure."
+}

@@ -1,0 +1,180 @@
+{
+  "exact_recap": "THIS WEEK IN AUSTIN\n\nA wider trial, with results still unknown\n\nThe appointment-free document-check trial grew from a plan for one center into an operating option at three, with a commitment to keep it through October 30. Monday’s announcement contemplated a Wednesday test at one center; the revised plan expanded that same trial to three centers starting Wednesday. By Friday’s cutoff, those centers had completed two operating days.\n\nThe change is in where visitors can seek checks without an appointment. Existing hours and eligibility remain unchanged. The longer commitment does not yet establish better outcomes: measured wait-time and application-completion results are not available.\n\nSources: Synthetic service access memo; Synthetic service access revision; Synthetic service access operations note",
+  "opening": "",
+  "arcs": [
+    {
+      "arc_id": "A1",
+      "heading": "A wider trial, with results still unknown",
+      "text": "The appointment-free document-check trial grew from a plan for one center into an operating option at three, with a commitment to keep it through October 30. Monday’s announcement contemplated a Wednesday test at one center; the revised plan expanded that same trial to three centers starting Wednesday. By Friday’s cutoff, those centers had completed two operating days.\n\nThe change is in where visitors can seek checks without an appointment. Existing hours and eligibility remain unchanged. The longer commitment does not yet establish better outcomes: measured wait-time and application-completion results are not available."
+    }
+  ],
+  "section_included": true,
+  "omission_reason": null,
+  "sources_used": [
+    "S01",
+    "S02",
+    "S03"
+  ],
+  "displayed_source_groups": [
+    {
+      "group_id": "G1",
+      "supports_locations": [
+        "arcs.A1.heading",
+        "arcs.A1.text"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "labels": [
+        "Synthetic service access memo",
+        "Synthetic service access revision",
+        "Synthetic service access operations note"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "CL01",
+      "location": "arcs.A1.text",
+      "text": "The appointment-free document-check trial grew from a plan for one center into an operating option at three, with a commitment to keep it through October 30.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03",
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The sources identify the same trial, its enlarged geographic scope, and its subsequent operating status and continuation; no relationship to other projects is asserted.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL02",
+      "location": "arcs.A1.text",
+      "text": "Monday’s announcement contemplated a Wednesday test at one center; the revised plan expanded that same trial to three centers starting Wednesday.",
+      "kind": "fact",
+      "development_ids": [
+        "D01",
+        "D02"
+      ],
+      "source_ids": [
+        "S01",
+        "S02"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL03",
+      "location": "arcs.A1.text",
+      "text": "By Friday’s cutoff, those centers had completed two operating days.",
+      "kind": "fact",
+      "development_ids": [
+        "D03"
+      ],
+      "source_ids": [
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL04",
+      "location": "arcs.A1.text",
+      "text": "The change is in where visitors can seek checks without an appointment. Existing hours and eligibility remain unchanged.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D01",
+        "D02"
+      ],
+      "source_ids": [
+        "S01",
+        "S02"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "Same-service revision changes the number of centers while expressly preserving hours and eligibility.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": null
+    },
+    {
+      "claim_id": "CL05",
+      "location": "arcs.A1.text",
+      "text": "The longer commitment does not yet establish better outcomes: measured wait-time and application-completion results are not available.",
+      "kind": "synthesis",
+      "development_ids": [
+        "D03"
+      ],
+      "source_ids": [
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C05"
+      ],
+      "context_exception": false,
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": null,
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Explicitly separates continuation from demonstrated improvement; no outcome or causal claim is inferred."
+    }
+  ],
+  "execution_metadata": {
+    "agent": "/root/blind_resume_a",
+    "timestamp": "2026-10-07T13:39:13.448608+00:00",
+    "input_hashes": {
+      "c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/friday-synthesis-spec.md": "3f4e9db698d078c72a27bcdd0ef6aa41ada7672f6faac8c530cce2bcf524b566",
+      "docs/friday-evidence/2026-10-04/synthesis-instructions.txt": "5a8a2c5e9ff897a8eb4e15a4f8faf0e584659a984deaf99eac0254cc067bdbac",
+      "docs/friday-evidence/2026-10-04/W031/packet.json": "f638a72aa2ef355603bb3c4ed6f7fe49d3e07911a936bfffb3181ce892a63336"
+    },
+    "exact_task_instructions": {
+      "delegated_task": "User authorizes blind FRI-5 synthesis. Repo /workspace/scratch/9aa1e270c37b/austin-daily-briefing. Read ONLY `git show c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/friday-synthesis-spec.md`, docs/friday-evidence/2026-10-04/synthesis-instructions.txt, and W031/packet.json and W075/packet.json within that directory. Do NOT read other conversations, README, reviewer keys, manifests, scores, old outputs or other agent work. Apply synthesis instructions separately per packet. Write W031-blind-02-output.json and W075-blind-02-output.json in the evidence directory. JSON contains exact_recap, opening, arcs [{arc_id,heading,text}], section_included, omission_reason, sources_used IDs, displayed_source_groups [{group_id,supports_locations,source_ids,labels}], claims [{claim_id,location,text,kind,development_ids,source_ids,prior_shared_coverage_refs,context_exception,exception_reason,new_context_disclosure,relationship_support,pattern_minimum_departure_reason,uncertainty_handling}], execution_metadata {agent,timestamp,input_hashes,exact_task_instructions,files_read,context_isolation,limitations}. No scoring. Use fictional source names and IDs, not live facts. Hash frozen outputs and report. Do not modify other files, commit, publish, access external services or spawn agents.",
+      "synthesis_instructions": "SYNTHETIC — NOT FOR PUBLICATION\nRead only the supplied packet.json and the pinned ADB-FRI-SYNTH-1.0 product contract. The fixture describes a SIMULATED week; none of its assertions is real news. Do not search external sources or access production data. Synthesize THIS WEEK IN AUSTIN at the packet cutoff, using the simulated shared daily record as prior reader exposure. Additional available material is not previously published; apply the product's narrow context exception explicitly. Choose whether a qualifying arc exists and use one to three arcs or one continuous narrative. Do not fill a word quota or impose a common theme. Retain sources for every factual and interpretive claim, including opening context. Produce the exact prose and consolidated fictional source labels, then a claim/source map, any new-context exception rationale, and an omission rationale if appropriate. Record all materially used source IDs. Do not read the reviewer key, scenario names, past trial outputs, scoring results or expected answers. Freeze the output before evaluation. Never queue or publish the result.\n"
+    },
+    "files_read": [
+      "c0ef0fcf01d913661bf135d571c1ea723250deb2:docs/friday-synthesis-spec.md",
+      "docs/friday-evidence/2026-10-04/synthesis-instructions.txt",
+      "docs/friday-evidence/2026-10-04/W031/packet.json",
+      "docs/friday-evidence/2026-10-04/W075/packet.json"
+    ],
+    "context_isolation": "Read only the pinned product specification, supplied synthesis instructions, and the two authorized packets. Applied each packet independently. No reviewer key, manifest, scores, prior output, other agent work, external service, or production data accessed. Output frozen by this write before evaluation.",
+    "limitations": [
+      "Synthetic fixture only; no real-world reporting or actual subscriber history used.",
+      "Single qualifying trial arc. Bridge reopening and parking designation supply no evidenced relationship or meaningful weekly evolution in this packet. Hearing reminder, unchanged housing status, repeated bridge account, and volunteer history add no qualifying arc or necessary new context."
+    ]
+  }
+}

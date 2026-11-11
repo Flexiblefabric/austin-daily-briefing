@@ -1,0 +1,251 @@
+{
+  "schema_version": "1.0",
+  "run_id": "W031-exploratory-01",
+  "supersedes_run_id": null,
+  "mode": "synthetic",
+  "scenario": "quiet",
+  "variant": "same-context exploratory baseline",
+  "recorded_at": "2026-10-04T13:04:58.172387-05:00",
+  "week": {
+    "start": "2026-10-05",
+    "end": "2026-10-09",
+    "cutoff": "2026-10-09T08:00:00-05:00",
+    "timezone": "America/Chicago"
+  },
+  "versions": {
+    "repository_commit": "c0ef0fcf01d913661bf135d571c1ea723250deb2",
+    "v2_spec": "ADB-V2-SELECT-1.0",
+    "daily_prompt": "ADB-DAILY-PROD-2.0",
+    "friday_spec": "ADB-FRI-SYNTH-1.0",
+    "rubric": "ADB-FRI-VALIDATE-1.0"
+  },
+  "inputs": {
+    "weekly_packet": {
+      "path": "docs/friday-evidence/2026-10-04/W031/packet.json",
+      "sha256": "f638a72aa2ef355603bb3c4ed6f7fe49d3e07911a936bfffb3181ce892a63336"
+    },
+    "daily_v2_outputs": [
+      {
+        "path": "docs/friday-evidence/2026-10-04/W031/daily-v2.json",
+        "sha256": "afeeb701c127cde3d9a4422b608808716f1feada60875f57ca3d0edda8395dca"
+      }
+    ],
+    "history_seed": {
+      "path": "docs/friday-evidence/2026-10-04/W031/history.json",
+      "sha256": "f3373faeecfc17e1e30f9a0e3e42025864081cd3fe36672eac91b6106edd29a5"
+    },
+    "synthesis_prompt": {
+      "path": "docs/friday-evidence/2026-10-04/synthesis-instructions.txt",
+      "sha256": "5a8a2c5e9ff897a8eb4e15a4f8faf0e584659a984deaf99eac0254cc067bdbac"
+    },
+    "reviewer_key": {
+      "path": "docs/friday-evidence/2026-10-04/W031/reviewer-key.json",
+      "sha256": "986c60e53d037749312bfacaa1a0c3f3db297f348ced8fc9a7a8e7c2ba718b47"
+    }
+  },
+  "separation": {
+    "constructor": "Codex, current conversation",
+    "synthesizer": "Codex, same conversation",
+    "evaluator": "Codex, same conversation",
+    "method": "Inputs were frozen before prose; prose was saved before scorecard. Constructor knowledge remained in context. This is not a blind or independent evaluation.",
+    "key_withheld": false,
+    "limitations": [
+      "Same-context authorship and scoring; excluded from promotion evidence."
+    ]
+  },
+  "output": {
+    "section_included": true,
+    "omission_reason": null,
+    "opening": "",
+    "arcs": [
+      {
+        "arc_id": "A1",
+        "heading": "A small trial becomes a longer option",
+        "text": "An appointment-free document check began the week as a trial at one benefits service center. By Friday, the option was operating at three centers and had a commitment to continue through October 30. For visitors who need someone to check their paperwork, the change is concrete: more places now offer that help without a booked appointment.\n\nThe expansion is still limited to the document-check process. It does not extend opening hours or change who qualifies for benefits. And although the first two days of service are complete, there are no measured results on waiting times or completed applications. The week established where and how long this option will be available; whether it improves those outcomes remains unmeasured."
+      }
+    ],
+    "exact_recap": "THIS WEEK IN AUSTIN\n\nA small trial becomes a longer option\n\nAn appointment-free document check began the week as a trial at one benefits service center. By Friday, the option was operating at three centers and had a commitment to continue through October 30. For visitors who need someone to check their paperwork, the change is concrete: more places now offer that help without a booked appointment.\n\nThe expansion is still limited to the document-check process. It does not extend opening hours or change who qualifies for benefits. And although the first two days of service are complete, there are no measured results on waiting times or completed applications. The week established where and how long this option will be available; whether it improves those outcomes remains unmeasured.\n\nSources: Synthetic service access memo [S01]; Synthetic service access revision [S02]; Synthetic service access operations note [S03]",
+    "word_count": 124,
+    "full_edition_word_count": null,
+    "reading_time_method": "Body and arc headings counted by whitespace; section label and source labels excluded. Full-edition burden not measured."
+  },
+  "sources": [
+    {
+      "source_id": "S01",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access memo",
+      "locator": "docs/friday-evidence/2026-10-04/W031/sources.json#S01",
+      "publication_time": "2026-10-05T07:00:00-05:00",
+      "access_time": "2026-10-04T13:04:58.172387-05:00",
+      "access_status": "fixture_read",
+      "supporting_note": "A municipal benefits desk will test appointment-free document checks on Wednesday at one service center. The trial adds no evening hours and changes no eligibility rules.",
+      "used_for": [
+        "A1-claims"
+      ]
+    },
+    {
+      "source_id": "S02",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access revision",
+      "locator": "docs/friday-evidence/2026-10-04/W031/sources.json#S02",
+      "publication_time": "2026-10-07T07:00:00-05:00",
+      "access_time": "2026-10-04T13:04:58.172387-05:00",
+      "access_status": "fixture_read",
+      "supporting_note": "The same trial is expanded to three service centers starting Wednesday. Existing daytime hours and eligibility rules remain unchanged.",
+      "used_for": [
+        "A1-claims"
+      ]
+    },
+    {
+      "source_id": "S03",
+      "kind": "synthetic_packet",
+      "publisher": "Synthetic service access operations note",
+      "locator": "docs/friday-evidence/2026-10-04/W031/sources.json#S03",
+      "publication_time": "2026-10-09T07:00:00-05:00",
+      "access_time": "2026-10-04T13:04:58.172387-05:00",
+      "access_status": "fixture_read",
+      "supporting_note": "The three centers completed their first two days of appointment-free document checks. The office commits to keeping that option through October 30. There are no measured wait-time or application-completion results yet.",
+      "used_for": [
+        "A1-claims"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "A1-claims",
+      "location": "A1",
+      "text": "An appointment-free document check began the week as a trial at one benefits service center. By Friday, the option was operating at three centers and had a commitment to continue through October 30. For visitors who need someone to check their paperwork, the change is concrete: more places now offer that help without a booked appointment.\n\nThe expansion is still limited to the document-check process. It does not extend opening hours or change who qualifies for benefits. And although the first two days of service are complete, there are no measured results on waiting times or completed applications. The week established where and how long this option will be available; whether it improves those outcomes remains unmeasured.",
+      "kind": "interpretation",
+      "development_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "prior_shared_coverage_refs": [
+        "C01",
+        "C03",
+        "C05"
+      ],
+      "context_exception": "none",
+      "exception_reason": null,
+      "new_context_disclosure": null,
+      "relationship_support": "The same document-access service develops over three distinct operational decisions; no broader civic trend is claimed.",
+      "pattern_minimum_departure_reason": null,
+      "uncertainty_handling": "Preserved where material in the exact prose; reviewed only in the same construction context."
+    }
+  ],
+  "displayed_source_groups": [
+    {
+      "group_id": "sources-A1",
+      "supports_locations": [
+        "A1"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "labels": [
+        "Synthetic service access memo",
+        "Synthetic service access revision",
+        "Synthetic service access operations note"
+      ]
+    }
+  ],
+  "scorecard": {
+    "factual_fidelity": {
+      "weight": 20,
+      "rating": 4,
+      "points": 20.0,
+      "reason": "A1 preserves one-to-three centers, October 30, unchanged eligibility/hours and absent measurements."
+    },
+    "narrative_usefulness": {
+      "weight": 15,
+      "rating": 3,
+      "points": 11.25,
+      "reason": "A1 explains the shift from trial to continued access, but its second paragraph still resembles a careful daily explainer."
+    },
+    "unsupported_inference_control": {
+      "weight": 15,
+      "rating": 4,
+      "points": 15.0,
+      "reason": "No wait-time improvement, motive or citywide sentiment is asserted."
+    },
+    "source_traceability": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "S01–S03 support both paragraphs; all three are logged and displayed."
+    },
+    "pattern_causation_discipline": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "Three developments belong to one documented service arc; no unrelated theme."
+    },
+    "material_uncertainty": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "The missing outcome data materially limits what expansion establishes."
+    },
+    "no_filler": {
+      "weight": 10,
+      "rating": 4,
+      "points": 10.0,
+      "reason": "Only one arc, no padded opening, parking/bridge/recess omitted."
+    },
+    "voice_restraint": {
+      "weight": 5,
+      "rating": 3,
+      "points": 3.75,
+      "reason": "Measured and clear, though the final sentence is somewhat formal."
+    },
+    "structure_readability": {
+      "weight": 5,
+      "rating": 3,
+      "points": 3.75,
+      "reason": "Short one-arc form is appropriate; email placement and full-edition reading burden are untested."
+    }
+  },
+  "total_score": 93.75,
+  "hard_fail_checks": {
+    "fabricated_fact": {
+      "result": "clear",
+      "reason": "No fabricated source-level fact found in this same-context review; wording caveats remain in the scorecard."
+    },
+    "material_unsupported_conclusion": {
+      "result": "clear",
+      "reason": "No material unsupported conclusion found; stylistic and scope weaknesses noted separately."
+    },
+    "unsupported_causation": {
+      "result": "clear",
+      "reason": "Connections remain within documented arcs; no cross-arc cause asserted."
+    },
+    "false_pattern": {
+      "result": "clear",
+      "reason": "No claim of a general citywide trend or public consensus."
+    },
+    "unlogged_source": {
+      "result": "clear",
+      "reason": "Every source ID used in claims and visible source groups is in this record."
+    },
+    "invalid_new_context": {
+      "result": "clear",
+      "reason": "Only W075 introduces a substantive uncovered budget detail, with explicit disclosure and exception rationale; no biography, anecdote or post-cutoff fact used."
+    }
+  },
+  "disposition": "incomplete",
+  "human_review": null,
+  "limitations": [
+    "Exploratory self-evaluation only. The numerical score is not an independent result or a promotion pass.",
+    "No live-source verification, production V2 execution, transport check or full-edition rendering.",
+    "Paragraph-level claim mapping groups multiple facts; independent review must assess each material assertion."
+  ],
+  "next_action": "Run blind synthesis from the frozen packet in a fresh context, then separate evaluation. Preserve this exploratory attempt unchanged."
+}

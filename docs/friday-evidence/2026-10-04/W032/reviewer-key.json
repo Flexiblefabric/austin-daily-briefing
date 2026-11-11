@@ -1,0 +1,10 @@
+{
+  "warning": "SYNTHETIC — NOT FOR PUBLICATION",
+  "scenario": "quiet",
+  "fixture_id": "W032",
+  "expected_constraints": {
+    "eligible_arcs": [],
+    "expected": "Omit: the benefits-desk item is only a one-day announcement, with no later evolution or necessary synthesis. Other one-day items and stale repeats do not create an arc."
+  },
+  "not_a_model_answer": true
+}

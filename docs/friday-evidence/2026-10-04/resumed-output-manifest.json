@@ -1,0 +1,138 @@
+{
+  "created_date": "2026-10-07",
+  "purpose": "Final frozen resumed generation/evaluation/probe evidence. Source inputs pinned in original and challenge manifests.",
+  "artifacts": [
+    {
+      "path": "docs/friday-evidence/2026-10-04/W031-blind-02-evaluation.json",
+      "sha256": "a58cf067a13c418cc9877d9d055a0b7493e9667cde4a2a1ed1f0beb1e8f256d5"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W031-blind-02-output.json",
+      "sha256": "9f6a319ad2accc986bb2b7ece67c2dede3c5d99ade3975d00f299092affc1ffe"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W032-blind-02-evaluation.json",
+      "sha256": "03d6cf465dc4a3fbced1214a03297ebc673bc5faf4bb8461e222d02a84c7fe95"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W032-blind-02-output.json",
+      "sha256": "2e45dfb00f45d005fb28af3977fea777023174fafa31ab25595f2a732d3a0743"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W075-blind-02-evaluation.json",
+      "sha256": "9e05a90e330f7cb8796f29f29c22794f1422f1fd899ce4133dd2317cab478a5a"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W075-blind-02-output.json",
+      "sha256": "2d9cbd2dde56ff049ff86dda507df2645f0947242e40b267e20f2d74073bf0ec"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W076-blind-02-evaluation.json",
+      "sha256": "cddf4ea73df94129d00f5d2c4964a5c9e3de8f104d0666abe77eb56e8306de63"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W076-blind-02-output.json",
+      "sha256": "9004c2fe35291c11ce25d6d621d303782065723818871586cc689325a06ad737"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W077-blind-02-evaluation.json",
+      "sha256": "7a4461fed970c47a61ea9f9bb831a23fd6a778a154ee848c94b6cda668a7a721"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W077-blind-02-output.json",
+      "sha256": "6b484c2db41bc7e2fe935e708b841f44c2196bcd61f8914232ea91d36f928947"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W118-blind-02-evaluation.json",
+      "sha256": "baf507d352f3bb31c43ce08277b641d6a3daccb7078654630b49351476d26567"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W118-blind-02-output.json",
+      "sha256": "9c3d88a6747a2cadb0e571242562c1d0797f9e698f5f8ab99b3ca3b7e49141c4"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W118-blind-03-evaluation.json",
+      "sha256": "e20f3ece4847a44a68982d6ea9e7ebd609a0907782dfbca60ff2219605375eaf"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/W118-blind-03-output.json",
+      "sha256": "2fe5b918a6ff25a0d61a7c545044452929b945bc6fc1147916b585e4d189973a"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/challenge-input-notes.md",
+      "sha256": "25959c6bae642be68897ce2a8b94b8db2cd531b1ea3469f6dc583d985d17d9ee"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/evaluation-instructions-v2.txt",
+      "sha256": "fdf3be16db424d7a5ba647ee319c46cdc7991e121743284540fa3db1092cba46"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/independent-base-review-2026-10-07.md",
+      "sha256": "c397cf6aaa93bc6052989bbd0b1a2fd20eb322ae7da71fe05b5e11dcb32e5bc4"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/independent-fragmented-rerun-review-2026-10-07.md",
+      "sha256": "f83da144f4a30894a60cf7bb02325eb72c0fdf7227a066c13760f168238b450d"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/independent-variant-review-2026-10-07.md",
+      "sha256": "b55b9c14a8e8d95df1bc10ce9a7be05a1850bfc277981958de22bd8aee9836df"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/interruption-and-resumption.json",
+      "sha256": "c7ab582ed52b1f55d8d5d0a42c133a49a00c28de881ef33966ee7be0a8545464"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/resumed-validation-report.md",
+      "sha256": "fa66bc0565178c69b3e9edd2aa635fbf3e5a0994ed6ca9eb236053118711d3ca"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/P201.json",
+      "sha256": "28e531bb1532f161b431991c9999a4f93eba6cd4316d38236ce74e061d60f3ba"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/P202.json",
+      "sha256": "d4e1229aacf2ed43592c14c24804d552ced45b0abc95684ca813210260213955"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/P203.json",
+      "sha256": "af2671e1d2b039ec7c0458d0a0ab4bbc8171fa3592580ee04b44eff06d858946"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/P204-exposure-review-02.json",
+      "sha256": "efe5b1c040ba97373a2e0cc3c3d5b1ceeebc4aee52f52189561f5c2fa30ceb04"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/P204-exposure-review-02.md",
+      "sha256": "01db7e28852aa96786de4260e9d8a2930960db26b504a557af4bee51c1852a8b"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/P204.json",
+      "sha256": "fb386d7a33675e65ee13b8097e07f90b3b0822000c8f295a8926b885519639af"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/constructor-comparison.json",
+      "sha256": "1ae2eb63029a37a55f1fbedd7881a5da0fa4fe290ca1367953da9d105f9ea669"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/constructor-key.json",
+      "sha256": "a9b0d675396ea831daa8e5169ed659013ca1e6debe0553100cc8da6ff2160b43"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/independent-results.json",
+      "sha256": "5cafd55da1f7f7683a46851237478fe6cdea9fa1b8139a74a6627427592838ba"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/independent-results.md",
+      "sha256": "49bf1b45fe5e58676dd3b91dd42be6b6a775e080f420b0f6ff11d9e807c9a753"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/review-probes/index.json",
+      "sha256": "965a8a873ac39ef607a1517ffa4a028313d7b0d4fda902665af2cff78aa7261e"
+    },
+    {
+      "path": "docs/friday-evidence/2026-10-04/synthesis-instructions-v2.txt",
+      "sha256": "39b46d5eb76135d83de9faed602ad419dabb63adaa9915784e7ba45a3f539e7f"
+    }
+  ]
+}

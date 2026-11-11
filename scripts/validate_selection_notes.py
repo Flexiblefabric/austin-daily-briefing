@@ -183,8 +183,6 @@ def check_slate(slate, lane, selected, preferences, history, profile, cutoff, wi
     require(meaningful(slate.get("capacity_reason")), "saved volume/capacity rationale required")
     slots = slate.get("slots")
     require(type(slots) is int and 0 <= slots <= len(candidates), "invalid slate capacity")
-    if lane == "mfy":
-        require(not candidates or slots > 0, "MFY eligible candidates cannot be suppressed with zero capacity")
     for c in candidates:
         check_candidate(c, lane, preferences, history, profile, cutoff, window_start)
     pool = {c["key"]: c for c in candidates}
@@ -248,6 +246,8 @@ def check_mfy_search(ctx, preferences, cutoff):
         check_source(check.get("source"), cutoff)
         covered.update(interests)
     ranked = ctx["mfy"]["ranked"]
+    require(not ranked or ctx["mfy"]["slots"] > 0,
+            "MFY eligible candidates cannot be suppressed with zero capacity")
     if enabled:
         require(checks, "enabled interests require MFY research")
         require({c["fit"]["interest_id"] for c in ranked} <= covered,
@@ -322,7 +322,7 @@ def validate(bundle, *, require_mfy_research=False):
             selected = {n["candidate"]["key"]: n["candidate"] for n in notes if n["candidate"]["lane"] == lane}
             check_slate(ctx.get(lane), lane, selected, profiles[profile]["preferences"], history,
                         profile, cutoff, window.isoformat())
-        if require_mfy_research or "mfy_search" in ctx:
+        if require_mfy_research:
             check_mfy_search(ctx, profiles[profile]["preferences"], cutoff)
         search = ctx.get("utr_search", {})
         require(search.get("independent") is True and search.get("checks"), "independent UTR search evidence required")

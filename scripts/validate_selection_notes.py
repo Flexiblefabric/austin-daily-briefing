@@ -183,6 +183,8 @@ def check_slate(slate, lane, selected, preferences, history, profile, cutoff, wi
     require(meaningful(slate.get("capacity_reason")), "saved volume/capacity rationale required")
     slots = slate.get("slots")
     require(type(slots) is int and 0 <= slots <= len(candidates), "invalid slate capacity")
+    if lane == "mfy":
+        require(not candidates or slots > 0, "MFY eligible candidates cannot be suppressed with zero capacity")
     for c in candidates:
         check_candidate(c, lane, preferences, history, profile, cutoff, window_start)
     pool = {c["key"]: c for c in candidates}
@@ -222,6 +224,39 @@ def check_slate(slate, lane, selected, preferences, history, profile, cutoff, wi
     require(set(selected) == expected, "final selection differs from original slate plus recorded controls")
     for key, c in selected.items():
         require(c == pool[key], "selected candidate changed original score or evidence")
+
+
+def check_mfy_search(ctx, preferences, cutoff):
+    """Require research evidence, not an item quota; genuinely empty pools remain valid."""
+    require(isinstance(preferences, dict) and preferences, "MFY preference snapshot missing")
+    require(all(v in {"High", "Normal", "Off"} for v in preferences.values()),
+            "MFY preference snapshot contains unrecognized values")
+    enabled = {k for k, v in preferences.items() if v in {"High", "Normal"}}
+    search = ctx.get("mfy_search")
+    require(isinstance(search, dict) and search.get("independent") is True,
+            "independent MFY search evidence required; complete research before queueing")
+    checks = search.get("checks")
+    require(isinstance(checks, list), "MFY search checks must be an array")
+    covered = set()
+    for check in checks:
+        interests = check.get("interest_ids")
+        require(isinstance(interests, list) and interests and all(text(i) for i in interests),
+                "MFY search must identify saved interests")
+        require(set(interests) <= enabled, "MFY search references missing or Off interests")
+        require(meaningful(check.get("query_or_path")) and meaningful(check.get("finding")),
+                "MFY search needs actual query/path and finding")
+        check_source(check.get("source"), cutoff)
+        covered.update(interests)
+    ranked = ctx["mfy"]["ranked"]
+    if enabled:
+        require(checks, "enabled interests require MFY research")
+        require({c["fit"]["interest_id"] for c in ranked} <= covered,
+                "MFY candidate interest missing from research evidence")
+        if not ranked:
+            require(covered == enabled,
+                    "empty MFY pool requires research across enabled interests")
+    else:
+        require(not checks and not ranked, "all-Off profile cannot have MFY research or candidates")
 
 
 def validate(bundle):
@@ -286,6 +321,7 @@ def validate(bundle):
             selected = {n["candidate"]["key"]: n["candidate"] for n in notes if n["candidate"]["lane"] == lane}
             check_slate(ctx.get(lane), lane, selected, profiles[profile]["preferences"], history,
                         profile, cutoff, window.isoformat())
+        check_mfy_search(ctx, profiles[profile]["preferences"], cutoff)
         search = ctx.get("utr_search", {})
         require(search.get("independent") is True and search.get("checks"), "independent UTR search evidence required")
         for check in search["checks"]:
@@ -335,3 +371,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+

@@ -259,7 +259,8 @@ def check_mfy_search(ctx, preferences, cutoff):
         require(not checks and not ranked, "all-Off profile cannot have MFY research or candidates")
 
 
-def validate(bundle):
+def validate(bundle, *, require_mfy_research=False):
+    """Validate notes, preserving compatibility for older publisher bundles."""
     require(isinstance(bundle, dict), "input must be an object")
     cutoff = stamp(bundle.get("cutoff"))
     require(cutoff.utcoffset() == cutoff.astimezone(ZoneInfo("America/Chicago")).utcoffset(),
@@ -321,7 +322,8 @@ def validate(bundle):
             selected = {n["candidate"]["key"]: n["candidate"] for n in notes if n["candidate"]["lane"] == lane}
             check_slate(ctx.get(lane), lane, selected, profiles[profile]["preferences"], history,
                         profile, cutoff, window.isoformat())
-        check_mfy_search(ctx, profiles[profile]["preferences"], cutoff)
+        if require_mfy_research or "mfy_search" in ctx:
+            check_mfy_search(ctx, profiles[profile]["preferences"], cutoff)
         search = ctx.get("utr_search", {})
         require(search.get("independent") is True and search.get("checks"), "independent UTR search evidence required")
         for check in search["checks"]:
@@ -359,7 +361,7 @@ def main():
     parser.add_argument("bundle", type=Path)
     args = parser.parse_args()
     try:
-        count = validate(json.loads(args.bundle.read_text(encoding="utf-8")))
+        count = validate(json.loads(args.bundle.read_text(encoding="utf-8")), require_mfy_research=True)
     except (Invalid, ValueError, KeyError, TypeError, OSError, AttributeError) as exc:
         # Do not echo input, profile IDs or raw JSON on malformed private input.
         detail = str(exc) if isinstance(exc, Invalid) else "malformed or unreadable input"

@@ -27,12 +27,20 @@ See [the synthetic complete input](selection-notes-example.json) for field shape
 | History | `key_checked`, `topic_checked`, specific `search_reason`, `material_update`, `prior` records containing exact `key`, `date`, and previously published `facts`. A changed URL/key does not reset topic history |
 | Repeat change | `before` matching a prior published fact; precise `after`; `incremental_value`; `basis`; `calendar_only: false`; verified `source_url`, `locator`, and `verified_at`. Material Update TRUE requires this evidence and actual prior coverage |
 | MFY fit | Actual `interest_id`, `saved_preference`, calibrated `match`, specific `source_feature`, `reader_payoff`, active `catalog_scope`, and `off_topic_relabel: false` |
-| Context | Saved `volume`, `shared_weights`, `mfy_weights`, `history_window_start`, `top` and `mfy` slates, `rejected` array (explicitly empty when none), and `utr_search` |
+| Context | Saved `volume`, `shared_weights`, `mfy_weights`, `history_window_start`, `top` and `mfy` slates, `rejected` array (explicitly empty when none), `utr_search`, and `mfy_search` |
 | Original slate | `complete_eligible_pool: true`, full eligible candidate objects in descending score order in `ranked`, `slots`, `capacity_reason`, `control_status` (`none` or `applied`), `decisions` array |
 | Decision | `control`, original `displaced` key, `replacement` key (null for Freshness Veto), specific `reason`; MFY swaps also store calculated `score_drop` and `reader_value_drop` |
 | Rejected candidate | `key`, `topic`, `lane`, `failed_gate` (`source`, `fit`, `repeat`, `section`, `score`, `freshness`), and specific `reason`. No delivery status and no independent history row |
 
 The first `slots` candidates form the original baseline. Fix capacity using saved Fewer/Standard/More and actual useful supply **before** controls; never shrink/relabel the baseline to conceal displacement. Preserve tie order and explain material tie decisions in `capacity_reason`. Preserve candidate scores/evidence exactly between the original slate and selected note. Unselected eligible candidates remain in the slate. All actual selected keys must equal the original baseline after the recorded decisions. Freshness Veto removes a scored material repeat; it does not itself promote a replacement. Record any subsequent promotion as its own authorized comparison against the untouched original baseline, or leave the slot empty.
+
+## MFY research record
+
+Always retain `context.mfy_search` with `independent: true` and a `checks` array. Each check contains `interest_ids` (actual enabled saved IDs), the actual `query_or_path`, a specific `finding`, and a `source` using the existing read-source schema. Reuse a check across overlapping interests only when the source and finding substantively cover those interests. Every ranked MFY candidate's interest must have research evidence.
+
+When the eligible MFY pool is empty, checks must cover all enabled interests before claiming no qualification. Prioritize High interests and broaden the search if the first pass produces nothing. Record encountered rejections in the existing `rejected` array; a genuine search with no candidates need not invent rejections. A generic capacity explanation or `complete_eligible_pool: true` is not research evidence. All-Off profiles use an empty checks array and empty MFY slate; missing or unrecognized preferences fail validation.
+
+An eligible nonempty MFY slate requires positive capacity. Existing Freshness Veto may still remove scored material repeats with its recorded evidence. The no-filler standard, scores and thresholds remain unchanged. This additive evidence requirement activates for new generation after merge; it does not invalidate or rewrite historical notes. A missing record requires completing research and revalidating, not silently omitting personalization. See the daily prompt for selected-candidate to rendered-payload parity.
 
 ## MFY scoring enforcement
 
@@ -77,3 +85,4 @@ Run `python scripts/validate_selection_notes.py /private/transient/proposed-sele
 This is a generation-task preflight, not an Apps Script dispatcher hook. It does not read or write Sheets, send mail, or evaluate provider completion. It verifies evidence structure, arithmetic, anchors, snapshot consistency and displacement mechanics; it cannot prove a source is truthful, a topic search is complete, a claimed new fact is genuinely new, or prominence judgments are sound. Those remain source-review responsibilities.
 
 For short-term analysis, parse Notes, group by run/profile, use the single context carrier, and compare selected items with the retained original slates. Keep audit absence distinct from an explicit `none` decision. Do not retroactively label October 4–6 as passing this format. Observe the first normal post-merge edition before closing V2-10.
+

@@ -224,7 +224,43 @@ def check_slate(slate, lane, selected, preferences, history, profile, cutoff, wi
         require(c == pool[key], "selected candidate changed original score or evidence")
 
 
-def validate(bundle):
+def check_mfy_search(ctx, preferences, cutoff):
+    """Require research evidence, not an item quota; genuinely empty pools remain valid."""
+    require(isinstance(preferences, dict) and preferences, "MFY preference snapshot missing")
+    require(all(v in {"High", "Normal", "Off"} for v in preferences.values()),
+            "MFY preference snapshot contains unrecognized values")
+    enabled = {k for k, v in preferences.items() if v in {"High", "Normal"}}
+    search = ctx.get("mfy_search")
+    require(isinstance(search, dict) and search.get("independent") is True,
+            "independent MFY search evidence required; complete research before queueing")
+    checks = search.get("checks")
+    require(isinstance(checks, list), "MFY search checks must be an array")
+    covered = set()
+    for check in checks:
+        interests = check.get("interest_ids")
+        require(isinstance(interests, list) and interests and all(text(i) for i in interests),
+                "MFY search must identify saved interests")
+        require(set(interests) <= enabled, "MFY search references missing or Off interests")
+        require(meaningful(check.get("query_or_path")) and meaningful(check.get("finding")),
+                "MFY search needs actual query/path and finding")
+        check_source(check.get("source"), cutoff)
+        covered.update(interests)
+    ranked = ctx["mfy"]["ranked"]
+    require(not ranked or ctx["mfy"]["slots"] > 0,
+            "MFY eligible candidates cannot be suppressed with zero capacity")
+    if enabled:
+        require(checks, "enabled interests require MFY research")
+        require({c["fit"]["interest_id"] for c in ranked} <= covered,
+                "MFY candidate interest missing from research evidence")
+        if not ranked:
+            require(covered == enabled,
+                    "empty MFY pool requires research across enabled interests")
+    else:
+        require(not checks and not ranked, "all-Off profile cannot have MFY research or candidates")
+
+
+def validate(bundle, *, require_mfy_research=False):
+    """Validate notes, preserving compatibility for older publisher bundles."""
     require(isinstance(bundle, dict), "input must be an object")
     cutoff = stamp(bundle.get("cutoff"))
     require(cutoff.utcoffset() == cutoff.astimezone(ZoneInfo("America/Chicago")).utcoffset(),
@@ -286,6 +322,8 @@ def validate(bundle):
             selected = {n["candidate"]["key"]: n["candidate"] for n in notes if n["candidate"]["lane"] == lane}
             check_slate(ctx.get(lane), lane, selected, profiles[profile]["preferences"], history,
                         profile, cutoff, window.isoformat())
+        if require_mfy_research:
+            check_mfy_search(ctx, profiles[profile]["preferences"], cutoff)
         search = ctx.get("utr_search", {})
         require(search.get("independent") is True and search.get("checks"), "independent UTR search evidence required")
         for check in search["checks"]:
@@ -323,7 +361,7 @@ def main():
     parser.add_argument("bundle", type=Path)
     args = parser.parse_args()
     try:
-        count = validate(json.loads(args.bundle.read_text(encoding="utf-8")))
+        count = validate(json.loads(args.bundle.read_text(encoding="utf-8")), require_mfy_research=True)
     except (Invalid, ValueError, KeyError, TypeError, OSError, AttributeError) as exc:
         # Do not echo input, profile IDs or raw JSON on malformed private input.
         detail = str(exc) if isinstance(exc, Invalid) else "malformed or unreadable input"
@@ -335,3 +373,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+

@@ -334,5 +334,79 @@ class SelectionNotesTests(unittest.TestCase):
             validate(b)
 
 
+class DailyMfyResearchTests(unittest.TestCase):
+    def researched_fixture(self):
+        b, n = fixture()
+        n["context"]["mfy_search"] = {"independent": True, "checks": [{
+            "interest_ids": ["TEST_INTEREST"],
+            "query_or_path": "Synthetic service guide and specialist coverage",
+            "finding": "Reviewed service changes and applicable resource history.",
+            "source": source()}]}
+        return b, n
+
+    def empty_mfy(self):
+        b, n = self.researched_fixture()
+        c = candidate("shared", "top")
+        n["candidate"] = c
+        n["context"]["top"] = slate([copy.deepcopy(c)], 1)
+        n["context"]["mfy"] = slate([], 0)
+        n["context"]["mfy"]["capacity_reason"] = (
+            "No additional personalized candidate cleared the evidence and freshness gates "
+            "without repeating shared coverage or recent profile history.")
+        b["rows"][0].update(section="Featured Top Story", key="shared")
+        return b, n
+
+    def test_november_empty_pool_without_research_is_rejected(self):
+        b, n = self.empty_mfy()
+        del n["context"]["mfy_search"]
+        update(b, n)
+        self.assertEqual(validate(b), 1)  # Older publisher packages remain readable.
+        with self.assertRaisesRegex(Invalid, "independent MFY search"):
+            validate(b, require_mfy_research=True)
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "proposed.json"
+            path.write_text(json.dumps(b), encoding="utf-8")
+            result = subprocess.run([sys.executable, str(Path(__file__).with_name("validate_selection_notes.py")),
+                                     str(path)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("independent MFY search", result.stderr)
+
+    def test_researched_empty_pool_remains_valid(self):
+        b, n = self.empty_mfy()
+        self.assertEqual(validate(update(b, n), require_mfy_research=True), 1)
+
+    def test_empty_pool_cannot_skip_enabled_interest(self):
+        b, n = self.empty_mfy()
+        b["profiles"]["SYNTHETIC"]["preferences"]["SECOND"] = "High"
+        with self.assertRaisesRegex(Invalid, "across enabled interests"):
+            validate(update(b, n), require_mfy_research=True)
+        n["context"]["mfy_search"]["checks"][0]["interest_ids"].append("SECOND")
+        self.assertEqual(validate(update(b, n), require_mfy_research=True), 1)
+
+    def test_all_off_profile_can_omit_mfy(self):
+        b, n = self.empty_mfy()
+        b["profiles"]["SYNTHETIC"]["preferences"]["TEST_INTEREST"] = "Off"
+        n["context"]["mfy_search"]["checks"] = []
+        self.assertEqual(validate(update(b, n), require_mfy_research=True), 1)
+
+    def test_mfy_search_rejects_unread_future_or_off_evidence(self):
+        for mutate in (
+            lambda c: c["source"].update(access="unread"),
+            lambda c: c["source"].update(accessed_at="2026-10-07T09:00:00-05:00"),
+            lambda c: c.update(interest_ids=["MISSING"]),
+            lambda c: c.update(finding=""),
+        ):
+            b, n = self.researched_fixture()
+            mutate(n["context"]["mfy_search"]["checks"][0])
+            with self.assertRaises(Invalid):
+                validate(update(b, n), require_mfy_research=True)
+
+    def test_eligible_mfy_cannot_be_hidden_by_zero_slots(self):
+        b, n = self.empty_mfy()
+        n["context"]["mfy"] = slate([candidate()], 0)
+        with self.assertRaisesRegex(Invalid, "zero capacity"):
+            validate(update(b, n), require_mfy_research=True)
+
 if __name__ == "__main__":
     unittest.main()
+

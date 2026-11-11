@@ -48,6 +48,11 @@ def fixture():
     context = {"volume": "Standard", "shared_weights": [20, 20, 15, 15, 10, 10, 10],
                "mfy_weights": [25, 25, 20, 10, 10, 10], "history_window_start": "2026-09-23",
                "top": slate([], 0), "mfy": slate([copy.deepcopy(c)], 1), "rejected": [],
+               "mfy_search": {"independent": True, "checks": [{
+                   "interest_ids": ["TEST_INTEREST"],
+                   "query_or_path": "Synthetic service guide and specialist coverage",
+                   "finding": "Reviewed service changes and applicable resource history.",
+                   "source": source()}]},
                "utr_search": {"independent": True, "outcome": "none_qualified",
                               "reason": "Reviewed agenda has no consequential overlooked development.",
                               "checks": [{"query_or_path": "Commission agenda and supporting records",
@@ -77,6 +82,59 @@ class SelectionNotesTests(unittest.TestCase):
     def reject(self, bundle, note):
         with self.assertRaises((Invalid, ValueError, KeyError, TypeError)):
             validate(update(bundle, note))
+
+    def empty_mfy(self):
+        b, n = fixture()
+        c = candidate("shared", "top")
+        n["candidate"] = c
+        n["context"]["top"] = slate([copy.deepcopy(c)], 1)
+        n["context"]["mfy"] = slate([], 0)
+        n["context"]["mfy"]["capacity_reason"] = (
+            "No additional personalized candidate cleared the evidence and freshness gates "
+            "without repeating shared coverage or recent profile history.")
+        b["rows"][0].update(section="Featured Top Story", key="shared")
+        return b, n
+
+    def test_november_empty_pool_without_research_is_rejected(self):
+        b, n = self.empty_mfy()
+        del n["context"]["mfy_search"]
+        with self.assertRaisesRegex(Invalid, "independent MFY search"):
+            validate(update(b, n))
+
+    def test_researched_empty_pool_remains_valid(self):
+        b, n = self.empty_mfy()
+        self.assertEqual(validate(update(b, n)), 1)
+
+    def test_empty_pool_cannot_skip_enabled_interest(self):
+        b, n = self.empty_mfy()
+        b["profiles"]["SYNTHETIC"]["preferences"]["SECOND"] = "High"
+        with self.assertRaisesRegex(Invalid, "across enabled interests"):
+            validate(update(b, n))
+        n["context"]["mfy_search"]["checks"][0]["interest_ids"].append("SECOND")
+        self.assertEqual(validate(update(b, n)), 1)
+
+    def test_all_off_profile_can_omit_mfy(self):
+        b, n = self.empty_mfy()
+        b["profiles"]["SYNTHETIC"]["preferences"]["TEST_INTEREST"] = "Off"
+        n["context"]["mfy_search"]["checks"] = []
+        self.assertEqual(validate(update(b, n)), 1)
+
+    def test_mfy_search_rejects_unread_future_or_off_evidence(self):
+        for mutate in (
+            lambda c: c["source"].update(access="unread"),
+            lambda c: c["source"].update(accessed_at="2026-10-07T09:00:00-05:00"),
+            lambda c: c.update(interest_ids=["MISSING"]),
+            lambda c: c.update(finding=""),
+        ):
+            b, n = fixture()
+            mutate(n["context"]["mfy_search"]["checks"][0])
+            self.reject(b, n)
+
+    def test_eligible_mfy_cannot_be_hidden_by_zero_slots(self):
+        b, n = self.empty_mfy()
+        n["context"]["mfy"] = slate([candidate()], 0)
+        with self.assertRaisesRegex(Invalid, "zero capacity"):
+            validate(update(b, n))
 
     def test_valid_and_transport_suffix(self):
         b, n = fixture()
@@ -336,3 +394,4 @@ class SelectionNotesTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

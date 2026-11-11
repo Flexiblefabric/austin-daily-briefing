@@ -98,8 +98,17 @@ class SelectionNotesTests(unittest.TestCase):
     def test_november_empty_pool_without_research_is_rejected(self):
         b, n = self.empty_mfy()
         del n["context"]["mfy_search"]
+        update(b, n)
+        self.assertEqual(validate(b), 1)  # Older publisher packages remain readable.
         with self.assertRaisesRegex(Invalid, "independent MFY search"):
-            validate(update(b, n))
+            validate(b, require_mfy_research=True)
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "proposed.json"
+            path.write_text(json.dumps(b), encoding="utf-8")
+            result = subprocess.run([sys.executable, str(Path(__file__).with_name("validate_selection_notes.py")),
+                                     str(path)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("independent MFY search", result.stderr)
 
     def test_researched_empty_pool_remains_valid(self):
         b, n = self.empty_mfy()

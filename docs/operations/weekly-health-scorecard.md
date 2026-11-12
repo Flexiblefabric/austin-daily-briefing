@@ -14,6 +14,28 @@
 4. Prefer trends to arbitrary targets during the first four observations. The stated 09:00 CT reader-delivery objective is a benchmark to test, not an assertion of an existing service-level guarantee. The 08:00 CT morning generation schedule remains unchanged.
 5. Reader usefulness can be tested privately. Soliciting friends or making ADB more public is optional, never a prerequisite.
 
+## Separate delivery health and editorial completeness
+
+**Reporting decision approved:** 2026-11-11 (America/Chicago). Every review reports these two assessments separately. A delivery success must never imply editorial completeness, and an editorial omission must not be labeled a transport failure.
+
+| Assessment | Report | Required evidence |
+| --- | --- | --- |
+| **Delivery health** | Healthy / Degraded / Failed / Unknown, with counts and checked date/run | Eligible-edition queue coverage, provider acceptance, timing, failures and queue/history reconciliation. State inbox delivery separately and only when verified |
+| **Editorial completeness** | Complete / Needs review / Incomplete / Unknown, with affected-edition counts and checked date/run | Actual HTML/plain-text sections reconciled with selection notes and history; required components; saved personalization applicability; evidence supporting omitted conditional sections |
+
+Use **Complete** only when the applicable content requirements and omission evidence were checked. Use **Incomplete** for a confirmed missing required component or selected content missing from the payload. Use **Needs review** when a conditional omission is observed but its justification is insufficient. Use **Unknown** when available evidence cannot establish completeness. Section counts alone do not establish factual accuracy; retain the existing sampled grounding review.
+
+For More for You, report profiles with personalized content / evaluated profiles, item-count range, and profiles with unexplained omissions. A legitimate empty section is allowed under the existing no-filler rules. An empty ranked pool and a generic “nothing qualified” statement alone do not demonstrate adequate interest-specific research. Inspect available research and rejection evidence; where no candidates were found, assess the documented search scope rather than requiring invented rejected candidates. Treat unavailable saved-preference or research evidence as a verification gap, never infer that interests were disabled.
+
+Under the Radar and other conditional components are assessed against their own inclusion rules; absence alone is not failure. Distinguish full-population checks from payload samples and identify unevaluated editions. Compare consecutive editions where evidence is available, but this decision does not establish a two-cycle alert threshold, a new evergreen research pass, or a new notification schedule.
+
+Compact report format:
+
+- **Delivery health:** [status] — [coverage, acceptance/timing and reconciliation evidence]; inbox confirmation [verified / unknown].
+- **Editorial completeness:** [status] — [coverage and evidence scope]; More for You [profiles with content / evaluated profiles], [item-count range]; [omissions, reasons and evidence gaps].
+
+This is a reporting requirement for reviews, not a new send gate. Runtime integration remains pending under roadmap EDITQ-3. Preserve existing production validators and alert behavior; this document authorizes no automatic resend, queue/history repair, or new external notification.
+
 ## Five measures
 
 | Measure | Weekly observation | Evidence / definition | Caveat |
@@ -28,6 +50,8 @@
 
 **Week ending:** YYYY-MM-DD CT  
 **Evidence status:** Observed / Reported / Incomplete (link to existing production reports)  
+**Delivery health:** Healthy / Degraded / Failed / Unknown; checked dates/runs and evidence scope: __  
+**Editorial completeness:** Complete / Needs review / Incomplete / Unknown; MFY coverage/count range and omission evidence gaps: __  
 **Fast:** __ / __ on time by 09:00 CT; unknown __; late generation/dispatch notes: __  
 **Consistent:** __ / __ days fully reconciled; unresolved queue/history anomalies: __  
 **Grounded:** __ / 3 published stories reviewed; substantive defects __; evidence gaps __  
